@@ -24,4 +24,5 @@ NPC	NPC	prefix	1
 bond	bond	prefix	1
 mysterydata	mysterydata	prefix	1
 rulebook	rulebook	prefix	1
-element	element	prefix	1
+element	element	prefix	3
+mysteryreward	mysteryreward	prefix	1
