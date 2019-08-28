@@ -17,7 +17,7 @@ EvilMind	1	-	You give off a sinister aura; criminals like you more, and others w
 Extrapolator	1	Tracker	Also shows the target's speed, estimated destination, and alternate routes.	-	
 Forward	1	Reflect	You can redirect successful parries to any target.	-	
 GeoTracker	1	-	Your Navi can be traced by its unique Navi ID. (Free to buy, 1500z to remove.)	-	
-GlowMode	1	-	You can make any part of yourbody softly glow enough to light up a small room.		-	
+GlowMode	1	-	You can make any part of your body softly glow enough to light up a small room.	-	
 GutStrike	1	Gutsy	You can roll 1 fewer die on any melee attack to give it Gutsy's effect.	-	
 Harmonizer	1	-	When you roll 3+ hits to make your element, a bonded ally can roll to make theirs.	-	
 HazardTimer	1	-	When using a Hazard chip, you can make it appear on a delay up to 10 Minutes.	-	
