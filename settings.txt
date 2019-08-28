@@ -1,0 +1,52 @@
+botname	Mr. Prog
+token	NTcyODc4MjAwMzk3NjI3NDEy.XMis-A.D9KSMhYqq_BSPjzVRYkTa0hSQl8
+logformat	%t\t%s\t%c\t%U\t%m\t%r
+message_sendmessage_noparam	I need two args: channelid and message
+message_updatesetting_noparam	I need a variable name and a value to update it to
+message_updatesetting_failed	That setting name doesn't seem to exist
+message_updatesetting_success	Updated {} from {} to {}
+message_addsetting_failed	That setting name already exists
+message_addsetting_success	Successfully added setting
+message_nomentioneduser	I need exactly one mentioned user!
+message_nomentioneduser2	I need exactly zero or one mentioned user!
+message_addadmin_success	<@!{}> is now a {} admin!
+message_addadmin_failed	That user is already a {} admin
+message_removeadmin_success	<@!{}> is no longer a {} admin
+message_removeadmin_failed	That user is not a {} admin
+message_purge_invalidparam	Please give me an integer number of messages to search
+message_restrict_success	<@!{}> is now restricted from using {} commands
+message_restrict_failed	That user is already restricted
+message_restrict_failed2	{} admins cannot be restricted
+message_unrestrict_success	<@!{}> is now unrestricted from using {} commands
+message_unrestrict_failed	That user is not restricted
+message_oops_success	Deleted last output from this user
+message_oops_failed	No last output from this user to delete
+message_help	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!
+message_help_oops	Deletes the bot message from the user's last valid command
+message_help_commands	Provides the list of commands available for the user to run
+message_help_help	Do you really need help with help? :thinking:
+message_help_userinfo	Shows some info on the mentioned user (or yourself if there is no mentioned user)
+message_help_roll	Generate a random number between 0 and an optional given maximum (default is 6)
+message_help_unknowncommand	I don't know this command or there is no help message for this command.
+message_help_chip	Battle Chips are one-use attacks that NetOps slot into their PETs. Your PET's folder space is determined by your **Navi's Mind + Navi's Info + 2**. When making a new character, pick starter Battle Chips equal to your **NetOp's Mind + NetOp's Info + 2**. After a Navi uses a Battle Chip, they need to jack out to make that Battle Chip usable again, or to change your Battle Chip folder. **Folders may not have duplicate Battle Chips, or more than 1 Mega Chip.** This command can display info on Battle Chips.
+message_help_ncp	NCPs (Or Navi Customizer Programs) are installable software NetOps can use to modify their Navi! They can give various perks like increasing folder size, granting access to special Navi powers, and more! **Do note that each Navi starts with 3 EB (Exabytes).** This command can display NCPs.
+message_help_power	All Navis have Navi Powers: special abilities they can use whenever they like. There are two types: Cost and Roll powers. **Cost powers reduce the listed stat by 1 until jack out.** This command can display navi powers.
+message_help_virus	Viruses are programs with simple, animal-like intelligences that wreak havoc across the internet. With lots of different shapes and sizes, some are more dangerous than others. Viruses use powers just like navis, and some even have special passive abilities! **Viruses have data within them that can be downloaded with a blankchip upon deletion.** This command can pull up a basic description on Virus descriptions.
+message_help_virusx	This specific command pulls up full stats for viruses, like stats and drops. __This command is more for GMs than players in a session.__
+message_help_tag	Viruses and Battlechips have tags that determine how they behave or work in battle.
+message_help_rulebook	Pulls up links for the rulebooks.
+message_help_bond	Displays bond powers along with points needed, and what they do!
+message_help_mysterydata	This command rolls MysteryData and gives you the result automaticlly!
+message_help_sense	Study your surroundings, find jack-in ports, and take aim!
+message_help_info	Possess knowledge and expertly wield Battle Chips!
+message_help_coding	Program, hack, and rewire things in both the real and digital worlds!
+message_help_strength	Lift, throw, and punch objects and people!
+message_help_speed	Run, jump, and roll places, or out of danger!
+message_help_stamina	Endure pain and danger!
+message_help_charm	Sweet-talk, feign innocence, and gain allies!
+message_help_bravery	Resist fear, intimidate enemies, and inspire your allies!
+message_help_affinity	Manipulate your Navi element, and sync your NetOp and Navi!
+message_help_parry	A character may attempt to counter a melee attack with their own, called a **__parry__**. Before your opponent rolls an attack, declare whether you would like to parry. If so, make an opposed roll (in most cases, Strength). Whoever as the most hits wins the parry, and the loser takes a point of damage per hit rolled by the winner (not reduced by loser's hits). _In the event of a tie, both parties must either **escalate** or **back down**._ \n \n_-If both **back out** nobody takes any damage. \n \n-If one **backs out** and one **escalates**, the parry ends, and the one backing out takes the winner's damage.\n \n-If both **escalate**, they make the opposed roll again, adding new totals to previous accumulated damage. If there is another tie, it continues until someone comes on top, or the parry resolves._
+rolldefaultmax	6
+purgesearchlimit	100
+commandprefix	>

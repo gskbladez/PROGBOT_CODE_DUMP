@@ -1,0 +1,348 @@
+---Misc. Chips---
+
+BlankChip	-	-	A Blank Chip. Use it to download data from deleted Viruses!	Item	-	-
+
+---Blade Chips---
+
+AirSword	3	Close	Blows a powerful gust! Push the target away 1 range band, even on miss.	Blade	Slow	-	
+AquaSword	3	Close	Slashes the target with a watery blade, spreading gallons of water about.	Blade	-	-	
+AscensionSlash	2	Close	A slash that rises into the air. Double your damage if your target is airborne.	Blade	-	-	
+BambooSword	3	Close	Slashes the target with bristling bamboo, spreading around fast-sprouting grass.	Blade	-	-	
+ChainRod	3	Close	Bladed whip! Can be used instead to get Close to a Near target & downshift your first attack.	Blade	Awkward	-	
+CrystalBlade	2	Close	A gleaming crystal blade. Can instead be used to reveal & stun Near invisible targets.	Blade	-	-	
+CustSword	1+X	Close	Sacrifice unused BattleChips to add +1 damage per chip.	Blade	-	-	
+DataDaggers	2	Near	Daggers for melee or throwing disrupt programming, briefly reducing Coding by 2 on hit.	Blade	-	-	
+DoubleEdge	4	Close	You also take 4 damage if the target is not deleted by your attack.	Blade	-	-	
+ElecSword	3	Close	Slashes the target with crackling electricity, spreading zapping sparks.	Blade	-	-	
+FireSword	3	Close	Slashes the target with burning flames, spreading crackling embers.	Blade	-	-	
+HeroSword	2	Close	Spend 1 Bravery to upshift the defense roll against this attack.	Blade	Slow	-	
+ICEPick	2	Close	Can instead be used to gain control of inanimate software (e.g. control panels) for a few moments.	Blade	-	-	
+IceSkates	1	Close	Allows you to glide over ice. Kicks chill enemies, upshifting their next Body roll on hit.	Blade	-	-	
+KnightSword	2	Close	Double damage if you win a parry with it.	Blade	-	-	
+LaserRazor	3	Close	Can instead be used to slowly melt through a thin wall or barrier.	Blade	Dangerous, Slow	-	
+LightningFoil	1	Close	An electric disarming swipe removes the alphabetic first BattleChip in the target's folder.	Blade	-	-	
+LightWave	2	Near	Fires a glowing shockwave from a blade that ignores barriers, shields, and auras.	Blade	-	-	
+MirrorSword	2	Close	A silver, shining sword. Can instead be used to parry a projectile attack.	Blade	-	-	
+PaladinSword	2	Close	Can instead be used to defend a Close ally, reducing the damage to them by 2.	Blade	-	-	
+RecoilRod	2	Close	Bladed tonfas! Spend 1 Speed to push the target or yourself away a range band.	Blade	-	-	
+SlashClaw	2	Close	Attack with speedy claws. Your target rolls defense twice and uses the worse result.	Blade	-	-	
+Slasher	5	Close	If you stand still and don't move, parry the next melee attack. Unusable outside a parry.	Blade	-	-	
+StyleSword	2	Close	A super-stylish sword. Lasts briefly; downshift Charm rolls while slotted in.	Blade	Awkward	-	
+Sword	3	Close	Transforms a part of the Navi into a blade.	Blade	-	-	
+TripleRod	3	Close	Extending lance! Spend 1 Speed to do a spin attack, hitting all Close targets.	Blade	Awkward	-	
+TurboSlice	2	Close	Spend 1 Speed to deal +2 damage.	Blade	-	-	
+VarSword	2	Close	Sacrifice 1 Info point to hit twice, make the range Near, or make the defense harder.	Blade	-	-	
+VesselBlade	4	Close	You must spend 1 Affinity point. Spreads your element on impact.	Blade	-	-	
+Z-Saber	2	Close	A glowing teal blade. Spend 1 Soul to charge it up and deal double damage on 2 targets.	Blade	-	-	
+
+---Hazard Chips---
+
+AreaGrab	-	Near	A forcefield briefly stops enemies from moving a range band away.	Hazard	-	-	
+BurnSquare	3	Near	A nearby surface shatters as flames erupt from it, burning anyone Close to it.	Hazard	Dangerous	-	
+Geddon1	-	-	Surfaces begin to crack, quickly spreading from your feet.	Hazard	-	-	
+Geddon2	-	Near	Structures around you crack and then shatter, one by one.	Hazard	Slow, Dangerous	-	
+Geyser	3	Near	A nearby surface shatters as a geyser erupts out of it.	Hazard	Awkward	-	
+GhostSeed	-	Near	Throws a seed that spreads the element of the last enemy you deleted.	Hazard	-	-	
+GhostStage	-	Near	The element of the last enemy you deleted starts spreading everywhere around you.	Hazard	-	-	
+Grabby	2	Near	A massive hand pops out of a surface. It grabs the first thing that moves Close to it.	Hazard	Slow	-	
+GrassSeed	-	Near	Throws a large seed that spreads grass over everything it touches.	Hazard	-	-	
+GrassStage	-	Near	Grass spreads over every surface and plants begin to sprout.	Hazard	-	-	
+IceSeed	-	Near	Throws a large seed that spreads slick ice over everything it touches.	Hazard	Awkward	-	
+IceStage	-	Near	A sheet of ice quickly spreads over every surface.	Hazard	Awkward	-	
+LavaSeed	-	Near	Throws a large seed that spreads lava over everything it touches.	Hazard	Dangerous	-	
+LavaStage	-	Near	Lava begins to rise from the ground.	Hazard	Dangerous, Slow	-	
+MagSeed	-	Near	Throws a seed that turns a surface magnetic on contact.	Hazard	Awkward	-	
+MetalGears	4	Close	Two huge metal gears slowly grind around the floor, crushing anything in their way.	Hazard	Dangerous, Slow	-	
+MetalStage	-	Near	Surfaces of your choice turn to hard metal, resisting damage and conducting electricity.	Hazard	-	-	
+PoisonSeed	-	Near	Throws a large seed that spreads damaging poison over everything it touches.	Hazard	Dangerous	-	
+SandRing	1	Close	A hidden pitfall trap forms in front of you.	Hazard	Slow	-	
+SandSeed	-	Near	Throws a large seed that spreads sand over everything it touches.	Hazard	Awkward	-	
+SandStage	-	Near	The floor quickly turns to sand.	Hazard	Awkward	-	
+Springboard	-	Close	An easily-concealable springboard launches targets a range band when stepped on.	Hazard	-	-	
+WaterSeed	-	Near	Throws a large seed that spreads water over everything it touches.	Hazard	Awkward	-	
+WaterStage	-	Near	Water begins to rise from the ground.	Hazard	Awkward	-	
+Whirlpool	-	Close	Summons a vortex to slowly drag in targets.	Hazard	Slow	-	
+WhiteWeb	-	Near	Shoots a large, sticky web.	Hazard	Slow	-	
+WoolSeed	-	Near	Throws a seed which sprouts a big, fluffy blob of wool that can cushion any impact.	Hazard	-	-	
+
+---Impact Chips---
+
+BalanceStaff	2	Close	A mystic staff. Pick 1: Heal for damage dealt or remove skill reductions from enemy attacks.	Impact	Awkward	-	
+BronzeFist	2	Close	A parrying gauntlet. Can instead be used to turn the next time you fail a melee parry into a tie.	Impact	-	-	
+BubbleParasol	2	Close	Can instead be used to fall very slowly, make a bubble cloud, or add +2 to your next defense.	Impact	Awkward	-	
+ColdPunch	3	Close	Chills enemy with frozen impact, upshifting their next Body move.	Impact	Slow	-	
+CopyStrike	1	Close	Target copies your stat & skill reductions.	Impact	-	-	
+DizzyHit	2	Close	A concussive slam that reduces the target's Mind by 1.	Impact	-	-	
+DrillArm	2	Close	A piercing blow that reduces enemy Stamina by 2.	Impact	Dangerous, Slow	-	
+EMPunch	1	Close	Pick 1: Temporarily disables Near sensors; target's speech is temporarily scrambled.	Impact	-	-	
+FinalBlow	2	Near	If this deletes, target is sent flying back, damaging everyone and everything in their path.	Impact	Dangerous	-	
+FireHit	2x2	Close	Slams the target with two fiery punches.	Impact	-	-	
+GoldFist	2	Close	If this deletes the target, their body turns to Zenny (150z per point of Max HP)	Impact	Awkward	-	
+GravityHold	2	Near	Manipulate gravity to lift a target into the air, then slam them to the ground.	Impact	Awkward	-	
+GutPunch	3	Close	A massive punch that reduces enemy Stamina by 1.	Impact	Awkward	-	
+GutStraight	2	Near	Fires a fist through the air that upshifts the enemy's next Stamina roll.	Impact	-	-	
+Hammer	4	Close	Summons a shattering hammer for one strike.	Impact	Awkward, Slow	-	
+MagCoil	-	Near	Brings an enemy into Close range and stuns them.	Impact	Awkward	-	
+Nullifier	2	Close	Target is temporarily unable to use their element.	Impact	-	-	
+PercussiveFix	2	Close	Slam with a toolkit! Can also be used to fix a broken virtual computer or piece of machinery.	Impact	Slow	-	
+PhantomGrasp	-	Close	Pick 2 on hit: Target rolls Bravery to not panic; Target Mind briefly -1; You are briefly invisible.	Impact	Slow	-	
+Plasma	2	Close	Two orbs of electricity orbit the Navi, striking every available target.	Impact	-	-	
+PowerCycle	1	Close	Reboots Viruses, momentarily disabling them and wiping their short-term memory.	Impact	-	-	
+PressurePoint	1+X	Close	+1 damage for each point your Navi has in Info.	Impact	-	-	
+RiseNShine	1	Close	Target wakes up and downshifts their next Mind roll, even if damage is resisted	Impact	-	-	
+SilverFist	3	Close	A magic gauntlet! Can instead be used to make 3 Affinity rolls using your Strength instead.	Impact	Awkward, Slow	-	
+SnakeBite	2	Close	Hand is a snake head! Pick one: Target's Bravery briefly 0; upshift if defending this with Stamina.	Impact	-	-	
+TopSpin	3	Close	Spin out, dealing damage to every Close enemy	Impact	Awkward	-	
+Uninstall	-	Close	Disables a random Navicust part on the target.	Impact	-	-	
+WhirlwindToss	0+X	Near	Toss a Close enemy into another enemy! Damage to both=Thrown enemy's Body.	Impact	-	-	
+WindRack	1	Close	Blows all close targets back a range band, regardless of hit.	Impact	-	-	
+ZeroKnuckle	3	Close	If you delete an enemy with this, you can use their element for a downshifted Affinity roll.	Impact	Slow	-	
+
+---Rush Battlechips---
+
+AquaWhirl	2	Near	Moves you into Close range, leaves a trail of water behind.	Rush	-	-	
+Arrow	4	Near	You dash forward, skewering all enemies in a line until you hit a wall.	Rush	Dangerous	-	
+BlizzardBall	1+X	Near	Roll into a giant snowball and bowl the target over! X=number of allies with you in the ball.	Rush	Awkward, Dangerous	-	
+Condor	2	Near	Dash into Close range. Can be used from Far range for double damage.	Rush	-	-	
+CurseShield	-	Near	Ignore a ranged attack targeting you and zoom into Close range with the attacker.	Rush	-	-	
+DashAttack	3	Near	Moves you into Close range of your target.	Rush	-	-	
+FootStomp	2	Near	Jump onto and crush an enemy. Spend 1 Speed to add another target in range of the enemy.	Rush	-	-	
+GoingRoad	-	Near	Lead the way on a glowing path! The user and all Close allies move a range band together.	Rush	-	-	
+IronShell	2	Near	Roll into Close range and collide. Your next defense roll is downshifted.	Rush	Awkward	-	
+LineOut	2	Near	Dash into Close range. If you dash through an object, it is destroyed.	Rush	Dangerous	-	
+MetaGel	2	Near	Turn to jelly and splash into Close range. Your body is solid again after a minute.	Rush	-	-	
+PowerSlide	2	Near	A sliding kick. You can deal -1 damage to trip the enemy, making them fall over.	Rush	Awkward	-	
+Pyrotechnics	3	Close	Dash a range band in any direction. A few seconds later, your starting position explodes.	Rush	Dangerous, Slow	-	
+Quake	2	Near	The Navi leaps into the air and slams down in Close range, staggering anyone around.	Rush	Dangerous	-	
+RadicalGrind	2	Near	Grind an edge and ram the target! Pick 1: downshift your next Speed, Charm, or Bravery roll.	Rush	Awkward	-	
+Recharger	2	Near	Dash into Close range. If this deletes the target, clear 1 point of stat/skill reduction you have.	Rush	-	-	
+RewindDash	-	Near	Move a range band; damaged structures/objects you touch are returned to their original state.	Rush	-	-	
+RocketTackle	2	Close	Move yourself and the target a range band together.	Rush	Awkward	-	
+RollFlash	2	Near	Warp to a Close enemy and whip them! Spend 1 Charm: Heal a Near ally 2 HP.	Rush	-	-	
+SandWorm	2	Near	Tunnel through the ground and burst out under the target into Close range.	Rush	-	-	
+ShiningArmor	-	Close	Pick up a target and move a range band. Your next Charm roll on the target is Easy.	Rush	-	-	
+ShortCircuit	1	Near	Turn into a spark and zip through conductive material; anything you touch is stunned.	Rush	Awkward, Dangerous	-	
+StepCross	3	Near	Teleports you forward to parry a melee attack, then you go back.	Rush	-	-	
+StepSword	3	Near	Teleports you forward for a single slice, then you go back.	Rush	-	-	
+Stringer	-	Near	Dash to 2 targets; if both are hit, you tie them together! Upshift if defending this with Stamina.	Rush	Awkward	-	
+SwordsDance	X	Near	Slot in a Blade chip, dash into Close range; the chip hits the target & everything in-between.	Rush	-	-	
+TurboTire	3	Near	Roll into Close range on a flaming wheel; the wheel burns and bounces around afterwards.	Rush	Dangerous	-	
+Vault	-	-	Launch yourself two range bands.	Rush	-	-	
+WebSurfer	1	Near	Surf a range band! The board resists damaging hazards (e.g. lava, acid, electrified water).	Rush	Awkward	-	
+YokuTrail	-	Near	Dash a range band through the air, leaving a trail of platforms that will disappear in a minute.	Rush	-	-	
+
+---Shot Battlechips---
+
+AirShot	1	Near	Pushes the target back one range band on hit.	Shot	-	-	
+AtomicFire	2+X	Near	Overheat your attack! Sacrifice up to 3HP to add that much damage.	Shot	Dangerous	-	
+Boomer	2	Near	Targets up to three enemies Near or Close to each other	Shot	-	-	
+Bubbler	2	Near	Creates a cloud of soaking bubbles around the target.	Shot	-	-	
+Cannon	3	Near	Transforms a part of the Navi into a cannon and fires.	Shot	-	-	
+Catapult	-	Near	Slot in a Thrown BattleChip; this will give it properties of a Shot chip and +1 damage.	Shot	-	-	
+ConcreteShot	2	Near	Creates a large rock cube at range if it misses	Shot	Awkward	-	
+CornShot	3	Near	Fires a high-impact cob of corn.	Shot	Awkward	-	
+Crackshot	3	Near	Breaks and tosses the floor in front of you.	Shot	Dangerous	-	
+CurtainFire	3	Near	Fires a dazzling array of bullets. Downshift your first Charm roll with anyone who sees it.	Shot	Awkward, Slow	-	
+Detonator	1	Near	If the next attack deletes the target, they violently explode, dealing 4 damage to all Close.	Shot	-	-	
+DiffusalCannon	0+X	Near	Add 1 damage for every stat and skill point reduction you have.	Shot	-	-	
+Drain	2	Near	Fires needles that heal for damage done	Shot	-	-	
+DrillBomb	2	Near	Fire an exploding drill. Upshift Stamina defense for this attack.	Shot	-	-	
+GeminiLaser	3	Near	A bouncing beam. If the target defends this with Speed, the laser attacks one other target.	Shot	Slow	-	
+Grappler	1	Near	Drags the target into Close range on hit	Shot	-	-	
+HeatShot	2	Near	Creates an explosion of flame around the target.	Shot	-	-	
+Highlighter	1	Near	On hit, downshift the next two attacks against the target.	Shot	-	-	
+HomingTorpedo	1	Far	Defense roll against this attack is always Hard.	Shot	-	-	
+IceSlasher	2	Near	Enemies deleted by this turn into frozen blocks shortly afterwards.	Shot	-	-	
+LavaCannon	3	Near	Add +1 damage if there's fire/lava within Near range.	Shot	Dangerous	-	
+MarkCannon	3	Near	Targeted shot upshifts defending with Speed.	Shot	Slow	-	
+MetalBlade	2	Near	For every Speed point you spend, hit another target.	Shot	-	-	
+NeedleCannon	1x4	Near	Fire a volley of tiny needles	Shot	-	-	
+ShotGun	2	Near	Fires an explosive shot that upshifts the defense of enemies hiding behind cover.	Shot	-	-	
+TankCannon	3	Near	Upshift Stamina rolls to defend against this; on miss, creates a shattering explosion.	Shot	Dangerous, Slow	-	
+Thunder	1	Near	A sluggish thunderball that upshifts the target's next action.	Shot	Slow	-	
+VarGun	2	Near	Spend 1 Info point to upshift the target's next roll, upshift the defense, or set range to Far.	Shot	-	-	
+Yo-Yo	2x2	Near	Shoot a razor yo-yo! Spend 1 Sense to hit 3 times total.	Shot	-	-	
+ZapRing	1	Near	Stuns the target for one second.	Shot	-	-	
+
+---Summon Battlechips---
+
+AirRaid	-	Near	A little fighter plane fires on enemies, adding +1 die to your attack rolls. Can be destroyed.	Summon	-	-	
+Anubis	-	Close	Summons a sinister statue in front of you. All Near it upshift all defense rolls.	Summon	Dangerous	-	
+Candle	-	Close	Creates a large candle that heals you 1HP every time you're attacked.	Summon	-	-	
+Catcher	-	Near	A tiny UFO takes the last chip in the target's folder and puts it in yours until you/they jack-out.	Summon	Slow	-	
+Decoy	-	Near	Summons a hologram of your Navi directly in front of you in any pose.	Summon	-	-	
+ElecReel	2	Close	Summons a hidden electric tripwire that shocks anything it touches.	Summon	-	-	
+FireRat	4	Near	Light the fuse with fire to send it zooming across the ground at the target.	Summon	-	-	
+GhostGloves	-	Near	Floating gloves mimic your hands. They're too weak to harm others.	Summon	Awkward	-	
+Guardian	4	Close	Summons a tiny statue that zaps the first thing to damage it.	Summon	Slow	-	
+IceCube	-	Close	Summons a large cube of ice in front of the Navi.	Summon	-	-	
+IronShield	-	Close	Summons a wide, unmovable iron barrier in front of the Navi.	Summon	-	-	
+Meteors	2	Far	Creates a scepter which periodically calls fiery meteors down, up to 5 total. 	Summon	Dangerous	-	
+Mine	5	Close	Places a pressure-activated mine in front of you.	Summon	-	-	
+MokoRush	2	Close	Summons a cute ram with soft, bouncy wool to charge ahead.	Summon	Slow	-	
+Mole	-	Close	Summons a mole which digs a tunnel to a simple, nearby destination.	Summon	Slow	-	
+PopUp	-	Close	Creates a foxhole right beneath your feet.	Summon	-	-	
+RainyDay	-	Near	Calls down a torrential downpour from a solid, squishy raincloud.	Summon	-	-	
+Ratton	2	Near	A homing rat bomb can find enemies behind cover. Also upshifts defending with Speed.	Summon	-	-	
+Recall	-	Close	Summons the last Virus you deleted to help you out. It has 1HP.	Summon	-	-	
+RiskyHoney	2	Close	Summons a beehive that attacks and makes noise when approached.	Summon	-	-	
+RockArm	4	Close	A hefty, inert virus falls from the sky and slams in front of you.	Summon	Slow	-	
+RockCube	-	Close	Summons a large cube of stone in front of the Navi.	Summon	-	-	
+Rook	-	Close	Creates a six-foot, heavily armored tower for cover.	Summon	-	-	
+Rope	1	Near	Summons a briar patch to ensare any that step in it.	Summon	Slow	-	
+Sensor	1	Close	Creates a motion-sensing eye that stuns the first enemy it sees and alerts your Navi.	Summon	-	-	
+Silence	-	Near	Summons a musical virus that silences all noise when it's alive.	Summon	-	-	
+SnakeCharmer	2x[1+X]	Close	For every Charm point you spend, an extra snake chases an enemy.	Summon	Slow	-	
+TimeBomb	4	Close	Summons a bomb on a three-second countdown.	Summon	Slow	-	
+Totem	3	Near	Deploys a motion-sensing turret that breathes fire at the first thing it sees.	Summon	Dangerous	-	
+Wind	-	Near	Summons a gust of wind to blow targets towards or away from you.	Summon	-	-	
+
+---Support Battlechips---
+
+AirShoes	-	-	Fly several feet off the ground for the next minute.	Support	-	-	
+Attack+1	-	-	Add one hit to your next non-BattleChip attack.	Support	-	-	
+Barrier	-	-	Negates the next time you take damage.	Support	-	-	
+Blinder	-	Close	A bright light blinds enemies for a moment.	Support	Dangerous	-		
+Braveheart	-	-	Recover HP equal to points in Bravery + Soul.	Support	-	-	
+BubbleStar	-	Near	Seals an enemy in a floating bubble.	Support	Awkward	-	
+CopyDamage	-	Near	The next attack on another enemy also hurts the target.	Support	-	-	
+Dropdown	-	-	Allows you to reverse your gravity for up to a minute.	Support	-	-	
+Fanfare	-	Near	One ally is invincible for their next action if your Navi sings loudly	Support	-	-	
+GeminiTwin	-	Close	Creates a holographic clone. Roll twice for your next 3 defense rolls, use the best result.	Support	-	-	
+GreenCarpet	-	Close	A magic carpet flies ahead, leaving a trail of grass and gliding over traps. Lasts 1 minute.	Support	-	-	
+Guard	-	Close	Nullify an attack on yourself or a Close-range ally.	Support	-	-	
+HolyPanel	-	-	Creates a damage-halving tile underfoot. Halved damage rounds down.	Support	-	-	
+Insert	-	Close	Creates a large amount of an ally's element.	Support	Slow	-	
+Interrupt	-	-	Act immediately, even before an enemy's attack.	Support	-	-	
+Invis	-	-	Renders the Navi invisible for several seconds.	Support	-	-	
+LeafShield	2	Near	Can instead be used to take -2 damage next time you're hit. Overwrites other barriers. 	Support	-	-	
+MapView	-	Far	Launch a camera straight up for an eagle-eye view of the surroundings. Bonks off ceilings.	Support	Awkward	-	
+Recover3	-	-	Recover three HP.	Support	-	-	
+Recover5	-	-	Recover five HP.	Support	-	-	
+Reflex	-	-	Act immediately the next time you take damage.	Support	-	-	
+Repair	-	Near	Fix a broken structure.	Support	-	-	
+Shadow	-	-	For a minute, you're impossible to detect when in darkness.	Support	-	-	
+SkullBarrier	-	-	Pick 1: Take -1 damage from the next 3 attacks; downshift next Bravery roll to intimidate.	Support	-	-	
+StoneBody	-	-	For a minute, you cannot move, but all damage over 1 is reduced to 1.	Support	-	-	
+Sweetheart	-	Near	Heal an ally's HP equal to your points in Charm + Soul.	Support	-	-	
+SystemScan	-	Far	Pick a single location in range - the GM will tell you five words about the biggest threat inside.	Support	Slow	-	
+TimeStopper	-	Near	Freezes time for two seconds. Only you are able to act.	Support	-	-	
+Timpani	-	Close	Summons drums. As long as you beat them, upshifts enemy Speed rolls.	Support	-	-	
+TundraSpotlight	-	Near	Casts the Navi in a rainbow light that draws attention and downshifts its next Soul roll.	Support	-	-	
+
+---Thrown Battlechips---
+
+AirBomb	2	Near	Moves the target and everyone Close to them one range band - choose the direction.	Thrown	Awkward, Dangerous	-	
+AirSpin	2	Near	Throws a disc-shaped fan that blows a powerful whirlwind gust upwards.	Thrown	Awkward	-	
+Airstrike	2x2	Near	Torpedoes deal +1 damage if you're above your opponent and Near distance.	Thrown	Slow	-	
+BlackBomb	5	Near	Light the fuse with fire to detonate.	Thrown	Awkward, Dangerous	-	
+Cactiball	3	Near	On a hit, bounces to one other enemy in Near range.	Thrown	Slow	-	
+ChainBlast	X	Near	Hits everything Close to the target. X=the number of enemies hit.	Thrown	-	-	
+DiceBomb	X	Near	A randomized attack! X=Roll 2d6, use the lowest value as your damage.	Thrown	-	-	
+Firecracker	1	Near	Disorients the target, dropping their Sense by 2 for two rolls.	Thrown	-	-	
+FlamingLasso	2	Near	Can spend 1 Strength to: pull them Close, upshift their next roll, or get dragged behind them.	Thrown	-	-	
+FlashBomb	-	Near	Tosses a blinding bomb on a three-second timer.	Thrown	Slow	-	
+GutsShoot	X	Near	Toss an ally! X=your ally's Body score.	Thrown	Awkward	-	
+IceBall	2	Near	Freezes the target on impact, creates a sheet of ice on miss.	Thrown	-	-	
+Kunai	3	Near	Flies silently through the air.	Thrown	-	-	
+LastOut	1	Near	A sparking spikeball knocks out the alphabetic last chip in the target's folder.	Thrown	Awkward	-	
+Lavaball	3	Near	Coats the floor in a pool of lava on a miss.	Thrown	Slow, Dangerous	-	
+LightningRod	1	Near	The next time the target's attacked, a 2-damage bolt of lightning adds to the damage.	Thrown	Awkward	-	
+LogicBomb	1+X	Near	+1 damage for each point your Navi has in Coding.	Thrown	-	-	
+MagBomb	1	Near	Magnetizes the target's feet to the floor	Thrown	-	-	
+Magnum	3	Near	The Navi leaps into the air and throws down a powerful explosive.	Thrown	Dangerous	-	
+MiniBomb	1	Near	A tiny blue bomb. Spend 1 Info point: this chip will not be exhausted while jacked in.	Thrown	-	-	
+Mudball	1	Near	Upshifts the target's next two Sense or Speed rolls on hit	Thrown	Awkward	-	
+QuickRound	2	Near	Throws a small, sharp boomerang. Spend 1 Speed point: make the chip usable again.	Thrown	-	-	
+RollingShield	2	Near	Can instead be used to block a single projectile attack.	Thrown	Awkward	-	
+SeekBomb	2	Near	If target tries to evade with Speed, upshift difficulty	Thrown	-	-	
+ShieldBoomerang	2	Near	Downshift your next defense if this hits.	Thrown	Slow	-	
+StickyStick	2	Near	Tosses a 10-foot pole. Sticks to whatever it hits; difficult to break.	Thrown	Awkward	-	
+SwapRing	1	Near	A glowing, magic ring! On hit, instantly swaps your position with the target.	Thrown	-	-	
+TreeBomb	4	Near	Throws a massive seed that needs water to sprout and explode.	Thrown	Awkward	-	
+VesselBomb	4	Near	You must spend 1 Affinity point. Spreads your element on impact.	Thrown	Slow	-	
+ZapNet	1	Near	Tangles and zaps the target, setting Speed to 0. Untangling takes a moment.	Thrown	Awkward	-	
+
+---Wave Battlechips---
+
+AquaTower	4	Close	Creates a towering geyser around the Navi.	Wave	Awkward	-	
+BigHeart	-	Near	Pick 1: upshift their next 2 Mind rolls, downshift your next Charm roll on them, heal them 3HP.	Wave	-	-	
+BigWave	3	Near	A massive shockwave cracks surfaces as it travels	Wave	Dangerous	-	
+BlackWing	-	Near	Sinister bats fly at the target! Everyone targeted makes a Bravery roll to resist panicking.	Wave	-	-	
+BrowserCrasher	-	Near	A light blast blocks communication between Navis & NetOps. Normal NetOp Coding to fix.	Wave	Slow	-	
+BurstRevenge	2xX	Near	Let loose fiery bursts of rage! X=number of enemies in range who have damaged you.	Wave	Dangerous	-	
+CandyWave	2	Near	Spend 1 Charm to pick 1: candy is sticky; candy is big and bouncy; Viruses really want to eat it.	Wave	-	-	
+CashFlow	2	Near	A tidal wave of fake wealth! Spend 200z to make this chip usable again.	Wave	Awkward	-	
+CustomVolt	2	Near	Crackling bolts arc to enemies Near the target if they have BattleChips.	Wave	-	-	
+DesertLions	3	Near	Sand lions attack, trailing sand. Spend 1 Charm: Target sees mirages of your choice.	Wave	Awkward, Slow	-	
+DimensionalGate	-	Near	A mystic gate! The GM names 4 random elements, you pick which 2 come out of the gate.	Wave	-	-	
+FireBurner	3	Near	Your Navi spurts flames that crack and destroy structures.	Wave	Dangerous	-	
+FireTower	4	Close	Creates a wild pillar of flame around the Navi.	Wave	Dangerous	-	
+GunDelSol	2+X	Close	Fires concentrated sunlight onto enemies. +2 damage if the PET is in direct, bright sunlight.	Wave	Awkward	-	
+Hell'sRolling	5	Near	Must spend 1 Soul. Evil rollers overwhelm the target, spreading darkness everywhere.	Wave	Dangerous	-	
+IceWave	2	Close	Creates a wave of ice that freezes the ground in its wake.	Wave	Slow	-	
+MudWave	2	Near	Creates a wide mudslide. Everyone who gets hit upshifts their next Speed roll.	Wave	Awkward	-	
+MysticMist	1	Near	Pick 2: The mist doesn't go away; upshift target's next Sense roll; you're invisible in the mist.	Wave	-	-	
+NOBeam	3	Near	Fires a devastating light shaft forward. Only activates if your back is pressed to a solid object.	Wave	Awkward	-	
+NorthWind	-	Near	A righteous wind blows. All of the target's temporary buffs are immediately dissipated.	Wave	-	-	
+Poltergeist	2x2	Near	Pick 2 large objects in range that aren't stuck to a surface; they slam into the target.	Wave	Dangerous	-	
+Pulsar	1	Near	Fires a sonic blast that disorients targets, upshifting their next roll on hit.	Wave	Awkward	-	
+RedWave	2	Near	Creates a wide lava wave, leaving pools of lava behind.	Wave	Dangerous	-	
+SonicWave	2	Near	A shockwave runs along the ground, also hitting enemies between the Navi and the target.	Wave	-	-	
+Spice	-	Near	Fires a cloud of spores that temporarily reduce targets' Mind by 1.	Wave	-	-	
+TidalWave	2	Near	Creates a wide tidal wave.	Wave	-	-	
+ToadMelody	-	Near	Pick 1: Stun the target, restore your spent Charm points, +3 dice to target's next defense.	Wave	Slow	-	
+Tornado	2	Near	Creates a swirling cyclone that rolls forward, flinging everything in its path.	Wave	Slow, Dangerous	-	
+WoodTower	4	Close	Sharp logs erupt around the Navi.	Wave	Dangerous	-	
+YamatoRush	2	Near	Spear soldiers rush! Spend 1 Bravery: upshift the defense or have the soldiers linger after.	Wave	-	-	
+
+---MEGA Chips---
+
+Attack+3	-	-	Add three hits to your next non-BattleChip attack.	Support	-	MEGA	
+Aura	-	-	Repels attacks under 3 damage, dissipates after pierced. Lasts a minute.	Support	-	MEGA	
+Balance	-	Close	Both you and the target have your remaining HP halved.	Support	-	MEGA	
+ElementSurge	X	Near	Deals 2 damage with your element for every point of Affinity you have. Hurts you too.	Wave	-	MEGA	
+GaiaSword	2	Close	If the hit connects, sacrifice unused BattleChips to add their damage to your hit.	Blade	-	MEGA	
+Jealousy	1+X	Near	Target takes one extra damage for each unused BattleChip in its Folder.	Support	-	MEGA	
+MeteorKnuckle	7	Close	A colossal fist falls from the sky onto the target, sending out massive earth-shattering fissures.	Impact	Dangerous, Slow	[MEGA]	
+Muramasa	X	Close	A sword that deals damage equal to how much HP your Navi is missing.	Blade	-	MEGA	
+NaviRecycle	-	-	Re-summons the last Navi chip that affected your Navi.	NaviChip	-	MEGA	
+Phoenix	3	Far	Hits all enemies with a blast of fire that heals you for their damage taken.	Summon	-	MEGA	
+Recover10	-	-	Recover ten HP.	Support	-	MEGA	
+SuperVulcan	2x5	Close	A golden gun fires a barrage of bullets.	Shot	-	MEGA	
+
+---ChitChat CrossOver Chips---
+
+CritterCrew	-	Close	Small animals come to help! They're small, cute, nonviolent, brave, and take simple orders.	Summon	-	ChitChat	
+EleMentalist	-	Near	Write any element down, tell others its 1st letter. If a player guesses it 1st try, summon lots of it!	Summon	-	ChitChat	
+Jamout	X	Near	Rock out with your allies! X=# of players in the jam session (they don't need the chip).	Wave	Dangerous	ChitChat	
+Offdoff	2	Close	Knock an object off the target (their weapon, their disguise, a mind-control hat, etc).	Impact	-	ChitChat	
+PawClaw	2	Close	Claw swipe! Can also be used to downshift a Charm roll on someone who likes cute things.	Blade	-	ChitChat	
+Redecorator	-	Near	Every player names a simple piece of household furniture/decor that appears around you.	Summon	-	ChitChat	
+
+---RadicalSpin CrossOver Chips---
+
+AestheticShuffle	-	-	Your look is now Edgy, Funky, Cute, Soft, or Elegant. Can spend 1 charm to refresh this chip.	Support	Awkward	Radical Spin	
+DashSpin	2	Near	Roll into a ball and bowl into the target! Speed rolls are downshifted until you stop spinning.	Rush	Awkward	Radical Spin	
+Faker	-	-	A knockoff version of you! It can use one of your Navi Powers once. (May gain sentience.)	Summon	-	Radical Spin	
+FlameShield	2	Near	Dash into Close in a fire bubble! Can instead be used to take -2 damage next time you're hit.	Rush	Dangerous	Radical Spin	
+KnuckleSpikes	2	Close	Can instead be used to climb a solid surface or rapidly burrow through soft ground.	Impact	-	Radical Spin	
+OpenYourHeart	-	-	Charge your power, add +1 die per HP missing to your next Soul roll. Collapse after the roll.	Support	Slow	Radical Spin	
+PerfectChaos	-	Near	Summon a massive storm! All downshift Bravery rolls and upshift defense rolls while within.	Hazard	Dangerous, Slow	Radical Spin	
+ThunderShield	-	-	Pick 1: Electrify your next attack; downshift your next ranged defense; reroll a Speed roll.	Support	-	Radical Spin	
+WaterShield	-	-	Pick 1: Block a non-electric/blade attack; downshift underwater Speed rolls until you are hit.	Support	-	Radical Spin	
+
+---UndergroundBroadcast CrossOver Chips---
+
+UBTest	NaN	NULL	"Description"	"Category"	"Tags"	Underground Broadcast	
+
+---Mystic Lilies CrossOver Chips---
+
+AceOfSpades	-	-	Next time you lose an opposed roll and at least one of your dice reads 1, change all 1s to 6s.	Support	Slow	Mystic Lilies	
+BadApple	-	Close	An apple that curses on bite! Pick 2 curses: go blind/speak all thoughts/panic/hallicunate/turn ugly.	Summon	Slow	Mystic Lilies	
+InstantKarma	3	Near	Ghost swords follow you. When someone tells a lie in range, the swords pierce their heart.	Summon	Slow	Mystic Lilies
+Moonlight	-	Near	Summons a moonbeam from the sky. You are invisible as long as you stay within it.	Hazard	-	Mystic Lilies	
+Possession	-	Near	Must be used immediately after a Navi/Virus is deleted. You can briefly control their body.	Support	-	Mystic Lilies	
+ThirdEye	-	Near	Gaze into the target's mind. You hear their thoughts until you roll, use a chip, or take damage.	Shot	Awkward
+WanderingSin	2	Near	The target is covered in text of your choice, which needs a Hard coding roll to erase.	Shot	Awkward	Mystic Lilies
+

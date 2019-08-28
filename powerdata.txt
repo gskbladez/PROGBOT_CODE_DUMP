@@ -1,0 +1,170 @@
+---Sense Powers---
+
+LockOn	Sense	Cost	Your next attack is Easy difficulty, no matter what.	
+Volley	Sense	Cost	Roll the next attack three times and take the best outcome.	
+
+BlindMode	Sense	Roll	Find a target with extrasensory means (e.g. thermal imaging, echolocation).	
+Splash	Sense	Roll	Roll once to attack a Near target. Everything Close to the target is also hit.	
+Tracker	Sense	Roll	Find and identify trails and footprints.	
+
+---Info Powers---
+
+Refresh	Info	Cost	Pick a used BattleChip in your folder. It is now usable again - once per chip.	
+Reconfig	Info	Cost	Switch out unused chips in your folder for ones in your pack.	
+
+Analyze	Info	Roll	Learn one per hit: The target's skills, BattleChips, powers, and NCPs.	
+Foresight	Info	Roll	You can dodge an attack with Info if you've seen this enemy use it before.	
+Extend	Info	Roll	The next BattleChip's effects (e.g. stun, one upshifted roll) last twice as long.	
+
+---Coding Powers---
+
+MapEdit	Coding	Cost	Generate a Near simple structure that is either hard, large, or hidden.	
+HotSwap	Coding	Cost	Change your NaviCust setup without jacking out.	
+
+Disruption	Coding	Roll	Disable a Near target's Power for a few moments.
+Firewall	Coding	Roll	Put a temporary door over an entrance that known enemies cannot enter.	
+NoClip	Coding	Roll	Pass through a thin structure (walls, floors, pipes, etc).	
+
+Copycat	Coding	Cost	Change your element to someone else's in Near range.	
+
+Dimmer	Coding	Roll	Suck up Near lights, plunging the area into darkness.	
+Spoof	Coding	Roll	Change any number's appearance (no actual effect); like Navi HP, dice pool size, etc.	
+Skim	Coding	Roll	Rolls when someone Near spends Zenny. For every hit, you steal 100z from the target.	
+Touche	Coding	Roll	Knocks the alphabetically first BattleChip out of the target's folder.
+
+---Strength Powers---
+
+BreakCharge	Strength	Cost	Your next attack reduces the target's Body by 2. Does not stack.	
+Followthrough	Strength	Cost	Add another target in range to any melee attack or Strength move.	
+
+Gutsy	Strength	Roll	Launch a Close target one range band away from you.	
+Shockwave	Strength	Roll	Make a ranged attack on a grounded Near target.	
+Shatter	Strength	Roll	Destroy a Close structure or piece of terrain.	
+
+NukeFootball	Strength	Roll	Roll once to attack a Near target. Everything Close to the target is also hit.	
+Touchdown	Strength	Roll	Throw a target into another target, both take damage.	
+
+---Speed Powers---
+
+Warp	Speed	Cost	Instantly move one range band.	
+Afterimages	Speed	Cost	Upshift the next 3 attacks on you.	
+
+JumpJets	Speed	Roll	Launch a range band in any direction from the ground.	
+Sneakrun	Speed	Roll	Slip past an inanimate threat (e.g.traps, sensors).	
+ArtfulDodger	Speed	Roll	Distract a group of enemies with quick movement, making them focus on you.	
+
+---Stamina Powers---
+
+Regenerate	Stamina	Cost	The next 5 times you roll or use a Battle Chip, heal 1HP. (Damage comes first.)	
+Clear	Stamina	Cost	Dispel negative effects and stat/skill reductions from enemy attacks.	
+
+KineticArmor	Stamina	Roll	Move a range band immediately after being hit.	
+Reflect	Stamina	Roll	Use parry rules for a projectile attack.	
+HyperArmor	Stamina	Roll	Become immune to mobility impairment.	
+
+---Charm Powers---
+
+Overwrite	Charm	Cost	Trick a hostile Virus into helping you. The bigger the ask, the shorter it lasts.	
+ModelEdit	Charm	Cost	Look like a Virus or Navi you've met (appearance only).	
+
+Playback	Charm	Roll	Imitate someone else's voice.	
+Harmless	Charm	Roll	Avert hostile attention from yourself.	
+Hypnotize	Charm	Roll	Gradually lull a Close target to sleep.	
+
+Unshakeable	Charm	Cost	Ignore damage from the last attack received.	
+
+---Bravery Powers---
+
+Rally	Bravery	Cost	Add two dice to someone else's Soul roll.	
+Bodyguard	Bravery	Cost	The next time an ally of your choice is attacked, you are attacked instead.	
+
+Vengeance	Bravery	Roll	Use Bravery to attack a Close target that recently attacked an ally.
+Glare	Bravery	Roll	A Close target cannot move range bands until line of sight breaks.	
+Duel	Bravery	Roll	Convince an enemy to take you on one-on-one.	
+
+EvilTwin	Bravery	Roll	Copy a skill & Navi Power from the target. Expires when you get hit.	
+
+---Affinity Powers---
+
+Save	Affinity	Cost	If your element is present, heal someone for 3HP.	
+CodeInjection	Affinity	Cost	Your next attack covers the target with your element.	
+
+Shift	Affinity	Roll	Swap places with an abundance of your element in line of sight.	
+Control	Affinity	Roll	Attack with your element if it is present.	
+Alt	Affinity	Roll	Consume all of your element to create a minion with one purpose.	
+
+FlashBlind	Affinity	Cost	Flash bright lights, briefly blinding anyone Near.
+LoveBond	Affinity	Cost	Link to a Near ally with red string. Until the string breaks or you bond to another, you & the bonded ally will mirror healing, stat/skill buffs, and positive effects (e.g. invisibility).		
+SweetTreat	Affinity	Cost	Consume your element to heal a Close ally 2 HP.	
+Seasoning	Affinity	Cost	Downshift a Near ally's next roll to attack and infuses it with your element.	
+Transmute	Affinity	Cost	Swap the value of two skills in yourself or any  allied Near Virus.	
+Twin	Affinity	Cost	Make an illusory twin of an ally. When the twin acts in sync with the ally, they roll twice and take the better result. Expires when the ally takes damage.	
+PoisonMist	Affinity	Cost	Enemies within mist upshift their next defense roll.
+Minelayer	Affinity	Cost	Creates a mine that deals 5 damage on trigger.		
+
+StaticBlast	Affinity	Roll	Plays a melody that blinds Near Navis. Lasts about 5 seconds.	
+BeatBlast	Affinity	Roll	Plays a melody that freezes Navis in place.	
+Cacophony	Affinity	Roll	Plays a melody that upshifts Navi Sense rolls. Lasts ~5 seconds.	
+MirrorMove	Affinity	Roll	Copy the last Navi Power you saw. Hits rolled = number of times usable.	
+Brushup	Affinity	Roll	Create a dangerous hazard or damage-halving panel beneath itself.	
+Reinforce	Affinity	Roll	Add +1 to an ally's Stamina per hit. One ally at a time; expires on your deletion.	
+Ingredients	Affinity	Roll	Consume somebody else's Near element to produce your element.	
+Poser	Affinity	Roll	Strike a pose and downshift the next Soul roll for Near allies.	
+Fanfare	Affinity	Roll	A melody makes allies invincible for 10 seconds.	
+Abracadabra	Affinity	Roll	Disguises Viruses as similarly-proportioned mundane objects.	
+Harmonizer	Affinity	Roll	Plays a melody that heals all other Viruses up to Near range for 1 HP per hit.	
+DrawDistance	Affinity	Roll	Enemies can't see you or allies in mist unless they are Close.	
+
+---Passive Powers---
+
+Ricochet	Passsive	-	Can attack three Near targets in one roll.	
+Collateral	Passive	-	When you miss an attack, a structure nearby the target is destroyed.	
+Seeking	Passive	-	Every time the Virus misses an attack, it downshifts its next attack roll.	
+Headstrong	Passive	-	Downshifts defense rolls when not attacking.	
+Spreader	Passive	-	Projectiles cover things in the Virus's element on contact.	
+Germination	Passive	-	Can fire a seed which sprouts explosively after a delay.	
+Dazzler	Passive	-	Attacks that hit can deal -1 damage to briefly drop the target's Sense by 1.
+Zapper	Passive	-	Attacks paralyze for a moment on hit.	
+SuctionCups	Passive	-	Able to run up walls and ceilings without complication.	
+ShadowStrike	Passive	-	Projectiles are silent.	
+IceBlocker	Passive	-	Downshifts all defense rolls when on ice.	
+Seeker	Passive	-	Attacks swerve over and around obstacles to home in on opponents.	
+Frenzy	Passive	-	For each point of damage the Virus takes, add a point to Speed.	
+Infection	Passive	-	Attacks disrupt programming upshifting the target's next 2 rolls on hit.	
+BlindingFlash	Passive	-	Attacks blind, upshifting target's next Sense roll.	
+Spores	Passive	-	When attacks hit, target upshifts  next Mind roll; next 3 Mind rolls if they are on grass.	
+Toll	Passive	-	Can be paid 500z to be made intangible for several seconds.	
+Earthshaker	Passive	-	Stuns anyone it lands in Close rane of.	
+Moneybags	Passive	-	On Speed rolls with <2 hits, drop some Zenny. Drop all Zenny on deletion.	
+Scrambler	Passive	-	On hit, briefly disable a random Power or NCP.	
+Lurker	Passive	-	Invisible when not attacking.	
+Scary	Passive	-	On hit, upshifts the target's next Mind roll.	
+Ventrillo	Passive	-	You can make your voice come from anywhere in Near range.	
+Dullahan	Passive	-	Your head is freely detatchable.	
+Treehugger	Passive	-	When you roll while touching grass, heal 1 HP.	
+Guardbreaker	Passive	-	Upshift enemy rolls to defend with Stamina.	
+Orbiter	Passive	-	Attacks hit all targets in Close range.	
+Trailblazer	Passive	-	When you succeed a Speed roll, you leave your element behind you.	
+Headstrong	Passive	-	Downshifts defense rolls when not attacking.	
+LeapFrog	Passive	-	Roll Speed to attack someone Near; downshift if you just hit someone else with Leapfrog.	
+Lifesucker	Passive	-	Heals for damage it deals.	
+Blademaster	Passive	-	Downshifts all of your attacks when parrying.	
+Hardcore	Passive	-	Can use a cost Power right after being deleted.	
+Lurker	Passive	-	Invisible when not attacking.	
+Blocker	Passive	-	Upshifts frontal attacks.	
+Tandem	Passive	-	Can move one other Close Virus when it moves range bands.	
+Shy	Passive	-	You are rendered immobile whenefver a Near Navi looks at you.	
+Backup	Passive	-	When you attack with an ally, add your dice to an ally's attack.	
+Aftertaste	Passive	-	When this virus is deleted, it explodes into a cloud of eye-watering spices.	
+Networking	Passive	-	When you succeed a Speed roll, all Near allies get +2 dice to their next Speed roll.	
+Intergalactic	Passive	-	You can affect as many Near targets or objects as you like when you roll Affinity.	
+Chuckster	Passive	-	Cannot attack directly; attacks by launching objects at targets.	
+Waveform	Passive	-	Attacks hit all targets in Near range.	
+HeadsUp	Passive	-	Downshifts Stamina rolls if it is hiding under its helmet.	
+BreakAttack	Passive	-	Shockwave attacks shatter surfaces.	
+Burrower	Passive	-	Able to dig through any surface, leaving tunnels for anyone to use.	
+Meld	Passive	-	You can hide yourself in your element indefinitely.	
+Meltdown	Passive	-	You can add bonus dice to your roll for HP, 1 HP per die. Max 3 dice added per roll.	
+ProgPower	Passive	-	EggMecha deactivates if the Mr. Prog inside is removed.	
+Assimilation	Passive	-	Add +1 to a stat when you absorb a piece of Mystery Data. Drop data on deletion.
+Shakedown	Passive	-	When you hit a target, they drop 100z per point of damage.

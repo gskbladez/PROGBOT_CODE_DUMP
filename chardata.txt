@@ -1,0 +1,38 @@
+---Names---	
+
+1	Vi	Enthusiastic	Student	Their Hair	
+2	Alma	Dopey	Official	Their Face
+3	Bit	Skeptical	Teacher	Their Clothes	
+4	Byte	Daydreamy	Businessperson	Their Voice	
+5	Alice	Nervous	Stay-At-Home	Their Physical Mannerisms	
+6	Ada	Know-It-All	Artist	An Item They Have	
+7	Dos	
+8	Vim	
+9	Elly	
+10	Haskell	
+11	Chip	
+12	Penny	
+13	Nick	
+14	Lou	
+15	Anne	
+16	Joe	
+17	Tux	
+18	Linus	
+19	Bill	
+20	Dev	
+21	Winnie	
+22	Mac	
+23	Mi	
+24	Suzy	
+25	Rosa	
+26	Pepper	
+27	Sparky	
+28	Taz	
+29	Darwin	
+30	Olive	
+31	Deb	
+32	Archie	
+33	Bee	
+34	Arthur	
+35	Lisa	
+36	George	

@@ -1,0 +1,4 @@
+Overload	 1+ Bond Points	When an attack would delete you, consume all your remaining bond points. You are left with 1HP. Your next roll is easy, no matter what.	
+StandTogether	 2 Bond Points	Immediately jack in to an ally's location. This downshifts the difficulty of the Navi's first [NetOp Bravery + Navi Bravery] moves if they are protecting your ally.	
+Cross Soul	 3 Bond Points	Temporarily gain the energy of the Navi of a friend you have 2+ Bond level with. You get access to their element as well as your own, and you replace two of your skill scores with theirs. Ends after your Navi makes 5 rolls.	
+Full Synchro	 4 Bond Points	Add all of your NetOp's stats + skills to your Navi's. When your Navi takes damage, your NetOp takes half. Ends either after [NetOp Soul + Affinity + 3] actions, or when the NetOp hits 0 HP.	
