@@ -13429,3 +13429,6 @@
 2019-08-22 00:22:55	Merry Mancer Games	#netbattle-club	DonJentleman#0559	>r 5d6>5	
 2019-08-22 00:22:55	Merry Mancer Games	#netbattle-club	Mr. Prog#5635	<@!160965878005891072> _rolls..._ (6, ~~2~~, ~~1~~, ~~2~~, ~~4~~) = **__1 hits!__**	
 2019-08-22 00:41:34	Prog's Playhouse	#general	GSK Bladez#7356	>goodnight	
+2019-09-06 22:55:16	Merry Mancer Games	#netbattle-club	GSK Bladez#7356	>virus squeaker	
+2019-09-06 22:55:16	Merry Mancer Games	#netbattle-club	Mr. Prog#5635	:warning::warning:**SOMETHING BROKE**:warning::warning:	
+2019-09-06 22:55:16	Merry Mancer Games	#netbattle-club	GSK Bladez#7356	>virus squeaker	Unhandled error
