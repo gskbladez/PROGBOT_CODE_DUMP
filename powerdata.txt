@@ -168,3 +168,4 @@ Meltdown	Passive	-	You can add bonus dice to your roll for HP, 1 HP per die. Max
 ProgPower	Passive	-	EggMecha deactivates if the Mr. Prog inside is removed.	
 Assimilation	Passive	-	Add +1 to a stat when you absorb a piece of Mystery Data. Drop data on deletion.
 Shakedown	Passive	-	When you hit a target, they drop 100z per point of damage.
+Telltale	Passive	-	Always leave a trail of your element behind you.
