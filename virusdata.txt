@@ -2,8 +2,7 @@
 
 Basher	5	Explosions	1	1	1	4	-	-	-	-	3	-	-	-	LockOn, Splash	Magnum; SeekBomb	Immobile	A towering triple-barrelled turret manned by three tiny fires. Locks onto Navis and fires dangerous explosive rounds.	Artillery	
 Beetank	5	Bombs	1	2	1	2	-	-	-	-	1	-	-	-	Splash, Volley	BlackBomb	None	Beetanks are short and stout artillery units that scuttle about before lining up their arcing explosive shots. They don't need line of sight on a target to fire a barrage.	Artillery	
-Boomer	4	Boomerangs	2	2	1	2	-	-	-	-	2	-	-	-	Ricochet	Boomer	Inanimate; Hovering	Boomers fire the massive boomerang they carry in their jaws, which flies around the arena and back to their maw.	Artillery	https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/boomer.png
-Mettaur	2	Mining	1	2	1	-	-	-	1	-	-	3	-	-	Shockwave, Shatter	Guard		None	Small and stout, Mettaurs mine data and Zenny with their pickaxes and hide under their helmets at the first sign of danger.	Artillery	
+Boomer	4	Boomerangs	2	2	1	2	-	-	-	-	2	-	-	-	Ricochet	Boomer	Inanimate; Hovering	Boomers fire the massive boomerang they carry in their jaws, which flies around the arena and back to their maw.	Artillery	https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/boomer.png	
 Catack	4	Explosions	1	1	1	2	-	-	-	-	3	-	-	-	Splash, HyperArmor,Collateral	TankCannon	None	Catack Viruses ride around in tiny tanks, firing their devastating cannons at whatever gets in their sights.	Artillery	
 Canodumb	4	Targets	1	2	1	2	-	2	-	-	2	-	-	-	Seeking	Cannon; MarkCannon	Inanimate; Immobile	These mounted turrets track enemies with their holographic reticules. They can be mounted on ceilings, floors, and even walls.	Artillery	
 ColdHead	4	Ice	1	1	1	2	-	-	-	-	4	-	-	2	Headstrong, Spreader	IceBall; IceSeed	Inanimate; Immobile	ColdHeads are armored cannons that open their guard only to lob ice-spreading iceballs at their target.	Artillery	https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/coldhead.png	

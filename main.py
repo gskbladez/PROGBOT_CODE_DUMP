@@ -554,30 +554,24 @@ async def mysteryreward(context, *args, **kwargs):
     table = yadon.ReadTable("mysterydata")
     
     if args[0].lower() == "common":
-        firstroll = random.randint(1, 5)
+        firstroll = random.randint(1, 3)
         if firstroll in [1, 2]:
-            return await koduck.sendmessage(context["message"], sendcontent="You get: [2d6] * 100 Zenny")
-        elif firstroll in [3, 4]:
             secondroll = random.randint(1, 36)
-        elif firstroll == 5:
+        elif firstroll == 3:
             secondroll = random.randint(37, 72)
     
     elif args[0].lower() == "uncommon":
-        firstroll = random.randint(1, 5)
-        if firstroll in [1, 2]:
-            return await koduck.sendmessage(context["message"], sendcontent="You get: [2d6] * 250 Zenny")
-        elif firstroll in [3, 4]:
+        firstroll = random.randint(1, 3)
+        elif firstroll in [1, 2]:
             secondroll = random.randint(79, 114)
-        elif firstroll == 5:
+        elif firstroll == 3:
             secondroll = random.randint(115, 150)
     
     elif args[0].lower() == "rare":
-        firstroll = random.randint(1, 5)
-        if firstroll in [1, 2]:
-            return await koduck.sendmessage(context["message"], sendcontent="You get: [2d6] * 500 Zenny")
-        elif firstroll in [3, 4]:
+        firstroll = random.randint(1, 3)
+        elif firstroll in [1, 2]:
             secondroll = random.randint(157, 192)
-        elif firstroll == 5:
+        elif firstroll == 3:
             secondroll = random.randint(193, 228)
     
     else:
