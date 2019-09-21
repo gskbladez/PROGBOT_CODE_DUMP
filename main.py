@@ -562,14 +562,14 @@ async def mysteryreward(context, *args, **kwargs):
     
     elif args[0].lower() == "uncommon":
         firstroll = random.randint(1, 3)
-        elif firstroll in [1, 2]:
+        if firstroll in [1, 2]:
             secondroll = random.randint(79, 114)
         elif firstroll == 3:
             secondroll = random.randint(115, 150)
     
     elif args[0].lower() == "rare":
         firstroll = random.randint(1, 3)
-        elif firstroll in [1, 2]:
+        if firstroll in [1, 2]:
             secondroll = random.randint(157, 192)
         elif firstroll == 3:
             secondroll = random.randint(193, 228)
