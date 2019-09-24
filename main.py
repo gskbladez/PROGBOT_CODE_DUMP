@@ -345,7 +345,7 @@ async def chip(context, *args, **kwargss):
           color = 0xffffff
         else:
           color = 0xbfbfbf
-        embed = discord.Embed(title="__{}{}__".format("{}".format(name), " ({} Battle Chip)".format(values[5]) if values[5] != "-" else""), color=color)
+        embed = discord.Embed(title="__{}{}__".format("{}".format(name), " ({} Chip)".format(values[5]) if values[5] != "-" else""), color=color)
         embed.add_field(name="**[{}{}{}{}]**".format("{} Damage/".format(values[0]) if values[0] != "-" else "", "{}/".format(values[1]) if values[1] != "-" else "", values[3], "/{}".format(values[4]) if values[4] != "-" else ""), value="_{}_".format(values[2]))
         await koduck.sendmessage(context["message"], sendembed=embed)
 
