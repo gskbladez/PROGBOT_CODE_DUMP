@@ -311,6 +311,10 @@ Phoenix	3	Far	Hits all enemies with a blast of fire that heals you for their dam
 Recover10	-	-	Recover ten HP.	Support	-	MEGA	
 SuperVulcan	2x5	Close	A golden gun fires a barrage of bullets.	Shot	-	MEGA	
 
+---Dark Chips---
+
+DarkChipTest	NaN	NULL	"Description"	"Category"	"Tags"	Dark Chip
+
 ---ChitChat CrossOver Chips---
 
 CritterCrew	-	Close	Small animals come to help! They're small, cute, nonviolent, brave, and take simple orders.	Summon	-	ChitChat	

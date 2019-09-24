@@ -330,7 +330,7 @@ async def chip(context, *args, **kwargss):
         crossover = values[5]
         
         if "MEGA" in values[5]:
-          color = 0x00ffff
+          color = 0xA8E8E8
         elif "ChitChat" in values[5]:
           color = 0xff8000
         elif "Radical Spin" in values[5]:
@@ -339,6 +339,8 @@ async def chip(context, *args, **kwargss):
           color = 0x73ab50
         elif "Mystic Lilies" in values[5]:
           color = 0x99004c
+        elif "Dark Chip" in values[5]:
+          color = 0xB088D0
         elif "Item" in values[3]:
           color = 0xffffff
         else:
