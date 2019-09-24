@@ -339,7 +339,7 @@ async def chip(context, *args, **kwargss):
           color = 0x73ab50
         elif "Mystic Lilies" in values[5]:
           color = 0x99004c
-        elif "Dark Chip" in values[5]:
+        elif "Dark" in values[5]:
           color = 0xB088D0
         elif "Item" in values[3]:
           color = 0xffffff
