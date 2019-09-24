@@ -313,40 +313,40 @@ SuperVulcan	2x5	Close	A golden gun fires a barrage of bullets.	Shot	-	MEGA
 
 ---Dark Chips---
 
-DarkChipTest	NaN	NULL	"Description"	"Category"	"Tags"	-	Dark Chip
+DarkChipTest	NaN	NULL	"Description"	"Category"	"Tags"	Dark
 
 ---ChitChat CrossOver Chips---
 
-CritterCrew	-	Close	Small animals come to help! They're small, cute, nonviolent, brave, and take simple orders.	Summon	-	ChitChat	
-EleMentalist	-	Near	Write any element down, tell others its 1st letter. If a player guesses it 1st try, summon lots of it!	Summon	-	ChitChat	
-Jamout	X	Near	Rock out with your allies! X=# of players in the jam session (they don't need the chip).	Wave	Dangerous	ChitChat	
-Offdoff	2	Close	Knock an object off the target (their weapon, their disguise, a mind-control hat, etc).	Impact	-	ChitChat	
-PawClaw	2	Close	Claw swipe! Can also be used to downshift a Charm roll on someone who likes cute things.	Blade	-	ChitChat	
-Redecorator	-	Near	Every player names a simple piece of household furniture/decor that appears around you.	Summon	-	ChitChat	
+CritterCrew	-	Close	Small animals come to help! They're small, cute, nonviolent, brave, and take simple orders.	Summon	-	ChitChat Battle	
+EleMentalist	-	Near	Write any element down, tell others its 1st letter. If a player guesses it 1st try, summon lots of it!	Summon	-	ChitChat Battle		
+Jamout	X	Near	Rock out with your allies! X=# of players in the jam session (they don't need the chip).	Wave	Dangerous	ChitChat Battle		
+Offdoff	2	Close	Knock an object off the target (their weapon, their disguise, a mind-control hat, etc).	Impact	-	ChitChat Battle		
+PawClaw	2	Close	Claw swipe! Can also be used to downshift a Charm roll on someone who likes cute things.	Blade	-	ChitChat Battle		
+Redecorator	-	Near	Every player names a simple piece of household furniture/decor that appears around you.	Summon	-	ChitChat Battle		
 
 ---RadicalSpin CrossOver Chips---
 
-AestheticShuffle	-	-	Your look is now Edgy, Funky, Cute, Soft, or Elegant. Can spend 1 charm to refresh this chip.	Support	Awkward	Radical Spin	
-DashSpin	2	Near	Roll into a ball and bowl into the target! Speed rolls are downshifted until you stop spinning.	Rush	Awkward	Radical Spin	
-Faker	-	-	A knockoff version of you! It can use one of your Navi Powers once. (May gain sentience.)	Summon	-	Radical Spin	
-FlameShield	2	Near	Dash into Close in a fire bubble! Can instead be used to take -2 damage next time you're hit.	Rush	Dangerous	Radical Spin	
-KnuckleSpikes	2	Close	Can instead be used to climb a solid surface or rapidly burrow through soft ground.	Impact	-	Radical Spin	
-OpenYourHeart	-	-	Charge your power, add +1 die per HP missing to your next Soul roll. Collapse after the roll.	Support	Slow	Radical Spin	
-PerfectChaos	-	Near	Summon a massive storm! All downshift Bravery rolls and upshift defense rolls while within.	Hazard	Dangerous, Slow	Radical Spin	
-ThunderShield	-	-	Pick 1: Electrify your next attack; downshift your next ranged defense; reroll a Speed roll.	Support	-	Radical Spin	
-WaterShield	-	-	Pick 1: Block a non-electric/blade attack; downshift underwater Speed rolls until you are hit.	Support	-	Radical Spin	
+AestheticShuffle	-	-	Your look is now Edgy, Funky, Cute, Soft, or Elegant. Can spend 1 charm to refresh this chip.	Support	Awkward	Radical Spin Battle		
+DashSpin	2	Near	Roll into a ball and bowl into the target! Speed rolls are downshifted until you stop spinning.	Rush	Awkward	Radical Spin Battle		
+Faker	-	-	A knockoff version of you! It can use one of your Navi Powers once. (May gain sentience.)	Summon	-	Radical Spin Battle		
+FlameShield	2	Near	Dash into Close in a fire bubble! Can instead be used to take -2 damage next time you're hit.	Rush	Dangerous	Radical Spin Battle		
+KnuckleSpikes	2	Close	Can instead be used to climb a solid surface or rapidly burrow through soft ground.	Impact	-	Radical Spin Battle		
+OpenYourHeart	-	-	Charge your power, add +1 die per HP missing to your next Soul roll. Collapse after the roll.	Support	Slow	Radical Spin Battle		
+PerfectChaos	-	Near	Summon a massive storm! All downshift Bravery rolls and upshift defense rolls while within.	Hazard	Dangerous, Slow	Radical Spin Battle		
+ThunderShield	-	-	Pick 1: Electrify your next attack; downshift your next ranged defense; reroll a Speed roll.	Support	-	Radical Spin Battle		
+WaterShield	-	-	Pick 1: Block a non-electric/blade attack; downshift underwater Speed rolls until you are hit.	Support	-	Radical Spin Battle		
 
 ---UndergroundBroadcast CrossOver Chips---
 
-UBTest	NaN	NULL	"Description"	"Category"	"Tags"	Underground Broadcast	
+UBTest	NaN	NULL	"Description"	"Category"	"Tags"	Underground Broadcast Battle		
 
 ---Mystic Lilies CrossOver Chips---
 
-AceOfSpades	-	-	Next time you lose an opposed roll and at least one of your dice reads 1, change all 1s to 6s.	Support	Slow	Mystic Lilies	
-BadApple	-	Close	An apple that curses on bite! Pick 2 curses: go blind/speak all thoughts/panic/hallicunate/turn ugly.	Summon	Slow	Mystic Lilies	
-InstantKarma	3	Near	Ghost swords follow you. When someone tells a lie in range, the swords pierce their heart.	Summon	Slow	Mystic Lilies
-Moonlight	-	Near	Summons a moonbeam from the sky. You are invisible as long as you stay within it.	Hazard	-	Mystic Lilies	
-Possession	-	Near	Must be used immediately after a Navi/Virus is deleted. You can briefly control their body.	Support	-	Mystic Lilies	
-ThirdEye	-	Near	Gaze into the target's mind. You hear their thoughts until you roll, use a chip, or take damage.	Shot	Awkward
-WanderingSin	2	Near	The target is covered in text of your choice, which needs a Hard coding roll to erase.	Shot	Awkward	Mystic Lilies
+AceOfSpades	-	-	Next time you lose an opposed roll and at least one of your dice reads 1, change all 1s to 6s.	Support	Slow	Mystic Lilies Battle		
+BadApple	-	Close	An apple that curses on bite! Pick 2 curses: go blind/speak all thoughts/panic/hallicunate/turn ugly.	Summon	Slow	Mystic Lilies Battle		
+InstantKarma	3	Near	Ghost swords follow you. When someone tells a lie in range, the swords pierce their heart.	Summon	Slow	Mystic Lilies Battle	
+Moonlight	-	Near	Summons a moonbeam from the sky. You are invisible as long as you stay within it.	Hazard	-	Mystic Lilies Battle		
+Possession	-	Near	Must be used immediately after a Navi/Virus is deleted. You can briefly control their body.	Support	-	Mystic Lilies Battle		
+ThirdEye	-	Near	Gaze into the target's mind. You hear their thoughts until you roll, use a chip, or take damage.	Shot	Awkward	Mystic Lilies Battle	
+WanderingSin	2	Near	The target is covered in text of your choice, which needs a Hard coding roll to erase.	Shot	Awkward	Mystic Lilies Battle	
 
