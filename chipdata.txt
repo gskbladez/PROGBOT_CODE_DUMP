@@ -313,7 +313,7 @@ SuperVulcan	2x5	Close	A golden gun fires a barrage of bullets.	Shot	-	MEGA
 
 ---Dark Chips---
 
-DarkChipTest	NaN	NULL	"Description"	"Category"	"Tags"	Dark Chip
+DarkChipTest	NaN	NULL	"Description"	"Category"	"Tags"	-	Dark Chip
 
 ---ChitChat CrossOver Chips---
 
