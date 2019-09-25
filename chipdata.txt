@@ -314,6 +314,7 @@ SuperVulcan	2x5	Close	A golden gun fires a barrage of bullets.	Shot	-	MEGA
 ---Dark Chips---
 
 DarkChipTest	NaN	NULL	"Description"	"Category"	"Tags"	Dark
+DarkFlame	4	Near	If this hits a Navi, thier PET overheats. The NetOp takes 1 dmg when they roll holding the PET.	Wave	Dangerous	Dark	
 
 ---ChitChat CrossOver Chips---
 
