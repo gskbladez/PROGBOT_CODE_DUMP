@@ -14,14 +14,14 @@ Reconfig	Info	Cost	Switch out unused chips in your folder for ones in your pack.
 
 Analyze	Info	Roll	Learn one per hit: The target's skills, BattleChips, powers, and NCPs.	
 Foresight	Info	Roll	You can dodge an attack with Info if you've seen this enemy use it before.	
-Extend	Info	Roll	The next BattleChip's effects (e.g. stun, one upshifted roll) last twice as long.	
+Extend	Info	Roll	Next chip's effects (e.g. stun, upshift one roll) last twice as many seconds/rolls.	
 
 ---Coding Powers---
 
 MapEdit	Coding	Cost	Generate a Near simple structure that is either hard, large, or hidden.	
 HotSwap	Coding	Cost	Change your NaviCust setup without jacking out.	
 
-Disruption	Coding	Roll	Disable a Near target's Power for a few moments.
+Disruption	Coding	Roll	Pick a Navi Power; one target in Near range can’t use it for a few moments.
 Firewall	Coding	Roll	Put a temporary door over an entrance that known enemies cannot enter.	
 NoClip	Coding	Roll	Pass through a thin structure (walls, floors, pipes, etc).	
 
@@ -35,9 +35,9 @@ Touche	Coding	Roll	Knocks the alphabetically first BattleChip out of the target'
 ---Strength Powers---
 
 BreakCharge	Strength	Cost	Your next attack reduces the target's Body by 2. Does not stack.	
-Followthrough	Strength	Cost	Add another target in range to any melee attack or Strength move.	
+Followthrough	Strength	Cost	Your next rolled melee attack or Strength move hits any number of targets in range.	
 
-Gutsy	Strength	Roll	Launch a Close target one range band away from you.	
+Gutsy	Strength	Roll	Launch a Close target one range band away from you in any direction.	
 Shockwave	Strength	Roll	Make a ranged attack on a grounded Near target.	
 Shatter	Strength	Roll	Destroy a Close structure or piece of terrain.	
 
@@ -59,7 +59,7 @@ Regenerate	Stamina	Cost	The next 5 times you roll or use a Battle Chip, heal 1HP
 Clear	Stamina	Cost	Dispel negative effects and stat/skill reductions from enemy attacks.	
 
 KineticArmor	Stamina	Roll	Move a range band immediately after being hit.	
-Reflect	Stamina	Roll	Use parry rules for a projectile attack.	
+Reflect	Stamina	Roll	Use parry rules against a projectile attack, rolling Stamina.	
 HyperArmor	Stamina	Roll	Become immune to mobility impairment.	
 
 ---Charm Powers---
@@ -153,7 +153,7 @@ Hardcore	Passive	-	Can use a cost Power right after being deleted.
 Lurker	Passive	-	Invisible when not attacking.	
 Blocker	Passive	-	Upshifts frontal attacks.	
 Tandem	Passive	-	Can move one other Close Virus when it moves range bands.	
-Shy	Passive	-	You are rendered immobile whenefver a Near Navi looks at you.	
+Shy	Passive	-	You are rendered immobile whenever a Near Navi looks at you.	
 Backup	Passive	-	When you attack with an ally, add your dice to an ally's attack.	
 Aftertaste	Passive	-	When this virus is deleted, it explodes into a cloud of eye-watering spices.	
 Networking	Passive	-	When you succeed a Speed roll, all Near allies get +2 dice to their next Speed roll.	

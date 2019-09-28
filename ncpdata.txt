@@ -27,12 +27,12 @@ Influencer	1	Overwrite	Overwrite also works on generic/unnamed digital NPCs. [Of
 Inspire	1	Rally	Rally can instead let an ally reroll two dice on a Soul roll.	-	
 Launcher	1	Gutsy	Using Gutsy on allies is always Easy, even when tossing them with precision.	-	
 Mascot	1	Harmless	You can also avert hostile attention from X Close allies. X=Hits-1.	-	
-MegaFlex	1	-	On a Body move critical roll, downshift your 1st Charm roll on anyone who saw it.	-	
+MegaFlex	1	-	On a critical Body roll, downshift your 1st Charm roll on anyone who saw it.	-	
 Megaphone	1	-	Your Navi's voice projects; they can be clearly understood at Far range.	-	
 Meld	1	Shift	You can hide in a Close abundance of your element indefinitely.	-	
 NowRecording	1	-	Your Navi records everything they see and hear. It's visually obvious when recording.	-	
 Pathfind	1	Sneakrun	Sneakrun can affect others too as long as they stay Close to you.	-	
-ProgBody	1	-	Your NetNavi can appear like a Mr.Prog! (Hat of your choice optional).	-	
+ProgBody	1	-	Your Navi can appear like a Mr. Prog! (Hat of your choice optional).	-	
 ProgRadar	1	-	Beeps depending on proximity to nearest Mr. Prog.	-	
 Projector	1	Tracker	A hologram shows the target's exact movements and actions along the trail.	-	
 RAMWipe	1	Clear	Can instead modify your next attack to remove temporary buffs on hit.	-	
@@ -103,7 +103,7 @@ RemoteDet	2	Splash	Choose when shots detonate. 2 primed shots at once. Roll dmg 
 RocketFist	2	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot parry at range.	-	
 Rupture	2	Disruption	If used Close, can also deal damage. On hit, reduce damage by 1.	-	
 SearchOptimized	2	-	Pick a descriptor - NPCs will associate you with that word unless they know better.	-	
-SetElement	2	-	On jack in, your element appears around you; if you use it immediately, downshift.	-	
+SetElement	2	-	On jack-in, your element appears around you; if you use it immediately, downshift.	-	
 Specialist	2	Rally	On jack-in, pick any Skill. Rally can add 3 dice to an ally roll with that skill instead.	-	
 Strikeback	2	Reflect	You can Reflect projectiles with a melee attack instead, Battle Chips included.	-	
 SuperArmor	2	-	If in the middle of an attack, ignore stun/interrupting effects until your attack ends.	-	
@@ -120,9 +120,9 @@ ZealOverdrive	2	KineticArmor	On success, you can downshift your next attack and 
 ---3EB NCPs--- 
 
 AltTab	3	Alt	You can make any roll via your minion instead, including Navi Powers.	-	
-AttackUp	3	-	When attacking successfully, deal 1 more damage.	-	
+AttackUp	3	-	When attacking successfully with a roll, deal +1 damage.	-	
 ControlX	3	Control	Control is now melee only. Can use the element of the last enemy you deleted.	-	
-Custom+2	3	-	+2 maximum Chips in your folder.	-	
+Custom+3	3	-	+3 maximum Chips in your folder.	-	
 DualPipeline	3	-	Can use two Shot BattleChips at the same time. Counts as two seperate attacks.	-	
 EnergyChange	3	-	Sacrifice an unused Chip to instantly spawn a lot of your element around you.	-	
 ExecutionUnit	3	-	When you delete a Virus or Navi, heal 3 HP.	-	
@@ -141,24 +141,24 @@ RedundantArray	3	-	You can have two copies of the same chip in your folder.	-
 Reroute	3	HotSwap	You can reduce your MaxHP for +EB, 1HP for 1EB. Can be undone.	-	
 Retry	3	Refresh	If a target completly resists a Chip, it is not exhausted. Once per BattleChip.	-	
 Scrambler	3	Disruption	Can instead scramble the target's data to briefly disable one of their skills.	-	
-SoulUnion	3	-	When using Cross Soul, you also get access to one of the other Navi's Powers.	-	
+SoulUnion	3	-	When using CrossSoul, you can also use the other Navi’s Navi Powers.	-	
 Sprite	3	-	The Navi can turn two-dimensional. Your attacks are upshifted when flattened.	-	
 Tamer	3	Overwrite	If a Virus is near deletion, you can permanently tame them (1 virus at a time).	-	
 UnderShirt	3	-	A lethal hit leaves you at 1 HP if you have over 1 HP.	-	
 VolatileMemory	3	-	For Cost powers, you can reduce the stat instead of the skill. Stats can't go below 1.	-	
-ZeroWaitState	3	-	Jack-in rolls are always Easy, no matter what.	-	
+ZeroWaitState	3	-	When you fail a roll to jack in or jack out, change it to a partial success.	-	
 
 ---4+ EB NCPs--- 
 
 AddOn	4	-	When you deal 2+ damage to a Navi or a Virus, your element appears around them.	-	
-ChameleoCloak	4	-	If you hold still for half a minute, you turn invisible to vision (until you move).	-	
+ChameleoCloak	4	-	If you hold still for ten seconds, you turn invisible until you move.	-	
 KernelPanic	4	-	When you're at or below 2 HP, add four dice to all attacks.	-	
 Meltdown	4	-	Can add bonus dice to your roll for HP, 1 HP per die. Max 3 dice added per roll.	-	
 MimicStrike	4	-	When a Near Virus is deleted, get their Passives. Lasts until jack out. One at a time.	-	
 Proxy	4	-	Support chips that affect your Navi can affect another Navi instead.	-	
 LastStand	5	-	When using Overload, all dice on your next roll are hits. Go to 0HP	-	
-Custom+5	5	-	+5 maximum BattleChips in your folder.	-	
-Mega+1	7	-	+1 maximum MegaChips in your folder.	-	
+Mega+1	5	-	+1 maximum MegaChips in your folder.	-	
+SignatureMove	7	-	Work with the GM to design a NaviChip based off your Navi. Only you can use it.	-	
 
 ---Skill and Stat NCPs---
 
