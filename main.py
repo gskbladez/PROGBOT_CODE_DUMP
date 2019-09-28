@@ -639,6 +639,7 @@ async def daemon(context, *args, **kwargs):
     Description = "{}{}{}{}".format(Domain, Tribute, ChaosUnison, SignatureChip)
 
     embed = discord.Embed(title="**__{}__**".format("{}".format(name)), color=0x000000)
+    embed.set_thumbnail(url=values[5])
     embed.add_field(name=Name, value=Description)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
