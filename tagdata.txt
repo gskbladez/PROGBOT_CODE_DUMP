@@ -2,7 +2,7 @@ Accurate	Accu.	Defending against this with Speed is upshifted.
 Awkward	Awkd.	Using this chip while doing something else at the same time will be difficult or impossible.	
 Dangerous	Dngr.	This chip can damage things around its target, including allies and the environment.	
 Piercing	Prcn.	Defending against this with Stamina is upshifted.	
-Simple	Simp. The chip’s effects happen instantly, and can be used while performing other actions.	
+Simple	Simp.	The chip’s effects happen instantly, and can be used while performing other actions.	
 Slow	-	This chip takes a while to hit the opponent, making it difficult to catch someone off-guard.	
 
 Blade	-	These turn a part of the Navi into a sword! They hit hard, and some even have extra non-combat utility! Navis can **parry** with these chips.	
