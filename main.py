@@ -610,7 +610,7 @@ async def bond(context, *args, **kwargs):
     try:
         name = case_insensitive[args[0].lower()]
     except KeyError:
-        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that Bond Power")
+        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that Bond Power!")
     values = table[name]
     
     bondpoints = values[0]
@@ -618,6 +618,28 @@ async def bond(context, *args, **kwargs):
     
     embed = discord.Embed(title="__{}__".format(name), color=0x24ff00)
     embed.add_field(name="**({})**".format(values[0]), value= "_{}_".format(values[1]))
+    return await koduck.sendmessage(context["message"], sendembed=embed)
+
+async def daemon(context, *args, **kwargs):
+    if len(args) < 1:
+        return await koduck.sendmessage(context["message"], sendcontent="Lists the complete information of a Daemon for DarkChip rules.")
+    table = yadon.ReadTable("daemondata")
+    case_insensitive =  {key.lower():key for key in table.keys()}
+    try:
+        name = case_insensitive[args[0].lower()]
+    except KeyError:
+        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that Daemon!")
+    values = table[name]
+    
+    Name = "_''{}''_".format(values[0])
+    Domain = "**__Domain:__** _{}_".format(values[1])
+    Tribute = "\n\n**__Tribute:__** _{}_".format(values[2])
+    ChaosUnison = "\n\n**__ChaosUnison:__** _{}_".format(values[3])
+    SignatureChip = "\n\n**__Signature DarkChip:__** _{}_".format(values[4])
+    Description = "{}{}{}{}".format(Domain, Tribute, ChaosUnison, SignatureChip)
+
+    embed = discord.Embed(title="**__{}__**".format("{}".format(name)), color=0x000000)
+    embed.add_field(name=Name, value=Description)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def element(context, *args, **kwargs):

@@ -26,3 +26,4 @@ mysterydata	mysterydata	prefix	1
 rulebook	rulebook	prefix	1
 element	element	prefix	3
 mysteryreward	mysteryreward	prefix	1
+daemon	daemon	prefix	1

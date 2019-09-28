@@ -323,7 +323,7 @@ BitterTalon	3	Near	If you failed a Charm or Bravery roll on the target in the pa
 DarkBomb	2	Near	Claw bomb! On hit, digs in. Explodes for 6 dmg after they roll 3 times. Hard Strength to rip out.	Thrown	Dangerous	Dark
 DarkBrand	2	Close	Mark a target. Pick an event. If they mention it, the mark explodes for 10 dmg. Ignores barriers.	Impact	Dangerous, Slow	Dark	
 DarkBrush	4	Near	Spread mystic ink! On hit, learn 1: their greatest fear, their greatest love, their darkest secret.	Thrown	-	Dark	
-DarkCannon	5	Near	Fires a devastating shot that pierces anything in its path. Bypasses all barriers. Never stops.	Shot	Piercing, Dangerous	Dark	
+DarkCannon	5	Near	Fires a devastating shot that pierces anything in its path. Bypasses all barriers. Never stops.	Shot	Dangerous, Piercing	Dark	
 DarkCircle	2+X	Near	Dark artillery fires from your body. Hits as many targets in range as you want. X = # of targets.	Shot	Accurate, Awkward	Dark	
 DarkDrill	4	Close	Rip them apart. Damage lowers the target's Max HP. Lasts a long time, even after jack-out.	Impact	Piercing	Dark	
 DarkFlame	4	Near	If this hits a Navi, thier PET overheats. The NetOp takes 1 dmg when they roll holding the PET.	Wave	Dangerous	Dark		
@@ -333,7 +333,7 @@ DarkInvisible	-	-	For the next 2x[Daemon Bond] rolls, you become an invisible, i
 DarkKnuckle	4	Close	On hit, steal the target's element. Add [Daemon Bond]x2 to Affinity when summoning elements.	Impact	Awkward	Dark	
 DarkLance	5	Near	Warp Close behind the target and stab their weakest point. Can choose to teleport back or not.	Rush	Awkward	Dark	
 DarkLantern	5	Close	A magic lantern. Enemies roll Bravery to not walk towards it. Explodes on your command.	Summon	Dangerous	Dark	
-DarkMeteor	10	Far	A colossal meteor appears far away. After 10 rolls, it falls. Sends destructive shockwaves out.	Summon	Piercing, Dangerous, Slow	Dark	
+DarkMeteor	10	Far	A colossal meteor appears far away. After 10 rolls, it falls. Sends destructive shockwaves out.	Summon	Dangerous, Piercing, Slow	Dark	
 DarkMist	-	Far	Black mist isolates the server. No jacking in/out, PET msgs, etc. All seems normal on the outside.	Hazard	Awkward	Dark	
 DarkPick	3	Close	A black icepick. On hit, if Virus, take control of them. If Navi, gain total control over their PET.	Blade	Slow	Dark	
 DarkPlus	-	-	On next roll, add 2x[Daemon Bond] dice. If your Daemon Bond is your highest Bond, 3x instead.	Support	Simple	Dark	
