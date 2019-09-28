@@ -1,22 +1,22 @@
-Accurate [Accu]	Defending against this with Speed is upshifted.	
-Awkward [Awkd]	Using this chip while doing something else at the same time will be difficult or impossible.	
-Dangerous [Dngr]	This chip can damage things around its target, including allies and the environment.	
-Piercing [Prcn]	Defending against this with Stamina is upshifted.	
-Simple [Simp] The chip’s effects happen instantly, and can be used while performing other actions.	
-Slow	This chip takes a while to hit the opponent, making it difficult to catch someone off-guard.	
+Accurate	Accu.	Defending against this with Speed is upshifted.	
+Awkward	Awkd.	Using this chip while doing something else at the same time will be difficult or impossible.	
+Dangerous	Dngr.	This chip can damage things around its target, including allies and the environment.	
+Piercing	Prcn.	Defending against this with Stamina is upshifted.	
+Simple	Simp. The chip’s effects happen instantly, and can be used while performing other actions.	
+Slow	-	This chip takes a while to hit the opponent, making it difficult to catch someone off-guard.	
 
-Blade	These turn a part of the Navi into a sword! They hit hard, and some even have extra non-combat utility! Navis can **parry** with these chips.	
-Hazard	These chips alter the environment, either by creating new obstacles, or destroying what's already there.	
-Impact	These are melee-focused chips that do less damage, but often have a wide range of effects! Navis can **parry** with these chips.	
-Rush	These chips tend to move your Navi, typically into Close range of your target! Downshift defense rolls if used below listed range.	
-Shot	These chips are powerful projectiles! They can be fired beyond the listed range, but the defense roll is downshifted.	
-Summon	These create something to assist the Navi, whether it be a tool, a specialized Virus, or even cover!	
-Support	These chips boost the Navi's abilities, and create debilitating effects!	
-Thrown	These chips are similar to Shot chips, these are more difficult to use but carry powerful effects!	
-Wave	These chips create explosive and/or wide attacks. All **Close** to the target get hit too, potentially including the user.	
+Blade	-	These turn a part of the Navi into a sword! They hit hard, and some even have extra non-combat utility! Navis can **parry** with these chips.	
+Hazard	-	These chips alter the environment, either by creating new obstacles, or destroying what's already there.	
+Impact	-	These are melee-focused chips that do less damage, but often have a wide range of effects! Navis can **parry** with these chips.	
+Rush	-	These chips tend to move your Navi, typically into Close range of your target! Downshift defense rolls if used below listed range.	
+Shot	-	These chips are powerful projectiles! They can be fired beyond the listed range, but the defense roll is downshifted.	
+Summon	-	These create something to assist the Navi, whether it be a tool, a specialized Virus, or even cover!	
+Support	-	These chips boost the Navi's abilities, and create debilitating effects!	
+Thrown	-	These chips are similar to Shot chips, these are more difficult to use but carry powerful effects!	
+Wave	-	These chips create explosive and/or wide attacks. All **Close** to the target get hit too, potentially including the user.	
 
-Artillery	These Viruses deal high amounts of damage at range, typically using Sense or Affinity.	
-Disruption	These Viruses hinder Navis to make them vulnerable to other attackers.	
-Striker	These Viruses are durable and melee-focused, needing to get up close to be a threat.	
-Support	These Viruses aid other enemies, protecting them and boosting their abilities.	
-Wrecker	These Viruses introduce environmental obstacles and threats.	
+Artillery	-	These Viruses deal high amounts of damage at range, typically using Sense or Affinity.	
+Disruption	-	These Viruses hinder Navis to make them vulnerable to other attackers.	
+Striker	-	These Viruses are durable and melee-focused, needing to get up close to be a threat.	
+Support	-	These Viruses aid other enemies, protecting them and boosting their abilities.	
+Wrecker	-	These Viruses introduce environmental obstacles and threats.	

@@ -303,8 +303,10 @@ async def tag(context, *args, **kwargs):
         name = case_insensitive[args[0].lower()]
     except KeyError:
         return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that Battle Chip tag!")
+    values = table[name]
     
-    embed = discord.Embed(title="__{}__".format(name), description="_{}_".format(table[name][0]), color=0x24ff00)
+    
+    embed = discord.Embed(title="__{}{}__".format("{}".format(name), " ({})".format(table[name][0]) if values[0] != "-" else""), description=(table[name][1]), color=0x24ff00)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def chip(context, *args, **kwargss):
@@ -329,7 +331,7 @@ async def chip(context, *args, **kwargss):
         tags = values[4]
         crossover = values[5]
         
-        if "MEGA" in values[5]:
+        if "Mega" in values[5]:
           color = 0xA8E8E8
         elif "ChitChat" in values[5]:
           color = 0xff8000

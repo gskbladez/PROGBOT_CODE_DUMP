@@ -306,7 +306,7 @@ Avatar	-	-	Your next 3 rolls spawn your element Close and get +3 dice. Downshift
 BlackHoleBomb	3	Near	Everything Near the target is sucked Close to it. Moments later, it blasts for 4 Piercing damage!	Thrown	Accurate, Dangerous	Mega	
 CornFiesta	4	Close	Corn everywhere! Gain the element Corn for 5 rolls. Then all corn bursts! 2 damage to any Close.	Wave	-	Mega	
 DeltaRayEdge	3xX	Near	Rush together & combo strike with allies! (X=# of people rushing together; max 3)	Rush	Awkward	Mega	
-ElementalSonicWave	2xX	Magic sword! X=1+Near Bonded allies. Target is hit with your + Near Bonded allies' elements.	Blade	Awkward	Mega	
+ElementalSonicWave	2xX	Near	Magic sword! X=1+Near Bonded allies. Target is hit with your + Near Bonded allies' elements.	Blade	Awkward	Mega	
 ElementSurge	X	Near	Your element devastates all Near enemies! X=2x[Navi Affinity]. You also take X damage.	Wave	-	Mega	
 GateMagic	-	-	Pick 3 Hazard/Summon chips in your or any allied Folder, even if spent. Use them now.	Summon	Simple	Mega	
 MeteorKnuckle	6	Close	A colossal fist falls from the sky onto the target, sending out massive earth-shattering fissures.	Impact	Dangerous, Slow	Mega	
@@ -322,13 +322,13 @@ BeastOver	2+X	Near	Shred the target at Close. X=[Daemon Bond]; can increase your
 BitterTalon	3	Near	If you failed a Charm or Bravery roll on the target in the past, deal double damage.	Blade	-	Dark	
 DarkBomb	2	Near	Claw bomb! On hit, digs in. Explodes for 6 dmg after they roll 3 times. Hard Strength to rip out.	Thrown	Dangerous	Dark
 DarkBrand	2	Close	Mark a target. Pick an event. If they mention it, the mark explodes for 10 dmg. Ignores barriers.	Impact	Dangerous, Slow	Dark	
-DarkBrush	4	Near	Spread mystic ink! On hit, learn 1: their greatest fear, their greatest love, their darkest secret.	Thrown		Dark	
+DarkBrush	4	Near	Spread mystic ink! On hit, learn 1: their greatest fear, their greatest love, their darkest secret.	Thrown	-	Dark	
 DarkCannon	5	Near	Fires a devastating shot that pierces anything in its path. Bypasses all barriers. Never stops.	Shot	Piercing, Dangerous	Dark	
 DarkCircle	2+X	Near	Dark artillery fires from your body. Hits as many targets in range as you want. X = # of targets.	Shot	Accurate, Awkward	Dark	
 DarkDrill	4	Close	Rip them apart. Damage lowers the target's Max HP. Lasts a long time, even after jack-out.	Impact	Piercing	Dark	
-DarkFlame	4	Near	If this hits a Navi, thier PET overheats. The NetOp takes 1 dmg when they roll holding the PET.	Wave	Dangerous	Dark		Dark	
-DarkHeart	-	-	Until jack-out, add [Daemon Bond]x2 to Charm social rolls. Any you charm get a Daemon Bond.	Support		Dark	
-DarkInsert	-	Near	Spawn all Near allies' elements. They can't control their element anymore, but you can.	Summon		Dark	
+DarkFlame	4	Near	If this hits a Navi, thier PET overheats. The NetOp takes 1 dmg when they roll holding the PET.	Wave	Dangerous	Dark		
+DarkHeart	-	-	Until jack-out, add [Daemon Bond]x2 to Charm social rolls. Any you charm get a Daemon Bond.	Support	-	Dark	
+DarkInsert	-	Near	Spawn all Near allies' elements. They can't control their element anymore, but you can.	Summon	-	Dark	
 DarkInvisible	-	-	For the next 2x[Daemon Bond] rolls, you become an invisible, invincible specter. 	Support	Simple	Dark	
 DarkKnuckle	4	Close	On hit, steal the target's element. Add [Daemon Bond]x2 to Affinity when summoning elements.	Impact	Awkward	Dark	
 DarkLance	5	Near	Warp Close behind the target and stab their weakest point. Can choose to teleport back or not.	Rush	Awkward	Dark	
@@ -338,7 +338,7 @@ DarkMist	-	Far	Black mist isolates the server. No jacking in/out, PET msgs, etc.
 DarkPick	3	Close	A black icepick. On hit, if Virus, take control of them. If Navi, gain total control over their PET.	Blade	Slow	Dark	
 DarkPlus	-	-	On next roll, add 2x[Daemon Bond] dice. If your Daemon Bond is your highest Bond, 3x instead.	Support	Simple	Dark	
 DarkRecall	-	Close	Spawn the last Virus you deleted - you control it. Add [Daemon Bond] to its stats. Its HP is full.	Summon	Slow	Dark	
-DarkRecover	-	Near	Choose X bonded allies in range. They all take -2 HP, and you heal 4 HP per ally hurt.	Support	Dark	
+DarkRecover	-	Near	Choose X bonded allies in range. They all take -2 HP, and you heal 4 HP per ally hurt.	Support	-	Dark	
 DarkSnake	6	Close	Viper fangs bite your target! Your Daemon takes control of the target's voice.	Impact	Awkward, Slow	Dark	
 DarkSound	-	Near	Disembodied mouths emits deafening static for a minute. Paralyzes others & jams PET connection.	Summon	Awkward, Slow	Dark	
 DarkSpread	5	Close	When the target is deleted, they burst into huge tendrils that thrash at anything Close (except you).	Impact	Dangerous	Dark	
@@ -349,7 +349,7 @@ DarkThunder	3x3	Near	Channel stunning bolts! Spend [Daemon Bond] Stamina or you 
 DarkTornado	4	Close	Fly in a tornado! All hit tumble upwards. It persists, tearing up everything in its path.	Wave	Awkward, Dangerous	Dark	
 DarkVulcan	3x3	Near	A cursed minigun. Roll Hard Bravery to resist your Daemon choosing the target instead.	Shot	Accurate	Dark	
 DarkWide	4	Near	A razor shockwave flies out in all directions, slicing all Near targets. Objects are bisected.	Wave	Accurate, Dangerous	Dark	
-DarkWorm	4+X	Near	Burrow and devour. X=[Daemon Bond]. On hit, attack another target until you have hit X targets.	Rush		Dark	
+DarkWorm	4+X	Near	Burrow and devour. X=[Daemon Bond]. On hit, attack another target until you have hit X targets.	Rush	-	Dark	
 FlashMemory	-	Far	Rewind the memory of any number of targets in range up to 10 minutes. They won't feel a thing.	Support	-	Dark
 GraveBreath	-	Far	Sinister breath bathes the server. Others suffer your bugs and lose 1 HP each time they roll.	Hazard	Slow	Dark	
 JusticeFist	4	Close	Strike with Duo's fury! Deals double damage if the target is unable or unwilling to fight back.	Impact	Dangerous	Dark	
