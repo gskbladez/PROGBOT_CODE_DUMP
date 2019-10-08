@@ -393,6 +393,6 @@ WanderingSin	2	Near	The target is covered in text of your choice, which needs a 
 
 ---EASTER EGGS---
 
-You found an Easter Egg! #3 out of 10! (g)
+CackelDackel	-	Close	Throw down a mysterious paste! All who step in it slip and fall!	Summon	You found an Easter Egg! #3 out of 10! (g)	-	
 You found an Easter Egg! #4 out of 10! (J)
 You found an Easter Egg! #5 out of 10! (E)
