@@ -608,7 +608,7 @@ Proxy	4EB
 
 ---5EB NCPs---		
 
-Body+1	5EB
+Body+1	5EB	
 LastStand	5EB	
 Mega+1	5EB	
 Mind+1	5EB	
