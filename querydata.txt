@@ -315,7 +315,7 @@ NaviRecycle	NaviChip	[Mega]
 SuperVulcan	Shot	[Mega]	
 UnityBoost	Shot	[Mega]	
 
----Dark Chips---
+---Dark Chips---		
 
 AlphaClaw	Blade	[Dark]	
 ApexPredator	Impact	[Dark]	
