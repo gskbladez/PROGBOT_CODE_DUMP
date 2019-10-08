@@ -2,6 +2,20 @@
 
 BlankChip	-	-	A Blank Chip. Use it to download data from deleted Viruses! Players are assumed to have an infinite amount of these on them at all times (GM Dependant).	Item	-	-
 
+---Starter Chips---
+AirShot	1	Near	Pushes the target back one range band on hit.	Shot	-	-	
+Attack+1	-	-	Add one hit to your next non-BattleChip attack.	Support	Simple	-	
+Barrier	-	-	Negates the next time you're attacked.	Support	Slow	-	
+Bubbler	2	Near	Creates a cloud of soaking bubbles around the target.	Shot	-	-	
+Cannon	2	Near	Transforms a part of the Navi into a high-velocity cannon.	Shot	Accurate	-	
+DashAttack	3	Near	Moves you into Close range of your target.	Rush	-	-	
+HeatShot	2	Near	Creates an explosion of flame around the target.	Shot	-	-	
+Plasma	2	Close	Two orbs of electricity orbit the Navi, striking every available target.	Impact	-	-	
+Repair	-	Near	Fix a broken structure.	Support	-	-	
+RockCube	-	Close	Summons a large cube of stone in front of the Navi.	Summon	-	-	
+Sword	2	Close	Transforms a part of the Navi into a glowing, razor-sharp blade.	Blade	Piercing	-	
+ZapRing	1	Near	Stuns the target for one second.	Shot	-	-	
+
 ---Blade Chips---
 
 AirSword	2	Close	A galeforce sword! Pushes the target back a range band.	Blade	Accurate	-	
@@ -28,7 +42,6 @@ RecoilRod	2	Close	Bladed tonfas! Spend 1 Speed to also push the target or yourse
 SlashClaw	2	Close	Attack with speedy claws. Your target rolls defense twice and uses the worse result.	Blade	-	-	
 Slasher	5	Close	If you stand still and don't move, parry the next melee attack. Unusable outside a parry.	Blade	Slow	-	
 StyleSword	2	Close	A super-stylish sword. Can instead be used to make 3 Charm rolls using your Speed instead.	Blade	Awkward	-	
-Sword	2	Close	Transforms a part of the Navi into a glowing, razor-sharp blade.	Blade	Piercing	-	
 TripleRod	3	Close	Extending lance! Spend 1 Speed to do a spin attack, hitting all Close & adding the Accurate tag.	Blade	Awkward	-	
 TurboSlice	2	Close	Spend 1 Speed to deal +2 damage.	Blade	-	-	
 VarSword	2	Close	Spend 1 Info to pick 2: is Accurate; is Piercing; upshifts parries; range is Near; hits twice.	Blade	-	-	
@@ -86,7 +99,6 @@ MagCoil	-	Near	Brings an enemy into Close range and stuns them.	Impact	Awkward, 
 Nullifier	2	Close	Target is temporarily unable to use their element.	Impact	-	-	
 PercussiveFix	2	Close	Slam with a toolkit! Can also be used to fix a broken virtual computer or piece of machinery.	Impact	Slow	-	
 PhantomGrasp	-	Close	Pick 2 on hit: Target rolls Bravery to not panic; Target Mind briefly -1; You are briefly invisible.	Impact	Slow	-	
-Plasma	2	Close	Two orbs of electricity orbit the Navi, striking every available target.	Impact	-	-	
 PowerCycle	1	Close	Reboots Viruses, momentarily disabling them and wiping their short-term memory.	Impact	Piercing	-	
 PressurePoint	2	Close	Spend 1 Info to pick 2: is Piercing; hits twice; stuns on hit; upshifts target's next Body roll.	Impact	-	-	
 RiseNShine	1	Close	Target wakes up and downshifts their next Mind roll, even if damage is resisted	Impact	-	-	
@@ -105,7 +117,6 @@ Arrow	4	Near	Dash forward, skewering everything in your way until you hit a wall
 BlizzardBall	1+X	Near	Roll into a giant snowball and bowl the target over! X=number of allies with you in the ball.	Rush	Awkward, Dangerous	-	
 Condor	2	Near	Dash into Close range. Can be used from Far range for double damage.	Rush	-	-	
 CurseShield	-	Near	Take half dmg next time you defend against a ranged attack, then zoom Close to the attacker.	Rush	Simple	-	
-DashAttack	3	Near	Moves you into Close range of your target.	Rush	-	-	
 FootStomp	2	Near	Jump onto and crush an enemy. Spend 1 Speed to add another target in range of the enemy.	Rush	-	-	
 GoingRoad	-	Near	Lead the way on a glowing path! The user and all Close allies move a range band together.	Rush	-	-	
 IronShell	2	Near	Roll into Close range and collide. Your next defense roll is downshifted.	Rush	Awkward	-	
@@ -133,11 +144,8 @@ YokuTrail	-	Near	Dash a range band through the air, leaving a trail of platforms
 
 ---Shot Battlechips---
 
-AirShot	1	Near	Pushes the target back one range band on hit.	Shot	-	-	
 AtomicFire	2+X	Near	Overheat your attack! Sacrifice up to 3HP to add that much damage.	Shot	Dangerous	-	
 Boomer	2	Near	Targets up to three enemies within Near range to each other. Leaves a trail of vines in its wake.	Shot	-	-	
-Bubbler	2	Near	Creates a cloud of soaking bubbles around the target.	Shot	-	-	
-Cannon	2	Near	Transforms a part of the Navi into a high-velocity cannon.	Shot	Accurate	-	
 Catapult	-	Near	Slot in a Thrown BattleChip; this will give it properties of a Shot chip and +1 damage.	Shot, Simple	-	-	
 ConcreteShot	2	Near	Creates a large rock cube at range if it misses	Shot	Awkward	-	
 CornShot	3	Near	Fires a high-impact cob of corn. On hit, briefly changes the target's element to Corn.	Shot	Awkward	-	
@@ -149,7 +157,6 @@ Drain	2	Near	Fires needles that heal for damage done	Shot	-	-
 DrillBomb	2	Near	Fire an exploding drill. On miss, blows up a part of the environment.	Piercing, Shot	-	-	
 GeminiLaser	3	Near	A bouncing laser. If the target successfully defends with Speed, the beam attacks one more target.	Shot	Slow	-	
 Grappler	1	Near	Drags the target into Close range on hit	Shot	-	-	
-HeatShot	2	Near	Creates an explosion of flame around the target.	Shot	-	-	
 Highlighter	1	Near	On hit, downshift the next two attacks against the target.	Shot	-	-	
 HomingTorpedo	1	Far	Defending against this attack is always Hard.	Shot	-	-	
 IceSlasher	2	Near	Enemies deleted by this turn into frozen blocks shortly afterwards.	Shot	-	-	
@@ -162,7 +169,6 @@ TankCannon	3	Near	On miss, creates a shattering explosion.	Shot	Dangerous,Pierci
 Thunder	1	Near	A sluggish thunderball that upshifts the target's next action.	Shot	Accurate, Slow	-	
 VarGun	2	Near	Spend 1 Info to pick 2: is Accurate; is Piercing; range is Far; covers target with your Element.	Shot	-	-	
 Yo-Yo	2x2	Near	Shoot a razor yo-yo! Spend 1 Sense to make it Accurate.	Shot	-	-	
-ZapRing	1	Near	Stuns the target for one second.	Shot	-	-	
 
 ---Summon Battlechips---
 
@@ -190,7 +196,6 @@ Ratton	2	Near	A homing rat bomb can find enemies that are invisible or hiding be
 Recall	-	Close	Summons the last Virus you deleted to help you out. It has 1HP.	Summon	-	-	
 RiskyHoney	2	Close	Summons a beehive that attacks and makes noise when approached.	Summon	-	-	
 RockArm	3	Close	A hefty, inert Virus plummets! Spend 1 Strength to pick 1: shockwaves a Near target; is Piercing.	Summon	Slow	-	
-RockCube	-	Close	Summons a large cube of stone in front of the Navi.	Summon	-	-	
 Rook	-	Close	Creates a six-foot, heavily armored tower for cover.	Summon	-	-	
 Rope	1	Near	Summons a briar patch to ensare any that step in it.	Summon	Piercing, Slow	-	
 Sensor	1	Close	Creates a motion-sensing eye that stuns the first enemy it sees and alerts your Navi.	Summon	Accurate	-	
@@ -203,8 +208,6 @@ Wind	-	Near	Summons a gust of wind to blow targets towards or away from you.	Sum
 ---Support Battlechips---
 
 AirShoes	-	-	Fly through the air for 5 rolls.	Support	Simple	-	
-Attack+1	-	-	Add one hit to your next non-BattleChip attack.	Support	Simple	-	
-Barrier	-	-	Negates the next time you're attacked.	Support	Slow	-	
 Blinder	-	Close	A bright light blinds enemies for a moment.	Support	Dangerous	-		
 Braveheart	-	-	Recover HP equal to points in Bravery + Soul.	Support	-	-	
 BubbleStar	-	Near	Seals an enemy in a floating bubble.	Support	Awkward	-	
@@ -222,7 +225,6 @@ MapView	-	Far	Launch a camera straight up for an eagle-eye view of the surroundi
 Recover3	-	-	Recover three HP.	Support	-	-	
 Recover5	-	-	Recover five HP.	Support	-	-	
 Reflex	-	-	Act immediately the next time you take damage.	Support	Simple	-	
-Repair	-	Near	Fix a broken structure.	Support	-	-	
 Shadow	-	-	For a minute, you're impossible to detect when in darkness.	Support	Simple	-	
 SkullBarrier	-	-	Pick 1: take -1 damage from the next 3 attacks; downshift your next Bravery roll to intimidate.	Support	-	-	
 StoneBody	-	-	For 5 defense rolls, damage over 1 is reduced to 1, but you're unable to move range bands.	Support	-	-	
@@ -389,3 +391,8 @@ Possession	-	Near	Must be used immediately after a Navi/Virus is deleted. You ca
 ThirdEye	-	Near	Gaze into the target's mind. You hear their thoughts until you roll, use a chip, or take damage.	Shot	Awkward	Mystic Lilies Battle	
 WanderingSin	2	Near	The target is covered in text of your choice, which needs a Hard coding roll to erase.	Shot	Awkward	Mystic Lilies Battle	
 
+---EASTER EGGS---
+
+You found an Easter Egg! #3 out of 10! (g)
+You found an Easter Egg! #4 out of 10! (J)
+You found an Easter Egg! #5 out of 10! (E)

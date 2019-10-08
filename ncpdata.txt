@@ -239,3 +239,9 @@ Matchmaker	1	-	Can roll Info to analyze social media and judge 2 peoples' romant
 PocketBase	1	-	Your PET contains a cozy home base. You can make a door to it at jack-in points.	ChitChat	
 RideOn	1	-	On jack in, you have a cool, small ride (e.g. roller skates, snowboard, pogo stick).	Skateboard Dog
 ProgPal	2	-	When you befriend a Mr. Prog, get a token. Can spend a token to reroll a Navi roll.	ChitChat	
+
+---EASTER EGGS---
+
+You found an Easter Egg! #7 out of 10! (W)
+You found an Easter Egg! #8 out of 10! (L)
+You found an Easter Egg! #9 out of 10! (t)

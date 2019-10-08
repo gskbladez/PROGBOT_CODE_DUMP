@@ -41,7 +41,6 @@ RecoilRod	Blade
 SlashClaw	Blade	
 Slasher	Blade	
 StyleSword	Blade	
-Sword	Blade	
 TripleRod	Blade	
 TurboSlice	Blade	
 VarSword	Blade	
@@ -143,8 +142,7 @@ WebSurfer	Rush
 YokuTrail	Rush	
 
 ---Shot Chips---		
-
-AirShot	Shot	
+	
 AtomicFire	Shot	
 Boomer	Shot	
 Catapult	Shot	
@@ -180,9 +178,12 @@ Catcher	Summon
 Decoy	Summon	
 ElecReel	Summon	
 FireRat	Summon	
-GhostGloves	Summon	[A-License]	
+GhostGloves	Summon	[A-License]
+GreenCarpet	Summon	
 Guardian	Summon	
+HolyPanel	Summon	
 IceCube	Summon	
+Insert	Summon	[C-License]
 IronShield	Summon	
 Meteors	Summon	
 Mine	Summon	
@@ -209,15 +210,14 @@ AirShoes	Support
 Blinder	Support	
 Braveheart	Support	
 BubbleStar	Support	
+ColorPoint	Support	
 CopyDamage	Support	
 Dropdown	Support	
-Fanfare	Support	[A-License]	
+Fanfare	Support	[A-License]
+FolderRewind	Support		
 GeminiTwin	Support	
-GreenCarpet	Support	
 Guard	Support	
-HolyPanel	Support	
-Insert	Support	[C-License]	
-Interrupt	Support	
+HiveShield	Support	
 Invis	Support	
 LeafShield	Support	
 MapView	Support	Awkward	
@@ -229,6 +229,7 @@ SkullBarrier	Support
 StoneBody	Support	
 Sweetheart	Support	
 SystemScan	Support	
+TimeCancel	Support	
 TimeStopper	Support	[S-License]	
 Timpani	Support	
 TundraSpotlight	Support	
@@ -301,18 +302,58 @@ YamatoRush	Wave	[C-License]
 
 ---MEGA Chips---		
 
-Attack+3	Support	[MEGA]	
-Aura	Support	[MEGA]	
-Balance	Support	[MEGA]	
-ElementSurge	Wave	[MEGA]	
-GaiaSword	Blade	[MEGA]	
-Jealousy	Support	[MEGA]	
-MeteorKnuckle	Impact	[MEGA]	
-Muramasa	Blade	[MEGA]	
-NaviRecycle	NaviChip	[MEGA]	
-Phoenix	Summon	[MEGA]	
-Recover10	Support	[MEGA]	
-SuperVulcan	Shot	[MEGA]	
+Aura	Support	[Mega]	
+Avatar	Support	[Mega]	
+BlackHoleBomb	Thrown	[Mega]	
+CornFiesta	Wave	[Mega]	
+DeltaRayEdge	Rush	[Mega]	
+ElementalSonicWave	Blade	[Mega]	
+ElementSurge	Wave	[Mega]	
+GateMagic	Summon	[Mega]	
+MeteorKnuckle	Impact	[Mega]	
+NaviRecycle	NaviChip	[Mega]	
+SuperVulcan	Shot	[Mega]	
+UnityBoost	Shot	[Mega]	
+
+---Dark Chips---
+
+AlphaClaw	Blade	[Dark]	
+ApexPredator	Impact	[Dark]	
+BeastOver	Rush	[Dark]	
+BitterTalon	Blade	[Dark]	
+DarkBomb	Thrown	[Dark]	
+DarkBrand	Impact	[Dark]	
+DarkBrush	Thrown	[Dark]	
+DarkCannon	Shot	[Dark]	
+DarkCircle	Shot	[Dark]	
+DarkDrill	Impact	[Dark]	
+DarkFlame	Wave	[Dark]	
+DarkHeart	Support	[Dark]	
+DarkInsert	Snmmon	[Dark]	
+DarkInvisible	Support	[Dark]	
+DarkKnuckle	Impact	[Dark]	
+DarkLance	Rush	[Dark]	
+DarkLantern	Summon	[Dark]	
+DarkMeteor	Summon	[Dark]	
+DarkMist	Hazard	[Dark]	
+DarkPick	Blade	[Dark]	
+DarkPlus	Support	[Dark]	
+DarkRecall	Summon	[Dark]	
+DarkRecover	Support	[Dark]	
+DarkSnake	Impact	[Dark]	
+DarkSound	Summon	[Dark]	
+DarkSpread	Impact	[Dark]	
+DarkStage	Hazard	[Dark]	
+DarkStrings	Thrown	[Dark]	
+DarkSword	Blade	[Dark]	
+DarkThunder	Wave	[Dark]	
+DarkTornado	Wave	[Dark]	
+DarkVulcan	Shot	[Dark]	
+DarkWide	Wave	[Dark]	
+DarkWorm	Rush	[Dark]	
+FlashMemory	Support	[Dark]	
+GraveBreath	Hazard	[Dark]	
+JusticeFist	Impact	[Dark]	
 
 ---ChitChat CrossOver Chips---		
 
@@ -567,15 +608,15 @@ Proxy	4EB
 
 ---5EB NCPs---		
 
+Body+1	5EB
 LastStand	5EB	
-Custom+5	5EB	
-Mind+1	5EB	
-Body+1	5EB	
+Mega+1
+Mind+1	5EB		
 Soul+1	5EB	
 
 ---7EB NCPs---		
 
-Mega+1	7EB	
+SingatureMove	7EB	
 
 ---Navi Powers---		
 
@@ -624,3 +665,5 @@ Control	Affinity
 Alt	Affinity	
 Save	Affinity	
 CodeInjection	Affinity	
+
+You found an Easter Egg! #6 out of 10! (5)	Secret	[Hidden]

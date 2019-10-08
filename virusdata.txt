@@ -116,3 +116,8 @@ Puffball	5	Poison	2	2	2	-	-	-	-	-	2	-	-	3	Control, Shift, Blocker	PoisonSeed	Non
 Slimer	3	Liquid	1	3	1	-	-	-	-	-	-	2	-	3	KineticArmor, Meld	MetaGel	None	A cute blob of slime that hides in pools of liquid before hopping out at targets and bodyslamming them.	Wrecker	https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/slimey.png
 Volcano	6	Lava	1	1	1	2	-	-	-	-	2	-	-	4	Splash, CodeInjection, Meltdown	AtomicFire; LavaCannon	None	Volcano Viruses look like little volcanoes, scuttling on tiny feet and blasting massive fiery bursts from their tops to cover the area in lava.	Wrecker	
 WindBox	6	Wind	1	1	1	-	-	-	-	-	2	-	-	4	None	Wind; Windrack	Immobile; Inanimate	WindBoxes are fans that can blow mighty gusts of air at Navis and suck them in.	Wrecker	https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/windbox.png	
+
+---EASTER EGGS---
+
+BonziBuddy	99999	Memes	9	9	9	9	9	9	9	9	9	9	9	9	All of them.	NOBeam, StickyStick	Flying	A purple cyber-gorilla who will eat you for lunch.	You found an Easter Egg! #1 out of 10! (7)
+SwangardeOmega	4	Lightning	3	2	1	0	0	0	0	2	0	0	2	2	Vengeance, CodeInjection, Touche	LightningFoil	None	Bird fencers in yellow armor, SwanGardes use their rapier-like beaks to zap targets and disable their BattleChips. They honk loudly.	You found an Easter Egg! #2 out of 10! (3)
