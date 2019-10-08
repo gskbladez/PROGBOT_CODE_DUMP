@@ -119,5 +119,5 @@ WindBox	6	Wind	1	1	1	-	-	-	-	-	2	-	-	4	None	Wind; Windrack	Immobile; Inanimate	W
 
 ---EASTER EGGS---
 
-BonziBuddy	99999	Memes	9	9	9	9	9	9	9	9	9	9	9	9	All of them.	NOBeam, StickyStick	Flying	A purple cyber-gorilla who will eat you for lunch.	You found an Easter Egg! #1 out of 10! (7)
-SwangardeOmega	4	Lightning	3	2	1	0	0	0	0	2	0	0	2	2	Vengeance, CodeInjection, Touche	LightningFoil	None	Bird fencers in yellow armor, SwanGardes use their rapier-like beaks to zap targets and disable their BattleChips. They honk loudly.	You found an Easter Egg! #2 out of 10! (3)
+BonziBuddy	99999	Memes	9	9	9	9	9	9	9	9	9	9	9	9	All of them.	NOBeam, StickyStick	Flying	A purple cyber-gorilla who will eat you for lunch.	You found an Easter Egg! #1 out of 10! (7)	
+SwangardeOmega	4	Lightning	3	2	1	0	0	0	0	2	0	0	2	2	Vengeance, CodeInjection, Touche	LightningFoil	None	Bird fencers in yellow armor, SwanGardes use their rapier-like beaks to zap targets and disable their BattleChips. They honk loudly.	You found an Easter Egg! #2 out of 10! (3)	

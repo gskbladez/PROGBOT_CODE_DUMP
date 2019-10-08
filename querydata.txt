@@ -183,7 +183,7 @@ GreenCarpet	Summon
 Guardian	Summon	
 HolyPanel	Summon	
 IceCube	Summon	
-Insert	Summon	[C-License]
+Insert	Summon	[C-License]	
 IronShield	Summon	
 Meteors	Summon	
 Mine	Summon	
@@ -213,14 +213,14 @@ BubbleStar	Support
 ColorPoint	Support	
 CopyDamage	Support	
 Dropdown	Support	
-Fanfare	Support	[A-License]
+Fanfare	Support	[A-License]	
 FolderRewind	Support		
 GeminiTwin	Support	
 Guard	Support	
 HiveShield	Support	
 Invis	Support	
 LeafShield	Support	
-MapView	Support	Awkward	
+MapView	Support	
 Recover3	Support	
 Recover5	Support	
 Reflex	Support	
@@ -610,8 +610,8 @@ Proxy	4EB
 
 Body+1	5EB
 LastStand	5EB	
-Mega+1
-Mind+1	5EB		
+Mega+1	5EB	
+Mind+1	5EB	
 Soul+1	5EB	
 
 ---7EB NCPs---		
