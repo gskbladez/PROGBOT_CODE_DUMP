@@ -429,6 +429,7 @@ async def virus(context, *args, **kwargs):
     
         embed = discord.Embed(title="__{}__".format(name), description="_{}_".format(table[name][17]), color=0x7c00ff)
         embed.set_thumbnail(url=values[19])
+        embed.set_footer(text="Category: {}.".format(Category))
         await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def virusx(context, *args, **kwargs):
