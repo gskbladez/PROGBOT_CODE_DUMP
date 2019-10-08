@@ -142,7 +142,7 @@ WebSurfer	Rush
 YokuTrail	Rush	
 
 ---Shot Chips---		
-	
+
 AtomicFire	Shot	
 Boomer	Shot	
 Catapult	Shot	
