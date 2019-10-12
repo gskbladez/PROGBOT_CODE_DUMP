@@ -600,6 +600,7 @@ Alt NCP	3EB
 ---4EB NCPs---		
 
 AddOn	4EB	
+BeastWithin	4EB	
 ChameleoCloak	4EB	
 KernelPanic	4EB	
 Meltdown	4EB	

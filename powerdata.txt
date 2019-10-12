@@ -49,6 +49,8 @@ Touchdown	Strength	Roll	Throw a target into another target, both take damage.
 Warp	Speed	Cost	Instantly move one range band.	
 Afterimages	Speed	Cost	Upshift the next 3 attacks on you.	
 
+Sublimation	Speed	Cost	Summons mist. If you spend 3 rolls in the mist, you can warp two range bands away.
+
 JumpJets	Speed	Roll	Launch a range band in any direction from the ground.	
 Sneakrun	Speed	Roll	Slip past an inanimate threat (e.g.traps, sensors).	
 ArtfulDodger	Speed	Roll	Distract a group of enemies with quick movement, making them focus on you.	
@@ -134,7 +136,7 @@ Infection	Passive	-	Attacks disrupt programming upshifting the target's next 2 r
 BlindingFlash	Passive	-	Attacks blind, upshifting target's next Sense roll.	
 Spores	Passive	-	When attacks hit, target upshifts  next Mind roll; next 3 Mind rolls if they are on grass.	
 Toll	Passive	-	Can be paid 500z to be made intangible for several seconds.	
-Earthshaker	Passive	-	Stuns anyone it lands in Close rane of.	
+Earthshaker	Passive	-	Stuns anyone it lands in Close range of.	
 Moneybags	Passive	-	On Speed rolls with <2 hits, drop some Zenny. Drop all Zenny on deletion.	
 Scrambler	Passive	-	On hit, briefly disable a random Power or NCP.	
 Lurker	Passive	-	Invisible when not attacking.	
@@ -169,6 +171,7 @@ ProgPower	Passive	-	EggMecha deactivates if the Mr. Prog inside is removed.
 Assimilation	Passive	-	Add +1 to a stat when you absorb a piece of Mystery Data. Drop data on deletion.
 Shakedown	Passive	-	When you hit a target, they drop 100z per point of damage.
 Telltale	Passive	-	Always leave a trail of your element behind you.
+Ice2SeeUI	Passive	-	When you cover something with your element, gain +1 Sense.
 
 ---EASTER EGGS---
 

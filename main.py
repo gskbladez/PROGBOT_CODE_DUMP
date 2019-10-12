@@ -402,6 +402,8 @@ async def NCP(context, *args, **kwargs):
         color = 0xF8E580
     elif crossover in ["ChitChat"]:
         color = 0xff8000
+    elif crossover in ["Radical Spin"]:
+      color = 0x3f5cff
     elif crossover in ["Skateboard Dog"]:
         color = 0xff0000
     elif crossover in ["Mystic Lilies"]:
@@ -429,7 +431,7 @@ async def virus(context, *args, **kwargs):
     
         embed = discord.Embed(title="__{}__".format(name), description="_{}_".format(table[name][17]), color=0x7c00ff)
         embed.set_thumbnail(url=values[19])
-        embed.set_footer(text="Category: {}.".format(values[18]))
+        embed.set_footer(text="Category: {}".format(values[18]))
         await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def virusx(context, *args, **kwargs):
@@ -662,7 +664,7 @@ async def element(context, *args, **kwargs):
 
 async def rulebook(context, *args, **kwargs):
     if len(args) < 1:
-        return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 4 Official Rulebook (high-res): <http://www.merrymancergames.com/wp-content/uploads/2019/06/NetBattlers-Beta-4-Full-Res.pdf>\nNetBattlers Beta 4 Official Rulebook (mobile-friendly): <http://www.merrymancergames.com/wp-content/uploads/2019/06/NetBattlers-Beta-4-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <http://www.merrymancergames.com/wp-content/uploads/2019/06/NetBattlers-Advance-v3.1.pdf>")
+        return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 5 Official Rulebook (high-res): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Full-Res.pdf>\nNetBattlers Beta 4 Official Rulebook (mobile-friendly): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <http://www.merrymancergames.com/wp-content/uploads/2019/06/NetBattlers-Advance-v3.1.pdf>")
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)

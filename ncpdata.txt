@@ -151,6 +151,7 @@ ZeroWaitState	3	-	When you fail a roll to jack in or jack out, change it to a pa
 ---4+ EB NCPs--- 
 
 AddOn	4	-	When you deal 2+ damage to a Navi or a Virus, your element appears around them.	-	
+BeastWithin	4	-	On Cost power use, turn into a beast for 3 rolls! As a beast, rolls ignore skill reductions.	-	
 ChameleoCloak	4	-	If you hold still for ten seconds, you turn invisible until you move.	-	
 KernelPanic	4	-	When you're at or below 2 HP, add four dice to all attacks.	-	
 Meltdown	4	-	Can add bonus dice to your roll for HP, 1 HP per die. Max 3 dice added per roll.	-	
