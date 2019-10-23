@@ -321,7 +321,7 @@ UnityBoost	-	-	Next time you use a BattleChip, all bonded allies in range gain t
 AlphaClaw	4xX	Near	Massive claws! X=1; +1 per AlphaSeed in the server. On deletion, Alpha absorbs the target.	Blade	-	Dark	
 ApexPredator	5	Close	If this deletes, swallow the target and add their stats to yours. Your body shifts & grows.	Impact	Piercing	Dark
 BeastOver	2+X	Near	Shred the target at Close. X=[Daemon Bond]; can increase your Bond as much as you want.	Rush	Dangerous	Dark	
-BitterTalon	3	Near	If you failed a Charm or Bravery roll on the target in the past, deal double damage.	Blade	-	Dark	
+BitterTalon	3	Close	If you failed a social Charm or Bravery roll on the target in the past, deal double damage.	Blade	-	Dark	
 DarkBomb	2	Near	Claw bomb! On hit, digs in. Explodes for 6 dmg after they roll 3 times. Hard Strength to rip out.	Thrown	Dangerous	Dark
 DarkBrand	2	Close	Mark a target. Pick an event. If they mention it, the mark explodes for 10 dmg. Ignores barriers.	Impact	Dangerous, Slow	Dark	
 DarkBrush	4	Near	Spread mystic ink! On hit, learn 1: their greatest fear, their greatest love, their darkest secret.	Thrown	-	Dark	
