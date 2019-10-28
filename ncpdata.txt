@@ -70,7 +70,7 @@ Chain	2	Extend	Additionally, the next BattleChip's side effects affect all Close
 Cloak	2	Sneakrun	When you spend a Speed point or roll a crit with Speed, you can briefly go invisible.	-	
 Collect	2	-	When you send Virus data to a blank BattleChip, downshift the Roll.	-	
 ControlA	2	Control	Detonate all abundances of your element in Near range, damaging all Close to one.	-	
-CosmicMind	2	-	Can spend 1 Mind to reroll and roll of yours & use the better result. Your body glows.	-	
+CosmicMind	2	-	Can spend 1 Mind to reroll any roll of yours & use the better result. Your body glows.	-	
 Daredevil	2	Bodyguard	If you defend by parrying, Bodyguard does not cost anything.	-	
 Debilitate	2	Breakcharge	Can instead reduce one of the target's Skills by 2. (Does not Stack.)	-	
 Defrag	2	Clear	You can use Clear on a Close ally instead.	-	

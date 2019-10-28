@@ -1,4 +1,4 @@
-botname	Mr. Prog
+botname	P҉҉▯▯g҉B̸̧▯t̶̡͢
 token	NTcyODc4MjAwMzk3NjI3NDEy.XMis-A.D9KSMhYqq_BSPjzVRYkTa0hSQl8
 logformat	%t\t%s\t%c\t%U\t%m\t%r
 message_sendmessage_noparam	I need two args: channelid and message
