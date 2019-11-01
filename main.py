@@ -664,7 +664,7 @@ async def element(context, *args, **kwargs):
 
 async def rulebook(context, *args, **kwargs):
     if len(args) < 1:
-        return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 5 Official Rulebook (high-res): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Full-Res.pdf>\nNetBattlers Beta 4 Official Rulebook (mobile-friendly): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <http://www.merrymancergames.com/wp-content/uploads/2019/06/NetBattlers-Advance-v3.1.pdf>")
+        return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 5 Official Rulebook (high-res): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Full-Res.pdf>\nNetBattlers Beta 4 Official Rulebook (mobile-friendly): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2019/10/NetBattlers-Advance-4.pdf>")
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
