@@ -315,6 +315,16 @@ NaviRecycle	NaviChip	[Mega]
 SuperVulcan	Shot	[Mega]	
 UnityBoost	Shot	[Mega]	
 
+EleGeddon	Hazard	[Mega]
+Expurgation	Thrown	[Mega]
+ForbiddenRitual	Support	[Mega]
+Paranoia	Rush	[Mega]
+PyrrhicSun	Summon	[Mega]
+SealingRites	Impact	[Mega]
+ShadowCaster	Blade	[Mega]
+VanishingWorld	Wave	[Mega]
+VileSeed	Shot	[Mega]
+
 ---Dark Chips---		
 
 AlphaClaw	Blade	[Dark]	
@@ -383,11 +393,34 @@ WaterShield	Support	[Radical Spin]
 ---Mystic Lilies CrossOver Chips---		
 
 AceOfSpades	Support	[Mystic Lilies]
+AnnihilatingRoar	Wave	[Mystic Lilies]
+Apparition	Support	[Mystic Lilies]
 BadApple	Summon	[Mystic Lilies]
+BanishingBlade	Blade	[Mystic Lilies]
+Chimera	Support	[Mystic Lilies]
+DashingGrace	Rush	[Mystic Lilies]
+Demystification	Impact	[Mystic Lilies]
+Dominion	Summon	[Mystic Lilies]
+EchoChamber	Support	[Mystic Lilies]
+ExtendAsh	Blade	[Mystic Lilies]
+FlowerBurst	Wave	[Mystic Lilies]
+Forbidden	Hazard	[Mystic Lilies]
+HeartfeltFancy	Summon	[Mystic Lilies]
+ImmortalSmoke	Support	[Mystic Lilies]
 InstantKarma	Summon	[Mystic Lilies]
-MoonLight	Hazard	[Mystic Lilies]
+LooseRain	Support	[Mystic Lilies]
+Misdirection	Support	[Mystic Lilies]
+Moonlight	Hazard	[Mystic Lilies]
+PerfectFreeze	Impact	[Mystic Lilies]
 Possession	Support	[Mystic Lilies]
+PristineBeat	Wave	[Mystic Lilies]
+Reverser	Blade	[Mystic Lilies]
+TabulaRasa	Support	[Mystic Lilies]
 ThirdEye	Shot	[Mystic Lilies]
+Uptempo	Hazard	[Mystic Lilies]
+VanishingMist	Hazard	[Mystic Lilies]
+VengefulSpirit	Support	[Mystic Lilies]
+WanderFlame	Support	[Mystic Lilies]
 WanderingSin	Shot	[Mystic Lilies]
 
 ===NCPs===		
@@ -434,9 +467,11 @@ ProgRadar	1EB
 Projector	1EB	[Tracker]
 RAMWipe	1EB	[Clear]
 Refine	1EB	[Extend]
+Retribution(NCP)	1EB	[Mystic Lilies]
 Ricochet	1EB	[Volley]
 RideOn(NCP)	1EB	[Skateboard Dog]
 SaveAs	1EB	[Save]
+Servant(NCP)	1EB	[Mystic Lilies]
 Setup	1EB	[LockOn]
 SideLoad	1EB	[CodeInjection]
 SignPost	1EB	
@@ -452,6 +487,7 @@ ZennyMiner	1EB
 
 ---2EB NCPs---		
 
+AdminHeadphones(NCP)	2EB	[Mystic Lilies]
 Anticipation	2EB	[Foresight]
 AntiCollider	2EB	[NoClip]
 Arena	2EB	[Duel]
@@ -468,10 +504,13 @@ Chain	2EB	[Extend]
 Cloak	2EB	[Sneakrun]
 Collect	2EB	
 ControlA	2EB	[Control]
+CosmicMind(NCP)	2EB	[Mystic Lilies]
 Daredevil	2EB	[Bodyguard]
+DarkBargain(NCP)	2EB	[Mystic Lilies]
 Debilitate	2EB	[Breakcharge]
 Defrag	2EB	[Clear]
 Demolition	2EB	[Shatter]
+DevilFangs(NCP)	2EB	[Mystic Lilies]
 Diffusal	2EB	
 Elegance	2EB	[ArtfulDodger]
 ElemenTango	2EB	[Save]
@@ -487,8 +526,10 @@ ForceRefresh	2EB	[Refresh]
 Gladiator	2EB	[Duel]
 HP+2	2EB	
 Interception	2EB	[LockOn]
+JackOfHearts(NCP)	2EB	[Mystic Lilies]
 LastHit	2EB	[Followthrough]
 MagnetArmor	2EB	[KineticArmor]
+Malediction(NCP)	2EB	[Mystic Lilies]
 Monitor	2EB	[BlindMode]
 Motorize	2EB	[MapEdit]
 Overheal	2EB	[Regenerate]
@@ -497,6 +538,7 @@ Payload	2EB	[Alt]
 Pettaur	2EB	
 ProgPal(NCP)	2EB	[ChitChat]
 Protector	2EB	[Bodyguard]
+QueenOfClubs(NCP)	2EB	[Mystic Lilies]
 Recall	2EB	[Warp]
 Redirect	2EB	[Shift]
 RemoteDet	2EB	[Splash]
@@ -530,10 +572,11 @@ Fabricator	3EB	[ModelEdit]
 FirstBarrier	3EB	
 Fizzle	3EB	[NoClip]
 FloatShoes	3EB	
+GrazingPower(NCP)	3EB	[Mystic Lilies]
 Hijack	3EB	[Reconfig]
 HP+4	3EB	
 HypnoFlash	3EB	[Hypnotize]
-Impact	3EB	[JumpJets]
+TerminalVelocity	3EB	[JumpJets]
 KingOfDiamonds(NCP)	3EB	[Mystic Lilies]
 Lockdown	3EB	[HyperArmor]
 Portal	3EB	[Firewall]
@@ -544,6 +587,7 @@ Retry	3EB	[Refresh]
 Scrambler	3EB	[Disruption]
 SoulUnion	3EB	
 Sprite	3EB	
+Taboo(NCP)	3EB	[Mystic Lilies]
 Tamer	3EB	[Overwrite]
 UnderShirt	3EB	
 VolatileMemory	3EB	
@@ -600,9 +644,11 @@ Alt NCP	3EB
 ---4EB NCPs---		
 
 AddOn	4EB	
-BeastWithin	4EB	
+BeastWithin(NCP)	4EB	[Mystic Lilies]
 ChameleoCloak	4EB	
 KernelPanic	4EB	
+LunarDial(NCP)	4EB	[Mystic Lilies]
+Master(NCP)	4EB	[Mystic Lilies]
 Meltdown	4EB	
 MimicStrike	4EB	
 Proxy	4EB	

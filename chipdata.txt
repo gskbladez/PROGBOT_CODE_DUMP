@@ -384,12 +384,47 @@ UBTest	NaN	NULL	"Description"	"Category"	"Tags"	Underground Broadcast Battle
 ---Mystic Lilies CrossOver Chips---
 
 AceOfSpades	-	-	Next time you lose an opposed roll and at least one of your dice reads 1, change all 1s to 6s.	Support	Slow	Mystic Lilies Battle		
+AnnihilatingRoar	-	Near	Pick 2: deal 2 damage; reset Mind skills reduced by enemies; knock Close targets to Near.	Wave	Slow	Mystic Lilies Battle	
+Apparition	-	Far	Appear directly behind anyone visible. Lights around them flicker and dim.	Support	Simple	Mystic Lilies Battle	
 BadApple	-	Close	An apple that curses on bite! Pick 2 curses: go blind/speak all thoughts/panic/hallicunate/turn ugly.	Summon	Slow	Mystic Lilies Battle		
+BanishingBlade	2	Close	On jack-in, pick a Virus category. Defending against this chip is Hard for those Viruses.	Blade	-	Mystic Lilies Battle	
+Chimera	-	-	Swap the value of two stats or two skills. Your appearance also shifts. Expires after 3 rolls.	Support	Slow	Mystic Lilies Battle	
+DashingGrace	-	Far	Enter Close range and expose the target. If an ally attacks the target next, they deal +2 damage hit.	Rush	-	Mystic Lilies Battle	
+Demystification	2	Close	A bit of the target's knowledge appears in writing! It's more useful the more damage you deal.	Impact	-	Mystic  Lilies Battle	
+Dominion	-	Close	3 ghosr servants! They are slow & vanish when hurt, but look & act haunting. One order each.	Smmon	Slow	Mystic Lilies Battle	
+EchoChamber	-	Close	Pick an ally in range that's making an opposed roll; you can reroll their failed dice.	Support	Awkward	Mystic Lilies Battle	
+ExtendAsh	0+X	Close	Slash the target with a flaming phoenix talon! X = the number of Near hostile Navis/Viruses.	Blade	Piercing	Mystic Lilies Battle	
+FlowerBurst	-	Near	Magic Petals! When affected targets fail social Charm/Bravery rolls, you dictate what they say.	Wave	-	Mystic Lilies Battle	
+Forbidden	-	Near	Lays a tripwire over an exit. On activation, it briefly stuns the target & teleports you behind them.	Hazard	Awkward	Mystic Lilies Battle	
+HeartfeltFancy	-	Close	A magic butterfly! Whoever wilfully grabs it takes 4 damage and gets +4 dice to thier next roll.	Summon	Slow	Mystic Lilies Battle	
+ImmortalSmoke	-	Near	Take 2 damage, pick a used chip from an ally's Folder; you can use it once. Resets on jack-out.	Support	-	Mystic Lilies Battle	
 InstantKarma	3	Near	Ghost swords follow you. When someone tells a lie in range, the swords pierce their heart.	Summon	Slow	Mystic Lilies Battle	
-Moonlight	-	Near	Summons a moonbeam from the sky. You are invisible as long as you stay within it.	Hazard	-	Mystic Lilies Battle		
+LooseRain	-	Near	Everything in range heals 2HP. It begins to drizzle.	Support	Slow	Mystic Lilies Battle	
+Misdirection	-	Near	Your next 3 rolls/chips can come from wherever you want in range, even other Navis/Viruses.	Support	Simple	Mystic Lilies Battle	
+Moonlight	-	Near	Summons a moonbeam from the sky. You are invisible as long as you stay within it.	Summon	-	Mystic Lilies Battle		
+PerfectFreeze	1	Close	On hit, temporarily encases the target in a block of ice.	Impact	Dangerous, Slow	Mystic Lilies Battle
 Possession	-	Near	Must be used immediately after a Navi/Virus is deleted. You can briefly control their body.	Support	-	Mystic Lilies Battle		
+PristineBeat	2	Far	Your voice booms out, clearly heard by everyone within range.	Wave	Awkward, Slow	Mystic Lilies Battle	
+Reverser	2	Close	On parry win, pick 1 (lasts 3 rolls): Invert your gravity; flip youyr temp skill changes; flip the target over.	Blade	-	Mystic Lilies Battle	
+TabulaRasa	-	-	Erase any traces of your presence. Viruses outside line of sight forget they saw you.	Support	-	Mystic Lilies Battle	
 ThirdEye	-	Near	Gaze into the target's mind. You hear their thoughts until you roll, use a chip, or take damage.	Shot	Awkward	Mystic Lilies Battle	
+Uptempo	-	Near	A blaring, frenzied beat! All in range downshift their next 3 Speed rolls. Objects also accelerate.	Hazard	Dangerous	Mystic Lilies Battle	
+VanishingMist	-	Near	Mist seeps into the area, Any who jack out in the mist can invite a Close Navi to come with them.	Hazard	-	Mystic Lilies Battle	
+VengefulSpirit	-	Near	Curses a target. The next time they take damage, thier highest skill(s) are briefly reduced by 2.	Support	-	Mystic Lilies Battle	
+WanderFlame	3	Close	When you jack out, downshift the roll. A pillar of fire engulfs all in range.	Support	Dangerous, Simple	Mystic Lilies Battle	
 WanderingSin	2	Near	The target is covered in text of your choice, which needs a Hard coding roll to erase.	Shot	Awkward	Mystic Lilies Battle	
+
+---Incident Chips---
+
+EleGeddon	-	Near	Convert an object to your element. Your element slowly spreads, converting everything it touches.	Hazard	Dangerous, Slow	Mystic Lilies Incident	
+Expurgation	4	Near	A cursed key. Stuns the target and exposes their memories to view & edit, rendered as text.	Thrown	Awkward	Mystic Lilies Incident	
+ForbiddenRitual	-	Close	Ressurect a Navi. Needs a powerful server; it is destroyed soon after. They will not be the same.	Support	Awkward, Dangerous, Slow	Mystic Lilies Incident	
+Paranoia	4	Near	Marks the target. Once per jack-in, you can warp Close & stun them, even if they are in other servers.	Rush	Slow	Mystic Lilies Incident	
+PyrrhicSun	-	Near	A molten star appears above, gorwing larger, until the real-world server explodes into flames.	Summon	Dangerous, Slow	Mystic Lilies Incident	
+SealingRites	4	Close	Entombs a target Navi in an inescapable cell, buried within the server. Thier PET disconnects.	Impact	Awkward, Slow	Mystic Lilies Incident	
+ShadowCaster 5	Close	On hit, creates a fiendish doppelganger. At first, nobody can tell which is which. Ignores barriers.	Blade	-	Mystic Lilies Incident	
+VanishingWorld	14	Near	Before firing, spends a minute sucking power from all electronics on the power grid. Ignores barriers.	Wave	Awkward, Dangerous, Slow	Mystic Lilies Incident	
+VileSeed	3	Near	A subtle, burrowing seed! After time passes, the user can control the target's body, then mind.	Shot	-	Mystic Lilies Incident	
 
 ---EASTER EGGS---
 

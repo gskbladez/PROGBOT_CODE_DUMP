@@ -70,7 +70,6 @@ Chain	2	Extend	Additionally, the next BattleChip's side effects affect all Close
 Cloak	2	Sneakrun	When you spend a Speed point or roll a crit with Speed, you can briefly go invisible.	-	
 Collect	2	-	When you send Virus data to a blank BattleChip, downshift the Roll.	-	
 ControlA	2	Control	Detonate all abundances of your element in Near range, damaging all Close to one.	-	
-CosmicMind	2	-	Can spend 1 Mind to reroll any roll of yours & use the better result. Your body glows.	-	
 Daredevil	2	Bodyguard	If you defend by parrying, Bodyguard does not cost anything.	-	
 Debilitate	2	Breakcharge	Can instead reduce one of the target's Skills by 2. (Does not Stack.)	-	
 Defrag	2	Clear	You can use Clear on a Close ally instead.	-	
@@ -135,7 +134,7 @@ GrazingPower	3	-	When you successfully defend with Speed, gain +2 dice to your n
 Hijack	3	Reconfig	On hit, your next melee attack takes a Chip (GM's pick) from the target's Folder.	-	
 HP+4	3	-	+4 maximum HP.	-	
 HypnoFlash	3	Hypnotize	Hypnotize works on humans if you are on a large screen. [Often illegal.]	-	
-Impact	3	JumpJets	Roll Speed to attack if you collide with someone by using JumpJets.	-	
+TerminalVelocity	3	JumpJets	Roll Speed to attack if you collide with someone by using JumpJets.	-	
 Lockdown	3	HyperArmor	Toggle to anchor to a Close surface. You get +3 Stamina & stick to the surface.	-	
 Portal	3	Firewall	After a couple minutes, doors allow travel directly between each other.	-	
 Press	3	-	The Navi can shrink to 1/10th normal size. Your attacks are upshifted when shrunk.	-	
@@ -236,12 +235,26 @@ Alt NCP	3	-	(Affinity/Roll) Consume all of your element to create a minion with 
 ---Crossover NCPs---
 
 ActionReplay	1	-	On NetOP critical success, the PET auto-posts a cool picture of it to social media.	Skateboard Dog	
+AdminHeadphones	2	-	Can spend 1 Sense to breifley hear all conversations taking place in the server.	Mystic Lilies	
+BeastWithin	4	-	On Cost power use, turn into a beast for 3 rolls! Beasts ignore stat & skill reductions.	Mystic Lilies	
+CosmicMind	2	-	Can spend 1 Mind to reroll any of yours & use the better result. Your body glows.	Mystic Lilies	
+DarkBargain	2	-	Once per jack-in, add 1 hit to an opposed roll, even after rolling. Suffer back luck later.	Mystic Lilies	
+DevilFangs	2	-	On enemy deletion, heal = its Max HP. No other healing, even jack-out. Full HP to uninstall.	Mystic Lilies
 EncryptedChat	1	-	Can speak in code to anyone who has this NCP. Sounds like animal noises otherwise.	ChitChat	
-KingOfDiamonds	3	-	Your body is made of your Element. Can spend 2 HP to spawn your Element Close.	Mystic Lilies
+GrazingPower	3	-	When you successfully defend with Speed, gain +2 dice to your next rolled attack.	Mystic Lilies	
+JackOfHearts	2	-	You can see a colored aura around everyone that indicates thier emotional state.	Mystic Lilies	
+KingOfDiamonds	3	-	Can spend 2 HP to spawn your Element Close, generating it from within your body.	Mystic Lilies	
+LunarDial	4	-	When you win a parry, you can freeze time long enough for one more roll/BattleChip.	Mystic Lilies	
+Master	4	-	On jack-in, pick a Near Navi with Servant installed. You mirror each other's healing.	Mystic Lilies	
+Malediction	2	-	On jack-in, Hex a chip in your folder. Hexed chips cover the target with your element.	Mystic Lilies	
 Matchmaker	1	-	Can roll Info to analyze social media and judge 2 peoples' romantic compatibility.	Skateboard Dog	
 PocketBase	1	-	Your PET contains a cozy home base. You can make a door to it at jack-in points.	ChitChat	
-RideOn	1	-	On jack in, you have a cool, small ride (e.g. roller skates, snowboard, pogo stick).	Skateboard Dog
 ProgPal	2	-	When you befriend a Mr. Prog, get a token. Can spend a token to reroll a Navi roll.	ChitChat	
+QueenOfClubes	2	-	Non-miltihit Dangerous chips deal +1 dmg, but the collateral damage always backfires.	Mystic Lilies	
+Retribution	1	-	When you agree to a deal, whoever breaks the deal has thier face & voice distort.	Mystic Lilies	
+RideOn	1	-	On jack in, you have a cool, small ride (e.g. roller skates, snowboard, pogo stick).	Skateboard Dog
+Servant	1	-	Must spend 1 Bravery to knowingly subvert the wishes of a Navi with Master installed.	Mystic Lilies	
+Taboo	3	-	When you break something big/valuable, +1 die to your next Strength roll. Stacks to +3.	Mystic Lilies	
 
 ---EASTER EGGS---
 
