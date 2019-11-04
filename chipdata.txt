@@ -390,7 +390,7 @@ BadApple	-	Close	An apple that curses on bite! Pick 2 curses: go blind/speak all
 BanishingBlade	2	Close	On jack-in, pick a Virus category. Defending against this chip is Hard for those Viruses.	Blade	-	Mystic Lilies Battle	
 Chimera	-	-	Swap the value of two stats or two skills. Your appearance also shifts. Expires after 3 rolls.	Support	Slow	Mystic Lilies Battle	
 DashingGrace	-	Far	Enter Close range and expose the target. If an ally attacks the target next, they deal +2 damage hit.	Rush	-	Mystic Lilies Battle	
-Demystification	2	Close	A bit of the target's knowledge appears in writing! It's more useful the more damage you deal.	Impact	-	Mystic  Lilies Battle	
+Demystification	2	Close	A bit of the target's knowledge appears in writing! It's more useful the more damage you deal.	Impact	-	Mystic Lilies Battle	
 Dominion	-	Close	3 ghosr servants! They are slow & vanish when hurt, but look & act haunting. One order each.	Smmon	Slow	Mystic Lilies Battle	
 EchoChamber	-	Close	Pick an ally in range that's making an opposed roll; you can reroll their failed dice.	Support	Awkward	Mystic Lilies Battle	
 ExtendAsh	0+X	Close	Slash the target with a flaming phoenix talon! X = the number of Near hostile Navis/Viruses.	Blade	Piercing	Mystic Lilies Battle	
@@ -420,8 +420,8 @@ EleGeddon	-	Near	Convert an object to your element. Your element slowly spreads,
 Expurgation	4	Near	A cursed key. Stuns the target and exposes their memories to view & edit, rendered as text.	Thrown	Awkward	Mystic Lilies Incident	
 ForbiddenRitual	-	Close	Ressurect a Navi. Needs a powerful server; it is destroyed soon after. They will not be the same.	Support	Awkward, Dangerous, Slow	Mystic Lilies Incident	
 Paranoia	4	Near	Marks the target. Once per jack-in, you can warp Close & stun them, even if they are in other servers.	Rush	Slow	Mystic Lilies Incident	
-PyrrhicSun	-	Near	A molten star appears above, gorwing larger, until the real-world server explodes into flames.	Summon	Dangerous, Slow	Mystic Lilies Incident	
-SealingRites	4	Close	Entombs a target Navi in an inescapable cell, buried within the server. Thier PET disconnects.	Impact	Awkward, Slow	Mystic Lilies Incident	
+PyrrhicSun	-	Near	A molten star appears above, growing larger, until the real-world server explodes into flames.	Summon	Dangerous, Slow	Mystic Lilies Incident	
+SealingRites	4	Close	Entombs a target Navi in an inescapable cell, buried within the server. Their PET disconnects.	Impact	Awkward, Slow	Mystic Lilies Incident	
 ShadowCaster 5	Close	On hit, creates a fiendish doppelganger. At first, nobody can tell which is which. Ignores barriers.	Blade	-	Mystic Lilies Incident	
 VanishingWorld	14	Near	Before firing, spends a minute sucking power from all electronics on the power grid. Ignores barriers.	Wave	Awkward, Dangerous, Slow	Mystic Lilies Incident	
 VileSeed	3	Near	A subtle, burrowing seed! After time passes, the user can control the target's body, then mind.	Shot	-	Mystic Lilies Incident	

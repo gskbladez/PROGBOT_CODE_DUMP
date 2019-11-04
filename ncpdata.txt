@@ -250,7 +250,7 @@ Malediction	2	-	On jack-in, Hex a chip in your folder. Hexed chips cover the tar
 Matchmaker	1	-	Can roll Info to analyze social media and judge 2 peoples' romantic compatibility.	Skateboard Dog	
 PocketBase	1	-	Your PET contains a cozy home base. You can make a door to it at jack-in points.	ChitChat	
 ProgPal	2	-	When you befriend a Mr. Prog, get a token. Can spend a token to reroll a Navi roll.	ChitChat	
-QueenOfClubes	2	-	Non-miltihit Dangerous chips deal +1 dmg, but the collateral damage always backfires.	Mystic Lilies	
+QueenOfClubs	2	-	Non-miltihit Dangerous chips deal +1 dmg, but the collateral damage always backfires.	Mystic Lilies	
 Retribution	1	-	When you agree to a deal, whoever breaks the deal has thier face & voice distort.	Mystic Lilies	
 RideOn	1	-	On jack in, you have a cool, small ride (e.g. roller skates, snowboard, pogo stick).	Skateboard Dog
 Servant	1	-	Must spend 1 Bravery to knowingly subvert the wishes of a Navi with Master installed.	Mystic Lilies	
