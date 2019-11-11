@@ -97,7 +97,7 @@ PassengerMode	2	-	You can take a Close target with you when you use Rush chips.	
 Payload	2	Alt	Whenever something destroys your minion, it explodes into your element.	-	
 Pettaur	2	-	A Mettaur-like pet! It can't attack, obeys basic orders, and disappears for a bit if hit.	-	
 Protector	2	Bodyguard	You can defend all Close allies at once from a multitarget attack.	-	
-Recall	2	Warp	Within 10 seconds of warping, you can warp back to your starting point for free.	-	
+Revert	2	Warp	Within 10 seconds of warping, you can warp back to your starting point for free.	-	
 Redirect	2	Shift	You can Shift with a known Near abundance of your element not in sight.	-	
 RemoteDet	2	Splash	Choose when shots detonate. 2 primed shots at once. Roll dmg on detonation.	-	
 RocketFist	2	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot parry at range.	-	
@@ -250,7 +250,7 @@ Malediction	2	-	On jack-in, Hex a chip in your folder. Hexed chips cover the tar
 Matchmaker	1	-	Can roll Info to analyze social media and judge 2 peoples' romantic compatibility.	Skateboard Dog	
 PocketBase	1	-	Your PET contains a cozy home base. You can make a door to it at jack-in points.	ChitChat	
 ProgPal	2	-	When you befriend a Mr. Prog, get a token. Can spend a token to reroll a Navi roll.	ChitChat	
-QueenOfClubs	2	-	Non-miltihit Dangerous chips deal +1 dmg, but the collateral damage always backfires.	Mystic Lilies	
+QueenOfClubs	2	-	Non-multihit Dangerous chips deal +1 dmg, but the collateral damage always backfires.	Mystic Lilies	
 Retribution	1	-	When you agree to a deal, whoever breaks the deal has thier face & voice distort.	Mystic Lilies	
 RideOn	1	-	On jack in, you have a cool, small ride (e.g. roller skates, snowboard, pogo stick).	Skateboard Dog
 Servant	1	-	Must spend 1 Bravery to knowingly subvert the wishes of a Navi with Master installed.	Mystic Lilies	

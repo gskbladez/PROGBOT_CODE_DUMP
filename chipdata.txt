@@ -396,7 +396,7 @@ EchoChamber	-	Close	Pick an ally in range that's making an opposed roll; you can
 ExtendAsh	0+X	Close	Slash the target with a flaming phoenix talon! X = the number of Near hostile Navis/Viruses.	Blade	Piercing	Mystic Lilies Battle	
 FlowerBurst	-	Near	Magic Petals! When affected targets fail social Charm/Bravery rolls, you dictate what they say.	Wave	-	Mystic Lilies Battle	
 Forbidden	-	Near	Lays a tripwire over an exit. On activation, it briefly stuns the target & teleports you behind them.	Hazard	Awkward	Mystic Lilies Battle	
-HeartfeltFancy	-	Close	A magic butterfly! Whoever wilfully grabs it takes 4 damage and gets +4 dice to thier next roll.	Summon	Slow	Mystic Lilies Battle	
+HeartfeltFancy	-	Close	A magic butterfly! Whoever wilfully grabs it takes 4 damage and gets +4 dice to their next roll.	Summon	Slow	Mystic Lilies Battle	
 ImmortalSmoke	-	Near	Take 2 damage, pick a used chip from an ally's Folder; you can use it once. Resets on jack-out.	Support	-	Mystic Lilies Battle	
 InstantKarma	3	Near	Ghost swords follow you. When someone tells a lie in range, the swords pierce their heart.	Summon	Slow	Mystic Lilies Battle	
 LooseRain	-	Near	Everything in range heals 2HP. It begins to drizzle.	Support	Slow	Mystic Lilies Battle	
