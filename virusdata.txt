@@ -28,7 +28,7 @@ Spikey	4	Fire	1	2	3	3	-	-	-	-	2	-	-	3	Splash, CodeInjection	HeatShot; LavaStage	
 ---Disruption Viruses---	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	
 
 BugTank	5	Junk Data	1	2	1	2	-	-	-	-	2	-	-	-	Infection	LogicBomb	None 	BugTanks are short and stout artillery units that scuttle about before lining up their data-corrupting shots.	Disruption	
-Bunny	2	Electricity	1	1	1	2	-	-	-	2	-	3	-	-	Zapper	ZapRing	None	Bunnys are cute Viruses that hop about and fire paralyzing rings from between their ears.	Disruption
+Bunny	2	Electricity	1	1	1	2	-	-	-	2	-	3	-	-	Zapper	ZapRing	None	Bunnys are cute Viruses that hop about and fire paralyzing rings from between their ears.	Disruption	sample text
 CandleLight	3	Light	1	1	1	-	-	2	-	-	-	-	-	2	Dimmer, FlashBlind	Blinder; Candle	Immobile	A fancy chandelier Virus with big, bright eyes. Plays with light to blind enemies or leave them stumbling in the dark.	Disruption	
 Cloudy	4	Acid Rain	1	2	2	-	-	-	-	-	-	-	-	2	Control	RainyDay	Flying	Cloudys are slow-moving Viruses that float high above the fight and shower corrosive rain onto fighters below.	Disruption	https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/cloudy.png	
 EleOgre	5	Electric Tripwires	1	2	3	-	-	-	-	-	2	-	-	-	Control	ElecReel	Hovering	A massive, floating ogre head that fires bolts of electricity from its horns. It also lays electrified tripwires to snare intruders.	Disruption	
