@@ -21,6 +21,8 @@ message_unrestrict_success	<@!{}> is now unrestricted from using {} commands
 message_unrestrict_failed	That user is not restricted
 message_oops_success	Deleted last output from this user
 message_oops_failed	No last output from this user to delete
+message_addresponse_success	Added a custom response!
+message_addresponse_fail	Unable to add a custom response.
 message_help	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!
 message_help_oops	Deletes the bot message from the user's last valid command
 message_help_commands	Provides the list of commands available for the user to run

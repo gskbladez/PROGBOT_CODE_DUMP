@@ -5,6 +5,8 @@ sendmessage	sendmessage	prefix	3
 updatesettings	updatesettings	prefix	3
 updatesetting	updatesetting	prefix	3
 addsetting	addsetting	prefix	3
+addresponse	addresponse	prefix	3
+removeresponse	removeresponse	prefix	3
 purge	purge	prefix	2
 restrict	restrictuser	prefix	2
 unrestrict	unrestrictuser	prefix	2
