@@ -391,7 +391,7 @@ BanishingBlade	2	Close	On jack-in, pick a Virus category. Defending against this
 Chimera	-	-	Swap the value of two stats or two skills. Your appearance also shifts. Expires after 3 rolls.	Support	Slow	Mystic Lilies Battle	
 DashingGrace	-	Far	Enter Close range and expose the target. If an ally attacks the target next, they deal +2 damage hit.	Rush	-	Mystic Lilies Battle	
 Demystification	2	Close	A bit of the target's knowledge appears in writing! It's more useful the more damage you deal.	Impact	-	Mystic Lilies Battle	
-Dominion	-	Close	3 ghosr servants! They are slow & vanish when hurt, but look & act haunting. One order each.	Smmon	Slow	Mystic Lilies Battle	
+Dominion	-	Close	3 ghost servants! They are slow & vanish when hurt, but look & act haunting. One order each.	Summon	Slow	Mystic Lilies Battle	
 EchoChamber	-	Close	Pick an ally in range that's making an opposed roll; you can reroll their failed dice.	Support	Awkward	Mystic Lilies Battle	
 ExtendAsh	0+X	Close	Slash the target with a flaming phoenix talon! X = the number of Near hostile Navis/Viruses.	Blade	Piercing	Mystic Lilies Battle	
 FlowerBurst	-	Near	Magic Petals! When affected targets fail social Charm/Bravery rolls, you dictate what they say.	Wave	-	Mystic Lilies Battle	

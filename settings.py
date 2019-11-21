@@ -2,6 +2,7 @@
 commandstablename = "commands"
 settingstablename = "settings"
 userlevelstablename = "userlevels"
+customresponsestablename = "customresponses"
 logfile = "log.txt"
 formattedlogfile = "formattedlog.txt"
 
@@ -21,7 +22,7 @@ backgroundtask = None
 backgroundtaskinterval = 10
 
 #MESSAGES
-message_somethingbroke = ":warning::warning:**SOMETHING BROKE**:warning::warning:"
+message_somethingbroke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
 message_unknowncommand = "Command not recognized"
 message_unhandlederror = "Unhandled error"
 message_resulttoolong = "Sorry, the result was too long to output ({}/2000 characters)"

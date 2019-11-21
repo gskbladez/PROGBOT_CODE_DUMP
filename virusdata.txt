@@ -21,8 +21,8 @@ Pengi	6	Ice	2	3	2	2	-	-	-	-	-	-	-	3	CodeInjection, IceBlocker	IceWave; IceStage	
 Piranha	4	Harpoons	2	2	1	3	-	-	-	1	-	-	-	-	LockOn	MarkCannon	Hovering	Piranhas are floating fish-like Viruses that attack with burst-fire harpoons from their mouths.	Artillery	
 Ratty	3	Rats	2	1	1	3	-	-	-	2	-	-	-	-	Frenzy, Seeker	Ratton	None	Ratty Viruses move erratically, firing homing rat bombs. They move much faster when damaged.	Artillery	
 Shrimpy	4	Water	1	2	2	-	-	-	-	-	2	-	-	2	Control	Bubbler; WaterStage	None 	Shrimpy Viruses lazily bounce on their tails, tossing bouncy balls of water from their snouts that explode in a cloud of bubbles.	Artillery	
-SnoWing	4	Winter	1	1	3	2	-	-	-	3	-	-	-	2	CodeInjection, Sublimation, CrystalEyes	PerfectFreeze; VanishingMist	SnoWing Viruses look like prankster fairies, flying on low-poly wings and hurling icicles before disappearing into the mist.	Artillery	
-Spader	5	Cards	2	2	3	2	3	-	-	-	-	-	-	-	Tracker, Foresight, SpadeCurse	AceOfSpades	A black-armored ranger with spade-tipped arrows. Its glowing eyes shine from within its helm, examining enemy attacks.	Artillery (Mystic Lilies Crossover Virus)	
+SnoWing	4	Winter	1	1	3	2	-	-	-	3	-	-	-	2	CodeInjection, Sublimation, CrystalEyes	PerfectFreeze; VanishingMist	Flying	SnoWing Viruses look like prankster fairies, flying on low-poly wings and hurling icicles before disappearing into the mist.	Artillery	
+Spader	5	Cards	2	2	3	2	3	-	-	-	-	-	-	-	Tracker, Foresight, SpadeCurse	AceOfSpades	None	A black-armored ranger with spade-tipped arrows. Its glowing eyes shine from within its helm, examining enemy attacks.	Artillery (Mystic Lilies Crossover Virus)	
 Spikey	4	Fire	1	2	3	3	-	-	-	-	2	-	-	3	Splash, CodeInjection	HeatShot; LavaStage	None	Spikeys are fierce, chaotic Viruses that throw speedy fireballs from their mouths.	Artillery	https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/spikey.png	
 
 ---Disruption Viruses---	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	
