@@ -130,7 +130,6 @@ Fabricator	3	ModelEdit	You can change appearance for free. Major changes require
 FirstBarrier	3	-	The Navi has a barrier active upon jacking in that nullifies the first hit they take.	-	
 Fizzle	3	NoClip	You can use NoClip to dodge attacks that would pass through you.	-	
 FloatShoes	3	-	The Navi always floats a few inches above the ground.	-	
-GrazingPower	3	-	When you successfully defend with Speed, gain +2 dice to your next rolled attack.	-	
 Hijack	3	Reconfig	On hit, your next melee attack takes a Chip (GM's pick) from the target's Folder.	-	
 HP+4	3	-	+4 maximum HP.	-	
 HypnoFlash	3	Hypnotize	Hypnotize works on humans if you are on a large screen. [Often illegal.]	-	
@@ -179,7 +178,7 @@ Speed+1	2	-	Raises your Speed by 1.	-
 Stamina+1	2	-	Raises your Stamina by 1.	-	
 Charm+1	2	-	Raises your Charm by 1.	-	
 Bravery+1	2	-	Raises your Bravery by 1.	-	
-Affinity+1	2	-	Raises your Affininty by 1.	-	
+Affinity+1	2	-	Raises your Affinity by 1.	-	
 
 ---Power NCPs---
 

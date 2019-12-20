@@ -24,7 +24,7 @@ AscensionSlash	2	Close	A slash that rises into the air. Double your damage if yo
 BambooSword	3	Close	Slashes the target with bristling bamboo, spreading around fast-sprouting grass.	Blade	-	-	
 ChainRod	3	Close	Bladed whip! Can be used instead to get Close to a Near target & downshift your first attack.	Blade	Awkward	-	
 CrystalBlade	2	Close	A gleaming crystal blade. Can instead be used to reveal & stun Near invisible targets.	Blade	-	C-License	
-CustSword	0+X	Close	A bright green sword powered by your Folder. X=# of used chips in your folder; max 4.	-	-	
+CustSword	0+X	Close	A bright green sword powered by your Folder. X=# of used chips in your folder; max 4.	Blade	-	-	
 DataDaggers	2	Close	Pick 2: is Near; is Accurate; on hit, target's Coding is briefly 0; downshift next 2 Coding rolls.	Blade	-	-	
 DoubleEdge	4	Close	You also take 4 damage if the target is not deleted by your attack.	Blade	-	-	
 ElecSword	3	Close	Slashes the target with crackling electricity, spreading zapping sparks.	Blade	-	-	
@@ -355,6 +355,7 @@ DarkWorm	4+X	Near	Burrow and devour. X=[Daemon Bond]. On hit, attack another tar
 FlashMemory	-	Far	Rewind the memory of any number of targets in range up to 10 minutes. They won't feel a thing.	Support	-	Dark
 GraveBreath	-	Far	Sinister breath bathes the server. Others suffer your bugs and lose 1 HP each time they roll.	Hazard	Slow	Dark	
 JusticeFist	4	Close	Strike with Duo's fury! Deals double damage if the target is unable or unwilling to fight back.	Impact	Dangerous	Dark	
+LifeAura	-	-	A shadowy orb protects the user from all attacks under 5 damage. All Near noise is muted.	Support	Dangerous	Dark	
 
 ---ChitChat CrossOver Chips---
 
