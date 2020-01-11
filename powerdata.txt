@@ -16,8 +16,9 @@ Analyze	Info	Roll	Learn one per hit: The target's skills, BattleChips, powers, a
 Foresight	Info	Roll	You can dodge an attack with Info if you've seen this enemy use it before.	
 Extend	Info	Roll	Next chip's effects (e.g. stun, upshift one roll) last twice as many seconds/rolls.	
 
-Ego	Info	Cost	Sends (possibly false) into to a Near target in the form of a (possibly fabricated) memory.
-ExtraExtra	Info	Cost	Creates a big, hefty textbos with scandalous info you've gained. Can absorb 1 attack.
+Ego	Info	Cost	Sends (possibly false) into to a Near target in the form of a (possibly fabricated) memory.	
+ExtraExtra	Info	Cost	Creates a big, hefty textbos with scandalous info you've gained. Can absorb 1 attack.	
+WordOfTheDay	Info	Cost	Secretly pick a word. You can warp directly behind any Far enemy that says that word.	
 
 ---Coding Powers---
 
@@ -61,6 +62,7 @@ ArtfulDodger	Speed	Roll	Distract a group of enemies with quick movement, making 
 Sublimation	Speed	Cost	Summons mist. If you spend 3 rolls in the mist, you can warp two range bands away.	
 
 ThisWayDown	Speed	Roll	Rush into Close range of a Near target, flipping over any object in your path.
+LeapFrog	Speed	Roll	Roll Speed to attack someone Near; downshift if you just hit someone else with Leapfrog.	
 
 ---Stamina Powers---
 
@@ -98,6 +100,7 @@ Duel	Bravery	Roll	Convince an enemy to take you on one-on-one.
 SetPriority	Bravery	Cost	Whip a Close target for 1 dmg. Covers them in your element. They get +3 dice to their next roll.
 
 EvilTwin	Bravery	Roll	Copy a skill & Navi Power from the target. Expires when you get hit.	
+PressOn	Bravery	Roll	After being attacked, lunge a range band towards the attacker.	
 
 ---Affinity Powers---
 
@@ -110,35 +113,43 @@ Alt	Affinity	Roll	Consume all of your element to create a minion with one purpos
 
 Aria	Affinity	Cost	When a Near ally is about to be deleted, they survive at 1 HP.	
 Aromatherapy	Affinity	Cost	Pick an ally in your element. Heal them 3HP and change their element to yours.	
+CodeVent	Affinity	Cost	Your next attack leaves behind trails of your element.	
 Defiant	Affinity	Cost	Invert the temporary stat/skill changes of a Near target. Expires on your death.	
 FireWire	Affinity	Cost	Whip a Close target for 1 dmg. Covers them in your element. They restore all spent skill points.	
 FlashBlind	Affinity	Cost	Flash bright lights, briefly blinding anyone Near.	
 Id	Affinity	Cost	Secretly send a strong sensation to a Near target. (If to a player, GM passes a note explaining.)	
 Impersonate	Affinity	Cost	Cust Near writing, changing the text and instaling a secret PET backdoor on touch.	
 LoveBond	Affinity	Cost	Link to a Near ally with red string. Until the string breaks or you bond to another, you & the bonded ally will mirror healing, stat/skill buffs, and positive effects (e.g. invisibility).		
+Mimesis	Affinity	Cost	Change into someone else, replacing on of your stats with theirs.	
 Minelayer	Affinity	Cost	Creates a mine that deals 5 damage on trigger.	
 Must	Affinity	Cost	Mute a Close sound, making it completely inaudiable.	
 NightSign	Affinity	Cost	Mark a Near target. Removing a Mark requides a Hard Coding roll or jacking out.	
 PlatDuJour	Affinity	Cost	Curse your Close element. All who touch it (pick 1): hallucinate; go blind; fall asleep.	
 PoisonMist	Affinity	Cost	Enemies within mist upshift their next defense roll.	
+Projection	Affinity	Cost	Put a shield on an ally. Next time they defend, add your Stamina to their roll.	
+RedLetter	Affinity	Cost	Curse Near writing, changing the text and installing a secret PET backdoor on touch.	
 SweetTreat	Affinity	Cost	Consume your element to heal a Close ally 2 HP.	
 Seasoning	Affinity	Cost	Downshift a Near ally's next roll to attack and infuses it with your element.	
 Transmute	Affinity	Cost	Swap the value of two skills in yourself or any  allied Near Virus.	
 Twin	Affinity	Cost	Make an illusory twin of an ally. When the twin acts in sync with the ally, they roll twice and take the better result. Expires when the ally takes damage.	
 
-Amplify	Affinity	Roll	Amplify and replay a Near sound, making it clearly audible up to Far range.
-StaticBlast	Affinity	Roll	Plays a melody that blinds Near Navis. Lasts about 5 seconds.	
-BeatBlast	Affinity	Roll	Plays a melody that freezes Navis in place.	
-Cacophony	Affinity	Roll	Plays a melody that upshifts Navi Sense rolls. Lasts ~5 seconds.	
-MirrorMove	Affinity	Roll	Copy the last Navi Power you saw. Hits rolled = number of times usable.	
-Brushup	Affinity	Roll	Create a dangerous hazard or damage-halving panel beneath itself.	
-Reinforce	Affinity	Roll	Add +1 to an ally's Stamina per hit. One ally at a time; expires on your deletion.	
-Ingredients	Affinity	Roll	Consume somebody else's Near element to produce your element.	
-Poser	Affinity	Roll	Strike a pose and downshift the next Soul roll for Near allies.	
-Fanfare	Affinity	Roll	A melody makes allies invincible for 10 seconds.	
 Abracadabra	Affinity	Roll	Disguises Viruses as similarly-proportioned mundane objects.	
-Harmonizer	Affinity	Roll	Plays a melody that heals all other Viruses up to Near range for 1 HP per hit.	
+Amplify	Affinity	Roll	Amplify and replay a Near sound, making it clearly audible up to Far range.
+BeatBlast	Affinity	Roll	Plays a melody that freezes Navis in place.	
+Brushup	Affinity	Roll	Create a dangerous hazard or damage-halving panel beneath itself.	
+Cacophony	Affinity	Roll	Plays a melody that upshifts Navi Sense rolls. Lasts ~5 seconds.	
+DeadLetter	Affinity	Roll	Delcare a letter and a Near target. If they say the letter and you are alive, your element covers them.
 DrawDistance	Affinity	Roll	Enemies can't see you or allies in mist unless they are Close.	
+Fanfare	Affinity	Roll	A melody makes allies invincible for 10 seconds.	
+Ingredients	Affinity	Roll	Consume somebody else's Near element to produce your element.	
+MirrorMove	Affinity	Roll	Copy the last Navi Power you saw. Hits rolled = number of times usable.	
+PoeticLicense	Affinity	Roll	Temporarily change an object/ally's appearance to a perfect rhyme of the target's name.	
+Poser	Affinity	Roll	Strike a pose and downshift the next Soul roll for Near allies.	
+Reinforce	Affinity	Roll	Add +1 to an ally's Stamina per hit. One ally at a time; expires on your deletion.	
+StaticBlast	Affinity	Roll	Plays a melody that blinds Near Navis. Lasts about 5 seconds.	
+Harmonizer	Affinity	Roll	Plays a melody that heals all other Viruses up to Near range for 1 HP per hit.	
+SoulVision	Affinity	Roll	Learn one memory the target has per hit.	
+TakeItEasy	Affinity	Roll	Consume your Near Element to heal yourself 2 HP.	
 TempoShift	Affinity	Roll	Upshift or downshift the next Speed roll of all Near. Also affects the speed of moving objects.	
 
 ---Passive Powers---
@@ -172,7 +183,6 @@ Guardbreaker	Passive	-	Upshift enemy rolls to defend with Stamina.
 Orbiter	Passive	-	Attacks hit all targets in Close range.	
 Trailblazer	Passive	-	When you succeed a Speed roll, you leave your element behind you.	
 Headstrong	Passive	-	Downshifts defense rolls when not attacking.	
-LeapFrog	Passive	-	Roll Speed to attack someone Near; downshift if you just hit someone else with Leapfrog.	
 Lifesucker	Passive	-	Heals for damage it deals.	
 Blademaster	Passive	-	Downshifts all of your attacks when parrying.	
 Hardcore	Passive	-	Can use a cost Power right after being deleted.	
@@ -204,6 +214,13 @@ Firestarter	Passive	-	When you damage a target or object for the first time, the
 CursedAsh	Passive	-	Anyone touching your element treats their Stamina as 0.	
 Foxglove	Passive	-	When enemies in your element fail a social Charm/Bravery roll, dictate what they say.	
 Tulip	Passive	-	When enemies in your element fail an Info/Sense roll, say what they recall/perceive.	
+Intimidate	Passive	-	On hitting an enemy, upshifts the target's next Soul roll.	
+NotDifficult	Passive	-	Sense attacks upshift target Stamina defenses.	
+HopTolt	Passive	-	Can bypass structures/hazards unharmed, even inexplicably.	
+Pester	Passive	-	When making an opposed roll and taking someone by surprise, roll twice and take the better result.	
+Lasso	Passive	-	Enemies hit with attacks are dragged into Close range.	
+CuddleBug	Passive	-	When you heal, a Close ally may rest a bit to heal the same amount.	
+Judgement	Passive	-	ON dodging/resisting an attack, cover the attacker in your element.	
 
 ---EASTER EGGS---
 

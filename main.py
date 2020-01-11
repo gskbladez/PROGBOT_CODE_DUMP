@@ -341,6 +341,10 @@ async def chip(context, *args, **kwargss):
           color = 0x73ab50
         elif "Mystic Lilies" in values[5]:
           color = 0x99004c
+        elif "Genso Network" in values[5]:
+          color = 0xff605d
+        elif "Leximancy" in values[5]:
+          color = 0x481f65
         elif "Dark" in values[5]:
           color = 0xB088D0
         elif "Item" in values[3]:
@@ -408,6 +412,8 @@ async def NCP(context, *args, **kwargs):
         color = 0xff0000
     elif crossover in ["Mystic Lilies"]:
         color = 0x99004c
+    elif crossover in ["Genso Network"]:
+        color = 0xff605d
     else:
         color = 0xffffff
     embed = discord.Embed(title="__{}{}__".format((name)," ({} Crossover NCP)".format(values[3]) if values[3] != "-" else ""), color=color)
@@ -664,7 +670,7 @@ async def element(context, *args, **kwargs):
 
 async def rulebook(context, *args, **kwargs):
     if len(args) < 1:
-        return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 5 Official Rulebook (high-res): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Full-Res.pdf>\nNetBattlers Beta 5 Official Rulebook (mobile-friendly): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2019/10/NetBattlers-Advance-4.pdf>")
+        return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 5 Official Rulebook (high-res): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Full-Res.pdf>\nNetBattlers Beta 5 Official Rulebook (mobile-friendly): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2019/10/NetBattlers-Advance-4.pdf>\n\n**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)

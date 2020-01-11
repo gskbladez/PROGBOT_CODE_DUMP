@@ -328,7 +328,7 @@ DarkBrush	4	Near	Spread mystic ink! On hit, learn 1: their greatest fear, their 
 DarkCannon	5	Near	Fires a devastating shot that pierces anything in its path. Bypasses all barriers. Never stops.	Shot	Dangerous, Piercing	Dark	
 DarkCircle	2+X	Near	Dark artillery fires from your body. Hits as many targets in range as you want. X = # of targets.	Shot	Accurate, Awkward	Dark	
 DarkDrill	4	Close	Rip them apart. Damage lowers the target's Max HP. Lasts a long time, even after jack-out.	Impact	Piercing	Dark	
-DarkFlame	4	Near	If this hits a Navi, thier PET overheats. The NetOp takes 1 dmg when they roll holding the PET.	Wave	Dangerous	Dark		
+DarkFlame	4	Near	If this hits a Navi, their PET overheats. The NetOp takes 1 dmg when they roll holding the PET.	Wave	Dangerous	Dark		
 DarkHeart	-	-	Until jack-out, add [Daemon Bond]x2 to Charm social rolls. Any you charm get a Daemon Bond.	Support	-	Dark	
 DarkInsert	-	Near	Spawn all Near allies' elements. They can't control their element anymore, but you can.	Summon	-	Dark	
 DarkInvisible	-	-	For the next 2x[Daemon Bond] rolls, you become an invisible, invincible specter. 	Support	Simple	Dark	
@@ -426,6 +426,55 @@ SealingRites	4	Close	Entombs a target Navi in an inescapable cell, buried within
 ShadowCaster 5	Close	On hit, creates a fiendish doppelganger. At first, nobody can tell which is which. Ignores barriers.	Blade	-	Mystic Lilies Incident	
 VanishingWorld	14	Near	Before firing, spends a minute sucking power from all electronics on the power grid. Ignores barriers.	Wave	Awkward, Dangerous, Slow	Mystic Lilies Incident	
 VileSeed	3	Near	A subtle, burrowing seed! After time passes, the user can control the target's body, then mind.	Shot	-	Mystic Lilies Incident	
+
+---Leximancy Chips---
+
+AlchemistTrick	-	-	On next chip use, change a word of it's description to a perfect rhyme. Only affects appearance.	Support	Simple	Leximancy Battle	
+AlphaStrike	2	Near	Cursed envelope! Pick a letter. For 3 rolls, the target can't use chips starting with that letter.	Thrown	Piercing, Slow	Leximancy Battle	
+CapsLock	1	Near	Sacrifice a BattleChip to upshift target's next X rolls. x = # of capital letters in the chip name.	Impact	Accurate	Leximancy Battle	
+ChaosSwap	1	Near	Wild magic attacks two targets! If you hit both, swap their elements. Lasts until you roll 3 times.	Thrown	Piercing	Leximancy Battle	
+Crowdsource	-	Near	A big hologram crowd! They cheer spectavle, boo boring people, and disappear when harmed.	Summon	-	Leximancy Battle	
+DictionaryAttack	1	Close	Paper rapier! Pick a letter; if the target's element includes that letter, disable it for 3 rolls.	Blade	Accurate	Leximancy Battle	
+LoveLetter	-	-	Pick an unused Chip in your Folder, heal X HP. X = # of vowels (including Y) in the chip name.	Support	Simple	Leximancy Battle	
+MagicTome	2	Near	Cast a magic bolt! Can instead be used to make yourt next 3 Affinity rolls using Info instead.	Shot	-	Leximancy Battle	
+RhymeScheme	-	Near	Spend X Info to turn the target's element to a perfect rhyme of your choice for X*2 rolls.	Support	-	Leximancy Battle	
+
+---Genso Network Chips---
+
+9Rush	2	Near	Create an ice block and slide across, crashing into Close range. The target is covered in ice.	Rush	Awkward, Dangerous	Genso Network Battle	
+BioSpray	2	Near	Poison gas spray! Can be used repeatedly if you don't move while it's active; keep spraying!	Wave	Piercing, Slow	Genso Network Battle
+BraveSword	2	Close	A weapon for the bold! Can instead be used to downshift two Bravery rolls.	Blade	Slow	Genso Network Battle	
+ChargeCannon	3	Near	If an action is spent to charge, becomes 4 Damage and Accurate.	Shot	Awkward, Slow	Genso Network Battle	
+CleanUp	-	-	Area is restored to original state, removing all summoned objects, elements, and hazards.	Support	Slow	Genso Network Battle
+CrackTool	-	-	Ignore secondary effects of enemy's damaging chip. Spend 1 Coding to refresh this chip.	Support	Simple	Genso Network Battle	
+CrashLink	3	Close	Places a pressure-activated mine at your feet. Freezes victim and the Closer area when triggered.	Summon	Dangerous, Slow	Genso Network Battle	
+EarthPower	2	Near	Attacks rise from terrain! All Near features become sentient and attack all Close entities.	Hazard	Awkward, Dangerous	Genso Network Battle	
+ElChain	1	Near	Electrified chain that stuns and pulls a foe into Close range.	Impact	Awkward, Slow	Genso Network Battle	
+FlashBang	1	Near	Grenade explodes in a flash. Stops enemy movement, reveals hidden foes in range.	Thrown	-	Genso Network Battle	
+GasGarden	Close	Grows a poison lily that starts emitting gas. All Close to it upshift their attacks.	Summon	Dangerous	Genso Network Battle	
+GravityBall	2	Near	Homing gravity orb that makes the target extremely heavy!	Thrown	Accurate	Genso Network Battle	
+GravityField	-	Near	Gravity becomes intensified in a direction of your choice.	Hazard	Dangerous	Genso Network Battle	
+Hakkero	2	Near	A large wall that shoots a piercing beam. Defenses while using are downshifted.	Piercing, Slow	Genso Network Battle	
+Hakurouken	1+X	Close	Legendary blade cuts through any defense! X = target Body score.	Blade	Piercing, Dangerous	Genso Network Battle	
+Hanrei	-	Close	Summons a ghost that holds the soul of your Navi. Body is invulnerable, soul defends with -1 dice.	Summon	Awkward	Genso Network Battle	
+HeavyAnchor	3	Near	Lobs a giant anchor to crush anything beneath. Can instead be used to summon giant waves.	Thrown	Awkward, Dangerous	Genso Network Battle	
+HyperSpanner	2	Near	Throw a gigantic spanner! Can also be used to power up nearby equipment.	Thrown	Awkward	Genso Network Battle	
+LeafWave	1	Near	Dead leaves zigzag forward, leaving tripping debris behind.	Wave	-	Genso Network Battle	
+MagiBomb	2	Near	Magic cross-bomb that deals 2 damage to all Close to target. Spend 1 Sense to hit twice.	Thrown	-	Genso Network Battle	
+MedusaEye	1	Close	Small eye opens up and periodically fires petrifying rays at Near targets, up to 5 times.	Summon	Dangerous	Genso Network Battle	
+MonkeyPole	-	Far	Multiple Staffs rise from the ground and linger. They are difficult to break.	Summon	Simple	Genso Network Battle	
+PaladinLance	2	Close	For the noble! Spend 1 Bravery to instead add +2 hits and Piercing to an ally's attack.	Blade	Piercing, Awkward	Genso Network Battle	
+Roukanken	3	Close	Legendary sword cuts data! Spend 1 Affinity to temporarily remove the target's element.	Blade	-	Genso Network Battle	
+ScatterShot	2x2	Close	Reckless blast also hits an additional target Close to original target.	Shot	Dangerous	Genso Network Battle	
+SeedCannon	3	Near	Hefty cannon that launches seeds! Spawns grass on target and surrounding area.	Shot	Dangerous, Slow	Genso Network Battle	
+ShellArmor	-	-	Reduce damage of next 3 attack you take by half, rounding up. Does not block secondary effects.	Support	Slow	Genso Network Battle	
+ShellHockey	1+X	Near	Ride a bouncing shell! On miss: bounce to Close enemy unit hit. X = # missed.	Rush	Dangerous	Genso Network Battle	
+SilverKnife	X	-	Thin knife, throwable from any range! (Choose 1) Close: X = 3; Near: X = 2; Far: X = 1.	Blade	-	Genso Network Battle	
+TankMissiles	2	Near	Targeting reticles appear everywhere. After a delay, missiles rain down and hammer the Earth.	Hazard	Dangerous, Slow	Genso Network Battle	
+VenomShot	3	Near	Coats the floor in a pool of poison on a miss.	Thrown	Dangerous, Slow	Genso Network Battle	
+VirusBall	-	-	Used to contain a Virus. Must be in the Folder to tame a Virus. When occupied, slot in to summon a Virus.	Thrown	-	Genso Network Battle	
+WhiteCard	-	-	Your next attack roll mimics the secondary effects of the last two damaging chips used.	Support	Slow	Genso Network Battle	
+WhiteLily	-	Close	Fragile lily poison a Near target. While active, they take 1 dmg whenver they roll.	Summon	-	Genso Network Battle	
 
 ---EASTER EGGS---
 

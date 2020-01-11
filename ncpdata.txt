@@ -255,6 +255,32 @@ RideOn	1	-	On jack in, you have a cool, small ride (e.g. roller skates, snowboar
 Servant	1	-	Must spend 1 Bravery to knowingly subvert the wishes of a Navi with Master installed.	Mystic Lilies	
 Taboo	3	-	When you break something big/valuable, +1 die to your next Strength roll. Stacks to +3.	Mystic Lilies	
 
+---Genso NCPs---
+
+Give&Take	1	-	May occupy the same space as an ally, as if both of you were non-solid.	Genso Network	
+ChipCharge	2	-	Spend 1 Sense to add +1 damage to a chip you use.	Genso Network	
+RichRich	2	-	Viruses deleted in Near range give 50z.	Genso Network	
+AngerMind	3	-	When desired, you may upshift your next defense roll. If you takde damage, add that amound of dice to your next rolled attack.	Genso Network	
+BlitzBuster	3	-	For a rolled attack, you may spend 1 in the used skill to add an extra +3 dice, before reductions.	Genso Network	
+SpeedRunner	3	-	Out-of-combat Speed rolls give a free +1 hit.	Genso Network	
+CrimsonNoise	4	-	Downloading chips from enemies may instead use the tables below for random chips. (May use MysteryData tables instead)	Genso Network	
+MyGarden	4	-	On jack-in, pick a specific type of terrain, with GM discretion. While you are Close to this terrain, all of your rolls are downshifted.	Genso Network	
+RunSoul	4	-	On jack-in, pick one skill from Soul. You may roll Speed as a replacement for rolls using that skill, with one less dice.	Genso Network	
+StyleChange	4	-	Your Navi has a second element. Spend 1 Affinity to swap between them.	Genso Network	
+ChipLance	5	-	Can use Shot/Rush/Wave/Thrown chips in a parry as if they were Impact/Blade chips.	Genso Network	
+DamageGhost	5	-	When you take damage, you are invulnerable until your next action, up to a minute.	Genso Network	
+
+CustomPain	+3	-	Every time you use a chip, take 1 damage. Is not capable of deleting.	Genso Network Minus NCP	
+JunkBuster	+3	-	All rolled attacks have -1 die.	Genso Network Minus NCP	
+LostCustom	+3	-	Maximum Folder size reduced by 2. Cannot be used with Custom+3.	Genso Network Minus NCP	
+HPMinus	+4	-	Maximum HP is halved, Resulting values are rounded up. Low HP benefits do not activate.	Genso Network Minus NCP	
+MeltSelf	+4	-	Every time you take damage, you take 1 extra point of damage.	Genso Network Minus NCP	
+LostArea	+5	- Can only attack at Close range, no matter what. Further-ranged chips and powers must be used in Close range.	Genso Network Minus NCP	
+StunDamage	+5	-	Freeze up upon taking damage. Must roll NetOp coding to unlock.	Genso Network Minus NCP	
+DarkMind	+6	-	No Bond Powers. All positive effects from allied chips, NCPs, elements, or powers fail on you.	Genso Network Minus NCP	
+LostLight	+7	-	NetNavi has trouble seeing. All combat actions are upshifted.	Genso Network Minus NCP	
+DeadBody	+10	-	Max. HP is 1, and HP cannot go above 1, no matter what,. Low HP benefits do not activate.	Genso Network Minus NCP	
+
 ---EASTER EGGS---
 
 You found an Easter Egg! #7 out of 10! (W)
