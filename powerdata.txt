@@ -191,7 +191,7 @@ Networking	Passive	-	When you succeed a Speed roll, all Near allies get +2 dice 
 Orbiter	Passive	-	Attacks hit all targets in Close range.	
 Payback	Passive	-	After your deletion, at some point, consume the Mark with a temporary curse (pick 1): make their highest stat 1; they make a loud, embarassing noise; change their element to Bad Jokes.	
 ProgPower	Passive	-	EggMecha deactivates if the Mr. Prog inside is removed.	
-Ricochet	Passsive	-	Can attack three Near targets in one roll.	
+Ricochet	Passive	-	Can attack three Near targets in one roll.	
 Scary	Passive	-	On hit, upshifts the target's next Mind roll.	
 Scrambler	Passive	-	On hit, briefly disable a random Power or NCP.	
 Seeker	Passive	-	Attacks swerve over and around obstacles to home in on opponents.	
