@@ -406,7 +406,7 @@ Moonlight	-	Near	Summons a moonbeam from the sky. You are invisible as long as y
 PerfectFreeze	1	Close	On hit, temporarily encases the target in a block of ice.	Impact	Dangerous, Slow	Mystic Lilies Battle
 Possession	-	Near	Must be used immediately after a Navi/Virus is deleted. You can briefly control their body.	Support	-	Mystic Lilies Battle		
 PristineBeat	2	Far	Your voice booms out, clearly heard by everyone within range.	Wave	Awkward, Slow	Mystic Lilies Battle	
-Reverser	2	Close	On parry win, pick 1 (lasts 3 rolls): Invert your gravity; flip youyr temp skill changes; flip the target over.	Blade	-	Mystic Lilies Battle	
+Reverser	2	Close	On parry win, pick 1 (lasts 3 rolls): Invert your gravity; flip your temp skill changes; flip the target over.	Blade	-	Mystic Lilies Battle	
 TabulaRasa	-	-	Erase any traces of your presence. Viruses outside line of sight forget they saw you.	Support	-	Mystic Lilies Battle	
 ThirdEye	-	Near	Gaze into the target's mind. You hear their thoughts until you roll, use a chip, or take damage.	Shot	Awkward	Mystic Lilies Battle	
 Uptempo	-	Near	A blaring, frenzied beat! All in range downshift their next 3 Speed rolls. Objects also accelerate.	Hazard	Dangerous	Mystic Lilies Battle	
@@ -433,11 +433,11 @@ AlchemistTrick	-	-	On next chip use, change a word of it's description to a perf
 AlphaStrike	2	Near	Cursed envelope! Pick a letter. For 3 rolls, the target can't use chips starting with that letter.	Thrown	Piercing, Slow	Leximancy Battle	
 CapsLock	1	Near	Sacrifice a BattleChip to upshift target's next X rolls. x = # of capital letters in the chip name.	Impact	Accurate	Leximancy Battle	
 ChaosSwap	1	Near	Wild magic attacks two targets! If you hit both, swap their elements. Lasts until you roll 3 times.	Thrown	Piercing	Leximancy Battle	
-Crowdsource	-	Near	A big hologram crowd! They cheer spectavle, boo boring people, and disappear when harmed.	Summon	-	Leximancy Battle	
+Crowdsource	-	Near	A big hologram crowd! They cheer spectacle, boo boring people, and disappear when harmed.	Summon	-	Leximancy Battle	
 DictionaryAttack	1	Close	Paper rapier! Pick a letter; if the target's element includes that letter, disable it for 3 rolls.	Blade	Accurate	Leximancy Battle	
 LoveLetter	-	-	Pick an unused Chip in your Folder, heal X HP. X = # of vowels (including Y) in the chip name.	Support	Simple	Leximancy Battle	
-MagicTome	2	Near	Cast a magic bolt! Can instead be used to make yourt next 3 Affinity rolls using Info instead.	Shot	-	Leximancy Battle	
-RhymeScheme	-	Near	Spend X Info to turn the target's element to a perfect rhyme of your choice for X*2 rolls.	Support	-	Leximancy Battle	
+MagicTome	2	Near	Cast a magic bolt! Can instead be used to make your next 3 Affinity rolls using Info instead.	Shot	-	Leximancy Battle	
+RhymeScheme	-	Near	Spend X Info to turn the target's element to a perfect rhyme of your choice for Xx2 rolls.	Support	-	Leximancy Battle	
 
 ---Genso Network Chips---
 
@@ -468,7 +468,7 @@ Roukanken	3	Close	Legendary sword cuts data! Spend 1 Affinity to temporarily rem
 ScatterShot	2x2	Close	Reckless blast also hits an additional target Close to original target.	Shot	Dangerous	Genso Network Battle	
 SeedCannon	3	Near	Hefty cannon that launches seeds! Spawns grass on target and surrounding area.	Shot	Dangerous, Slow	Genso Network Battle	
 ShellArmor	-	-	Reduce damage of next 3 attack you take by half, rounding up. Does not block secondary effects.	Support	Slow	Genso Network Battle	
-ShellHockey	1+X	Near	Ride a bouncing shell! On miss: bounce to Close enemy unit hit. X = # missed.	Rush	Dangerous	Genso Network Battle	
+ShellHockey	1+X	Near	Ride a bouncing shell! On miss: bounce to Close enemy until hit. X = # missed.	Rush	Dangerous	Genso Network Battle	
 SilverKnife	X	-	Thin knife, throwable from any range! (Choose 1) Close: X = 3; Near: X = 2; Far: X = 1.	Blade	-	Genso Network Battle	
 TankMissiles	2	Near	Targeting reticles appear everywhere. After a delay, missiles rain down and hammer the Earth.	Hazard	Dangerous, Slow	Genso Network Battle	
 VenomShot	3	Near	Coats the floor in a pool of poison on a miss.	Thrown	Dangerous, Slow	Genso Network Battle	

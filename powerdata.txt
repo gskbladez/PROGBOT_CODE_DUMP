@@ -61,8 +61,8 @@ ArtfulDodger	Speed	Roll	Distract a group of enemies with quick movement, making 
 
 Sublimation	Speed	Cost	Summons mist. If you spend 3 rolls in the mist, you can warp two range bands away.	
 
-ThisWayDown	Speed	Roll	Rush into Close range of a Near target, flipping over any object in your path.
-LeapFrog	Speed	Roll	Roll Speed to attack someone Near; downshift if you just hit someone else with Leapfrog.	
+LeapFrog	Speed	Roll	Roll Speed to attack someone Near; downshift if you just hit someone else with Leapfrog.
+ThisWayDown	Speed	Roll	Rush into Close range of a Near target, flipping over any object in your path.	
 
 ---Stamina Powers---
 
@@ -154,67 +154,66 @@ TempoShift	Affinity	Roll	Upshift or downshift the next Speed roll of all Near. A
 
 ---Passive Powers---
 
-Ricochet	Passsive	-	Can attack three Near targets in one roll.	
-Collateral	Passive	-	When you miss an attack, a structure nearby the target is destroyed.	
-Seeking	Passive	-	Every time the Virus misses an attack, it downshifts its next attack roll.	
-Headstrong	Passive	-	Downshifts defense rolls when not attacking.	
-Spreader	Passive	-	Projectiles cover things in the Virus's element on contact.	
-Germination	Passive	-	Can fire a seed which sprouts explosively after a delay.	
-Dazzler	Passive	-	Attacks that hit can deal -1 damage to briefly drop the target's Sense by 1.
-Zapper	Passive	-	Attacks paralyze for a moment on hit.	
-SuctionCups	Passive	-	Able to run up walls and ceilings without complication.	
-ShadowStrike	Passive	-	Projectiles are silent.	
-IceBlocker	Passive	-	Downshifts all defense rolls when on ice.	
-Seeker	Passive	-	Attacks swerve over and around obstacles to home in on opponents.	
-Frenzy	Passive	-	For each point of damage the Virus takes, add a point to Speed.	
-Infection	Passive	-	Attacks disrupt programming upshifting the target's next 2 rolls on hit.	
-BlindingFlash	Passive	-	Attacks blind, upshifting target's next Sense roll.	
-Spores	Passive	-	When attacks hit, target upshifts  next Mind roll; next 3 Mind rolls if they are on grass.	
-Toll	Passive	-	Can be paid 500z to be made intangible for several seconds.	
-Earthshaker	Passive	-	Stuns anyone it lands in Close range of.	
-Moneybags	Passive	-	On Speed rolls with <2 hits, drop some Zenny. Drop all Zenny on deletion.	
-Scrambler	Passive	-	On hit, briefly disable a random Power or NCP.	
-Lurker	Passive	-	Invisible when not attacking.	
-Scary	Passive	-	On hit, upshifts the target's next Mind roll.	
-Ventrillo	Passive	-	You can make your voice come from anywhere in Near range.	
-Dullahan	Passive	-	Your head is freely detatchable.	
-Treehugger	Passive	-	When you roll while touching grass, heal 1 HP.	
-Guardbreaker	Passive	-	Upshift enemy rolls to defend with Stamina.	
-Orbiter	Passive	-	Attacks hit all targets in Close range.	
-Trailblazer	Passive	-	When you succeed a Speed roll, you leave your element behind you.	
-Headstrong	Passive	-	Downshifts defense rolls when not attacking.	
-Lifesucker	Passive	-	Heals for damage it deals.	
-Blademaster	Passive	-	Downshifts all of your attacks when parrying.	
-Hardcore	Passive	-	Can use a cost Power right after being deleted.	
-Lurker	Passive	-	Invisible when not attacking.	
-Blocker	Passive	-	Upshifts frontal attacks.	
-Tandem	Passive	-	Can move one other Close Virus when it moves range bands.	
-Shy	Passive	-	You are rendered immobile whenever a Near Navi looks at you.	
-Backup	Passive	-	When you attack with an ally, add your dice to an ally's attack.	
 Aftertaste	Passive	-	When this virus is deleted, it explodes into a cloud of eye-watering spices.	
-Networking	Passive	-	When you succeed a Speed roll, all Near allies get +2 dice to their next Speed roll.	
-Intergalactic	Passive	-	You can affect as many Near targets or objects as you like when you roll Affinity.	
-Chuckster	Passive	-	Cannot attack directly; attacks by launching objects at targets.	
-Waveform	Passive	-	Attacks hit all targets in Near range.	
-HeadsUp	Passive	-	Downshifts Stamina rolls if it is hiding under its helmet.	
+Assimilation	Passive	-	Add +1 to a stat when you absorb a piece of Mystery Data. Drop data on deletion.	
+Backup	Passive	-	When you attack with an ally, add your dice to an ally's attack.	
+Blademaster	Passive	-	Downshifts all of your attacks when parrying.	
+BlindingFlash	Passive	-	Attacks blind, upshifting target's next Sense roll.	
+Blocker	Passive	-	Upshifts frontal attacks.	
 BreakAttack	Passive	-	Shockwave attacks shatter surfaces.	
 Burrower	Passive	-	Able to dig through any surface, leaving tunnels for anyone to use.	
+Chuckster	Passive	-	Cannot attack directly; attacks by launching objects at targets.	
+Collateral	Passive	-	When you miss an attack, a structure nearby the target is destroyed.	
+CrystalEyes	Passive	-	When you cover something with your element, gain +1 Sense.	
+CursedAsh	Passive	-	Anyone touching your element treats their Stamina as 0.	
+Dazzler	Passive	-	Attacks that hit can deal -1 damage to briefly drop the target's Sense by 1.	
+Dullahan	Passive	-	Your head is freely detatchable.	
+Earthshaker	Passive	-	Stuns anyone it lands in Close range of.	
+Firestarter	Passive	-	When you damage a target or object for the first time, they're covered with your element.	
+Foxglove	Passive	-	When enemies in your element fail a social Charm/Bravery roll, dictate what they say.	
+Frenzy	Passive	-	For each point of damage the Virus takes, add a point to Speed.	
+Germination	Passive	-	Can fire a seed which sprouts explosively after a delay.	
+Guardbreaker	Passive	-	Upshift enemy rolls to defend with Stamina.	
+Hardcore	Passive	-	Can use a cost Power right after being deleted.	
+Headstrong	Passive	-	Downshifts defense rolls when not attacking.	
+HeadsUp	Passive	-	Downshifts Stamina rolls if it is hiding under its helmet.	
+IceBlocker	Passive	-	Downshifts all defense rolls when on ice.	
+Infection	Passive	-	Attacks disrupt programming upshifting the target's next 2 rolls on hit.	
+Intergalactic	Passive	-	You can affect as many Near targets or objects as you like when you roll Affinity.	
+Intimidate	Passive	-	On hitting an enemy, upshifts the target's next Soul roll.	
+Lifesucker	Passive	-	Heals for damage it deals.	
+Lurker	Passive	-	Invisible when not attacking.	
 Meld	Passive	-	You can hide yourself in your element indefinitely.	
 Meltdown	Passive	-	You can add bonus dice to your roll for HP, 1 HP per die. Max 3 dice added per roll.	
-ProgPower	Passive	-	EggMecha deactivates if the Mr. Prog inside is removed.	
-Assimilation	Passive	-	Add +1 to a stat when you absorb a piece of Mystery Data. Drop data on deletion.	
-Shakedown	Passive	-	When you hit a target, they drop 100z per point of damage.	
-Telltale	Passive	-	Always leave a trail of your element behind you.	
-CrystalEyes	Passive	-	When you cover something with your element, gain +1 Sense.	
-SpadeCurse	Passive	-	On hit, targets are unable to lie unless they make a Hard Bravery roll or jack out.	
-Payback	Passive	-	After your deletion, at some point, consume the Mark with a temporary curse (pick 1): make their highest stat 1; they make a loud, embarassing noise; change their element to Bad Jokes.	
+Moneybags	Passive	-	On Speed rolls with <2 hits, drop some Zenny. Drop all Zenny on deletion.	
 Muckrake	Passive	-	When you hit a Navi, gain +1 Info and an embarassing/damaging fact from their social media.	
+Networking	Passive	-	When you succeed a Speed roll, all Near allies get +2 dice to their next Speed roll.	
+Orbiter	Passive	-	Attacks hit all targets in Close range.	
+Payback	Passive	-	After your deletion, at some point, consume the Mark with a temporary curse (pick 1): make their highest stat 1; they make a loud, embarassing noise; change their element to Bad Jokes.	
+ProgPower	Passive	-	EggMecha deactivates if the Mr. Prog inside is removed.	
+Ricochet	Passsive	-	Can attack three Near targets in one roll.	
+Scary	Passive	-	On hit, upshifts the target's next Mind roll.	
+Scrambler	Passive	-	On hit, briefly disable a random Power or NCP.	
+Seeker	Passive	-	Attacks swerve over and around obstacles to home in on opponents.	
+Seeking	Passive	-	Every time the Virus misses an attack, it downshifts its next attack roll.	
+ShadowStrike	Passive	-	Projectiles are silent.	
+Shakedown	Passive	-	When you hit a target, they drop 100z per point of damage.	
+Shy	Passive	-	You are rendered immobile whenever a Near Navi looks at you.	
+SpadeCurse	Passive	-	On hit, targets are unable to lie unless they make a Hard Bravery roll or jack out.	
+Spores	Passive	-	When attacks hit, target upshifts  next Mind roll; next 3 Mind rolls if they are on grass.	
+Spreader	Passive	-	Projectiles cover things in the Virus's element on contact.	
 Stalker	Passive	-	Once per minute, you can teleport directyly behinf any Marked target.	
-Firestarter	Passive	-	When you damage a target or object for the first time, they're covered with your element.	
-CursedAsh	Passive	-	Anyone touching your element treats their Stamina as 0.	
-Foxglove	Passive	-	When enemies in your element fail a social Charm/Bravery roll, dictate what they say.	
+SuctionCups	Passive	-	Able to run up walls and ceilings without complication.	
+Tandem	Passive	-	Can move one other Close Virus when it moves range bands.	
+Telltale	Passive	-	Always leave a trail of your element behind you.	
+Toll	Passive	-	Can be paid 500z to be made intangible for several seconds.	
+Treehugger	Passive	-	When you roll while touching grass, heal 1 HP.	
+Trailblazer	Passive	-	When you succeed a Speed roll, you leave your element behind you.	
 Tulip	Passive	-	When enemies in your element fail an Info/Sense roll, say what they recall/perceive.	
-Intimidate	Passive	-	On hitting an enemy, upshifts the target's next Soul roll.	
+Ventrillo	Passive	-	You can make your voice come from anywhere in Near range.	
+Waveform	Passive	-	Attacks hit all targets in Near range.	
+Zapper	Passive	-	Attacks paralyze for a moment on hit.	
+
 NotDifficult	Passive	-	Sense attacks upshift target Stamina defenses.	
 HopTolt	Passive	-	Can bypass structures/hazards unharmed, even inexplicably.	
 Pester	Passive	-	When making an opposed roll and taking someone by surprise, roll twice and take the better result.	

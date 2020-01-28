@@ -50,7 +50,7 @@ TexturePack	1	MapEdit	Structures can be bouncy, sticky, floating, slippery, magn
 ThemeSong	1	-	On Jack-in, your presence has loud, colorful fanfare, drawing all attention to you.	-	
 Underflow	1	-	If a failed roll has three or more 1's, count it as a partial instead.	-	
 Universal	1	CodeInjection	Non-attack rolls can use CodeInjection as long as they have a target.	-	
-ZennyMiner	1	-	On sending Virus data to a blank BattleChip, get a bonus 400z. (Does not stack.)	-	
+ZennyMiner	1	-	On sending Virus data to a blank BattleChip, get a bonus 300z. (Does not stack.)	-	
 
 ---2EB NCPs---
 

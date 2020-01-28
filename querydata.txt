@@ -423,6 +423,54 @@ VengefulSpirit	Support	[Mystic Lilies]
 WanderFlame	Support	[Mystic Lilies]
 WanderingSin	Shot	[Mystic Lilies]
 
+---Leximancy Chips---			
+
+AlchemistTrick	Support	[Leximancy]
+AlphaStrike	Thrown	[Leximancy]
+CapsLock	Impact	[Leximancy]
+ChaosSwap	Thrown	[Leximancy]
+Crowdsource	Summon	[Leximancy]
+DictionaryAttack	Blade	[Leximancy]
+LoveLetter	Support	[Leximancy]
+MagicTome	Shot	[Leximancy]
+RhymeScheme	Support	[Leximancy]
+
+---Genso Network Chips---		
+
+9Rush (__PMC__)	Rush	[Genso Network]
+BioSpray (__PMC__)	Wave	[Genso Network]
+BraveSword (__PMC__)	Blade	[Genso Network]
+ChargeCannon (__PMC__)	Shot	[Genso Network]
+CleanUp (__PMC__)	Support	[Genso Network]
+CrackTool (__PMC__)	Support	[Genso Network]
+CrashLink (__PMC__)	Summon	[Genso Network]
+EarthPower (__PMC__)	Hazard	[Genso Network]
+ElChain (__PMC__)	Impact	[Genso Network]
+FlashBang (__PMC__)	Thrown	[Genso Network]
+GasGarden (__PMC__)	Summon	[Genso Network]
+GravityBall (__PMC__)	Thrown	[Genso Network]
+GravityField (__PMC__)	Hazard	[Genso Network]
+Hakkero (__PMC__)	???	[Genso Network]
+Hakurouken (__PMC__)	Blade	[Genso Network]
+Hanrei (__PMC__)	Summon	[Genso Network]
+HeavyAnchor (__PMC__)	Thrown	[Genso Network]
+HyperSpanner (__PMC__)	Thrown	[Genso Network]
+LeafWave (__PMC__)	Wave	[Genso Network]
+MagiBomb (__PMC__)	Thrown	[Genso Network]
+MedusaEye (__PMC__)	Summon	[Genso Network]
+MonkeyPole (__PMC__)	Summon	[Genso Network]
+PaladinLance (__PMC__)	Blade	[Genso Network]
+Roukanken (__PMC__)	Blade	[Genso Network]
+ScatterShot (__PMC__)	Shot	[Genso Network]
+SeedCannon (__PMC__)	Shot	[Genso Network]
+ShellArmor (__PMC__)	Support	[Genso Network]
+ShellHockey (__PMC__)	Rush	[Genso Network]
+SilverKnife (__PMC__)	Blade	[Genso Network]
+TankMissiles (__PMC__)	Hazard	[Genso Network]
+VenomShot (__PMC__)	Thrown	[Genso Network]
+WhiteCard (__PMC__)	Support	[Genso Network]
+WhiteLily (__PMC__)	Summon	[Genso Network]
+
 ===NCPs===		
 
 ---1EB NCPs---		
@@ -664,6 +712,32 @@ Soul+1	5EB
 ---7EB NCPs---		
 
 SingatureMove	7EB	
+
+---Player Made Content NCPs---		
+
+Give&Take(NCP) (__PMC__)	1EB	[Genso Network]
+ChipCharge(NCP) (__PMC__)	2EB	[Genso Network]
+RichRich(NCP) (__PMC__)	2EB	[Genso Network]
+AngerMind(NCP) (__PMC__)	3EB	[Genso Network]
+BlitzBuster(NCP) (__PMC__)	3EB	[Genso Network]
+SpeedRunner(NCP) (__PMC__)	3EB	[Genso Network]
+CrimsonNoise(NCP) (__PMC__)	4EB	[Genso Network]
+MyGarden(NCP) (__PMC__)	4EB	[Genso Network]
+RunSoul(NCP) (__PMC__)	4EB	[Genso Network]
+StyleChange(NCP) (__PMC__)	4EB	[Genso Network]
+ChipLance(NCP) (__PMC__)	5EB	[Genso Network]
+DamageGhost(NCP) (__PMC__)	5EB	[Genso Network]
+
+CustomPain(-NCP) (__PMC__)	+3EB	[Genso Network]
+JunkBuster(-NCP) (__PMC__)	+3EB	[Genso Network]
+LostCustom(-NCP) (__PMC__)	+3EB	[Genso Network]
+HPMinus	+4EB(-NCP) (__PMC__)	[Genso Network]
+MeltSelf(-NCP) (__PMC__)	+4EB	[Genso Network]
+LostArea(-NCP) (__PMC__)	+5EB	[Genso Network]
+StunDamage(-NCP) (__PMC__)	+5EB	[Genso Network]
+DarkMind(-NCP) (__PMC__)	+6EB	[Genso Network]
+LostLight(-NCP) (__PMC__)	+7EB	[Genso Network]
+DeadBody(-NCP) (__PMC__)	+10EB	[Genso Network]
 
 ---Navi Powers---		
 
