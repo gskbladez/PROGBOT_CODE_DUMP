@@ -2,18 +2,18 @@
 
 ---Starter Chips---		
 
-AirShot (__S__)	Shot	[Starter]	
-Attack+1 (__S__)	Support	[Starter]	
-Barrier (__S__)	Support	[Starter]	
-Bubbler (__S__)	Shot	[Starter]	
-Cannon (__S__)	Shot	[Starter]	
-DashAttack (__S__)	Rush	[Starter]	
-HeatShot (__S__)	Shot	[Starter]	
-Plasma (__S__)	Impact	[Starter]	
-Repair (__S__)	Support	[Starter]	
-RockCube (__S__)	Summon	[Starter]	
-Sword (__S__)	Blade	[Starter]	
-ZapRing (__S__)	Shot	[Starter]	
+AirShot **(__S__)**	Shot	[Starter]	
+Attack+1 **(__S__)**	Support	[Starter]	
+Barrier **(__S__)**	Support	[Starter]	
+Bubbler **(__S__)**	Shot	[Starter]	
+Cannon **(__S__)**	Shot	[Starter]	
+DashAttack **(__S__)**	Rush	[Starter]	
+HeatShot **(__S__)**	Shot	[Starter]	
+Plasma **(__S__)**	Impact	[Starter]	
+Repair **(__S__)**	Support	[Starter]	
+RockCube **(__S__)**	Summon	[Starter]	
+Sword **(__S__)**	Blade	[Starter]	
+ZapRing **(__S__)**	Shot	[Starter]	
 
 ---Blade Chips---		
 
