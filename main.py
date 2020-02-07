@@ -500,7 +500,7 @@ async def query(context, *args, **kwargs):
     if not results:
         return await koduck.sendmessage(context["message"], sendcontent="I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.")
     else:
-        return await koduck.sendmessage(context["message"], sendcontent="*Battlechips/NCPs/Powers in the ''``{}``'' category, or from that specific Crossover...*\n_{}_".format(args[0],"**, **".join(results)))
+        return await koduck.sendmessage(context["message"], sendcontent="**_Battlechips/NCPs/Powers in the_ ``''{}''`` _category, or from that specific Crossover..._**\n_{}_".format(args[0],"**, **".join(results)))
 
 async def mysterydata(context, *args, **kwargs):
     if len(args) < 1:
