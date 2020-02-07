@@ -61,6 +61,7 @@ ArtfulDodger	Speed	Roll	Distract a group of enemies with quick movement, making 
 
 Sublimation	Speed	Cost	Summons mist. If you spend 3 rolls in the mist, you can warp two range bands away.	
 
+GasGasGas	Speed	Roll	Move Close to a Near target and steal (pick 1:) Zenny;a Folder chip; a held item.
 LeapFrog	Speed	Roll	Roll Speed to attack someone Near; downshift if you just hit someone else with Leapfrog.
 ThisWayDown	Speed	Roll	Rush into Close range of a Near target, flipping over any object in your path.	
 

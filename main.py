@@ -331,6 +331,7 @@ async def chip(context, *args, **kwargss):
         tags = values[4]
         crossover = values[5]
         
+        #this determines embed colors
         if "Mega" in values[5]:
           color = 0xA8E8E8
         elif "ChitChat" in values[5]:
@@ -370,6 +371,7 @@ async def power(context, *args, **kwargs):
     type = values[1]
     description = values[2]
     
+    #this determines embed colors
     if category in ["Sense", "Info", "Coding"]:
         color = 0x81A7C6
     elif category in ["Strength", "Speed", "Stamina"]:
@@ -398,6 +400,7 @@ async def NCP(context, *args, **kwargs):
     description = values[2]
     crossover = values[3]
     
+    #this determines embed colors
     if power in ["LockOn", "Volley", "BlindMode", "Splash", "Tracker", "Refresh", "Reconfig", "Analyze", "Foresight", "Extend", "MapEdit", "HotSwap", "Disruption", "Firewall", "NoClip"]:
         color = 0x81A7C6
     elif power in ["Breakcharge", "Followthrough", "Gutsy", "Shockwave", "Shatter", "Warp", "Afterimages", "JumpJets", "Sneakrun", "ArtfulDodger", "Regenerate", "Clear", "KineticArmor", "Reflect", "HyperArmor"]:
@@ -497,7 +500,7 @@ async def query(context, *args, **kwargs):
     if not results:
         return await koduck.sendmessage(context["message"], sendcontent="I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.")
     else:
-        return await koduck.sendmessage(context["message"], sendcontent="*Battlechips/NCPs/Powers in the ''``{}``'' category, or from that specific Crossover...*\n**{}**".format(args[0],", ".join(results)))
+        return await koduck.sendmessage(context["message"], sendcontent="*Battlechips/NCPs/Powers in the ''``{}``'' category, or from that specific Crossover...*\n_{}_".format(args[0],"**, **".join(results)))
 
 async def mysterydata(context, *args, **kwargs):
     if len(args) < 1:

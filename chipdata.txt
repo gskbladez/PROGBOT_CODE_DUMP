@@ -435,7 +435,7 @@ CapsLock	1	Near	Sacrifice a BattleChip to upshift target's next X rolls. x = # o
 ChaosSwap	1	Near	Wild magic attacks two targets! If you hit both, swap their elements. Lasts until you roll 3 times.	Thrown	Piercing	Leximancy Battle	
 Crowdsource	-	Near	A big hologram crowd! They cheer spectacle, boo boring people, and disappear when harmed.	Summon	-	Leximancy Battle	
 DictionaryAttack	1	Close	Paper rapier! Pick a letter; if the target's element includes that letter, disable it for 3 rolls.	Blade	Accurate	Leximancy Battle	
-LoveLetter	-	-	Pick an unused Chip in your Folder, heal X HP. X = # of vowels (including Y) in the chip name.	Support	Simple	Leximancy Battle	
+LoveLetters	-	-	Pick an unused Chip in your Folder, heal X HP. X = # of vowels (including Y) in the chip name.	Support	Simple	Leximancy Battle	
 MagicTome	2	Near	Cast a magic bolt! Can instead be used to make your next 3 Affinity rolls using Info instead.	Shot	-	Leximancy Battle	
 RhymeScheme	-	Near	Spend X Info to turn the target's element to a perfect rhyme of your choice for Xx2 rolls.	Support	-	Leximancy Battle	
 

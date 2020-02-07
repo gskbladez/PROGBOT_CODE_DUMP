@@ -237,7 +237,7 @@ ActionReplay	1	-	On NetOP critical success, the PET auto-posts a cool picture of
 AdminHeadphones	2	-	Can spend 1 Sense to breifley hear all conversations taking place in the server.	Mystic Lilies	
 BeastWithin	4	-	On Cost power use, turn into a beast for 3 rolls! Beasts ignore stat & skill reductions.	Mystic Lilies	
 CosmicMind	2	-	Can spend 1 Mind to reroll any of yours & use the better result. Your body glows.	Mystic Lilies	
-DarkBargain	2	-	Once per jack-in, add 1 hit to an opposed roll, even after rolling. Suffer back luck later.	Mystic Lilies	
+DarkBargain	2	-	Once per jack-in, add 1 hit to an opposed roll, even after rolling. Suffer bad luck later.	Mystic Lilies	
 DevilFangs	2	-	On enemy deletion, heal = its Max HP. No other healing, even jack-out. Full HP to uninstall.	Mystic Lilies
 EncryptedChat	1	-	Can speak in code to anyone who has this NCP. Sounds like animal noises otherwise.	ChitChat	
 GrazingPower	3	-	When you successfully defend with Speed, gain +2 dice to your next rolled attack.	Mystic Lilies	
