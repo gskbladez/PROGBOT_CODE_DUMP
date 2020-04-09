@@ -20,7 +20,7 @@
 18	Bees	Nature
 19	Flowers	Nature
 20	Night	Nature
-21	Ciamond	Nature
+21	Diamond	Nature
 22	Horses	Nature
 23	Hair	Nature
 24	Sand	Nature

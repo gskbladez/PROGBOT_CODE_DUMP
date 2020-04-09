@@ -1,102 +1,99 @@
 ---1EB NCPs---
 
-Aggregator	1	Analyze	This is always Easy against Viruses.	-	
-AutoWrite	1	Reconfig	To download virus data, you can erase a Chip in your Folder instead of rolling.	-	
-BackupRoutine	1	Afterimages	Can also downshift your next 3 Charm or Bravery rolls.	-	
-BaRecycle	1	-	You can turn shield chips (Barrier, IronShield, etc) into your element after slot-in.	-	
-Barrage	1	Volley	Can spend 1 Strength instead of Sense if using a melee attack.	-	
-Bastion	1	HyperArmor	You can protect Close allies from mobility impairment as well.	-	
+AutoWrite	1	Reconfig	To download Virus data, you can erase a chip in your Folder for a full success.	-	
+BackupRoutine	1	Afterimages	Can spend a reroll to downshift a Charm or Bravery roll.	-	
+BaRecycle	1	-	You can turn guard chips into your element after slot-in.	-	
 Brand	1	-	You can mark anything with your symbol. This mark acts like a hand-sized sticker.	-	
-BurstMod	1	Splash	Spend 1 Sense; your next rolled attack hits all Close to the target (except you).	-	
 ContentAware	1	-	When you meet someone new, you can find their latest public social media post.	-	
 Designer	1	ModelEdit	You can apply ModelEdit to a Close target.	-	
 Dullahan	1	-	Your head becomes detatchable, retaining all of your senses.	-	
-Efficiency	1	Afterimages	Can instead downshift your next 3 defense rolls.	-	
-Essence	1	Regenerate	Every time Regenerate heals 1HP, a small amount of your element appears.	-	
+Essence	1	Regenerate	Every time Regenerate heals 1HP, a small amount of your element appears Close.	-	
 EvilMind	1	-	You give off a sinister aura; criminals like you more, and others will like you less.	-	
 Extrapolator	1	Tracker	Also shows the target's speed, estimated destination, and alternate routes.	-	
-Forward	1	Reflect	You can redirect successful parries to any target.	-	
 GeoTracker	1	-	Your Navi can be traced by its unique Navi ID. (Free to buy, 1500z to remove.)	-	
-GlowMode	1	-	You can make any part of your body softly glow enough to light up a small room.	-	
+GuardArmor	1	ArmorChange	When you have a Guard chip active, downshift ArmorChange rolls.	-	
 GutStrike	1	Gutsy	You can roll 1 fewer die on any melee attack to give it Gutsy's effect.	-	
 Harmonizer	1	-	When you roll 3+ hits to make your element, a bonded ally can roll to make theirs.	-	
-HazardTimer	1	-	When using a Hazard chip, you can make it appear on a delay up to 10 Minutes.	-	
+HazardTimer	1	-	When using a Hazard chip, you can make it appear on a delay. Max 10 Minutes.	-	
 Incognito	1	Harmless	On a success, targets will not remember your identity if you choose.	-	
-Infiltrate	1	Shatter	Shatter cen be silent if you have a few moments of uninterrupted preparation.	-	
+Infiltrate	1	Shatter	Shatter can be silent if you have a few moments of uninterrupted preparation.	-	
 Influencer	1	Overwrite	Overwrite also works on generic/unnamed digital NPCs. [Often Illegal.]	-	
 Inspire	1	Rally	Rally can instead let an ally reroll two dice on a Soul roll.	-	
-Launcher	1	Gutsy	Using Gutsy on allies is always Easy, even when tossing them with precision.	-	
-Mascot	1	Harmless	You can also avert hostile attention from X Close allies. X=Hits-1.	-	
+ManualInput	1	-	You can roll NetOp Coding instead of Navi Coding to download Virus data.	-	
+Mascot	1	Harmless	You can also avert hostile attention from X Close allies. X=hits-1.	-	
 MegaFlex	1	-	On a critical Body roll, downshift your 1st Charm roll on anyone who saw it.	-	
 Megaphone	1	-	Your Navi's voice projects; they can be clearly understood at Far range.	-	
-Meld	1	Shift	You can hide in a Close abundance of your element indefinitely.	-	
+Meld	1	FlowState	You can hide in a Close abundance of your element indefinitely.	-	
 NowRecording	1	-	Your Navi records everything they see and hear. It's visually obvious when recording.	-	
 Pathfind	1	Sneakrun	Sneakrun can affect others too as long as they stay Close to you.	-	
 ProgBody	1	-	Your Navi can appear like a Mr. Prog! (Hat of your choice optional).	-	
 ProgRadar	1	-	Beeps depending on proximity to nearest Mr. Prog.	-	
-Projector	1	Tracker	A hologram shows the target's exact movements and actions along the trail.	-	
 RAMWipe	1	Clear	Can instead modify your next attack to remove temporary buffs on hit.	-	
-Refine	1	Extend	Additionally, ignore one tag on the BattleChip per hit.	-	
 Ricochet	1	Volley	Can instead spend 1 Sense to reroll an attack you just made.	-	
 SaveAs	1	Save	Save also gives the target control over your element for one roll.	-	
-Setup	1	LockOn	Apply LockOn's effect to an ally's attack instead.	-	
-SideLoad	1	CodeInjection	Can give an ally's attack CodeInjection's effect instead (still your element).	-	
-SignPost	1	-	You can leave a sign, similar to a BBS post, anywhere in the net.	-	
-SnakeEyes	1	Glare	On critical success, the target is stunned for a brief moment.	-	
+SignPost	1	-	You can leave a sign, similar to a BBS post, anywhere online.	-	
 Soundboard	1	Playback	Playback can generate any noise you've head before or can find online.	-	
 Subliminal	1	Hypnotize	On success, you can describe the target's dream as detailed as you like.	-	
-TeamBreak	1	Breakcharge	Give Breakcharge's effect to an ally's attack instead.	-	
-TexturePack	1	MapEdit	Structures can be bouncy, sticky, floating, slippery, magnetic, or gelatinous.	-	
+SurroundSound	1	Playback	While jacked in, your Navi's voice can come from any real-world electronic speaker Near.
+TeamLock	1	GravArmor	When you stick to a surface, any Close allies can gravity-latch onto your body.	-	
 ThemeSong	1	-	On Jack-in, your presence has loud, colorful fanfare, drawing all attention to you.	-	
-Underflow	1	-	If a failed roll has three or more 1's, count it as a partial instead.	-	
+Underflow	1	-	If a failed roll has three or more 1's, count it as two hits instead.	-	
 Universal	1	CodeInjection	Non-attack rolls can use CodeInjection as long as they have a target.	-	
 ZennyMiner	1	-	On sending Virus data to a blank BattleChip, get a bonus 300z. (Does not stack.)	-	
 
 ---2EB NCPs---
 
+Aggregator	2	Analyze	Can spend hits to learn thjeir: NetOp, Bonds, Zenny, and emotional state.	-	
 Anticipation	2	Foresight	Foresight also lets you parry, not just dodge.	-	
 AntiCollider	2	NoClip	You can apply NoClip to a close target.	-	
 Arena	2	Duel	On success, an elemental ring appears, shutting others out and duelists inside.	-	
-AsynchronousI/O	2	-	You can make one downshifted action while jacking in or out.	-	
+ArmoryPlus	2	ArmorChange	Can instead choose these effects: loud; decorated; buoyant; flammable; or ugly.	-	
 Back2Back	2	-	In StandTogether, your ally can use your remaining downshifts if they're Close.	-	
 Backtrace	2	Firewall	If the door is destroyed, it turns into a medium hazard and you're alerted.	-	
 BarrelProcessor	2	-	Shot BattleChips and Sense ranged attacks have no penalty at Far range.	-	
 BladeRun	2	-	Can move a range band without rolling when attacking with a Blade chip.	-	
-BlastOff	2	JumpJets	Leave a pool of your element at your launch point.	-	
-Blowback	2	Followthrough	The second target can be Near range. The first target is thrown into them.	-	
+BlastOff	2	JumpJets	JumpJets covers all enemies Close to your launch point with your element.	-	
+Blowback	2	Followthrough	One target can be Near range if you pick a Close target to launch at them.	-	
+BufferOverflow	2	CodeInjection	If your next attack deletes the target, covers all Close to them with your element.	-	
+BurstTransmission	2	Shift	When appearing at your destination, cover everything Close in your element.	-	
 Callout	2	Glare	Glare works on fleeing Near targets. They turn to face you.	-	
 CashOut	2	-	Spend 600z to add one dice to a roll. (Use before rolling.)	-	
-Chain	2	Extend	Additionally, the next BattleChip's side effects affect all Close to the target.	-	
+ChargeShot	2	LockOn	LockOn can be used to make Shot chips Accurate and ignore Guards.	-	
 Cloak	2	Sneakrun	When you spend a Speed point or roll a crit with Speed, you can briefly go invisible.	-	
-Collect	2	-	When you send Virus data to a blank BattleChip, downshift the Roll.	-	
+Collect	2	-	When you send Virus data to a Blank BattleChip, roll at least 4 dice.	-	
 ControlA	2	Control	Detonate all abundances of your element in Near range, damaging all Close to one.	-	
-Daredevil	2	Bodyguard	If you defend by parrying, Bodyguard does not cost anything.	-	
-Debilitate	2	Breakcharge	Can instead reduce one of the target's Skills by 2. (Does not Stack.)	-	
+Daredevil	2	Bodyguard	If you defend by parrying, the cost is refunded.	-	
+DataMine	2	-	Can turn Thrown chips into mines! They target whoever touches or attacks them.	-	
+Debilitate	2	Breakcharge	Can upshift one of the target's skills instead of Body rolls. (Does not stack.)	-	
 Defrag	2	Clear	You can use Clear on a Close ally instead.	-	
-Demolition	2	Shatter	Before rolling, can choose for the target object to become a medium Hazard.	-	
-Diffusal	2	-	When something reduces one of your skills by 1, your element appears around you.	-	
-Elegance	2	ArtfulDodger	ArtfulDodger uses Charm instead of Speed, and can dodge attacks.	-	
-ElemenTango	2	Save	Save also gives the target an elemental barrier that negates one attack.	-	
+Demolition	2	Shatter	Before rolling, can choose for the target object to become a Normal hazard.	-	
+Diffusal	2	-	When something reduces one of your skills by 1, your element appears close to you.	-	
+EjectButton	2	-	Once per jack-in, you can spring a range band in any direction. Can still act while midair.	-	
+ElemenTango	2	Save	Save also gives the target an elemental barrier (Guard) that negates 1 attack.	-	
 ElemRitual	2	-	If you have a few uninterrupted minutes, you can roll 4 dice to make your element.	-	
-EnviroScan	2	BlindMode	Highlights vulnerable, hidden, or otherwise irregular parts of the environment.	-	
+EnviroScan	2	Tracker	Tracker finds vulnerable, hidden, or inconsistent parts of the environment.	-	
 Evacuate	2	Foresight	If you successfully defend with Foresight, you can move a range band away.	-	
-Exploit	2	Analyze	Add +2 dice to the first 2 allied rolls vs. the target. First Analyze only.	-	
-Feedback	2	Playback	Make a high-pitched screech that damages everyone Close to you.	-	
-Feint	2	ArtfulDodger	ArtfulDodger can parry melee attacks. The target inadvertently hits themselves.	-	
+Exploit	2	Analyze	Add +2 dice to the first 2 allied rolls vs. the target. Once per target.	-	
+Expose	2	BlindMode	Detecting a target with BlindMode reveals them to all allies for 3 rolls.	-	
 Flurry	2	Vengeance	Roll 1 fewer die to rush from Near to Close range as part of the attack.	-	
 ForceRefresh	2	Refresh	Can instead reduce Max HP by 2 to use Refresh. Resets on jack-out.	-	
 Gladiator	2	Duel	When you parry a Duel target, you can turn one failure into an escalation.	-	
-HP+2	2	-	+2 maximum HP.	-	
+GutsShooter	2	Gusty	When a Gutsy'd ally rolls to melee attack midair, they add your Body.
+HyperBomber	Splash	Splash can use AP rounds, downshifting Speed and upshifting Stamina defense.	-	
+Illusion	2	Afterimages	Spend a reroll to give a transient, incorporeal hologram of you 1 order.	-	
 Interception	2	LockOn	Can instead mark a target. Your ranged attacks can parry their ranged attacks.	-	
+KeyBind	2	FlowState	FlowState lets you constrict a target. Resisting with Stamina is upshifted.	-	
 LastHit	2	Followthrough	Followthrough is free if it deletes a target. Reset strength reductions on multi-delete.	-	
-MagnetArmor	2	KineticArmor	You can move the attacker a rangeband towards you instead.	-	
+SearchIndex	2	MemoryScan	You can find distant memories if you give a specific date/time.	-	
 Monitor	2	BlindMode	Can place a remote, livestreaming camera with all senses. One at a time.	-	
 Motorize	2	MapEdit	Structures can move independently; Easy Coding roll to change the speed.	-	
 Overheal	2	Regenerate	All healing can excees Max HP. While over Max and not healing, take -1HP each roll.	-	
 PassengerMode	2	-	You can take a Close target with you when you use Rush chips.	-	
 Payload	2	Alt	Whenever something destroys your minion, it explodes into your element.	-	
 Pettaur	2	-	A Mettaur-like pet! It can't attack, obeys basic orders, and disappears for a bit if hit.	-	
+Projector	1	Tracker	Shows the target's speed, destination, and exact movements and actions so far.	-	
 Protector	2	Bodyguard	You can defend all Close allies at once from a multitarget attack.	-	
+RapidInput	2	Volley	Volley can affect any non-combat Strength, Coding, or Speed roll.	-	
 Revert	2	Warp	Within 10 seconds of warping, you can warp back to your starting point for free.	-	
 Redirect	2	Shift	You can Shift with a known Near abundance of your element not in sight.	-	
 RemoteDet	2	Splash	Choose when shots detonate. 2 primed shots at once. Roll dmg on detonation.	-	
@@ -104,61 +101,66 @@ RocketFist	2	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot p
 Rupture	2	Disruption	If used Close, can also deal damage. On hit, reduce damage by 1.	-	
 SearchOptimized	2	-	Pick a descriptor - NPCs will associate you with that word unless they know better.	-	
 SetElement	2	-	On jack-in, your element appears around you; if you use it immediately, downshift.	-	
+SnakeEyes	2	Glare	Briefly stun a target the first time you successfully Glare them.	-	
 Specialist	2	Rally	On jack-in, pick any Skill. Rally can add 3 dice to an ally roll with that skill instead.	-	
 Strikeback	2	Reflect	You can Reflect projectiles with a melee attack instead, Battle Chips included.	-	
 SuperArmor	2	-	If in the middle of an attack, ignore stun/interrupting effects until your attack ends.	-	
 Tantrum	2	Vengeance	When an enemy damages an ally, add dice to your roll = HP lost.	-	
+TexturePack	2	MapEdit	Structures can be bouncy, sticky, floating, slippery, magnetic, or gelatinous.	-	
 Tinker	2	HotSwap	If you spend a minute of uninterrupted concentration, HotSwap has no cost.	-	
 Trailblazer	2	-	When you move range bands with a chip or roll, your element trails behind you.	-	
-Transmission	2	Warp	You can use Warp on something Close instead.	-	
+Transmission	2	Warp	You can use Warp on a Close ally or object instead.	-	
 Tremor	2	Shockwave	Deal one less damage to knock the target over on hit.	-	
+TypeConversion	2	Reflect	If you win, you can instead convert your hits to bonus dice on your next roll.	-	
 Ventrillo	2	-	You can make your voice come from anywhere in Near range.	-	
 WaveMod	2	Shockwave	Spend 1 Wave chip to give Shockwave its side effects for X+1 rolls. X=chip damage.	-	
 WaveRider	2	-	When you use a Wave BattleChip at Near range, you can enter Close range of a target.	-	
-ZealOverdrive	2	KineticArmor	On success, you can downshift your next attack and upshift your next defense.	-	
+ZealOverdrive	2	JumpJets	On success, you can downshift your next attack and upshift your next defense.	-	
 
 ---3EB NCPs--- 
 
 AltTab	3	Alt	You can make any roll via your minion instead, including Navi Powers.	-	
-AttackUp	3	-	When attacking successfully with a roll, deal +1 damage.	-	
-ControlX	3	Control	Control is now melee only. Can use the element of the last enemy you deleted.	-	
+BreakSlot	3	Breakcharge	Can use BreakCharge with melee BattleChips. They also become Piercing.	-	
+ControlX	3	Control	Control is now a melee attack. Can use the element of the last enemy you deleted.	-	
+CopyCommand	3	Disruption	On blocking a default Navi Power/NCP, you can use it once until next Disruption.	-	
 Custom+3	3	-	+3 maximum Chips in your folder.	-	
+DarkLicense	3	-	Fake credentials that shift into whatever you need them to be. [Often Illegal].
 DualPipeline	3	-	Can use two Shot BattleChips at the same time. Counts as two seperate attacks.	-	
-EnergyChange	3	-	Sacrifice an unused Chip to instantly spawn a lot of your element around you.	-	
+EnergyChange	3	-	Sacrifice an unused Chip to instantly spawn a lot of your element Close to you.	-	
 ExecutionUnit	3	-	When you delete a Virus or Navi, heal 3 HP.	-	
-Fabricator	3	ModelEdit	You can change appearance for free. Major changes require a minute of focus.	-	
-FirstBarrier	3	-	The Navi has a barrier active upon jacking in that nullifies the first hit they take.	-	
+Fabricator	3	ModelEdit	ModelEdit can be used as a Roll Power. Major changes require a minute of focus.	-	
+FirstBarrier	3	-	You have a Guard active upon jacking in that nullifies the first hit you take.	-	
 Fizzle	3	NoClip	You can use NoClip to dodge attacks that would pass through you.	-	
 FloatShoes	3	-	The Navi always floats a few inches above the ground.	-	
-Hijack	3	Reconfig	On hit, your next melee attack takes a Chip (GM's pick) from the target's Folder.	-	
+Hijack	3	Reconfig	On hit, your next melee attack takes a chip (GM's pick) from the target's Folder.	-	
 HP+4	3	-	+4 maximum HP.	-	
 HypnoFlash	3	Hypnotize	Hypnotize works on humans if you are on a large screen. [Often illegal.]	-	
-TerminalVelocity	3	JumpJets	Roll Speed to attack if you collide with someone by using JumpJets.	-	
-Lockdown	3	HyperArmor	Toggle to anchor to a Close surface. You get +3 Stamina & stick to the surface.	-	
+KineticArmor	3	-	After you take damage, downshift your next roll to move a range band.	-	
+ParallelPort	3	-	When a Cost Power boosts your next attack, you can give that effect to an ally instead.	-	
 Portal	3	Firewall	After a couple minutes, doors allow travel directly between each other.	-	
 Press	3	-	The Navi can shrink to 1/10th normal size. Your attacks are upshifted when shrunk.	-	
 RedundantArray	3	-	You can have two copies of the same chip in your folder.	-	
-Reroute	3	HotSwap	You can reduce your MaxHP for +EB, 1HP for 1EB. Can be undone.	-	
+Reroute	3	HotSwap	You can reduce your Max HP for +EB, 1 HP for 1EB. Can be undone.	-	
 Retry	3	Refresh	If a target completly resists a Chip, it is not exhausted. Once per BattleChip.	-	
-Scrambler	3	Disruption	Can instead scramble the target's data to briefly disable one of their skills.	-	
-SoulUnion	3	-	When using CrossSoul, you can also use the other Navi’s Navi Powers.	-	
-Sprite	3	-	The Navi can turn two-dimensional. Your attacks are upshifted when flattened.	-	
-Tamer	3	Overwrite	If a Virus is near deletion, you can permanently tame them (1 virus at a time).	-	
+ReversePolarity	3	GravArmor	GravArmor can drag a Near object or airborne target into Close range.	-	
+SoulUnion	3	-	When using CrossSoul, you can also use the other Navi's Navi Powers.	-	
+StorageViolation	3	MemoryScan	MemoryScan can also scan Navis. [Often illegal.]	-	
+Tamer	3	Overwrite	If the Virus is near deletion, you can permanently tame them (1 virus at a time).	-	
+TerminalVelocity	3	JumpJets	Roll Speed to attack if you collide with someone by using JumpJets.	-	
 UnderShirt	3	-	A lethal hit leaves you at 1 HP if you have over 1 HP.	-	
 VolatileMemory	3	-	For Cost powers, you can reduce the stat instead of the skill. Stats can't go below 1.	-	
-ZeroWaitState	3	-	When you fail a roll to jack in or jack out, change it to a partial success.	-	
 
 ---4+ EB NCPs--- 
 
-AddOn	4	-	When you deal 2+ damage to a Navi or a Virus, your element appears around them.	-	
+AddOn	4	-	When you deal 2+ dmg with a rolled attack, your element covers the target.	-	
 BeastWithin	4	-	On Cost power use, turn into a beast for 3 rolls! As a beast, rolls ignore skill reductions.	-	
 ChameleoCloak	4	-	If you hold still for ten seconds, you turn invisible until you move.	-	
-KernelPanic	4	-	When you're at or below 2 HP, add four dice to all attacks.	-	
-Meltdown	4	-	Can add bonus dice to your roll for HP, 1 HP per die. Max 3 dice added per roll.	-	
-MimicStrike	4	-	When a Near Virus is deleted, get their Passives. Lasts until jack out. One at a time.	-	
-Proxy	4	-	Support chips that affect your Navi can affect another Navi instead.	-	
-LastStand	5	-	When using Overload, all dice on your next roll are hits. Go to 0HP	-	
+KernelPanic	4	-	When you're at or below 2 HP, add four dice to all rolled attacks.	-	
+Meltdown	4	-	Before you roll, can spend up to 3 HP to add that many dice to it.	-	
+MimicStrike	4	-	On Near Virus deletion, get its passives until jack-out or next trigger. Can toss all passives.	-	
+Proxy	4	-	When using a Support BattleChip, you can transfer the benefits to a Near ally instead.	-	
 Mega+1	5	-	+1 maximum MegaChips in your folder.	-	
+TandemMastery	6	-	All Bond Powers except Overload cost one less Bond Point to activate.	-	
 SignatureMove	7	-	Work with the GM to design a NaviChip based off your Navi. Only you can use it.	-	
 
 ---Skill and Stat NCPs---
@@ -236,11 +238,11 @@ Alt NCP	3	-	(Affinity/Roll) Consume all of your element to create a minion with 
 ActionReplay	1	-	On NetOP critical success, the PET auto-posts a cool picture of it to social media.	Skateboard Dog	
 AdminHeadphones	2	-	Can spend 1 Sense to breifley hear all conversations taking place in the server.	Mystic Lilies	
 BeastWithin	4	-	On Cost power use, turn into a beast for 3 rolls! Beasts ignore stat & skill reductions.	Mystic Lilies	
-CosmicMind	2	-	Can spend 1 Mind to reroll any of yours & use the better result. Your body glows.	Mystic Lilies	
+CosmicMind	2	-	When you roll, can spend 1 Mind to reroll and use the better result; your body glows.	Mystic Lilies	
 DarkBargain	2	-	Once per jack-in, add 1 hit to an opposed roll, even after rolling. Suffer bad luck later.	Mystic Lilies	
 DevilFangs	2	-	On enemy deletion, heal = its Max HP. No other healing, even jack-out. Full HP to uninstall.	Mystic Lilies
 EncryptedChat	1	-	Can speak in code to anyone who has this NCP. Sounds like animal noises otherwise.	ChitChat	
-GrazingPower	3	-	When you successfully defend with Speed, gain +2 dice to your next rolled attack.	Mystic Lilies	
+GrazingPower	3	-	On successful defense with Speed, +2 dice to your next attack roll. Doesn't stack.	Mystic Lilies	
 JackOfHearts	2	-	You can see a colored aura around everyone that indicates thier emotional state.	Mystic Lilies	
 KingOfDiamonds	3	-	Can spend 2 HP to spawn your Element Close, generating it from within your body.	Mystic Lilies	
 LunarDial	4	-	When you win a parry, you can freeze time long enough for one more roll/BattleChip.	Mystic Lilies	

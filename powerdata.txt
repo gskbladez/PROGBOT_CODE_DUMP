@@ -1,10 +1,10 @@
 ---Sense Powers---
 
-LockOn	Sense	Cost	Your next attack is Easy difficulty, no matter what.	
+LockOn	Sense	Cost	Your next attack is guaranteed Easy and ignores temporary skill reductions.
 Volley	Sense	Cost	Roll the next attack three times and take the best outcome.	
 
 BlindMode	Sense	Roll	Find a target with extrasensory means (e.g. thermal imaging, echolocation).	
-Splash	Sense	Roll	Roll once to attack a Near target. Everything Close to the target is also hit.	
+Splash	Sense	Roll	Roll once to attack a Near target. Damages everything Close to the target.
 Tracker	Sense	Roll	Find and identify trails and footprints.	
 
 ---Info Powers---
@@ -14,7 +14,7 @@ Reconfig	Info	Cost	Switch out unused chips in your folder for ones in your pack.
 
 Analyze	Info	Roll	Learn one per hit: The target's skills, BattleChips, powers, and NCPs.	
 Foresight	Info	Roll	You can dodge an attack with Info if you've seen this enemy use it before.	
-Extend	Info	Roll	Next chip's effects (e.g. stun, upshift one roll) last twice as many seconds/rolls.	
+MemoryScan	Info	Roll	Scan a Close Virus/Object to reveal the target's recent memories/interactions.	
 
 Ego	Info	Cost	Sends (possibly false) into to a Near target in the form of a (possibly fabricated) memory.	
 ExtraExtra	Info	Cost	Creates a big, hefty textbos with scandalous info you've gained. Can absorb 1 attack.	
@@ -25,8 +25,8 @@ WordOfTheDay	Info	Cost	Secretly pick a word. You can warp directly behind any Fa
 MapEdit	Coding	Cost	Generate a Near simple structure that is either hard, large, or hidden.	
 HotSwap	Coding	Cost	Change your NaviCust setup without jacking out.	
 
-Disruption	Coding	Roll	Pick a Navi Power; one target in Near range can’t use it for a few moments.
-Firewall	Coding	Roll	Put a temporary door over an entrance that known enemies cannot enter.	
+Disruption	Coding	Roll	Pick a Near target; disables their last used power/NCP until they roll 3 times.
+Firewall	Coding	Roll	Put a temporary door on a Near entrance that blocks known enemies.
 NoClip	Coding	Roll	Pass through a thin structure (walls, floors, pipes, etc).	
 
 Copycat	Coding	Cost	Change your element to someone else's in Near range.	
@@ -40,10 +40,10 @@ Touche	Coding	Roll	Knocks the alphabetically first BattleChip out of the target'
 
 ---Strength Powers---
 
-BreakCharge	Strength	Cost	Your next attack reduces the target's Body by 2. Does not stack.	
-Followthrough	Strength	Cost	Your next rolled melee attack or Strength move hits any number of targets in range.	
+BreakCharge	Strength	Cost	Your next attack roll ignores Guards and upshifts the target's next 4 Body rolls.	
+Followthrough	Strength	Cost	Your next melee or Strength roll hits any number of targets in range.	
 
-Gutsy	Strength	Roll	Launch a Close target one range band away from you in any direction.	
+Gutsy	Strength	Roll	Launch a Close target one range band in any direction.
 Shockwave	Strength	Roll	Make a ranged attack on a grounded Near target.	
 Shatter	Strength	Roll	Destroy a Close structure or piece of terrain.	
 
@@ -52,12 +52,12 @@ Touchdown	Strength	Roll	Throw a target into another target, both take damage.
 
 ---Speed Powers---
 
-Warp	Speed	Cost	Instantly move one range band.	
-Afterimages	Speed	Cost	Upshift the next 3 attacks on you.	
+Warp	Speed	Cost	Instantly move up to one range band.	
+Afterimages	Speed	Cost	Roll your next 3 defense rolls twice, using the better result.	
 
-JumpJets	Speed	Roll	Launch a range band in any direction from the ground.	
+JumpJets	Speed	Roll	Launch a range band in any direction off a surface.	
 Sneakrun	Speed	Roll	Slip past an inanimate threat (e.g.traps, sensors).	
-ArtfulDodger	Speed	Roll	Distract a group of enemies with quick movement, making them focus on you.	
+FlowState	Speed	Roll	Reshape your body to fit in tight or oddly-shaped spaces. (Not a disguise.)	
 
 Sublimation	Speed	Cost	Summons mist. If you spend 3 rolls in the mist, you can warp two range bands away.	
 
@@ -68,11 +68,11 @@ ThisWayDown	Speed	Roll	Rush into Close range of a Near target, flipping over any
 ---Stamina Powers---
 
 Regenerate	Stamina	Cost	The next 5 times you roll or use a Battle Chip, heal 1HP. (Damage comes first.)	
-Clear	Stamina	Cost	Dispel negative effects and stat/skill reductions from enemy attacks.	
+Clear	Stamina	Cost	Clear negative effects and stat/skill reductions from hazards and enemy attacks.	
 
-KineticArmor	Stamina	Roll	Move a range band immediately after being hit.	
-Reflect	Stamina	Roll	Use parry rules against a projectile attack, rolling Stamina.	
-HyperArmor	Stamina	Roll	Become immune to mobility impairment.	
+ArmorChange	Stamina	Roll	Your body is briefly (pick 1) superhot; icy; superheavy; camouflaged; or luminous.	
+Reflect	Stamina	Roll	Parry a ranged attack, rolling Stamina. Reflects secondary effects.	
+GravArmor	Stamina	Roll	Move along or stick to any Close surface, or stick any Close object to you.	
 
 ---Charm Powers---
 
@@ -91,12 +91,12 @@ Superego	Charm	Roll	Bewitch a Near NPC's mind, rewriting their sense of morality
 
 ---Bravery Powers---
 
-Rally	Bravery	Cost	Add two dice to someone else's Soul roll.	
+Rally	Bravery	Cost	Add two dice to someone else's Soul roll (before they roll).	
 Bodyguard	Bravery	Cost	The next time an ally of your choice is attacked, you are attacked instead.	
 
 Vengeance	Bravery	Roll	Use Bravery to attack a Close target that recently attacked an ally.	
 Glare	Bravery	Roll	A Close target cannot move range bands until line of sight breaks.	
-Duel	Bravery	Roll	Convince an enemy to take you on one-on-one.	
+SystemCall	Bravery	Roll	Convince one or more Near targets to focus their hostile attention on you.	
 
 SetPriority	Bravery	Cost	Whip a Close target for 1 dmg. Covers them in your element. They get +3 dice to their next roll.
 
@@ -106,10 +106,10 @@ PressOn	Bravery	Roll	After being attacked, lunge a range band towards the attack
 ---Affinity Powers---
 
 Save	Affinity	Cost	If your element is present, heal someone for 3HP.	
-CodeInjection	Affinity	Cost	Your next attack covers the target with your element.	
+CodeInjection	Affinity	Cost	Your next rolled attack covers the target with your element.	
 
 Shift	Affinity	Roll	Swap places with an abundance of your element in line of sight.	
-Control	Affinity	Roll	Attack with your element if it is present.	
+Control	Affinity	Roll	Make a ranged attack with your element if it is present.	
 Alt	Affinity	Roll	Consume all of your element to create a minion with one purpose.	
 
 Aria	Affinity	Cost	When a Near ally is about to be deleted, they survive at 1 HP.	

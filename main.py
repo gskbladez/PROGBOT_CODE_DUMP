@@ -489,7 +489,7 @@ async def virusx(context, *args, **kwargs):
 
 async def query(context, *args, **kwargs):
     if len(args) < 1:
-        return await koduck.sendmessage(context["message"], sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips!")
+        return await koduck.sendmessage(context["message"], sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! Please type `>help query` for more information.")
     table = yadon.ReadTable("querydata")
     results = []
     for chipname, values in table.items():
@@ -510,7 +510,7 @@ async def mysterydata(context, *args, **kwargs):
     if args[0].lower() == "common":
         firstroll = random.randint(1, 6)
         if firstroll in [1, 2]:
-            return await koduck.sendmessage(context["message"], sendcontent="You get: [2d6] * 100 Zenny")
+            secondroll = random.randint(700, 735)
         elif firstroll in [3, 4]:
             secondroll = random.randint(1, 36)
         elif firstroll == 5:
@@ -521,7 +521,7 @@ async def mysterydata(context, *args, **kwargs):
     elif args[0].lower() == "uncommon":
         firstroll = random.randint(1, 6)
         if firstroll in [1, 2]:
-            return await koduck.sendmessage(context["message"], sendcontent="You get: [2d6] * 250 Zenny")
+            secondroll = random.randint(800, 835)
         elif firstroll in [3, 4]:
             secondroll = random.randint(79, 114)
         elif firstroll == 5:
@@ -532,7 +532,7 @@ async def mysterydata(context, *args, **kwargs):
     elif args[0].lower() == "rare":
         firstroll = random.randint(1, 6)
         if firstroll in [1, 2]:
-            return await koduck.sendmessage(context["message"], sendcontent="You get: [2d6] * 500 Zenny")
+            secondroll = random.randint(900, 935)
         elif firstroll in [3, 4]:
             secondroll = random.randint(157, 192)
         elif firstroll == 5:
@@ -673,7 +673,7 @@ async def element(context, *args, **kwargs):
 
 async def rulebook(context, *args, **kwargs):
     if len(args) < 1:
-        return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 5 Official Rulebook (high-res): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Full-Res.pdf>\nNetBattlers Beta 5 Official Rulebook (mobile-friendly): <http://www.merrymancergames.com/wp-content/uploads/2019/09/NetBattlers-Beta-5-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2019/10/NetBattlers-Advance-4.pdf>\n\n**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
+        return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 6 Official Rulebook (high-res): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Full-Res.pdf>\nNetBattlers Beta 6 Official Rulebook (mobile-friendly): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Advance-5.pdf>\n\n**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
