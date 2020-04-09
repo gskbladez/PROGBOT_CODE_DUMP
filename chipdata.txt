@@ -460,7 +460,7 @@ XVI-TheTower	-	Near	Malevolent cloud! GM picks 3 objects and up to 3 hostile tar
 XVII-TheStar	X	Near	Fire a shining beam of hope! X=HP missing, max 4. Can’t reduce the target’s HP below 1.		Shot	Awkward	Tarot	
 XVIII-TheMoon	-	Near	Dream bomb! Target briefly (pick 1): can't see allies; sees you as friendly; sees you as terrifying.	Thrown	Slow	Tarot	
 XIX-TheSun	-	Near	Revealing light (pick 2): exposes invisible/disguised targets; shows everyone's Max HP; highlights liars.	Hazard	Slow	Tarot	
-XX-Judgment	2	Near	Holy trumpet! Deafening blast removes all temporary effects (e.g. Guards, stuns, shifted rolls).	Wave	Slow	Tarot	
+XX-Judgement	2	Near	Holy trumpet! Deafening blast removes all temporary effects (e.g. Guards, stuns, shifted rolls).	Wave	Slow	Tarot	
 XXI-TheWorld	-	Far	Can use the elements of all in range for 5 rolls. Roll Xd6 to summon/manipulate; X=Bond Points.	Support	-	Mega Tarot	
 
 ---Genso Network Chips---
