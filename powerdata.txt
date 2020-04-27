@@ -12,7 +12,7 @@ Tracker	Sense	Roll	Find and identify trails and footprints.
 Refresh	Info	Cost	Pick a used BattleChip in your folder. It is now usable again - once per chip.	
 Reconfig	Info	Cost	Switch out unused chips in your folder for ones in your pack.	
 
-Analyze	Info	Roll	Learn one per hit: The target's skills, BattleChips, powers, and NCPs.	
+Analyze	Info	Roll	Learn one per hit: the target's stats+skills, Folder, Powers, NCPs, and element.	
 Foresight	Info	Roll	You can dodge an attack with Info if you've seen this enemy use it before.	
 MemoryScan	Info	Roll	Scan a Close Virus/Object to reveal the target's recent memories/interactions.	
 

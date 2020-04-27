@@ -39,7 +39,7 @@ PaladinSword	2	Close	Can instead be used to defend a Close ally, reducing the da
 RecoilRod	2	Close	Bladed tonfas! Spend 1 Speed to also push the target or yourself away a range band.	Blade	-	-	
 SlashClaw	2	Close	Attack with speedy claws. Your target rolls defense twice and uses the worse result.	Blade	-	-	
 Slasher	5	Close	If you stand still and don't move, parry the next melee attack. Unusable outside a parry.	Blade	Guard, Slow	-	
-SpiritSword	2	Close	Nasty stinger tail! If the target successfuly defends with Speed, your stinger gets stuck!	Blade	Piercing, Dangerous	-	
+Stinger	2	Close	Grow a nasty tail! If they successfuly defend with Speed, it gets stuck in a Close surface!	Blade	Piercing, Dangerous	-	
 StyleSword	2	Close	A super-stylish sword. Can instead be used to make 3 Charm rolls using your Speed instead.	Blade	Awkward	-	
 TripleRod	3	Close	Extending lance! Spend 1 Speed to do a spin attack, hitting all Close.	Blade	Awkward	-	
 TurboSlice	2	Close	Spend 1 Speed to deal +2 damage.	Blade	-	-	
@@ -189,7 +189,7 @@ Mine	-	Close	A disc-shaped mine! If something touches it, it detonates for 4 Pie
 MokoRush	2	Close	A cute ram! Pick 2: Charge a Near target; ride it a range band; spread fluff around; bleat loudly.	Summon	Slow	-	
 Mole	-	Close	Summons a mole which digs a tunnel to a simple, nearby destination.	Summon	Slow	C-License	
 PopUp	-	Close	Creates a foxhole right beneath your feet.	Summon	-	-	
-Prism	-	Close	If hit by a ranged attack, attacker picks 2 Near targets to refract the attack to. Breaks after 4dmg.	Summon	-	-	
+Prism	-	Close	If hit by a ranged attack, attacker picks 2 Near targets to refract the attack to. Breaks after 4dmg.	Summon	Slow	-	
 RainyDay	-	Near	Calls down a torrential downpour from a solid, squishy raincloud.	Summon	-	-	
 Ratton	2	Near	A homing rat bomb can find enemies that are invisible or hiding behind cover.	Summon	Accurate	-	
 Recall	-	Close	Summons the last Virus you deleted to help you out. It has 1HP.	Summon	-	-	
@@ -222,7 +222,7 @@ Invis	-	-	Renders you invisible for several seconds.	Support	Simple	-
 LeafShield	2	Near	Can instead be used to take -2 damage next time you're hit. 	Support	Guard	-	
 MapView	-	Far	Launch a camera straight up for an eagle-eye view of the surroundings. Bonks off ceilings.	Support	Awkward	-	
 PowerCapsule	-	-	Next rolled attack briefly (pick 1): slows movement; blinds; blocks healing HP.	Support	Simple	-	
-Recover4	-	-	Recover five HP.	Support	-	-	
+Recover4	-	-	Recover four HP.	Support	-	-	
 Reflex	-	-	Act immediately the next time you take damage.	Support	Guard, Simple	-	
 Shadow	-	-	For a minute, you're impossible to detect when in darkness.	Support	Simple	-	
 SkullBarrier	-	-	Pick 1: take -1 damage from the next 3 attacks; downshift your next Bravery roll to intimidate.	Support	Guard	-	
@@ -442,22 +442,22 @@ RhymeScheme	-	Near	Spend X Info to turn the target's element to a perfect rhyme 
 
 0-TheFool	1	Near	Magic card! If this is the first chip you use, knock the target over; if it’s the last in your Folder, X=3.	Thrown	-	Tarot	
 I-TheMagician	3	Near	Arcane magic blast! If this is the first allied attack on the target, ignore the negative tags.	Shot	Piercing, Dangerous, Slow	Tarot	
-II-HighPriestess	-	Near	Next time an enemy targets you with a Mind roll, briefly go invisible and move a range band.	Impact	Accurate, Awkward	Tarot	
+II-HighPriestess	-	Near	Next time an enemy targets you with a Mind roll, briefly go invisible and move a range band.	Rush	Guard, Slow	Tarot	
 III-TheEmpress	2	Close	Royal scepter! Spend 1 Charm: If their next attack targets anyone other than you, upshift it.	Impact	Accurate, Awkward	Tarot	
 IV-TheEmperor	3	Close	King’s trident! If this doesn’t delete, upshift your next 2 rolls unless they are Strength or Bravery.	Blade	Piercing	Tarot
 V-TheHierophant	-	Close	For 2 rolls, targets (pick 2): set their element to yours; set their Mind to yours; cannot use chips.	Wave	Awkward	Tarot	
 VI-TheLovers	-	Close	Magic rose garden! Within, only scornful Charm/Bravery rolls can deal dmg. Wilts after a minute.	Hazard	Dangerous	Tarot	
 VII-TheChariot	3	Near	Charge Close! Roll Normal Bravery; if you fail, this is Dangerous. If you crit, this is Piercing.	Rush	Awkward	Tarot	
 VIII-Strength	4	Close	Bite with a vicious lion’s head! Your next 3 rolled/BattleChip attacks deal -1 damage.	Impact	-	Tarot	
-IX-TheHermit	-	Close	Holy lantern! Pick a Near target. After you defend twice, hits the target with a 3-damage light blast.	Summon	Slow	Tarot	
+IX-TheHermit	-	Close	Holy lantern! Pick a Near target. After you defend twice, hits the target with a 3-damage light blast.	Summon	Piercing, Slow	Tarot	
 X-WheelOfFortune	3	Near	Karmic wheel of spikes! After the target rolls once, they can use a copy of this chip once.	Thrown	-	Tarot	
 XI-Justice	X	Close	Blade of judgement! X = the amount of damage the target did with their last attack.	Blade	Awkward	Tarot	
-XII-HangedMan	-	-	Next time you’re attacked, don’t defend. Damage you take = X. Next Mind roll gets +X dice.	Support	Slow	Tarot	
+XII-HangedMan	-	-	Next time you’re attacked, don’t defend. Damage you take = X. Next Mind roll gets +X dice.	Support	Guard, Slow	Tarot	
 XIII-Death	3	Near	Charge Close on an ivory horse! If this would delete the target, it wipes their memories instead.	Rush	-	Tarot	
 XIV-Temperance	-	Close	Calm, shallow water rises. Anyone inside always rolls at least 4 dice. Non-hostile rolls only.	Hazard	Slow	Tarot	
 XV-TheDevil	-	-	Next 3 times you would fail a roll, spend 2 HP and reroll all the failed dice. This can delete you.	Support	Simple	Tarot	
 XVI-TheTower	-	Near	Malevolent cloud! GM picks 3 objects and up to 3 hostile targets to hit with shattering 3-dmg bolts.	Summon	Piercing, Awkward, Dangerous	Tarot	
-XVII-TheStar	X	Near	Fire a shining beam of hope! X=HP missing, max 4. Can’t reduce the target’s HP below 1.		Shot	Awkward	Tarot	
+XVII-TheStar	X	Near	Fire a shining beam of hope! X=HP missing, max 4. Can’t reduce the target’s HP below 1.	Shot	Awkward	Tarot	
 XVIII-TheMoon	-	Near	Dream bomb! Target briefly (pick 1): can't see allies; sees you as friendly; sees you as terrifying.	Thrown	Slow	Tarot	
 XIX-TheSun	-	Near	Revealing light (pick 2): exposes invisible/disguised targets; shows everyone's Max HP; highlights liars.	Hazard	Slow	Tarot	
 XX-Judgement	2	Near	Holy trumpet! Deafening blast removes all temporary effects (e.g. Guards, stuns, shifted rolls).	Wave	Slow	Tarot	

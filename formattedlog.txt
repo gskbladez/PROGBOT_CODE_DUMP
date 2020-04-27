@@ -13432,3 +13432,405 @@
 2019-09-06 22:55:16	Merry Mancer Games	#netbattle-club	GSK Bladez#7356	>virus squeaker	
 2019-09-06 22:55:16	Merry Mancer Games	#netbattle-club	Mr. Prog#5635	:warning::warning:**SOMETHING BROKE**:warning::warning:	
 2019-09-06 22:55:16	Merry Mancer Games	#netbattle-club	GSK Bladez#7356	>virus squeaker	Unhandled error
+2020-04-22 18:20:44	Merry Mancer Games	#vc-text	GSK Bladez#7356	>sendmessage 496435786842112030, gamer	
+2020-04-22 18:20:44	Merry Mancer Games	#vc-text	ProgBOT#5635	gamer	
+2020-04-22 18:21:07	Merry Mancer Games	#free-play-1	burningluna#3162	>r 7d6>4	
+2020-04-22 18:21:07	Merry Mancer Games	#free-play-1	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~3~~, 6, ~~1~~, ~~1~~, ~~3~~, 5, 6) = **__3 hits!__**	
+2020-04-22 18:21:28	Merry Mancer Games	#free-play-1	Alex#7789	>chip XX-judgement	
+2020-04-22 18:21:28	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-22 18:21:32	Merry Mancer Games	#free-play-1	burningluna#3162	>r 7d6>3	
+2020-04-22 18:21:32	Merry Mancer Games	#free-play-1	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~3~~, ~~1~~, ~~2~~, 5, ~~2~~, 4, 5) = **__3 hits!__**	
+2020-04-22 18:21:40	Merry Mancer Games	#free-play-1	burningluna#3162	>r 7d6>5	
+2020-04-22 18:21:40	Merry Mancer Games	#free-play-1	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~4~~, ~~1~~, ~~2~~, ~~3~~, 6, ~~4~~, ~~5~~) = **__1 hits!__**	
+2020-04-22 18:34:13	Merry Mancer Games	#free-play-1	Metaljaw#5029	>chip FlameArm	
+2020-04-22 18:34:13	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-22 18:35:25	Merry Mancer Games	#free-play-1	Metaljaw#5029	>power Control	
+2020-04-22 18:35:25	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-22 18:48:34	Merry Mancer Games	#free-play-1	Metaljaw#5029	>chip magcoil	
+2020-04-22 18:48:34	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-22 19:23:39	Merry Mancer Games	#free-play-1	Metaljaw#5029	>power GravArmor	
+2020-04-22 19:23:39	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-22 19:57:59	Merry Mancer Games	#free-play-3	FLMA/Frank#0255	>chip Attack+1	
+2020-04-22 19:57:59	Merry Mancer Games	#free-play-3	ProgBOT#5635		
+2020-04-22 19:58:07	Merry Mancer Games	#free-play-3	FLMA/Frank#0255	>power Hotswap	
+2020-04-22 19:58:08	Merry Mancer Games	#free-play-3	ProgBOT#5635		
+2020-04-22 20:10:24	Merry Mancer Games	#free-play-1	Metaljaw#5029	>chip Thunder	
+2020-04-22 20:10:25	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-22 20:16:13	Merry Mancer Games	#free-play-3	FLMA/Frank#0255	>power MadEdit	
+2020-04-22 20:16:13	Merry Mancer Games	#free-play-3	ProgBOT#5635	I don't recognize that NaviPower!	
+2020-04-22 20:16:19	Merry Mancer Games	#free-play-3	FLMA/Frank#0255	>power MapEdit	
+2020-04-22 20:16:20	Merry Mancer Games	#free-play-3	ProgBOT#5635		
+2020-04-22 20:52:11	Merry Mancer Games	#free-play-1	Metaljaw#5029	>power LockOn	
+2020-04-22 20:52:11	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-22 21:53:51	Merry Mancer Games	#general-netbattlers	Galactan#0073	> The real powerplay... is giving him a CUSTOM POWER THAT NO ONE KNOWS WHAT IT IS\nme every single fucking session	Command not recognized
+2020-04-22 22:25:43	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip AlphaStrike	
+2020-04-22 22:25:43	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 22:28:25	Merry Mancer Games	#free-play-2	burningluna#3162	>r 5d6>4	
+2020-04-22 22:28:25	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~4~~, ~~4~~, 6, 6, 5) = **__3 hits!__**	
+2020-04-22 22:29:05	Merry Mancer Games	#free-play-2	burningluna#3162	>r 5d6>4	
+2020-04-22 22:29:05	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~4~~, 5, ~~4~~, ~~2~~, 5) = **__2 hits!__**	
+2020-04-22 22:29:26	Merry Mancer Games	#free-play-2	burningluna#3162	>r 7d6>4	
+2020-04-22 22:29:26	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~3~~, 5, ~~3~~, 5, ~~4~~, 6, ~~1~~) = **__3 hits!__**	
+2020-04-22 22:31:25	Merry Mancer Games	#free-play-2	Danni#5907	>r 6d6>4	
+2020-04-22 22:31:26	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (6, 6, ~~4~~, ~~1~~, 5, ~~1~~) = **__3 hits!__**	
+2020-04-22 22:31:36	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip DashAttack	
+2020-04-22 22:31:37	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 22:33:37	Merry Mancer Games	#free-play-2	Alex#7789	>r 5d6>4	
+2020-04-22 22:33:37	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (~~1~~, 5, ~~1~~, 5, ~~1~~) = **__2 hits!__**	
+2020-04-22 22:34:18	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>power Skyfall	
+2020-04-22 22:34:18	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that NaviPower!	
+2020-04-22 22:35:10	Merry Mancer Games	#free-play-2	Alex#7789	>r 7d6>4	
+2020-04-22 22:35:10	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (5, ~~1~~, ~~1~~, ~~4~~, 5, ~~3~~, 5) = **__3 hits!__**	
+2020-04-22 22:38:34	Merry Mancer Games	#free-play-2	Alex#7789	>r 7d6>4	
+2020-04-22 22:38:34	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (6, ~~2~~, 6, 6, ~~3~~, 5, 6) = **__5 hits!__**	
+2020-04-22 22:41:52	Merry Mancer Games	#free-play-2	Alex#7789	>r 6d6>3	
+2020-04-22 22:41:52	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (4, 5, ~~3~~, 4, ~~2~~, ~~3~~) = **__3 hits!__**	
+2020-04-22 22:43:35	Merry Mancer Games	#general-netbattlers	Galactan#0073	> If your Navi became a Boss enemy, what would the name of their boss music be?\n(I'm assuming this means like what would their boss theme be named if they had a boss theme written for them)\n\n🏓 High Score: Infinity\n🌫️ The Opposite of Life\n⚔️ Holding Pattern\n🔋 Proxies Within Proxies\n📖 Access Denied\n\n🌨️ Frozen Over\n<:GrouchoProg:521113482599596037> Three's a Crowd	Command not recognized
+2020-04-22 22:44:05	Merry Mancer Games	#free-play-2	Danni#5907	>r 6d6>4	
+2020-04-22 22:44:05	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (6, ~~4~~, 6, 5, ~~2~~, ~~2~~) = **__3 hits!__**	
+2020-04-22 22:44:13	Merry Mancer Games	#free-play-2	Alex#7789	>r 5d6>4	
+2020-04-22 22:44:13	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (6, ~~2~~, ~~1~~, ~~4~~, ~~3~~) = **__1 hits!__**	
+2020-04-22 22:44:29	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>ncp LunarDial	
+2020-04-22 22:44:29	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 22:45:49	Merry Mancer Games	#free-play-2	Danni#5907	>r 6d6>4	
+2020-04-22 22:45:50	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (5, ~~4~~, ~~4~~, ~~1~~, 6, ~~1~~) = **__2 hits!__**	
+2020-04-22 22:46:38	Merry Mancer Games	#free-play-2	burningluna#3162	>r 7d6>4	
+2020-04-22 22:46:38	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~3~~, ~~4~~, ~~4~~, 6, ~~1~~, ~~3~~, ~~3~~) = **__1 hits!__**	
+2020-04-22 22:48:22	Merry Mancer Games	#free-play-2	Danni#5907	>r 5d6>4	
+2020-04-22 22:48:22	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (6, 6, ~~3~~, ~~2~~, ~~4~~) = **__2 hits!__**	
+2020-04-22 22:48:29	Merry Mancer Games	#free-play-2	Danni#5907	>r 5d6>4	
+2020-04-22 22:48:29	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (~~3~~, ~~3~~, ~~1~~, ~~2~~, ~~4~~) = **__0 hits!__**	
+2020-04-22 22:49:35	Merry Mancer Games	#free-play-2	burningluna#3162	>power daredevil	
+2020-04-22 22:49:36	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that NaviPower!	
+2020-04-22 22:49:41	Merry Mancer Games	#free-play-2	burningluna#3162	>oops	
+2020-04-22 18:49:45		#			Deleted last output from this user
+2020-04-22 22:49:45	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>ncp Daredevil	
+2020-04-22 22:49:45	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 22:50:26	Merry Mancer Games	#general-netbattlers	DonJentleman#0559	>r 3d6	
+2020-04-22 22:50:26	Merry Mancer Games	#general-netbattlers	ProgBOT#5635	<@!160965878005891072> _rolls a..._ **6, 4, 5!**	
+2020-04-22 22:51:52	Merry Mancer Games	#free-play-2	Danni#5907	>r 6d6>4	
+2020-04-22 22:51:52	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (5, ~~4~~, ~~1~~, ~~1~~, 5, 5) = **__3 hits!__**	
+2020-04-22 22:52:19	Merry Mancer Games	#free-play-2	Iza#0395	>powered by fake dicepools <:LUL:406913667540713474>	Command not recognized
+2020-04-22 22:52:42	Merry Mancer Games	#free-play-2	DonJentleman#0559	> Shift is now Riven	Command not recognized
+2020-04-22 22:53:13	Merry Mancer Games	#free-play-2	DonJentleman#0559	> again	Command not recognized
+2020-04-22 22:56:27	Merry Mancer Games	#free-play-2	Alex#7789	>r 6d6>4	
+2020-04-22 22:56:28	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (~~4~~, 5, 6, ~~2~~, ~~4~~, ~~1~~) = **__2 hits!__**	
+2020-04-22 22:57:25	Merry Mancer Games	#free-play-2	Alex#7789	>r 5d6>4	
+2020-04-22 22:57:25	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (~~1~~, 5, ~~3~~, 6, ~~3~~) = **__2 hits!__**	
+2020-04-22 22:58:41	Merry Mancer Games	#free-play-2	burningluna#3162	>r 5d6>4	
+2020-04-22 22:58:41	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~3~~, ~~2~~, 6, 5, 6) = **__3 hits!__**	
+2020-04-22 23:00:06	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip SweetHeart	
+2020-04-22 23:00:06	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 23:00:37	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip Apparition	
+2020-04-22 23:00:37	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 23:00:49	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>teleports behind u	Command not recognized
+2020-04-22 23:00:53	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>nothin personell, kid	Command not recognized
+2020-04-22 23:01:22	Merry Mancer Games	#free-play-2	burningluna#3162	>chip xijustice	
+2020-04-22 23:01:23	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that Battle Chip!	
+2020-04-22 23:01:31	Merry Mancer Games	#free-play-2	xColdxFusionx#5496	>chip XI-Justice	
+2020-04-22 23:01:31	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 23:02:24	Merry Mancer Games	#free-play-1	FLMA/Frank#0255	>chip FolderRewind	
+2020-04-22 23:02:24	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-22 23:03:20	Merry Mancer Games	#free-play-2	burningluna#3162	>r 5d6>4	
+2020-04-22 23:03:20	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~1~~, ~~3~~, ~~2~~, ~~3~~, 6) = **__1 hits!__**	
+2020-04-22 23:04:34	Merry Mancer Games	#free-play-2	burningluna#3162	>chip silverfist	
+2020-04-22 23:04:34	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 23:07:00	Merry Mancer Games	#free-play-2	Danni#5907	>r 6d6>3	
+2020-04-22 23:07:00	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (~~1~~, ~~3~~, 6, 6, ~~2~~, 4) = **__3 hits!__**	
+2020-04-22 23:09:34	Merry Mancer Games	#free-play-2	Alex#7789	>chip vault	
+2020-04-22 23:09:34	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 23:11:04	Merry Mancer Games	#free-play-2	Alex#7789	>r 5d6>4	
+2020-04-22 23:11:04	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (~~1~~, ~~2~~, ~~2~~, ~~3~~, ~~1~~) = **__0 hits!__**	
+2020-04-22 23:11:47	Merry Mancer Games	#free-play-2	Danni#5907	>r 5d6>4	
+2020-04-22 23:11:48	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (5, ~~4~~, ~~1~~, ~~1~~, ~~3~~) = **__1 hits!__**	
+2020-04-22 23:12:27	Merry Mancer Games	#free-play-2	Danni#5907	>r 1d6	
+2020-04-22 23:12:28	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls a..._ **1!**	
+2020-04-22 23:12:29	Merry Mancer Games	#general-netbattlers	M8Sob#8590	> If your Navi became a Boss enemy, what would the name of their boss music be?\n> (I'm assuming this means like what would their boss theme be named if they had a boss theme written for them)\nOooh that sounds fun\n`RumbleWoman:` You Don't Have Enough Quarters\n`CalculusMan:` Solve For N\n`Simmer:` Roiling Pot of Passion\n`PumpMan:` Plumbing the Deepest Depths\n`TornadoMan:` Storm Warning	Command not recognized
+2020-04-22 23:13:32	Merry Mancer Games	#free-play-2	Danni#5907	>r 4d6>4	
+2020-04-22 23:13:32	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (6, ~~1~~, 5, ~~2~~) = **__2 hits!__**	
+2020-04-22 23:14:57	Merry Mancer Games	#free-play-2	DonJentleman#0559	> Indies have some FUCKING EDGE	Command not recognized
+2020-04-22 23:16:44	Merry Mancer Games	#free-play-2	burningluna#3162	>r 5d6>4	
+2020-04-22 23:16:44	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~3~~, ~~3~~, ~~1~~, ~~2~~, ~~4~~) = **__0 hits!__**	
+2020-04-22 23:18:08	Merry Mancer Games	#free-play-2	Danni#5907	>r 4d6>4	
+2020-04-22 23:18:09	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (5, ~~2~~, ~~2~~, 6) = **__2 hits!__**	
+2020-04-22 23:19:25	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip XV-TheDevil	
+2020-04-22 23:19:26	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 23:19:34	Merry Mancer Games	#free-play-2	Danni#5907	>r 6d6>5	
+2020-04-22 23:19:34	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (~~5~~, ~~3~~, ~~2~~, ~~2~~, ~~5~~, ~~1~~) = **__0 hits!__**	
+2020-04-22 23:20:12	Merry Mancer Games	#free-play-2	Alex#7789	>r 5d6>4	
+2020-04-22 23:20:12	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (~~2~~, ~~2~~, ~~4~~, ~~3~~, ~~2~~) = **__0 hits!__**	
+2020-04-22 23:20:20	Merry Mancer Games	#free-play-2	Alex#7789	>r 5d6>4	
+2020-04-22 23:20:20	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (~~4~~, ~~2~~, 6, ~~2~~, 6) = **__2 hits!__**	
+2020-04-22 23:23:21	Merry Mancer Games	#free-play-2	Alex#7789	>r 5d6>3	
+2020-04-22 23:23:21	Merry Mancer Games	#free-play-2	Danni#5907	>r 6d6>3	
+2020-04-22 23:23:21	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (4, 6, 5, ~~1~~, ~~1~~) = **__3 hits!__**	
+2020-04-22 23:23:21	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!87265040192765952> _rolls..._ (~~3~~, 4, 6, ~~2~~, 5, 4) = **__4 hits!__**	
+2020-04-22 23:23:40	Merry Mancer Games	#free-play-2	Alex#7789	>r 2d6>4	
+2020-04-22 23:23:40	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (6, 5) = **__2 hits!__**	
+2020-04-22 23:23:55	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip XV-TheDevil	
+2020-04-22 23:23:55	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-22 23:27:47	Merry Mancer Games	#free-play-2	burningluna#3162	>r 2d6>4	
+2020-04-22 23:27:48	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (5, 6) = **__2 hits!__**	
+2020-04-22 23:29:00	Merry Mancer Games	#general-netbattlers	ThatGuy74#5439	> If your Navi became a Boss enemy, what would the name of their boss music be?\n\n`GambitMan:` Exclamation Point\n`CrimsonMonarch:` Reborn Chrysalis\n`AurelionSpark:` Circuit Breaker\n\n`???????` E	Command not recognized
+2020-04-22 23:40:19	Merry Mancer Games	#general-netbattlers	Jooby#2068	> If your Navi became a Boss, what would be the name of their theme?\nYantraMan: Luck On His Side\nSkuld: Victory For Valhalla\nBrimstone: Daemons Unleashed\nSonar: Location Through Echoes\nEnigma: What Should Not Be\nBanchoMan: Ass Kickin' Time	Command not recognized
+2020-04-22 23:59:21	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 6d6 > 4	
+2020-04-22 23:59:21	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (~~4~~, ~~2~~, ~~4~~, 6, 5, ~~4~~) = **__2 hits!__**	
+2020-04-23 00:01:39	Merry Mancer Games	#free-play-2	DonJentleman#0559	>virus BuildABees	
+2020-04-23 00:01:40	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:07:13	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>r 7d6>4	
+2020-04-23 00:07:14	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!200696338613141504> _rolls..._ (~~4~~, ~~4~~, ~~4~~, ~~1~~, ~~1~~, ~~2~~, ~~1~~) = **__0 hits!__**	
+2020-04-23 00:11:50	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>power Volley	
+2020-04-23 00:11:51	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:12:04	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>r 4d6>4	
+2020-04-23 00:12:04	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!200696338613141504> _rolls..._ (6, ~~2~~, 5, ~~3~~) = **__2 hits!__**	
+2020-04-23 00:13:03	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>r 4d6>4	
+2020-04-23 00:13:04	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!200696338613141504> _rolls..._ (~~2~~, ~~4~~, 5, 6) = **__2 hits!__**	
+2020-04-23 00:13:46	Merry Mancer Games	#free-play-2	DonJentleman#0559	> CrystalSpectre is a sweetheart	Command not recognized
+2020-04-23 00:14:37	Merry Mancer Games	#free-play-2	Iza#0395	>power systemcall	
+2020-04-23 00:14:37	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:15:00	Merry Mancer Games	#free-play-2	Pika#8629	>:O!!!	Command not recognized
+2020-04-23 00:19:10	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 6d6 > 4	
+2020-04-23 00:19:11	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (~~3~~, ~~4~~, 6, ~~2~~, ~~3~~, ~~1~~) = **__1 hits!__**	
+2020-04-23 00:19:32	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip ThirdEye	
+2020-04-23 00:19:32	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:21:48	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>virus Number	
+2020-04-23 00:21:49	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that virus!	
+2020-04-23 00:22:35	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>chip Prism	
+2020-04-23 00:22:35	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:24:41	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>chip Grappler	
+2020-04-23 00:24:41	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:24:56	Merry Mancer Games	#free-play-2	GSK Bladez#7356	>chip prism	
+2020-04-23 00:24:56	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:30:57	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 6d6 > 4	
+2020-04-23 00:30:58	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (6, ~~1~~, ~~4~~, ~~2~~, 6, ~~4~~) = **__2 hits!__**	
+2020-04-23 00:34:57	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>chip CandyWave	
+2020-04-23 00:34:57	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:35:50	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>virus Beetank	
+2020-04-23 00:35:50	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:36:28	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip Apparition	
+2020-04-23 00:36:28	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:37:13	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>r 7d6>4	
+2020-04-23 00:37:14	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!200696338613141504> _rolls..._ (~~3~~, ~~1~~, ~~2~~, ~~4~~, 5, ~~4~~, ~~4~~) = **__1 hits!__**	
+2020-04-23 00:38:51	Merry Mancer Games	#free-play-2	Alex#7789	>.>	Command not recognized
+2020-04-23 00:40:52	Merry Mancer Games	#free-play-2	DonJentleman#0559	> It's not free, it's legitimate!\n> -Pika, April 2020	Command not recognized
+2020-04-23 00:43:19	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 5d6 > 4	
+2020-04-23 00:43:19	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (5, ~~2~~, ~~3~~, ~~2~~, ~~2~~) = **__1 hits!__**	
+2020-04-23 00:49:41	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>chip GhostSeed	
+2020-04-23 00:49:41	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:53:01	Merry Mancer Games	#free-play-2	Pika#8629	>chip rhymescheme	
+2020-04-23 00:53:02	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:55:54	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip VesselBomb	
+2020-04-23 00:55:55	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 00:58:31	Merry Mancer Games	#free-play-2	Pika#8629	>chip faker	
+2020-04-23 00:58:32	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:01:50	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 6d6 > 4	
+2020-04-23 01:01:50	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (~~2~~, ~~4~~, ~~1~~, 6, 5, ~~1~~) = **__2 hits!__**	
+2020-04-23 01:03:04	Merry Mancer Games	#free-play-2	Pika#8629	>:O!!!!!	Command not recognized
+2020-04-23 01:04:29	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>r 4d6>4	
+2020-04-23 01:04:29	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!200696338613141504> _rolls..._ (6, 5, 6, ~~2~~) = **__3 hits!__**	
+2020-04-23 01:05:46	Merry Mancer Games	#free-play-2	Pika#8629	>chip slasher	
+2020-04-23 01:05:46	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:07:10	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>ncp DarkBargain	
+2020-04-23 01:07:11	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:10:39	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>r 7d6>4	
+2020-04-23 01:10:39	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!200696338613141504> _rolls..._ (~~4~~, 6, 5, ~~1~~, ~~2~~, ~~1~~, 6) = **__3 hits!__**	
+2020-04-23 01:10:58	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>chip V-TheHierophant	
+2020-04-23 01:10:58	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:12:06	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 8d6 > 3	
+2020-04-23 01:12:06	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (~~3~~, 6, ~~2~~, ~~3~~, ~~1~~, 4, 6, 5) = **__4 hits!__**	
+2020-04-23 01:16:12	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>chip DimensionalGate	
+2020-04-23 01:16:13	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:19:30	Merry Mancer Games	#free-play-2	DonJentleman#0559	> Not using More Disease to make another strain for everyone to have	Command not recognized
+2020-04-23 01:25:05	Merry Mancer Games	#free-play-2	Pika#8629	>chip slasher	
+2020-04-23 01:25:05	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:27:53	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip CustSword	
+2020-04-23 01:27:53	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:29:46	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 1d6 > 4	
+2020-04-23 01:29:46	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (5) = **__1 hits!__**	
+2020-04-23 01:32:04	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>r 7d6>4	
+2020-04-23 01:32:04	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!200696338613141504> _rolls..._ (6, ~~3~~, ~~3~~, ~~2~~, ~~4~~, 5, ~~3~~) = **__2 hits!__**	
+2020-04-23 01:32:57	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip TimeStopper	
+2020-04-23 01:32:57	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:33:19	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip ChromaSword	
+2020-04-23 01:33:19	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:38:30	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip VarGun	
+2020-04-23 01:38:31	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:39:31	Merry Mancer Games	#free-play-2	DonJentleman#0559	> Careful, your Australian is showing	Command not recognized
+2020-04-23 01:40:01	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>chip CustSword	
+2020-04-23 01:40:01	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:45:28	Merry Mancer Games	#general-netbattlers	Torrin#0508	> title of your Navi's boss theme\n`TriangleRed:` Battle Against An Enemy Strategist\n`DeltaRed:` ||Disaster Sign: New Game Plus||\n`DoublePlus:` Team, We've Gotta Wing It!\n`MagusKnight:` Alchemical Advance ~ The Puzzle Of Life\n`RandomAccess:` Rival Of Mischief!\n`RandomAccessSP:` ||Read-Only Misery||\n`Corrugator:` Battle Against A Nostalgic Trade Lord\n`LoveLace:` Dimensional Step ~ Shadows Looking For Answers\n`Periwinkle:` Level 4 Archive Clearance	Command not recognized
+2020-04-23 01:47:57	Merry Mancer Games	#free-play-2	Iza#0395	>ncp sneakrunncp	
+2020-04-23 01:47:58	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that NCP!	
+2020-04-23 01:48:04	Merry Mancer Games	#free-play-2	Iza#0395	>ncp cloak	
+2020-04-23 01:48:04	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:48:15	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>r 7d6>4	
+2020-04-23 01:48:16	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!200696338613141504> _rolls..._ (~~3~~, ~~2~~, ~~3~~, ~~4~~, ~~1~~, 5, 5) = **__2 hits!__**	
+2020-04-23 01:48:22	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 8d6 > 4	
+2020-04-23 01:48:22	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (~~2~~, ~~2~~, ~~4~~, 6, ~~1~~, ~~2~~, ~~4~~, ~~3~~) = **__1 hits!__**	
+2020-04-23 01:49:24	Merry Mancer Games	#general-netbattlers	xColdxFusionx#5496	> Boss Theme Titles	Command not recognized
+2020-04-23 01:49:30	Merry Mancer Games	#free-play-2	Iza#0395	>chip 0-TheFool	
+2020-04-23 01:49:30	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 01:57:33	Merry Mancer Games	#free-play-1	burningluna#3162	>r 5d6>4	
+2020-04-23 01:57:33	Merry Mancer Games	#free-play-1	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~1~~, ~~1~~, ~~4~~, ~~1~~, 6) = **__1 hits!__**	
+2020-04-23 01:57:38	Merry Mancer Games	#free-play-1	burningluna#3162	>r 5d6>4	
+2020-04-23 01:57:38	Merry Mancer Games	#free-play-1	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~4~~, ~~3~~, 6, ~~2~~, ~~2~~) = **__1 hits!__**	
+2020-04-23 01:58:19	Merry Mancer Games	#free-play-2	xColdxFusionx#5496	> Beginnings\n> Holding back\nThe chip makes\nso much sense now	Command not recognized
+2020-04-23 02:12:02	Merry Mancer Games	#free-play-2	Jatea#6438	>r 3d6>4	
+2020-04-23 02:12:02	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (~~3~~, ~~3~~, ~~3~~) = **__0 hits!__**	
+2020-04-23 02:12:21	Merry Mancer Games	#general-netbattlers	AuraDoggoBest#4267	> If your Navi became a Boss enemy, what would the name of their boss music be?\n\n❄️ JackFrost: *Time To Make History -special mix-*\n\n🃏 Jesgo: *The Black Mages - Dancing Mad*	Command not recognized
+2020-04-23 02:17:05	Merry Mancer Games	#free-play-2	minty_cream#4261	>chip VarCannon	
+2020-04-23 02:17:06	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that Battle Chip!	
+2020-04-23 02:17:29	Merry Mancer Games	#free-play-1	Galactan#0073	>chip Xii-hangedman	
+2020-04-23 02:17:29	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-23 02:17:31	Merry Mancer Games	#free-play-2	Niccy_Everson#6955	>chip VarGun	
+2020-04-23 02:17:31	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:17:47	Merry Mancer Games	#free-play-1	Galactan#0073	>chip ii-highpriestess	
+2020-04-23 02:17:47	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-23 02:29:33	Merry Mancer Games	#free-play-2	burningluna#3162	>chip moonligh	
+2020-04-23 02:29:34	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that Battle Chip!	
+2020-04-23 02:29:37	Merry Mancer Games	#free-play-2	burningluna#3162	>opps	Command not recognized
+2020-04-23 02:29:40	Merry Mancer Games	#free-play-2	burningluna#3162	>oops	
+2020-04-22 22:29:41		#			Deleted last output from this user
+2020-04-23 02:29:42	Merry Mancer Games	#free-play-2	Niccy_Everson#6955	>chip Moonltight	
+2020-04-23 02:29:42	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that Battle Chip!	
+2020-04-23 02:29:46	Merry Mancer Games	#free-play-2	burningluna#3162	>chip moonlight	
+2020-04-23 02:29:47	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:30:25	Merry Mancer Games	#free-play-2	Iza#0395	>power tracker	
+2020-04-23 02:30:26	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:36:08	Merry Mancer Games	#general-netbattlers	Russel#7777	> Navi Boss Themes\n💥 `Gauntlet`: Ash & Smolder\n👹 `CurseWeaver.EZT`: Trouble Underfoot\n📸 `PressMan`: They Know The Truth!\n🃏 `Jest`: Stage Performance --SIDE B--\n-----\n🔆 `SolarBoy`: Total Eclipse\n⚠️ `RoadBreaker`: End of the Line\n\n(those last 4 were actually bosses at one point! hehehah)	Command not recognized
+2020-04-23 02:37:45	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>ncp EnergyChange	
+2020-04-23 02:37:45	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:38:21	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip IX-TheHermit	
+2020-04-23 02:38:22	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:41:01	Merry Mancer Games	#free-play-2	TaviRaya#5790	>chip I-TheMagician	
+2020-04-23 02:41:01	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:42:26	Merry Mancer Games	#general-netbattlers	M8Sob#8590	> AIN'T NOTHIN' LIKE A FUNKY BEAT\n<:EyesDex:599328456139997291> \nthat's the good shit right there	Command not recognized
+2020-04-23 02:43:45	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip VesselBlade	
+2020-04-23 02:43:47	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:44:48	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>ncp Gladiator	
+2020-04-23 02:44:49	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:45:03	Merry Mancer Games	#free-play-2	Jatea#6438	>r 4d6>4	
+2020-04-23 02:45:03	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (6, ~~2~~, ~~4~~, ~~1~~) = **__1 hits!__**	
+2020-04-23 02:45:39	Merry Mancer Games	#free-play-2	Jatea#6438	>r 4d6>4	
+2020-04-23 02:45:40	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (~~3~~, 5, ~~4~~, ~~3~~) = **__1 hits!__**	
+2020-04-23 02:46:05	Merry Mancer Games	#free-play-2	Jatea#6438	>r 4d6>4	
+2020-04-23 02:46:05	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (~~3~~, ~~3~~, ~~4~~, ~~1~~) = **__0 hits!__**	
+2020-04-23 02:47:00	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>ncp LunarDial	
+2020-04-23 02:47:01	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:47:38	Merry Mancer Games	#free-play-2	M8Sob#8590	>chip firehit	
+2020-04-23 02:47:38	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:48:12	Merry Mancer Games	#free-play-2	TaviRaya#5790	>r 2d6	
+2020-04-23 02:48:12	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!184413730153562121> _rolls a..._ **1, 5!**	
+2020-04-23 02:49:44	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip Recall	
+2020-04-23 02:49:44	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:50:03	Merry Mancer Games	#free-play-2	DonJentleman#0559	>chip CritterCrew	
+2020-04-23 02:50:04	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:52:11	Merry Mancer Games	#free-play-2	M8Sob#8590	>chip reflex	
+2020-04-23 02:52:12	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 02:54:03	Merry Mancer Games	#free-play-2	Jatea#6438	>r 4d6>4	
+2020-04-23 02:54:03	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (5, ~~1~~, 5, 6) = **__3 hits!__**	
+2020-04-23 02:55:31	Merry Mancer Games	#free-play-2	Jatea#6438	>r 6d6>4	
+2020-04-23 02:55:31	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (~~4~~, ~~4~~, 5, ~~2~~, ~~4~~, 5) = **__2 hits!__**	
+2020-04-23 02:57:38	Merry Mancer Games	#free-play-2	TaviRaya#5790	>chip XVI-TheTower	
+2020-04-23 02:57:38	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:05:17	Merry Mancer Games	#free-play-1	xColdxFusionx#5496	>chip xvi-thetower	
+2020-04-23 03:05:18	Merry Mancer Games	#free-play-1	ProgBOT#5635		
+2020-04-23 03:06:09	Merry Mancer Games	#free-play-2	M8Sob#8590	>ncp typeconversion	
+2020-04-23 03:06:09	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:08:03	Merry Mancer Games	#general-netbattlers	burningluna#3162	> Navi Boss Themes\n> 🛡️	Command not recognized
+2020-04-23 03:10:40	Merry Mancer Games	#free-play-2	DonJentleman#0559	> Rare footage of Term going crazy	Command not recognized
+2020-04-23 03:10:49	Merry Mancer Games	#free-play-2	Jatea#6438	>r 6d6>4	
+2020-04-23 03:10:49	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (~~1~~, 6, ~~3~~, ~~1~~, 5, ~~2~~) = **__2 hits!__**	
+2020-04-23 03:20:08	Merry Mancer Games	#free-play-2	TaviRaya#5790	>r 2d6>4	
+2020-04-23 03:20:08	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!184413730153562121> _rolls..._ (~~4~~, ~~4~~) = **__0 hits!__**	
+2020-04-23 03:20:38	Merry Mancer Games	#free-play-2	Jatea#6438	>r 6d6>4	
+2020-04-23 03:20:38	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (~~4~~, ~~3~~, ~~4~~, ~~4~~, ~~1~~, 6) = **__1 hits!__**	
+2020-04-23 03:22:53	Merry Mancer Games	#free-play-2	TaviRaya#5790	>r 2d6>4	
+2020-04-23 03:22:53	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!184413730153562121> _rolls..._ (~~4~~, ~~2~~) = **__0 hits!__**	
+2020-04-23 03:23:11	Merry Mancer Games	#free-play-2	M8Sob#8590	>r 10d6>4	
+2020-04-23 03:23:11	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!130102791698907137> _rolls..._ (5, 6, ~~2~~, 6, 6, ~~4~~, ~~4~~, 6, 5, ~~1~~) = **__6 hits!__**	
+2020-04-23 03:23:27	Merry Mancer Games	#free-play-2	Jatea#6438	>chip colorpoint	
+2020-04-23 03:23:27	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:23:38	Merry Mancer Games	#free-play-2	Jatea#6438	>r 5d6>4	
+2020-04-23 03:23:38	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (5, 6, ~~4~~, ~~3~~, ~~4~~) = **__2 hits!__**	
+2020-04-23 03:24:56	Merry Mancer Games	#free-play-2	Jatea#6438	>r 3d6>4	
+2020-04-23 03:24:56	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (~~2~~, ~~2~~, ~~3~~) = **__0 hits!__**	
+2020-04-23 03:26:28	Merry Mancer Games	#free-play-2	TaviRaya#5790	>chip XV-TheDevil	
+2020-04-23 03:26:28	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:27:02	Merry Mancer Games	#free-play-2	TaviRaya#5790	>r 2d6>4	
+2020-04-23 03:27:03	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!184413730153562121> _rolls..._ (~~2~~, 6) = **__1 hits!__**	
+2020-04-23 03:27:50	Merry Mancer Games	#free-play-2	DonJentleman#0559	>chip HolyPanel	
+2020-04-23 03:27:50	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:33:11	Merry Mancer Games	#free-play-2	Jatea#6438	>chip vargun	
+2020-04-23 03:33:11	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:35:05	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip VarGun	
+2020-04-23 03:35:05	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:37:47	Merry Mancer Games	#free-play-1	minty_cream#4261	>chip dojge	
+2020-04-23 03:37:48	Merry Mancer Games	#free-play-1	ProgBOT#5635	I don't recognize that Battle Chip!	
+2020-04-23 03:38:20	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip VengefulSpirit	
+2020-04-23 03:38:20	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:46:43	Merry Mancer Games	#free-play-2	Jatea#6438	>power breakcharge	
+2020-04-23 03:46:43	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:46:48	Merry Mancer Games	#free-play-2	Jatea#6438	>ncp parallelport	
+2020-04-23 03:46:48	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:46:53	Merry Mancer Games	#free-play-2	Jatea#6438	>ncp breakslot	
+2020-04-23 03:46:53	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:48:41	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip VengefulDamage	
+2020-04-23 03:48:41	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that Battle Chip!	
+2020-04-23 03:48:47	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>oops	
+2020-04-22 23:48:47		#			Deleted last output from this user
+2020-04-23 03:48:51	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip VengefulSpirit	
+2020-04-23 03:48:51	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:50:23	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip Attack+1	
+2020-04-23 03:50:23	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:50:26	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>power Refresh	
+2020-04-23 03:50:26	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:50:29	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip Attack+1	
+2020-04-23 03:50:29	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:50:32	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>power Splash	
+2020-04-23 03:50:32	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 03:53:02	Merry Mancer Games	#free-play-2	TaviRaya#5790	>r 6d6>4	
+2020-04-23 03:53:02	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!184413730153562121> _rolls..._ (~~1~~, ~~2~~, ~~1~~, 6, 6, ~~2~~) = **__2 hits!__**	
+2020-04-23 03:53:25	Merry Mancer Games	#free-play-2	TaviRaya#5790	>r 2d6>4	
+2020-04-23 03:53:25	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!184413730153562121> _rolls..._ (~~3~~, ~~4~~) = **__0 hits!__**	
+2020-04-23 03:54:45	Merry Mancer Games	#free-play-2	Niccy_Everson#6955	>chip BronzeFist	
+2020-04-23 03:54:45	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 04:00:19	Merry Mancer Games	#free-play-2	Jatea#6438	>r 6d6>4	
+2020-04-23 04:00:19	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (~~1~~, ~~3~~, ~~1~~, ~~1~~, 6, ~~3~~) = **__1 hits!__**	
+2020-04-23 04:01:32	Merry Mancer Games	#free-play-2	TaviRaya#5790	>chip XVII-TheStar	
+2020-04-23 04:01:32	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 04:03:28	Merry Mancer Games	#free-play-1	minty_cream#4261	>virus number	
+2020-04-23 04:03:29	Merry Mancer Games	#free-play-1	ProgBOT#5635	I don't recognize that virus!	
+2020-04-23 04:03:32	Merry Mancer Games	#free-play-1	minty_cream#4261	>virus numbers	
+2020-04-23 04:03:32	Merry Mancer Games	#free-play-1	ProgBOT#5635	I don't recognize that virus!	
+2020-04-23 04:06:48	Merry Mancer Games	#free-play-3	Birdie#1834	>power StandTogether	
+2020-04-23 04:06:49	Merry Mancer Games	#free-play-3	ProgBOT#5635	I don't recognize that NaviPower!	
+2020-04-23 04:06:52	Merry Mancer Games	#free-play-3	Birdie#1834	>bondpower StandTogether	Command not recognized
+2020-04-23 04:07:01	Merry Mancer Games	#free-play-3	Birdie#1834	>oops	
+2020-04-23 00:07:02		#			Deleted last output from this user
+2020-04-23 04:08:07	Merry Mancer Games	#free-play-2	Alex#7789	>r 5d6>3	
+2020-04-23 04:08:07	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!140221057050214400> _rolls..._ (6, 5, 6, ~~3~~, ~~2~~) = **__3 hits!__**	
+2020-04-23 04:08:09	Merry Mancer Games	#free-play-2	burningluna#3162	>r 7d6>3	
+2020-04-23 04:08:09	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (~~2~~, 6, ~~1~~, 6, 5, 5, ~~3~~) = **__4 hits!__**	
+2020-04-23 04:10:24	Merry Mancer Games	#free-play-2	Iza#0395	>chip darksword	
+2020-04-23 04:10:24	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 04:10:33	Merry Mancer Games	#free-play-2	FLMA/Frank#0255	>chip XVII-TheStar	
+2020-04-23 04:10:33	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 04:10:51	Merry Mancer Games	#free-play-2	Iza#0395	>chip darkcannon'	
+2020-04-23 04:10:51	Merry Mancer Games	#free-play-2	ProgBOT#5635	I don't recognize that Battle Chip!	
+2020-04-23 04:11:00	Merry Mancer Games	#free-play-2	Iza#0395	>chip darkcannon	
+2020-04-23 04:11:00	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 04:11:07	Merry Mancer Games	#free-play-2	DonJentleman#0559	> Iza machine broke, only pumps out DarkChip	Command not recognized
+2020-04-23 04:11:19	Merry Mancer Games	#free-play-2	Jatea#6438	>r 6d6>3	
+2020-04-23 04:11:19	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!71651032953794560> _rolls..._ (6, ~~1~~, ~~3~~, 4, 5, ~~1~~) = **__3 hits!__**	
+2020-04-23 04:12:36	Merry Mancer Games	#free-play-2	TerminusEst13#7246	>chip BronzeFist	
+2020-04-23 04:12:36	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 04:15:21	Merry Mancer Games	#free-play-2	minty_cream#4261	>r 6d6 > 3	
+2020-04-23 04:15:21	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!121076118320054280> _rolls..._ (~~1~~, ~~2~~, 6, ~~3~~, ~~3~~, ~~2~~) = **__1 hits!__**	
+2020-04-23 04:16:40	Merry Mancer Games	#free-play-2	burningluna#3162	>r 6d6>3	
+2020-04-23 04:16:40	Merry Mancer Games	#free-play-2	ProgBOT#5635	<@!105115718143471616> _rolls..._ (5, ~~1~~, ~~1~~, ~~3~~, 4, 5) = **__3 hits!__**	
+2020-04-23 04:17:24	Merry Mancer Games	#free-play-2	SapphireStarz11#5046	>chip JamOut	
+2020-04-23 04:17:24	Merry Mancer Games	#free-play-2	ProgBOT#5635		
+2020-04-23 04:21:21	Merry Mancer Games	#free-play-2	Iza#0395	>penny approved!	Command not recognized
+2020-04-23 04:37:07	Merry Mancer Games	#free-play-2	DonJentleman#0559	> Shift Death Rate: 100%?	Command not recognized
+2020-04-23 04:44:22	Merry Mancer Games	#free-play-2	Clefairy#4313	> Cultists: "Yes Lord Goose!"\nThanks Don	Command not recognized

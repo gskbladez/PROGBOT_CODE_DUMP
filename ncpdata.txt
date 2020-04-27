@@ -34,7 +34,7 @@ SaveAs	1	Save	Save also gives the target control over your element for one roll.
 SignPost	1	-	You can leave a sign, similar to a BBS post, anywhere online.	-	
 Soundboard	1	Playback	Playback can generate any noise you've head before or can find online.	-	
 Subliminal	1	Hypnotize	On success, you can describe the target's dream as detailed as you like.	-	
-SurroundSound	1	Playback	While jacked in, your Navi's voice can come from any real-world electronic speaker Near.
+SurroundSound	1	Playback	Your voice can come from any real-world speaker Near your physical jack-in point.	-	
 TeamLock	1	GravArmor	When you stick to a surface, any Close allies can gravity-latch onto your body.	-	
 ThemeSong	1	-	On Jack-in, your presence has loud, colorful fanfare, drawing all attention to you.	-	
 Underflow	1	-	If a failed roll has three or more 1's, count it as two hits instead.	-	
@@ -243,7 +243,7 @@ DarkBargain	2	-	Once per jack-in, add 1 hit to an opposed roll, even after rolli
 DevilFangs	2	-	On enemy deletion, heal = its Max HP. No other healing, even jack-out. Full HP to uninstall.	Mystic Lilies
 EncryptedChat	1	-	Can speak in code to anyone who has this NCP. Sounds like animal noises otherwise.	ChitChat	
 GrazingPower	3	-	On successful defense with Speed, +2 dice to your next attack roll. Doesn't stack.	Mystic Lilies	
-JackOfHearts	2	-	You can see a colored aura around everyone that indicates thier emotional state.	Mystic Lilies	
+JackOfHearts	2	-	You can see a colored aura around everyone that indicates their emotional state.	Mystic Lilies	
 KingOfDiamonds	3	-	Can spend 2 HP to spawn your Element Close, generating it from within your body.	Mystic Lilies	
 LunarDial	4	-	When you win a parry, you can freeze time long enough for one more roll/BattleChip.	Mystic Lilies	
 Master	4	-	On jack-in, pick a Near Navi with Servant installed. You mirror each other's healing.	Mystic Lilies	
@@ -252,7 +252,7 @@ Matchmaker	1	-	Can roll Info to analyze social media and judge 2 peoples' romant
 PocketBase	1	-	Your PET contains a cozy home base. You can make a door to it at jack-in points.	ChitChat	
 ProgPal	2	-	When you befriend a Mr. Prog, get a token. Can spend a token to reroll a Navi roll.	ChitChat	
 QueenOfClubs	2	-	Non-multihit Dangerous chips deal +1 dmg, but the collateral damage always backfires.	Mystic Lilies	
-Retribution	1	-	When you agree to a deal, whoever breaks the deal has thier face & voice distort.	Mystic Lilies	
+Retribution	1	-	When you agree to a deal, whoever breaks the deal has their face & voice distort.	Mystic Lilies	
 RideOn	1	-	On jack in, you have a cool, small ride (e.g. roller skates, snowboard, pogo stick).	Skateboard Dog
 Servant	1	-	Must spend 1 Bravery to knowingly subvert the wishes of a Navi with Master installed.	Mystic Lilies	
 Taboo	3	-	When you break something big/valuable, +1 die to your next Strength roll. Stacks to +3.	Mystic Lilies	
