@@ -10,6 +10,7 @@ removeresponse	removeresponse	prefix	3
 purge	purge	prefix	2
 restrict	restrictuser	prefix	2
 unrestrict	unrestrictuser	prefix	2
+bugreport	bugreport	prefix	1
 oops	oops	prefix	1
 commands	commands	prefix	1
 help	help	prefix	1

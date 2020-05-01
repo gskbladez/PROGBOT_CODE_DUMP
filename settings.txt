@@ -2,6 +2,7 @@ botname	ProgBOT
 token	NTcyODc4MjAwMzk3NjI3NDEy.XMis-A.D9KSMhYqq_BSPjzVRYkTa0hSQl8
 logformat	%t\t%s\t%c\t%U\t%m\t%r
 message_sendmessage_noparam	I need two args: channelid and message
+message_bugreport_noparam	You need to describe the error in full.
 message_updatesetting_noparam	I need a variable name and a value to update it to
 message_updatesetting_failed	That setting name doesn't seem to exist
 message_updatesetting_success	Updated {} from {} to {}

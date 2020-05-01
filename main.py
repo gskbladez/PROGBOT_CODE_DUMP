@@ -34,6 +34,19 @@ async def sendmessage(context, *args, **kwargs):
     THEmessagecontent = context["paramline"][context["paramline"].index(settings.paramdelim)+1:].strip()
     return await koduck.sendmessage(context["message"], sendchannel=THEchannel, sendcontent=THEmessagecontent, ignorecd=True)
 
+async def bugreport(context, *args, **kwargs):
+    if len(args) < 1:
+        return await koduck.sendmessage(context["message"], sendcontent=settings.message_bugreport_noparam)
+    channelid = "704684798584815636"
+    THEchannel = koduck.client.get_channel(channelid)
+    THEmessagecontent = context["paramline"]
+    originchannel = "<#{}>".format(context["message"].channel.id) if isinstance(context["message"].channel, discord.Channel) else ""
+    embed = discord.Embed(title="**__New Bug Report!__**", description= "_{}_".format(context["paramline"]), color=0x5058a8)
+    embed.set_footer(text="Submitted by: {}#{}".format(context["message"].author.name, context["message"].author.discriminator))
+    embed.set_thumbnail(url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png")
+    await koduck.sendmessage(context["message"], sendchannel=THEchannel, sendembed=embed, ignorecd=True)
+    return await koduck.sendmessage(context["message"], sendcontent="**_Bug Report Submitted!_**\nThanks for the help!")
+
 async def changestatus(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.client.change_presence(game=discord.Game(name=""))
