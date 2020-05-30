@@ -3,6 +3,8 @@
 AutoWrite	1	Reconfig	To download Virus data, you can erase a chip in your Folder for a full success.	-	
 BackupRoutine	1	Afterimages	Can spend a reroll to downshift a Charm or Bravery roll.	-	
 BaRecycle	1	-	You can turn guard chips into your element after slot-in.	-	
+BufferOverflow	1	CodeInjection	If your next attack deletes the target, covers all Close to them with your element.	-	
+BurstTransmission	1	Shift	When appearing at your destination, cover everything Close in your element.	-	
 Brand	1	-	You can mark anything with your symbol. This mark acts like a hand-sized sticker.	-	
 ContentAware	1	-	When you meet someone new, you can find their latest public social media post.	-	
 Designer	1	ModelEdit	You can apply ModelEdit to a Close target.	-	
@@ -43,10 +45,10 @@ ZennyMiner	1	-	On sending Virus data to a blank BattleChip, get a bonus 300z. (D
 
 ---2EB NCPs---
 
-Aggregator	2	Analyze	Can spend hits to learn thjeir: NetOp, Bonds, Zenny, and emotional state.	-	
+Aggregator	2	Analyze	Can spend hits to learn their: NetOp, Bonds, Zenny, and emotional state.	-	
 Anticipation	2	Foresight	Foresight also lets you parry, not just dodge.	-	
 AntiCollider	2	NoClip	You can apply NoClip to a close target.	-	
-Arena	2	Duel	On success, an elemental ring appears, shutting others out and duelists inside.	-	
+Arena	2	SystemCall	On success, an elemental ring appears, shutting others out and duelists inside.	-	
 ArmoryPlus	2	ArmorChange	Can instead choose these effects: loud; decorated; buoyant; flammable; or ugly.	-	
 Back2Back	2	-	In StandTogether, your ally can use your remaining downshifts if they're Close.	-	
 Backtrace	2	Firewall	If the door is destroyed, it turns into a medium hazard and you're alerted.	-	
@@ -54,8 +56,6 @@ BarrelProcessor	2	-	Shot BattleChips and Sense ranged attacks have no penalty at
 BladeRun	2	-	Can move a range band without rolling when attacking with a Blade chip.	-	
 BlastOff	2	JumpJets	JumpJets covers all enemies Close to your launch point with your element.	-	
 Blowback	2	Followthrough	One target can be Near range if you pick a Close target to launch at them.	-	
-BufferOverflow	2	CodeInjection	If your next attack deletes the target, covers all Close to them with your element.	-	
-BurstTransmission	2	Shift	When appearing at your destination, cover everything Close in your element.	-	
 Callout	2	Glare	Glare works on fleeing Near targets. They turn to face you.	-	
 CashOut	2	-	Spend 600z to add one dice to a roll. (Use before rolling.)	-	
 ChargeShot	2	LockOn	LockOn can be used to make Shot chips Accurate and ignore Guards.	-	
@@ -78,8 +78,8 @@ Expose	2	BlindMode	Detecting a target with BlindMode reveals them to all allies 
 Flurry	2	Vengeance	Roll 1 fewer die to rush from Near to Close range as part of the attack.	-	
 ForceRefresh	2	Refresh	Can instead reduce Max HP by 2 to use Refresh. Resets on jack-out.	-	
 Gladiator	2	Duel	When you parry a Duel target, you can turn one failure into an escalation.	-	
-GutsShooter	2	Gusty	When a Gutsy'd ally rolls to melee attack midair, they add your Body.
-HyperBomber	Splash	Splash can use AP rounds, downshifting Speed and upshifting Stamina defense.	-	
+GutsShooter	2	Gutsy	When a Gutsy'd ally rolls to melee attack midair, they add your Body.	-	
+HyperBomber	2	Splash	Splash can use AP rounds, downshifting Speed and upshifting Stamina defense.	-	
 Illusion	2	Afterimages	Spend a reroll to give a transient, incorporeal hologram of you 1 order.	-	
 Interception	2	LockOn	Can instead mark a target. Your ranged attacks can parry their ranged attacks.	-	
 KeyBind	2	FlowState	FlowState lets you constrict a target. Resisting with Stamina is upshifted.	-	
@@ -124,7 +124,7 @@ BreakSlot	3	Breakcharge	Can use BreakCharge with melee BattleChips. They also be
 ControlX	3	Control	Control is now a melee attack. Can use the element of the last enemy you deleted.	-	
 CopyCommand	3	Disruption	On blocking a default Navi Power/NCP, you can use it once until next Disruption.	-	
 Custom+3	3	-	+3 maximum Chips in your folder.	-	
-DarkLicense	3	-	Fake credentials that shift into whatever you need them to be. [Often Illegal].
+DarkLicense	3	-	Fake credentials that shift into whatever you need them to be. [Often Illegal].	-	
 DualPipeline	3	-	Can use two Shot BattleChips at the same time. Counts as two seperate attacks.	-	
 EnergyChange	3	-	Sacrifice an unused Chip to instantly spawn a lot of your element Close to you.	-	
 ExecutionUnit	3	-	When you delete a Virus or Navi, heal 3 HP.	-	

@@ -67,7 +67,7 @@ ThisWayDown	Speed	Roll	Rush into Close range of a Near target, flipping over any
 
 ---Stamina Powers---
 
-Regenerate	Stamina	Cost	The next 5 times you roll or use a Battle Chip, heal 1HP. (Damage comes first.)	
+Regenerate	Stamina	Cost	The next 5 times you roll or use a BattleChip, heal 1 HP. (Damage comes first.)	
 Clear	Stamina	Cost	Clear negative effects and stat/skill reductions from hazards and enemy attacks.	
 
 ArmorChange	Stamina	Roll	Your body is briefly (pick 1) superhot; icy; superheavy; camouflaged; or luminous.	
@@ -122,7 +122,7 @@ Id	Affinity	Cost	Secretly send a strong sensation to a Near target. (If to a pla
 Impersonate	Affinity	Cost	Cust Near writing, changing the text and instaling a secret PET backdoor on touch.	
 LoveBond	Affinity	Cost	Link to a Near ally with red string. Until the string breaks or you bond to another, you & the bonded ally will mirror healing, stat/skill buffs, and positive effects (e.g. invisibility).		
 Mimesis	Affinity	Cost	Change into someone else, replacing on of your stats with theirs.	
-Minelayer	Affinity	Cost	Creates a mine that deals 5 damage on trigger.	
+Minelayer	Affinity	Cost	Creates a mine that deals 4 damage on trigger.	
 Must	Affinity	Cost	Mute a Close sound, making it completely inaudiable.	
 NightSign	Affinity	Cost	Mark a Near target. Removing a Mark requides a Hard Coding roll or jacking out.	
 PlatDuJour	Affinity	Cost	Curse your Close element. All who touch it (pick 1): hallucinate; go blind; fall asleep.	
@@ -203,7 +203,7 @@ Shy	Passive	-	You are rendered immobile whenever a Near Navi looks at you.
 SpadeCurse	Passive	-	On hit, targets are unable to lie unless they make a Hard Bravery roll or jack out.	
 Spores	Passive	-	When attacks hit, target upshifts  next Mind roll; next 3 Mind rolls if they are on grass.	
 Spreader	Passive	-	Projectiles cover things in the Virus's element on contact.	
-Stalker	Passive	-	Once per minute, you can teleport directyly behinf any Marked target.	
+Stalker	Passive	-	Once per minute, you can teleport directly behind any Marked target.	
 SuctionCups	Passive	-	Able to run up walls and ceilings without complication.	
 Tandem	Passive	-	Can move one other Close Virus when it moves range bands.	
 Telltale	Passive	-	Always leave a trail of your element behind you.	
@@ -220,7 +220,7 @@ HopTolt	Passive	-	Can bypass structures/hazards unharmed, even inexplicably.
 Pester	Passive	-	When making an opposed roll and taking someone by surprise, roll twice and take the better result.	
 Lasso	Passive	-	Enemies hit with attacks are dragged into Close range.	
 CuddleBug	Passive	-	When you heal, a Close ally may rest a bit to heal the same amount.	
-Judgement	Passive	-	ON dodging/resisting an attack, cover the attacker in your element.	
+Judgement	Passive	-	On dodging/resisting an attack, cover the attacker in your element.	
 
 ---EASTER EGGS---
 

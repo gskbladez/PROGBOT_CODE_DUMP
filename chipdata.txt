@@ -39,7 +39,8 @@ PaladinSword	2	Close	Can instead be used to defend a Close ally, reducing the da
 RecoilRod	2	Close	Bladed tonfas! Spend 1 Speed to also push the target or yourself away a range band.	Blade	-	-	
 SlashClaw	2	Close	Attack with speedy claws. Your target rolls defense twice and uses the worse result.	Blade	-	-	
 Slasher	5	Close	If you stand still and don't move, parry the next melee attack. Unusable outside a parry.	Blade	Guard, Slow	-	
-Stinger	2	Close	Grow a nasty tail! If they successfuly defend with Speed, it gets stuck in a Close surface!	Blade	Piercing, Dangerous	-	
+SpiritSword	2	Close	If this deletes, gain the element Swords for 3 rolls. Roll Strength to summon & manipulate.	Blade	-	-
+Stinger	3	Close	Grow a nasty tail! If they successfuly defend with Speed, it gets stuck in a Close surface!	Blade	Piercing, Dangerous	-	
 StyleSword	2	Close	A super-stylish sword. Can instead be used to make 3 Charm rolls using your Speed instead.	Blade	Awkward	-	
 TripleRod	3	Close	Extending lance! Spend 1 Speed to do a spin attack, hitting all Close.	Blade	Awkward	-	
 TurboSlice	2	Close	Spend 1 Speed to deal +2 damage.	Blade	-	-	
@@ -184,8 +185,8 @@ GreenCarpet	-	Close	A magic carpet flies ahead, leaving a trail of grass and gli
 Guardian	-	Close	Summons a tiny statue that zaps the first thing to damage it, dealing 4 damage.	Summon	Slow	-	
 Insert	-	Close	Creates a large amount of an ally's element.	Summon	Slow	C-License	
 IronShield	-	Close	Summons a wide, unmovable iron barrier in front of yourself.	Summon	-	-	
-Meteors	2	Close	Magic scepter! It periodically calls 2-dmg Dangerous meteors down, up to 5 total.	Summon	Dangerous, Slow	-	
-Mine	-	Close	A disc-shaped mine! If something touches it, it detonates for 4 Piercing damage.	Summon	-	-	
+Meteors	2	Close	Magic scepter! It periodically calls 2-dmg Far-range Dangerous meteors down, up to 5 total.	Summon	Dangerous, Slow	-	
+Mine	-	Close	A disc-shaped mine! If something touches it, it detonates for 4 Piercing damage.	Summon	Dangerous	-	
 MokoRush	2	Close	A cute ram! Pick 2: Charge a Near target; ride it a range band; spread fluff around; bleat loudly.	Summon	Slow	-	
 Mole	-	Close	Summons a mole which digs a tunnel to a simple, nearby destination.	Summon	Slow	C-License	
 PopUp	-	Close	Creates a foxhole right beneath your feet.	Summon	-	-	
@@ -215,7 +216,7 @@ CopyDamage	-	Near	The next attack on another enemy also hurts the target.	Suppor
 Dropdown	-	-	Allows you to reverse your gravity for up to a minute.	Support	Simple	-	
 Fanfare	-	Near	One ally is invincible for their next action if your Navi sings loudly	Support	Awkward	A-License	
 FolderRewind	-	-	Spend 1 Info to use a copy of the last chip anyone used. No MegaChips.	Support	Simple	-	
-GeminiTwin	-	Close	Holo-clone! Upshift the next 3 attacks on you. If they use a BattleChip, take -1 dmg instead.	Support	Guard	-	
+GeminiTwin	-	Close	Holo-clone! Upshift the next 3 attacks on you. If they use a BattleChip, take -1 dmg instead.	Support	Guard, Slow	-	
 GuardShield	-	Close	Next time you or a Close ally are attacked, the damage is 0 (secondary effects still apply).	Support	Guard	-	
 HiveShield	-	Near	Downshift next defense. If you take 0 damage, send a 3-damage bee barrage at the attacker.	Support	Guard	-	
 Invis	-	-	Renders you invisible for several seconds.	Support	Simple	-	
@@ -328,7 +329,7 @@ DarkCannon	5	Near	Fires a devastating shot that pierces anything in its path. By
 DarkCircle	2+X	Near	Dark artillery fires from your body. Hits as many targets in range as you want. X = # of targets.	Shot	Accurate, Awkward	Dark	
 DarkDrill	4	Close	Rip them apart. Damage lowers the target's Max HP. Lasts a long time, even after jack-out.	Impact	Piercing	Dark	
 DarkFlame	4	Near	If this hits a Navi, their PET overheats. The NetOp takes 1 dmg when they roll holding the PET.	Wave	Dangerous	Dark		
-DarkHeart	-	-	Until jack-out, add [Daemon Bond]x2 to Charm social rolls. Any you charm get a Daemon Bond.	Support	-	Dark	
+DarkHeart	-	-	Until jack-out, add [Daemon Bond]x2 to Charm social rolls. Any you charm get a Daemon Bond.	Support	Simple	Dark	
 DarkInsert	-	Near	Spawn all Near allies' elements. They can't control their element anymore, but you can.	Summon	-	Dark	
 DarkInvisible	-	-	For the next 2x[Daemon Bond] rolls, you become an invisible, invincible specter. 	Support	Simple	Dark	
 DarkKnuckle	4	Close	On hit, steal the target's element. Add [Daemon Bond]x2 to Affinity when summoning elements.	Impact	Awkward	Dark	
@@ -347,14 +348,14 @@ DarkStage	-	Far	Pick 2: Change gravity; shatter the terrain; spawn several black
 DarkStrings	2	Near	Dark marionette strings! On hit, you completely control the target for 3 rolls. They feel everything.	Thrown	Slow	Dark	
 DarkSword	6	Close	Slices a gap in the server, opening a slit from your bonded Daemon can spread its influence.	Blade	Dangerous	Dark	
 DarkThunder	3x3	Near	Channel stunning bolts! Spend [Daemon Bond] Stamina or you lose control of the wild lightning.	Wave	Awkward, Dangerous	Dark	
-DarkTornado	4	Close	Fly in a tornado! All hit tumble upwards. It persists, tearing up everything in its path.	Wave	Awkward, Dangerous	Dark	
+DarkTornado	4	Close	Fly in a tornado! All hit tumble upwards. It persists, tearing up everything in its path. Doesn't hurt you.	Wave	Awkward, Dangerous	Dark	
 DarkVulcan	3x3	Near	A cursed minigun. Roll Hard Bravery to resist your Daemon choosing the target instead.	Shot	Accurate	Dark	
 DarkWide	4	Near	A razor shockwave flies out in all directions, slicing all Near targets. Objects are bisected.	Wave	Accurate, Dangerous	Dark	
 DarkWorm	4+X	Near	Burrow and devour. X=[Daemon Bond]. On hit, attack another target until you have hit X targets.	Rush	-	Dark	
 FlashMemory	-	Far	Rewind the memory of any number of targets in range up to 10 minutes. They won't feel a thing.	Support	-	Dark
 GraveBreath	-	Far	Sinister breath bathes the server. Others suffer your bugs and lose 1 HP each time they roll.	Hazard	Slow	Dark	
 JusticeFist	4	Close	Strike with Duo's fury! Deals double damage if the target is unable or unwilling to fight back.	Impact	Dangerous	Dark	
-LifeAura	-	-	A shadowy orb protects the user from all attacks under 5 damage. All Near noise is muted.	Support	Dangerous	Dark	
+LifeAura	-	-	A shadowy orb protects the user from all attacks under 5 damage. All Near noise is muted.	Support	Guard, Dangerous	Dark	
 
 ---ChitChat CrossOver Chips---
 
@@ -440,7 +441,7 @@ RhymeScheme	-	Near	Spend X Info to turn the target's element to a perfect rhyme 
 
 ---Tarot Chips---
 
-0-TheFool	1	Near	Magic card! If this is the first chip you use, knock the target over; if it’s the last in your Folder, X=3.	Thrown	-	Tarot	
+0-TheFool	1+X	Near	Magic card! If this is the first chip you use, knock the target over; if it’s the last in your Folder, X=3.	Thrown	-	Tarot	
 I-TheMagician	3	Near	Arcane magic blast! If this is the first allied attack on the target, ignore the negative tags.	Shot	Piercing, Dangerous, Slow	Tarot	
 II-HighPriestess	-	Near	Next time an enemy targets you with a Mind roll, briefly go invisible and move a range band.	Rush	Guard, Slow	Tarot	
 III-TheEmpress	2	Close	Royal scepter! Spend 1 Charm: If their next attack targets anyone other than you, upshift it.	Impact	Accurate, Awkward	Tarot	
