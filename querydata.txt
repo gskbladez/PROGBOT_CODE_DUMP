@@ -1,4 +1,8 @@
-===CHIPS===		
+===CHIPS===	
+
+---Items---
+
+BlankChip	Item	[Item]	
 
 ---Starter Chips---		
 
