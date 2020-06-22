@@ -298,11 +298,11 @@ client.loop.create_task(backgroundtask())
 
 @client.event
 async def on_ready():
-    print("Bot online!")
+    print("Jacking In!")
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
     await runcommand("updatecommands")
-    await client.change_presence(game=discord.Game(name="NetBattlers RPG"))
+    await client.change_presence(status=discord.Status.Online, activity=discord.Game(name='NetBattlers RPG'))
 
 ##############
 #INPUT OUTPUT#
