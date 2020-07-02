@@ -1,6 +1,6 @@
 ===CHIPS===	
 
----Items---
+---Items---		
 
 BlankChip	Item	[Item]	
 
