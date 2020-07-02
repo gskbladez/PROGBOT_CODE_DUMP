@@ -1,4 +1,4 @@
-===CHIPS===	
+===CHIPS===		
 
 ---Items---		
 
@@ -389,10 +389,6 @@ OpenYourHeart	Support	[Radical Spin]
 PerfectChaos	Hazard	[Radical Spin]	
 ThunderShield	Support	[Radical Spin]	
 WaterShield	Support	[Radical Spin]	
-
----UndergroundBroadcast CrossOver Chips---		
-
-
 
 ---Mystic Lilies CrossOver Chips---		
 
