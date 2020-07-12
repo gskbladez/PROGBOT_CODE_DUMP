@@ -498,7 +498,7 @@ async def virusx(context, *args, **kwargs):
     
     embed.set_thumbnail(url=values[19])
     embed.add_field(name="**{} HP**".format(HP), value="**_Element: {}_**\n{} Mind/{} Body/{} Soul\n{}\nPowers: {}\nDrops: {}\n**__Tags: {}__**\n_''{}''_".format(Element, Mind, Body, Soul, stats_string, Powers, Drops, Tags, Description), inline=True)
-    embed.set_footer(text="Category: {}.\n{}".format(Category), "**Artwork by {}**".format(values[19]) if values[19] != "-" else ""))
+    embed.set_footer(text="Category: {}.\n{}".format(Category), "**Artwork by {}**".format(values[19]) if values[19] != "-" else "")
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def query(context, *args, **kwargs):
