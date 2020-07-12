@@ -453,7 +453,7 @@ async def virus(context, *args, **kwargs):
     
         embed = discord.Embed(title="__{}__".format(name), description="_{}_".format(table[name][17]), color=0x7c00ff)
         embed.set_thumbnail(url=values[19])
-        embed.set_footer(text="Category: {}\n{}".format(values[18]), "**Artwork by {}**".format(values[19]) if values[19] != "-" else "")
+        embed.set_footer(text="{}\n{}".format("Category: {}".format(values[18]), "(Artwork by {})".format(values[20]) if values[20] != "-" else ""))
         await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def virusx(context, *args, **kwargs):
@@ -486,7 +486,8 @@ async def virusx(context, *args, **kwargs):
     Tags = values[16]
     Description = values[17]
     Category = values[18]
-    Artist = values[19]
+    Link = values[19]
+    Artist = values[20]
     
     embed = discord.Embed(title="__{}__".format(name), color=0x7c00ff)
     stats = ["HP", "Element", "Mind", "Body", "Soul", "Sense", "Info", "Coding", "Strength", "Speed", "Stamina", "Charm", "Bravery", "Affinity"]
@@ -498,7 +499,7 @@ async def virusx(context, *args, **kwargs):
     
     embed.set_thumbnail(url=values[19])
     embed.add_field(name="**{} HP**".format(HP), value="**_Element: {}_**\n{} Mind/{} Body/{} Soul\n{}\nPowers: {}\nDrops: {}\n**__Tags: {}__**\n_''{}''_".format(Element, Mind, Body, Soul, stats_string, Powers, Drops, Tags, Description), inline=True)
-    embed.set_footer(text="Category: {}.\n{}".format(Category), "**Artwork by {}**".format(values[19]) if values[19] != "-" else "")
+    embed.set_footer(text="{}\n{}".format("Category: {}".format(Category), "(Artwork by {})".format(Artist) if Artist != "-" else ""))
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def query(context, *args, **kwargs):

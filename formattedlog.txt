@@ -13834,3 +13834,48 @@
 2020-04-23 04:21:21	Merry Mancer Games	#free-play-2	Iza#0395	>penny approved!	Command not recognized
 2020-04-23 04:37:07	Merry Mancer Games	#free-play-2	DonJentleman#0559	> Shift Death Rate: 100%?	Command not recognized
 2020-04-23 04:44:22	Merry Mancer Games	#free-play-2	Clefairy#4313	> Cultists: "Yes Lord Goose!"\nThanks Don	Command not recognized
+2020-07-12 18:21:01	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus handy	
+2020-07-12 18:21:02	ProgBOT's Playhouse	#botspeak	ProgBOT#5635	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-07-12 18:21:01	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus handy	Unhandled error
+2020-07-12 18:21:24	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus mettaur	
+2020-07-12 18:21:24	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:21:32	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus handy	
+2020-07-12 18:21:33	ProgBOT's Playhouse	#botspeak	ProgBOT#5635	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-07-12 18:21:32	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus handy	Unhandled error
+2020-07-12 18:21:58	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus ninjoy	
+2020-07-12 18:21:58	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:23:10	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus ninjoy	
+2020-07-12 18:23:10	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:25:12	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virusx ninjoy	
+2020-07-12 18:25:12	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:25:16	Merry Mancer Games	#vc-text	Birdie#1834	>easteregg	Command not recognized
+2020-07-12 18:27:00	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virusx ninjoy	
+2020-07-12 18:27:00	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:29:10	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virusx mettaur	
+2020-07-12 18:29:10	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:29:50	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus metrid	
+2020-07-12 18:29:51	ProgBOT's Playhouse	#botspeak	ProgBOT#5635	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-07-12 18:29:50	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus metrid	Unhandled error
+2020-07-12 18:29:54	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virusx metrid	
+2020-07-12 18:29:55	ProgBOT's Playhouse	#botspeak	ProgBOT#5635	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-07-12 18:29:54	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virusx metrid	Unhandled error
+2020-07-12 18:31:08	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virusx metrid	
+2020-07-12 18:31:08	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:31:26	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virusx boomer	
+2020-07-12 18:31:27	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:31:54	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus boomer	
+2020-07-12 18:31:54	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:33:25	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus boomer	
+2020-07-12 18:33:25	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:34:00	ProgBOT's Playhouse	#botspeak	GSK Bladez#7356	>virus boomer	
+2020-07-12 18:34:01	ProgBOT's Playhouse	#botspeak	ProgBOT#5635		
+2020-07-12 18:35:18	Merry Mancer Games	#free-play-1	Metaljaw#5029	>r 10d6>3	
+2020-07-12 18:35:18	Merry Mancer Games	#free-play-1	ProgBOT#5635	<@!168422475632214016> _rolls..._ (6, ~~3~~, 4, ~~1~~, ~~2~~, 6, 6, 4, ~~1~~, 5) = **__6 hits!__**	
+2020-07-12 18:36:33	Merry Mancer Games	#free-play-3	Iza#0395	>virusx swangarde	
+2020-07-12 18:36:33	Merry Mancer Games	#free-play-3	ProgBOT#5635		
+2020-07-12 18:41:48	Merry Mancer Games	#free-play-3	Niccy_Everson#6955	>virusx Flicker	
+2020-07-12 18:41:49	Merry Mancer Games	#free-play-3	ProgBOT#5635		
+2020-07-12 18:42:11	Merry Mancer Games	#free-play-3	Niccy_Everson#6955	>virus Flicker	
+2020-07-12 18:42:11	Merry Mancer Games	#free-play-3	ProgBOT#5635		
+2020-07-12 18:42:26	Merry Mancer Games	#free-play-3	GSK Bladez#7356	>virus spikey	
+2020-07-12 18:42:27	Merry Mancer Games	#free-play-3	ProgBOT#5635		
