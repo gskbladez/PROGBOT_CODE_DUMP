@@ -690,6 +690,11 @@ async def rulebook(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"], sendcontent="NetBattlers Beta 6 Official Rulebook (high-res): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Full-Res.pdf>\nNetBattlers Beta 6 Official Rulebook (mobile-friendly): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Advance-5.pdf>\n\n**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
 
+async def invite(context, *args, **kwargs):
+    color=0x71c142
+    embed = discord.Embed(title="Just click [here](https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0) or the title above to invite me!", color=color, url="https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0", title="Invite ProgBOT to your server!")
+    return await koduck.sendmessage(context["message"], sendembed=embed)
+
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
 
