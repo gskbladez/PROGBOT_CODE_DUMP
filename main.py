@@ -672,18 +672,47 @@ async def daemon(context, *args, **kwargs):
 
 async def element(context, *args, **kwargs):
     if len(args) < 1:
-        return await koduck.sendmessage(context["message"], sendcontent="Categories: **Nature, Fantasy, Science, Actions, Art, ???**")
-    table = yadon.ReadTable("elementdata")
-    
-    if args[0].lower == "nature":
-        element = random.randint(1, 36)
-    #this is incomplete, don't mind this at all...
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**")
+
+    element_category_list = {"Nature": 0, "Fantasy": 1, "Science": 2, "Actions": 3, "Art": 4, "???": 5}
+    element_table = yadon.ReadTable("elementdata")
+
+    if len(args) > 2:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Command is too long! Just give me `>element [#]` or `>element [category] [#]`!")
+    element_range_lo = 1
+    element_range_hi = 216
+    element_return_number = 1  # number of elements to return
+    element_category = None
+    for arg in args:
+        try:
+            element_return_number = int(arg)
+            break
+        except ValueError:
+            element_category = arg.lower().capitalize()
+            element_cat_index = element_category_list[element_category]
+            element_range_lo = 1 + element_cat_index*36
+            element_range_hi = element_range_lo+36
+
+    if element_return_number < 1:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="The number of elements can't be 0 or negative!")
+    if element_return_number > 12:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="That's too many elements! Are you sure you need that many?")
+
+    elements_selected = random.sample(range(element_range_lo, element_range_hi+1), element_return_number)
+    elements_name = [element_table[str(i)][0] for i in elements_selected]
+
+    if element_category is None:
+        element_flavor_title = "Picked {} random element(s)...".format(str(element_return_number))
     else:
-        element = random.randint(1, 216)
-    values = table[str(element)]
-    
-    embed = discord.Embed(title="Picked a random {} Element...".format(values[1]), color=color)
-    embed.add_field(name="**{}**".format(values[0]))
+        element_flavor_title = "Picked {} random element(s) from the {} category...".format(str(element_return_number), element_category)
+    element_color = 0x48C800
+
+    embed = discord.Embed(title=element_flavor_title, color=element_color)
+    embed.add_field(name="**{}**".format(", ".join(elements_name)))
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def rulebook(context, *args, **kwargs):
