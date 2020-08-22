@@ -13879,3 +13879,163 @@
 2020-07-12 18:42:11	Merry Mancer Games	#free-play-3	ProgBOT#5635		
 2020-07-12 18:42:26	Merry Mancer Games	#free-play-3	GSK Bladez#7356	>virus spikey	
 2020-07-12 18:42:27	Merry Mancer Games	#free-play-3	ProgBOT#5635		
+2020-08-21 23:45:37	FishbowlTest	#general	Iza#0395	>help	
+2020-08-21 23:45:37	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-21 23:45:49	FishbowlTest	#general	RiJect#8629	>chip sword	
+2020-08-21 23:45:49	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:45:51	FishbowlTest	#general	Iza#0395	>power modeledit	
+2020-08-21 23:46:07	FishbowlTest	#general	RiJect#8629	>power shatter	
+2020-08-21 23:48:39	FishbowlTest	#general	Iza#0395	>help	
+2020-08-21 23:48:39	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-21 23:48:45	FishbowlTest	#general	Iza#0395	>im scared	Command not recognized
+2020-08-21 23:48:48	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-21 23:48:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:48:53	FishbowlTest	#general	Iza#0395	>power mapedit	
+2020-08-21 23:48:53	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:49:09	FishbowlTest	#general	RiJect#8629	>ncp hp+4	
+2020-08-21 23:49:09	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:49:14	FishbowlTest	#general	Iza#0395	>query parrying	
+2020-08-21 23:49:15	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-21 23:49:17	FishbowlTest	#general	Iza#0395	>help parry	
+2020-08-21 23:49:18	FishbowlTest	#general	ProgTest#5253	A character can try to counter a melee attack with a melee attack of their own, called a **__parry__**. Both parties roll using the appropriate skill, likely Strength. Whoever has the most hits wins, and the loser takes damage equal to the winner’s roll. This damage is not reduced by how many hits the loser rolled.\n\nIf the two characters tie, they have a choice: back out or escalate. Both parties should declare this simultaneously. If both back out, nobody takes damage and the parry ends. If one escalates and the other backs out, the parry ends and the one that backed out is the loser. If both parties escalate, roll to melee attack each other again. Whoever rolls higher is the winner, unless they tie; in which case, the cycle continues until someone comes out on top. \n\nUnless both back out, when the parry ends, the loser takes damage equal to the winner’s strongest attack. However, if the loser backed out, they take half the damage they normally would, rounded up.	
+2020-08-21 23:49:23	FishbowlTest	#general	RiJect#8629	>daemon cache	
+2020-08-21 23:49:23	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:49:24	FishbowlTest	#general	Iza#0395	>query help	
+2020-08-21 23:49:24	FishbowlTest	#general	Iza#0395	>query help	Cooldown active
+2020-08-21 23:49:35	FishbowlTest	#general	ProgTest#5253	You do not have permission to use this command	
+2020-08-21 19:49:35		#			You do not have permission to use this command
+2020-08-21 23:49:42	FishbowlTest	#general	ProgTest#5253	You do not have permission to use this command	
+2020-08-21 19:49:42		#			You do not have permission to use this command
+2020-08-21 23:52:26	FishbowlTest	#general	Iza#0395	>help	
+2020-08-21 23:52:26	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-21 23:52:29	FishbowlTest	#general	Iza#0395	>query daemon	
+2020-08-21 23:52:29	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-21 23:52:34	FishbowlTest	#general	Iza#0395	>query tags	
+2020-08-21 23:52:34	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-21 23:52:37	FishbowlTest	#general	Iza#0395	>tag cannon	
+2020-08-21 23:52:37	FishbowlTest	#general	ProgTest#5253	I don't recognize that Battle Chip tag!	
+2020-08-21 23:52:42	FishbowlTest	#general	Iza#0395	>element	
+2020-08-21 23:52:42	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-21 23:53:00	FishbowlTest	#general	RiJect#8629	>chip cannon	
+2020-08-21 23:53:00	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:53:52	FishbowlTest	#general	RiJect#8629	>element	
+2020-08-21 23:53:52	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-21 23:54:04	FishbowlTest	#general	RiJect#8629	>element 69	
+2020-08-21 23:54:04	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need that many?	
+2020-08-21 23:54:09	FishbowlTest	#general	RiJect#8629	>yes	Command not recognized
+2020-08-21 23:54:14	FishbowlTest	#general	RiJect#8629	>element 5	
+2020-08-21 23:54:14	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-21 23:54:14	FishbowlTest	#general	RiJect#8629	>element 5	Unhandled error
+2020-08-22 00:10:35	FishbowlTest	#general	Iza#0395	>element	
+2020-08-22 00:10:35	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:10:38	FishbowlTest	#general	Iza#0395	>element 5	
+2020-08-22 00:10:38	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:11:01	FishbowlTest	#general	Iza#0395	>element nature 2	
+2020-08-22 00:11:02	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:11:01	FishbowlTest	#general	Iza#0395	>element nature 2	Unhandled error
+2020-08-22 00:15:23	FishbowlTest	#general	Iza#0395	>element nature 2	
+2020-08-22 00:15:23	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:15:23	FishbowlTest	#general	Iza#0395	>element nature 2	Unhandled error
+2020-08-22 00:16:22	FishbowlTest	#general	Iza#0395	>element nature 2	
+2020-08-22 00:16:22	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:16:37	FishbowlTest	#general	RiJect#8629	>element ??? 12	
+2020-08-22 00:16:37	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:16:37	FishbowlTest	#general	RiJect#8629	>element ??? 12	Unhandled error
+2020-08-22 00:20:49	FishbowlTest	#general	Iza#0395	>element art 12	
+2020-08-22 00:20:49	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:21:00	FishbowlTest	#general	RiJect#8629	>element ??? 12	
+2020-08-22 00:21:00	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:21:15	FishbowlTest	#general	Iza#0395	>element -5	
+2020-08-22 00:21:15	FishbowlTest	#general	ProgTest#5253	The number of elements can't be 0 or negative!	
+2020-08-22 00:21:29	FishbowlTest	#general	RiJect#8629	>element sex 6	
+2020-08-22 00:21:29	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:21:29	FishbowlTest	#general	RiJect#8629	>element sex 6	Unhandled error
+2020-08-22 00:23:59	FishbowlTest	#general	Iza#0395	>element sex 69	
+2020-08-22 00:23:59	FishbowlTest	#general	ProgTest#5253	Not a valid category!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???	
+2020-08-22 00:24:15	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-22 00:24:15	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:24:54	FishbowlTest	#general	Iza#0395	>element sex 69	
+2020-08-22 00:24:54	FishbowlTest	#general	ProgTest#5253	Not a valid category!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:24:57	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-22 00:24:58	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:25:28	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-22 00:25:28	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:25:36	FishbowlTest	#general	Iza#0395	>element	
+2020-08-22 00:25:36	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:25:40	FishbowlTest	#general	Iza#0395	>element nature	
+2020-08-22 00:25:40	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:25:59	FishbowlTest	#general	RiJect#8629	>element ???	
+2020-08-22 00:25:59	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:26:04	FishbowlTest	#general	Iza#0395	>element ??? 36	
+2020-08-22 00:26:04	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need that many?	
+2020-08-22 00:26:08	FishbowlTest	#general	Iza#0395	>element 0	
+2020-08-22 00:26:08	FishbowlTest	#general	ProgTest#5253	The number of elements can't be 0 or negative!	
+2020-08-22 00:26:23	FishbowlTest	#general	RiJect#8629	>element 13	
+2020-08-22 00:26:23	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need that many?	
+2020-08-22 00:26:27	FishbowlTest	#general	Iza#0395	>element 1	
+2020-08-22 00:26:27	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:26:49	FishbowlTest	#general	RiJect#8629	>element	
+2020-08-22 00:26:49	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:26:56	FishbowlTest	#general	RiJect#8629	>element 13	
+2020-08-22 00:26:56	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need more than 12?	
+2020-08-22 00:27:08	FishbowlTest	#general	Iza#0395	>element category category	
+2020-08-22 00:27:08	FishbowlTest	#general	ProgTest#5253	Not a valid category!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:27:11	FishbowlTest	#general	Iza#0395	>element nature fantasy	
+2020-08-22 00:27:11	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:27:26	FishbowlTest	#general	Iza#0395	>element 12	
+2020-08-22 00:27:26	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:27:33	FishbowlTest	#general	Iza#0395	>chip gatemagic	
+2020-08-22 00:27:33	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:27:57	FishbowlTest	#general	Iza#0395	>chip bich bich bich	
+2020-08-22 00:27:57	FishbowlTest	#general	ProgTest#5253	I don't recognize that Battle Chip!	
+2020-08-22 00:28:05	FishbowlTest	#general	RiJect#8629	>chip kackledackle	
+2020-08-22 00:28:05	FishbowlTest	#general	ProgTest#5253	I don't recognize that Battle Chip!	
+2020-08-22 00:28:06	FishbowlTest	#general	Iza#0395	>element bich bich bich	
+2020-08-22 00:28:06	FishbowlTest	#general	ProgTest#5253	Command is too long! Just give me `>element [#]` or `>element [category] [#]`!	
+2020-08-22 00:28:15	FishbowlTest	#general	RiJect#8629	>chip cackledackle	
+2020-08-22 00:28:15	FishbowlTest	#general	ProgTest#5253	I don't recognize that Battle Chip!	
+2020-08-22 00:28:43	FishbowlTest	#general	RiJect#8629	>chip CackelDackel	
+2020-08-22 00:28:43	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:29:10	FishbowlTest	#general	Iza#0395	>power easer eggs	
+2020-08-22 00:29:10	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:13	FishbowlTest	#general	Iza#0395	>power easter eggsd	
+2020-08-22 00:29:13	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:16	FishbowlTest	#general	Iza#0395	>power easter eggs	
+2020-08-22 00:29:16	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:27	FishbowlTest	#general	Iza#0395	>power EASTER EGGS	
+2020-08-22 00:29:27	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:28	FishbowlTest	#general	RiJect#8629	>query easter eggs	
+2020-08-22 00:29:29	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-22 00:29:32	FishbowlTest	#general	Iza#0395	>power you	
+2020-08-22 00:29:32	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:38	FishbowlTest	#general	Iza#0395	>power You	
+2020-08-22 00:29:38	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:39	FishbowlTest	#general	RiJect#8629	>query your mom	
+2020-08-22 00:29:39	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-22 00:30:01	FishbowlTest	#general	Iza#0395	>ncp You	
+2020-08-22 00:30:01	FishbowlTest	#general	ProgTest#5253	I don't recognize that NCP!	
+2020-08-22 00:30:19	FishbowlTest	#general	Iza#0395	>virusx SwangardeOmega	
+2020-08-22 00:30:19	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:30:27	FishbowlTest	#general	Iza#0395	>virus SwangardeOmega	
+2020-08-22 00:30:28	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:30:31	FishbowlTest	#general	Iza#0395	>virus BonziBuddy	
+2020-08-22 00:30:31	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:30:34	FishbowlTest	#general	RiJect#8629	>virus bonzibuddy	
+2020-08-22 00:30:34	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:30:38	FishbowlTest	#general	Iza#0395	>virusx Bonzibuddy	
+2020-08-22 00:30:38	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:38:23	FishbowlTest	#general	Iza#0395	>chip	
+2020-08-22 00:38:23	FishbowlTest	#general	ProgTest#5253	Give me the name of a Battle Chip and I can pull up its info for you!	
+2020-08-22 00:38:26	FishbowlTest	#general	Iza#0395	>help	
+2020-08-22 00:38:26	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-22 00:38:28	FishbowlTest	#general	Iza#0395	>commands	
+2020-08-22 00:38:29	FishbowlTest	#general	ProgTest#5253	bugreport, oops, commands, help, roll, r, chip, power, ncp, virus, virusx, tag, query, bond, mysterydata, rulebook, element, mysteryreward, daemon, invite	
+2020-08-22 00:38:33	FishbowlTest	#general	Iza#0395	>invite	
+2020-08-22 00:38:33	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:38:33	FishbowlTest	#general	Iza#0395	>invite	Unhandled error
+2020-08-22 00:39:16	FishbowlTest	#general	Iza#0395	>invite	
+2020-08-22 00:39:16	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:46:16	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-22 00:46:16	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:46:22	FishbowlTest	#general	Iza#0395	>chip xiii-death	
+2020-08-22 00:46:22	FishbowlTest	#general	ProgTest#5253		
