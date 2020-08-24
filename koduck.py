@@ -16,7 +16,6 @@ import datetime
 import settings, yadon
 
 client = discord.Client()
-message_shit = discord
 
 #command -> (function, type, tier)
 #command is a string which represents the command name
@@ -31,7 +30,7 @@ containcommands = []
 outputhistory = {} #userid -> list of Discord Messages sent by bot in response to the user, oldest first (only keeps track since bot startup)
 lastmessageDT = {} #channelid -> datetime of most recent Discord Message sent
 
-is_python38 = sys.version[0:3]=='3.8'
+is_python38 = sys.version[0:3] == '3.8'
 
 #######################
 #GENERAL BOT FUNCTIONS#
