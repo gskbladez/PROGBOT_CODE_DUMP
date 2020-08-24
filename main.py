@@ -15,6 +15,13 @@ chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
 chip_df["chip_lowercase"] = chip_df["Chip"].str.lower()
 chip_df["from_lowercase"] = chip_df["From?"].str.lower()
 chip_df["license_lowercase"] = chip_df["License"].str.lower()
+chip_df["category_lowercase"] = chip_df["Category"].str.lower()
+tag_list = chip_df["Tags"].str.split(",", expand=True) \
+    .stack() \
+    .str.strip() \
+    .str.lower() \
+    .unique()
+chip_known_aliases = chip_df[chip_df["Aliases"] != ""]
 
 power_df = pd.read_csv(r"powerncpdata.tsv", sep="\t").fillna('')
 power_df["power_lowercase"] = power_df["Power/NCP"].str.lower()
@@ -453,30 +460,41 @@ async def chip(context, *args, **kwargss):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!")
-
-    if args[0].lower() in ['dark', 'darkchip', 'darkchips']:
+    arg_lower = args[0].lower()
+    if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all DarkChips..."
         subdf = chip_df[chip_df["Tags"].str.contains("Dark|dark")]
         return_msg = ", ".join(subdf["Chip"])
         return await send_query_msg(context, return_title, return_msg)
-    elif args[0].lower() in ['mega', 'megachip', 'megachips']:
+    elif arg_lower in ['mega', 'megachip', 'megachips']:
         return_title = "Pulling up all MegaChips (excluding DarkChips and Incident Chips)..."
         subdf = chip_df[chip_df["Tags"].str.contains("Mega|mega")]
         return_msg = ", ".join(subdf["Chip"])
         return await send_query_msg(context, return_title, return_msg)
-    elif args[0].lower() in ['incident', 'incident chip', 'incident chips']:
+    elif arg_lower in ['incident', 'incident chip', 'incident chips']:
         return_title = "Pulling up all Incident Chips..."
         subdf = chip_df[chip_df["Tags"].str.contains("Incident|incident")]
         return_msg = ", ".join(subdf["Chip"])
         return await send_query_msg(context, return_title, return_msg)
-    elif args[0].lower() in pd.unique(chip_df["license_lowercase"]):
-        subdf = chip_df[chip_df["license_lowercase"] == args[0]]
-        return_title = "Pulling up all %s BattleChips..." % subdf.iloc[0]["License"]
+    elif arg_lower in arg_lower in tag_list:
+        subdf = chip_df[chip_df["Tags"].str.contains(r"(?i)%s" % arg_lower) &
+                        ~chip_df["Tags"].str.contains(r"(?i)dark|incident|mega")]
+        return_title = "Pulling up all BattleChips with the `%s` tag (excluding MegaChips)..." % arg_lower.capitalize()
         return_msg = ", ".join(subdf["Chip"])
         return await send_query_msg(context, return_title, return_msg)
-    elif args[0].lower() in pd.unique(chip_df["from_lowercase"]):
-        subdf = chip_df[chip_df["from_lowercase"] == args[0]]
-        return_title = "Pulling up all BattleChips from the %s Crossover Content..." % subdf.iloc[0]["From?"]
+    elif arg_lower in pd.unique(chip_df["category_lowercase"]):
+        subdf = chip_df[chip_df["category_lowercase"] == arg_lower]
+        return_title = "Pulling up all chips in the `%s` category..." % subdf.iloc[0]["Category"]
+        return_msg = ", ".join(subdf["Chip"])
+        return await send_query_msg(context, return_title, return_msg)
+    elif arg_lower in pd.unique(chip_df["license_lowercase"]):
+        subdf = chip_df[chip_df["license_lowercase"] == arg_lower]
+        return_title = "Pulling up all `%s` BattleChips..." % subdf.iloc[0]["License"]
+        return_msg = ", ".join(subdf["Chip"])
+        return await send_query_msg(context, return_title, return_msg)
+    elif arg_lower in pd.unique(chip_df["from_lowercase"]):
+        subdf = chip_df[chip_df["from_lowercase"] == arg_lower]
+        return_title = "Pulling up all BattleChips from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
         return await send_query_msg(context, return_title, return_msg)
 
@@ -486,6 +504,13 @@ async def chip(context, *args, **kwargss):
         return await koduck.sendmessage(context["message"], sendcontent="Too many chips, no more than 5!")
 
     for arg in args:
+        alias_check = chip_known_aliases[chip_known_aliases["Aliases"].str.contains(r"(?i)%s" % arg)]
+        if alias_check.shape[0] > 1:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Too many chips found! You should probably let the devs know...")
+        elif alias_check.shape[0] != 0:
+            arg = alias_check.iloc[0]["Chip"]
+
         chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg)
         if chip_info is None:
             continue
@@ -962,5 +987,5 @@ def setup():
 
 
 setup()
-koduck.client.run("NzQ2NDgxMjg1MzgzMzIzNzA5.X0A83w.deszSQCvKEEGC6zdgLXVsxeL2vU")
-koduck.client.run(settings.token)
+koduck.client.run("NzQ2NDgxMjg1MzgzMzIzNzA5.X0A83w.9OtOyjT1fngz38IYJK6NJhIh6QY")
+#koduck.client.run(settings.token)

@@ -1,0 +1,6 @@
+# Default ignored files
+/workspace.xml
+log.txt
+formattedlog.txt
+/__pycache__
+/.idea
