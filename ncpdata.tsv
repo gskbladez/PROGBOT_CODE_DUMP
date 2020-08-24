@@ -1,0 +1,249 @@
+Power/NCP	Skill	Type	Effect	EB	Sort	From?
+
+LockOnNCP	Sense	Cost	Your next attack is guaranteed Easy and ignores temporary skill reductions.	3	PowerNCP	Core
+VolleyNCP	Sense	Cost	Roll the next attack three times and take the best outcome.	3	PowerNCP	Core
+BlindModeNCP	Sense	Roll	Find a target with extrasensory means (e.g. thermal imaging, echolocation).	3	PowerNCP	Core
+SplashNCP	Sense	Roll	Roll once to attack a Near target. Damages everything Close to the target.	3	PowerNCP	Core
+TrackerNCP	Sense	Roll	Find and identify hidden trails and footprints.	3	PowerNCP	Core
+ReconfigNCP	Info	Cost	Switch out unused chips in your Folder for ones in your pack.	3	PowerNCP	Core
+RefreshNCP	Info	Cost	Pick a used BattleChip in your Folder. It is now usable again - once per chip.	3	PowerNCP	Core
+AnalyzeNCP	Info	Roll	Learn 1 per hit: the target’s stats+skills, Folder, Powers, NCPs, and element.	3	PowerNCP	Core
+ForesightNCP	Info	Roll	You can dodge an attack with Info if you’ve seen this enemy use it before.	3	PowerNCP	Core
+MemoryScanNCP	Info	Roll	Scan a Close Virus/object to reveal the target’s recent memories/interactions.	3	PowerNCP	Core
+HotSwapNCP	Coding	Cost	Change your NaviCust setup without jacking out.	3	PowerNCP	Core
+MapEditNCP	Coding	Cost	Generate a Near simple structure that is either hard, large, or hidden.	3	PowerNCP	Core
+DisruptionNCP	Coding	Roll	Pick a Near target; disables their last used power/NCP until they roll 3 times.	3	PowerNCP	Core
+FirewallNCP	Coding	Roll	Put a temporary door on a Near entrance that blocks known enemies.	3	PowerNCP	Core
+NoClipNCP	Coding	Roll	Pass through a thin structure (walls, floors, pipes, etc).	3	PowerNCP	Core
+						
+BreakChargeNCP	Strength	Cost	Your next attack roll ignores Guards and upshifts the target’s next 4 Body rolls.	3	PowerNCP	Core
+FollowthroughNCP	Strength	Cost	Your next melee or Strength roll hits any number of targets in range.	3	PowerNCP	Core
+GutsyNCP	Strength	Roll	Launch a Close target one range band in any direction.	3	PowerNCP	Core
+ShatterNCP	Strength	Roll	Destroy a Close structure or piece of terrain.	3	PowerNCP	Core
+ShockwaveNCP	Strength	Roll	Make a ranged attack on a grounded Near target.	3	PowerNCP	Core
+AfterimagesNCP	Speed	Cost	Roll your next 3 defense rolls twice, using the better result.	3	PowerNCP	Core
+WarpNCP	Speed	Cost	Instantly move up to one range band.	3	PowerNCP	Core
+FlowStateNCP	Speed	Roll	Reshape your body to fit in tight or oddly-shaped spaces. (Not a disguise.)	3	PowerNCP	Core
+JumpJetsNCP	Speed	Roll	Launch a range band in any direction off of a surface.	3	PowerNCP	Core
+SneakrunNCP	Speed	Roll	Slip past an inanimate threat (e.g. traps, sensors).	3	PowerNCP	Core
+ClearNCP	Stamina	Cost	Clear negative effects and stat/skill reductions from hazards and enemy attacks.	3	PowerNCP	Core
+RegenerateNCP	Stamina	Cost	The next 5 times you roll or use a BattleChip, heal 1 HP. (Damage comes first.)	3	PowerNCP	Core
+ArmorChangeNCP	Stamina	Roll	Your body is briefly (pick 1) superhot; icy; superheavy; camouflaged; or luminous.	3	PowerNCP	Core
+GravArmorNCP	Stamina	Roll	Move along or stick to any Close surface, or stick any Close object to you.	3	PowerNCP	Core
+ReflectNCP	Stamina	Roll	Parry a ranged attack, rolling Stamina. Reflects secondary effects.	3	PowerNCP	Core
+						
+ModelEditNCP	Charm	Cost	Look like a Virus or Navi you’ve met (appearance only).	3	PowerNCP	Core
+OverwriteNCP	Charm	Cost	Trick a hostile Virus into helping you. The bigger the ask, the shorter it lasts.	3	PowerNCP	Core
+HarmlessNCP	Charm	Roll	Avert hostile attention from yourself.	3	PowerNCP	Core
+HypnotizeNCP	Charm	Roll	Gradually lull a Close target to sleep.	3	PowerNCP	Core
+PlaybackNCP	Charm	Roll	Imitate someone else’s voice.	3	PowerNCP	Core
+BodyguardNCP	Bravery	Cost	The next time an ally of your choice is attacked, you are attacked instead.	3	PowerNCP	Core
+RallyNCP	Bravery	Cost	Add two dice to someone else’s Soul roll (before they roll).	3	PowerNCP	Core
+GlareNCP	Bravery	Roll	A Close target cannot move range bands until line of sight breaks.	3	PowerNCP	Core
+SystemCallNCP	Bravery	Roll	Convince one or more Near targets to focus their hostile attention on you.	3	PowerNCP	Core
+VengeanceNCP	Bravery	Roll	Use Bravery to attack a Close target that recently attacked an ally.	3	PowerNCP	Core
+CodeInjectionNCP	Affinity	Cost	Your next rolled attack covers the target with your element.	3	PowerNCP	Core
+SaveNCP	Affinity	Cost	If your element is present, heal someone for 3 HP.	3	PowerNCP	Core
+AltNCP	Affinity	Roll	Consume all of your element to create a minion with one purpose.	3	PowerNCP	Core
+ControlNCP	Affinity	Roll	Make a ranged attack with your element if it is present.	3	PowerNCP	Core
+ShiftNCP	Affinity	Roll	Swap places with an abundance of your element in line of sight.	3	PowerNCP	Core
+						
+Body+1	-	-	Increase your Body by 1.	5	BoostNCP	Core
+Mind+1	-	-	Increase your Mind by 1.	5	BoostNCP	Core
+Soul+1	-	-	Increase your Soul by 1.	5	BoostNCP	Core
+Sense+1	-	-	Increase your Sense by 1.	2	BoostNCP	Core
+Info+1	-	-	Increase your Info by 1.	2	BoostNCP	Core
+Coding+1	-	-	Increase your Coding by 1.	2	BoostNCP	Core
+Strength+1	-	-	Increase your Strength by 1.	2	BoostNCP	Core
+Speed+1	-	-	Increase your Speed by 1.	2	BoostNCP	Core
+Stamina+1	-	-	Increase your Stamina by 1.	2	BoostNCP	Core
+Charm+1	-	-	Increase your Charm by 1.	2	BoostNCP	Core
+Bravery+1	-	-	Increase your Bravery by 1.	2	BoostNCP	Core
+Affinity+1	-	-	Increase your Affinity by 1.	2	BoostNCP	Core
+						
+BaRecycle	-	-	You can turn Guard chips into your element after slot-in.	1	NCP	Core
+Brand	-	-	You can mark anything with your symbol. This mark acts like a hand-sized sticker.	1	NCP	Core
+ContentAware	-	-	When you meet someone new, you can find their latest public social media post.	1	NCP	Core
+Dullahan	-	-	Your head becomes detachable, retaining all your senses.	1	NCP	Core
+EvilMind	-	-	You give off a sinister aura; criminals like you more, and others will like you less.	1	NCP	Core
+GeoTracker	-	-	You can be traced by your unique Navi ID. (Free to buy, 1500z to remove.)	1	NCP	Core
+Harmonizer	-	-	When you roll 3+ hits to make your element, a bonded ally can roll to make theirs.	1	NCP	Core
+HazardTimer	-	-	When using a Hazard chip, you can make it appear on a delay. Max 10 minutes.	1	NCP	Core
+ManualInput	-	-	You can roll NetOp Coding instead of Navi Coding to download Virus data.	1	NCP	Core
+MegaFlex	-	-	On a critical Body roll, downshift your 1st Charm roll on anyone who saw it.	1	NCP	Core
+Megaphone	-	-	Your voice projects; you can be clearly understood at Far range.	1	NCP	Core
+NowRecording	-	-	You record everything you see and hear. It’s visually obvious when recording.	1	NCP	Core
+ProgBody	-	-	You can appear like a Mr. Prog! (Hat of your choice optional.)	1	NCP	Core
+ProgRadar	-	-	Beeps depending on proximity to nearest Mr. Prog.	1	NCP	Core
+SignPost	-	-	You can leave a sign, similar to a BBS post, anywhere online.	1	NCP	Core
+ThemeSong	-	-	On jack-in, your presence has loud, colorful fanfare, drawing all attention to you.	1	NCP	Core
+Underflow	-	-	If a failed roll has three or more 1’s, count it as two hits instead.	1	NCP	Core
+ZennyMiner	-	-	On sending Virus data to a Blank BattleChip, get a bonus 300z. (Does not stack.)	1	NCP	Core
+						
+Back2Back	-	-	In StandTogether, your ally can use your remaining downshifts if they’re Close.	2	NCP	Core
+BarrelProcessor	-	-	Shot BattleChips and Sense ranged attacks have no penalty at Far range.	2	NCP	Core
+BladeRun	-	-	You can move a range band without rolling when attacking with a Blade chip.	2	NCP	Core
+CashOut	-	-	Spend 600z to add one die to a roll. (Use before rolling.)	2	NCP	Core
+Collect	-	-	When you download Virus data onto a Blank BattleChip, roll at least 4 dice.	2	NCP	Core
+DataMine	-	-	Can turn Thrown chips into mines! They target whoever touches or attacks them.	2	NCP	Core
+Diffusal	-	-	When something reduces one of your skills by 1, your element appears Close to you.	2	NCP	Core
+EjectButton	-	-	Once per jack-in, you can spring a range band in any direction. Can still act in midair.	2	NCP	Core
+ElemRitual	-	-	If you have a few uninterrupted minutes, you can roll 4 dice to make your element.	2	NCP	Core
+PassengerMode	-	-	When you use Rush chips, you can take a Close target with you.	2	NCP	Core
+Pettaur	-	-	A Mettaur-like pet! It can’t attack, obeys basic orders, and disappears for a bit if hit.	2	NCP	Core
+RocketFist	-	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot parry at range.	2	NCP	Core
+SearchOptimized	-	-	Pick a descriptor - NPCs will associate you with that word unless they know better.	2	NCP	Core
+SetElement	-	-	On jack-in, your element appears around you; if you use it immediately, downshift.	2	NCP	Core
+SuperArmor	-	-	If in the middle of an attack, ignore stun/interrupting effects until your attack ends.	2	NCP	Core
+Trailblazer	-	-	When you move range bands with a chip or roll, your element trails behind you.	2	NCP	Core
+Ventrillo	-	-	You can make your voice come from anywhere in Near range.	2	NCP	Core
+WaveRider	-	-	When you use a Wave BattleChip at Near range, you can enter Close range of a target.	2	NCP	Core
+						
+Custom+3	-	-	+3 maximum BattleChips in your Folder.	3	BoostNCP	Core
+DarkLicense	-	-	Fake credentials that shift into whatever you need them to be. [Often Illegal.]	3	NCP	Core
+DualPipeline	-	-	Can use two Shot BattleChips at the same time. Counts as two separate attacks.	3	NCP	Core
+EnergyChange	-	-	Sacrifice an unused chip to instantly spawn a lot of your element Close to you.	3	NCP	Core
+ExecutionUnit	-	-	When you delete a Virus or Navi, heal 3 HP.	3	NCP	Core
+FirstBarrier	-	-	You have a Guard active upon jacking in that nullifies the first hit you take.	3	NCP	Core
+FloatShoes	-	-	You always floats a few inches above the ground.	3	NCP	Core
+HP+4	-	-	+4 maximum HP.	3	BoostNCP	Core
+KineticArmor	-	-	After you take damage, downshift your next roll to move a range band.	3	NCP	Core
+ParallelPort	-	-	When a Cost Power boosts your next attack, you can give that effect to an ally instead.	3	NCP	Core
+Press	-	-	You can shrink to 1/10th normal size. Your attacks are upshifted when shrunk.	3	NCP	Core
+RedundantArray	-	-	You can have two copies of the same chip in your Folder.	3	NCP	Core
+SoulUnion	-	-	When using CrossSoul, you can also use the other Navi’s Navi Powers.	3	NCP	Core
+UnderShirt	-	-	A lethal hit leaves you at 1 HP if you have over 1 HP.	3	NCP	Core
+VolatileMemory	-	-	For Cost Powers, you can reduce the stat instead of the skill. Stats can’t go below 1.	3	NCP	Core
+						
+AddOn	-	-	When you deal 2+ dmg with a rolled attack, your element covers the target.	4	NCP	Core
+ChameleoCloak	-	-	If you hold still for ten seconds, you turn invisible until you move.	4	NCP	Core
+KernelPanic	-	-	When you’re at or below 2 HP, add four dice to all rolled attacks.	4	NCP	Core
+Meltdown	-	-	Before you roll, can spend up to 3 HP to add that many dice to it.	4	NCP	Core
+MimicStrike	-	-	On Near Virus deletion, get its passives until jack-out or next trigger. Can toss all passives.	4	NCP	Core
+Proxy	-	-	When using a Support BattleChip, you can transfer the benefits to a Near ally instead.	4	NCP	Core
+Mega+1	-	-	+1 maximum MegaChips in your Folder.	5	BoostNCP	Core
+TandemMastery	-	-	All Bond Powers except Overload cost one less Bond Point to activate.	6	NCP	Core
+SignatureMove	-	-	Work with the GM to design a NaviChip based off of you. Only you can use it.	7	NCP	Core
+						
+EncryptedChat	-	-	Can speak in code to anyone who has this NCP. Sounds like animal noises otherwise.	1	NCP	ChitChat
+PocketBase	-	-	Your PET contains a cozy home base. You can make a door to it at jack-in points.	1	NCP	ChitChat
+ProgPal	-	-	When you befriend a Mr. Prog, get a token. Can spend a token to reroll a Navi roll.	2	NCP	ChitChat
+						
+ActionReplay	-	-	On NetOp critical success, the PET autoposts a cool picture of it to social media.	1	NCP	Skateboard Dog
+Matchmaker	-	-	Can roll Info to analyze social media and judge 2 peoples’ romantic compatibility.	1	NCP	Skateboard Dog
+RideOn	-	-	On jack-in, you have a cool, small ride (e.g. roller skates, snowboard, pogo stick).	1	NCP	Skateboard Dog
+						
+Retribution	-	-	When you agree to a deal, whoever breaks the deal has their face & voice distort.	1	NCP	Mystic Lilies
+Servant	-	-	Must spend 1 Bravery to knowingly subvert the wishes of a Navi with Master installed.	1	NCP	Mystic Lilies
+AdminHeadphones	-	-	Can spend 1 Sense to briefly hear all conversations taking place in the server.	2	NCP	Mystic Lilies
+CosmicMind	-	-	When you roll, can spend 1 Mind to reroll and use the better result; your body glows.	2	NCP	Mystic Lilies
+DarkBargain	-	-	Once per jack-in, add 1 hit to an opposed roll, even after rolling. Suffer bad luck later.	2	NCP	Mystic Lilies
+DevilFangs	-	-	On enemy deletion, heal = its Max HP. No other healing, even jack-out. Full HP to uninstall.	2	NCP	Mystic Lilies
+JackOfHearts	-	-	You can see a colored aura around everyone that indicates their emotional state.	2	NCP	Mystic Lilies
+Malediction	-	-	On jack-in, Hex a chip in your Folder. Hexed chips cover the target with your element.	2	NCP	Mystic Lilies
+QueenOfClubs	-	-	Non-multihit Dangerous chips deal +1 dmg, but the collateral damage always backfires.	2	NCP	Mystic Lilies
+GrazingPower	-	-	On successful defense with Speed, +2 dice to your next attack roll. Doesn’t stack.	3	NCP	Mystic Lilies
+KingOfDiamonds	-	-	Can spend 2 HP to spawn your element Close, generating it from within your body.	3	NCP	Mystic Lilies
+Taboo	-	-	When you break something big/valuable, +1 die to your next Strength roll. Stacks to +3.	3	NCP	Mystic Lilies
+BeastWithin	-	-	On Cost Power use, turn into a beast for 3 rolls! Beasts ignore stat & skill reductions.	4	NCP	Mystic Lilies
+LunarDial	-	-	When you win a parry, you can freeze time long enough for one more roll/BattleChip.	4	NCP	Mystic Lilies
+Master	-	-	On jack-in, pick a Near Navi with Servant installed. You mirror each others’ healing.	4	NCP	Mystic Lilies
+						
+Expose	BlindMode	Upgrade	Detecting a target with BlindMode reveals them to all allies for 3 rolls.	2	NPU	Power Upgrades
+Monitor	BlindMode	Upgrade	Can place a remote, livestreaming camera with all senses. One at a time.	2	NPU	Power Upgrades
+EnviroScan	Tracker	Upgrade	Tracker finds vulnerable, hidden, or inconsistent parts of the environment.	2	NPU	Power Upgrades
+Projector	Tracker	Upgrade	Shows the target’s speed, destination, and exact movements and actions so far.	2	NPU	Power Upgrades
+HyperBomber	Splash	Upgrade	Splash can use AP rounds, downshifting Speed and upshifting Stamina defense.	3	NPU	Power Upgrades
+RemoteDet	Splash	Upgrade	Choose when shots detonate. 2 primed shots at once. Roll dmg on detonation.	2	NPU	Power Upgrades
+ChargeShot	LockOn	Upgrade	LockOn can be used to make Shot chips Accurate and ignore Guards.	2	NPU	Power Upgrades
+Interception	LockOn	Upgrade	Can instead mark a target. Your ranged attacks can parry their ranged attacks.	2	NPU	Power Upgrades
+RapidInput	Volley	Upgrade	Volley can affect any non-combat Strength, Coding, or Speed roll.	2	NPU	Power Upgrades
+Ricochet	Volley	Upgrade	Can instead spend 1 Sense to reroll an attack you just made.	1	NPU	Power Upgrades
+						
+Aggregator	Analyze	Upgrade	Can spend hits to learn their: NetOp, Bonds, Zenny, and emotional state.	2	NPU	Power Upgrades
+Exploit	Analyze	Upgrade	Add +2 dice to the first 2 allied rolls vs. the target. Once per target.	2	NPU	Power Upgrades
+Anticipation	Foresight	Upgrade	Foresight also lets you parry, not just dodge.	2	NPU	Power Upgrades
+Evacuate	Foresight	Upgrade	If you successfully defend with Foresight, you can move a range band away.	2	NPU	Power Upgrades
+SearchIndex	MemoryScan	Upgrade	You can find distant memories if you give a specific date/time.	2	NPU	Power Upgrades
+StorageViolation	MemoryScan	Upgrade	MemoryScan can also scan Navis. [Often illegal.]	3	NPU	Power Upgrades
+AutoWrite	Reconfig	Upgrade	To download Virus data, you can erase a chip in your Folder for a full success.	1	NPU	Power Upgrades
+Hijack	Reconfig	Upgrade	On hit, your next melee attack takes a chip (GM’s pick) from the target’s Folder.	3	NPU	Power Upgrades
+ForceRefresh	Refresh	Upgrade	Can instead reduce Max HP by 2 to use Refresh. Resets on jack-out.	2	NPU	Power Upgrades
+Retry	Refresh	Upgrade	If a target completely resists a chip, it is not exhausted. Once per BattleChip.	3	NPU	Power Upgrades
+						
+CopyCommand	Disruption	Upgrade	On blocking a default Navi Power/ NCP, you can use it once until next Disruption.	3	NPU	Power Upgrades
+Rupture	Disruption	Upgrade	If used Close, can also deal damage. On hit, reduce damage by 1.	2	NPU	Power Upgrades
+Backtrace	Firewall	Upgrade	If the door is destroyed, it turns into a medium hazard and you’re alerted.	2	NPU	Power Upgrades
+Portal	Firewall	Upgrade	After a couple minutes, doors allow travel directly between each other.	3	NPU	Power Upgrades
+AntiCollider	NoClip	Upgrade	You can apply NoClip to a Close target.	2	NPU	Power Upgrades
+Fizzle	NoClip	Upgrade	You can use NoClip to dodge attacks that would pass through you.	3	NPU	Power Upgrades
+Reroute	HotSwap	Upgrade	You can reduce your Max HP for +EB, 1 HP for 1EB. Can be undone.	3	NPU	Power Upgrades
+Tinker	HotSwap	Upgrade	If you spend a minute of uninterrupted concentration, HotSwap has no cost.	2	NPU	Power Upgrades
+TexturePack	MapEdit	Upgrade	Structures can be bouncy, sticky, floating, slippery, magnetic, or gelatinous.	2	NPU	Power Upgrades
+Motorize	MapEdit	Upgrade	Structures can move independently; Easy Coding roll to change the speed.	2	NPU	Power Upgrades
+						
+GutsShooter	Gutsy	Upgrade	When a Gutsy’d ally rolls to melee attack midair, they add your Body.	2	NPU	Power Upgrades
+GutStrike	Gutsy	Upgrade	You can roll 1 fewer die on any melee attack to give it Gutsy’s effect.	1	NPU	Power Upgrades
+Demolition	Shatter	Upgrade	Before rolling, can choose for the target object to become a Normal hazard.	2	NPU	Power Upgrades
+Infiltrate	Shatter	Upgrade	Shatter can be silent if you have a few moments of uninterrupted preparation.	1	NPU	Power Upgrades
+Tremor	Shockwave	Upgrade	Deal one less damage to knock the target over on hit.	2	NPU	Power Upgrades
+WaveMod	Shockwave	Upgrade	Spend 1 Wave chip to give Shockwave its properties for X+1 rolls. X=chip dmg.	2	NPU	Power Upgrades
+BreakSlot	Breakcharge	Upgrade	Can use BreakCharge with melee chips. They also become Piercing.	3	NPU	Power Upgrades
+Debilitate	Breakcharge	Upgrade	Can upshift one of the target’s skills instead of Body rolls. (Does not stack.)	2	NPU	Power Upgrades
+Blowback	Followthrough	Upgrade	One target can be Near range if you pick a Close target to launch at them.	2	NPU	Power Upgrades
+LastHit	Followthrough	Upgrade	Followthrough is free if it deletes a target. Reset Strength penalties on multi-delete.	2	NPU	Power Upgrades
+						
+KeyBind	FlowState	Upgrade	FlowState lets you constrict a target. Resisting with Stamina is upshifted.	2	NPU	Power Upgrades
+Meld	FlowState	Upgrade	You can hide in a Close abundance of your element indefinitely.	1	NPU	Power Upgrades
+BlastOff	JumpJets	Upgrade	JumpJets covers all enemies Close to your launch point with your element.	2	NPU	Power Upgrades
+ZealOverdrive	JumpJets	Upgrade	On success, you can downshift your next attack and upshift your next defense.	2	NPU	Power Upgrades
+Cloak	Sneakrun	Upgrade	When you spend a Speed point or roll a crit with Speed, you can briefly go invisible.	2	NPU	Power Upgrades
+Pathfind	Sneakrun	Upgrade	SneakRun can affect others too as long as they stay Close to you.	1	NPU	Power Upgrades
+BackupRoutine	Afterimages	Upgrade	Can spend a reroll to downshift a Charm or Bravery roll.	1	NPU	Power Upgrades
+Illusion	Afterimages	Upgrade	Spend a reroll to give a transient, incorporeal hologram of you 1 order.	2	NPU	Power Upgrades
+Revert	Warp	Upgrade	Within 10 seconds of warping, you can warp back to your starting point for free.	2	NPU	Power Upgrades
+Transmission	Warp	Upgrade	You can use Warp on a Close ally or object instead.	2	NPU	Power Upgrades
+						
+ArmoryPlus	ArmorChange	Upgrade	Can instead choose these effects: loud; decorated; buoyant; flammable; or ugly.	2	NPU	Power Upgrades
+GuardArmor	ArmorChange	Upgrade	When you have a Guard chip active, downshift ArmorChange rolls.	1	NPU	Power Upgrades
+ReversePolarity	GravArmor	Upgrade	GravArmor can drag a Near object or airborne target into Close range.	3	NPU	Power Upgrades
+TeamLock	GravArmor	Upgrade	When you stick to a surface, any Close allies can gravity-latch onto your body.	1	NPU	Power Upgrades
+StrikeBack	Reflect	Upgrade	You can Reflect projectiles with a melee attack instead, BattleChips included.	2	NPU	Power Upgrades
+TypeConversion	Reflect	Upgrade	If you win, you can instead convert your hits to bonus dice on your next roll.	2	NPU	Power Upgrades
+Defrag	Clear	Upgrade	You can use Clear on a Close ally instead.	2	NPU	Power Upgrades
+RAMWipe	Clear	Upgrade	Can instead modify your next attack to remove temporary buffs on hit.	1	NPU	Power Upgrades
+Essence	Regenerate	Upgrade	Each time Regenerate heals 1 HP, a small amount of your element appears Close.	1	NPU	Power Upgrades
+Overheal	Regenerate	Upgrade	All healing can exceed Max HP. While over Max and not healing, take -1 HP each roll.	2	NPU	Power Upgrades
+						
+Incognito	Harmless	Upgrade	On a success, targets will not remember your identity if you choose.	1	NPU	Power Upgrades
+Mascot	Harmless	Upgrade	You can also avert hostile attention from X Close allies. X=hits-1.	1	NPU	Power Upgrades
+HypnoFlash	Hypnotize	Upgrade	Hypnotize works on humans if you are on a large screen. [Often illegal.]	3	NPU	Power Upgrades
+Subliminal	Hypnotize	Upgrade	On success, you can describe the target’s dream as detailed as you like.	1	NPU	Power Upgrades
+Soundboard	Playback	Upgrade	Playback can generate any noise you’ve heard before or can find online.	1	NPU	Power Upgrades
+SurroundSound	Playback	Upgrade	Your voice can come from any real-world speaker Near your physical jack-in point.	1	NPU	Power Upgrades
+Designer	ModelEdit	Upgrade	You can apply ModelEdit to a Close target.	1	NPU	Power Upgrades
+Fabricator	ModelEdit	Upgrade	ModelEdit can be used as a Roll Power. Major changes require a minute of focus.	3	NPU	Power Upgrades
+Influencer	Overwrite	Upgrade	Overwrite also works on generic/unnamed digital NPCs. [Often illegal.]	1	NPU	Power Upgrades
+Tamer	Overwrite	Upgrade	If a Virus is near deletion, you can permanently tame them (1 Virus at a time).	3	NPU	Power Upgrades
+						
+Callout	Glare	Upgrade	Glare works on fleeing Near targets. They turn to face you.	2	NPU	Power Upgrades
+SnakeEyes	Glare	Upgrade	Briefly stun a target the first time you successfully Glare them.	2	NPU	Power Upgrades
+Arena	SystemCall	Upgrade	On success, an elemental ring shuts others out and you and the targets in.	2	NPU	Power Upgrades
+Gladiator	SystemCall	Upgrade	When parrying a SystemCall target, you can turn one failure into an escalation.	2	NPU	Power Upgrades
+Flurry	Vengeance	Upgrade	Roll 1 fewer die to rush from Near to Close range as part of the attack.	2	NPU	Power Upgrades
+Tantrum	Vengeance	Upgrade	When an enemy damages an ally, add dice to your roll = HP lost.	2	NPU	Power Upgrades
+Daredevil	Bodyguard	Upgrade	If you defend by parrying, the cost is refunded.	2	NPU	Power Upgrades
+Protector	Bodyguard	Upgrade	You can defend all Close allies at once from a multitarget attack.	2	NPU	Power Upgrades
+Inspire	Rally	Upgrade	Rally can instead let an ally reroll two dice on a Soul roll.	1	NPU	Power Upgrades
+Specialist	Rally	Upgrade	On jack-in, pick any skill. Rally can add 3 dice to an ally roll with that skill instead.	2	NPU	Power Upgrades
+						
+AltTab	Alt	Upgrade	You can make any roll via your minion instead, including Navi Powers.	3	NPU	Power Upgrades
+Payload	Alt	Upgrade	Whenever something destroys your minion, it explodes into your element.	2	NPU	Power Upgrades
+ControlA	Control	Upgrade	Detonate all abundances of your element in Near range, damaging all Close to one.	2	NPU	Power Upgrades
+ControlX	Control	Upgrade	Control is now a melee attack. Can use the element of the last enemy you deleted.	3	NPU	Power Upgrades
+BurstTransmission	Shift	Upgrade	When appearing at your destination, cover everything Close in your element.	1	NPU	Power Upgrades
+Redirect	Shift	Upgrade	You can Shift with a known Near abundance of your element not in sight.	2	NPU	Power Upgrades
+BufferOverflow	CodeInjection	Upgrade	If your next attack deletes, cover all Close to the target with your element.	1	NPU	Power Upgrades
+Universal	CodeInjection	Upgrade	Non-attack rolls can use CodeInjection as long as they have a target.	1	NPU	Power Upgrades
+ElemenTango	Save	Upgrade	Save also gives the target an elemental barrier (Guard) that negates 1 attack.	2	NPU	Power Upgrades
+SaveAs	Save	Upgrade	Save also gives the target control over your element for one roll.	1	NPU	Power Upgrades

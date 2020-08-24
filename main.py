@@ -3,15 +3,61 @@ import asyncio
 import sys, os, random
 import koduck, yadon
 import settings
-
+import pandas as pd
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
     pass
 
-
 settings.backgroundtask = backgroundtask
 
+chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
+chip_df["chip_lowercase"] = chip_df["Chip"].str.lower()
+
+ncp_df = pd.read_csv(r"ncpdata.tsv", sep="\t").fillna('')
+ncp_df["ncp_lowercase"] = ncp_df["Power/NCP"].str.lower()
+
+power_df = pd.read_csv(r"powerncpdata.tsv", sep="\t").fillna('')
+power_df["power_lowercase"] = power_df["Power/NCP"].str.lower()
+
+virus_df = pd.read_csv(r"virusdata.tsv", sep="\t").fillna('')
+virus_df["name_lowercase"] = virus_df["Name"].str.lower()
+
+daemon_df = pd.read_csv(r"daemondata.tsv", sep="\t").fillna('')
+daemon_df["name_lowercase"] = daemon_df["Name"].str.lower()
+
+bond_df = pd.read_csv(r"bonddata.tsv", sep="\t").fillna('')
+bond_df["bondpower_lowercase"] = bond_df["BondPower"].str.lower()
+
+tag_df = pd.read_csv(r"tagdata.tsv", sep="\t").fillna('')
+tag_df["tag_lowercase"] = tag_df["Tag"].str.lower()
+
+mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
+mysterydata_df["mysterydata_lowercase"] = mysterydata_df["MysteryData"].str.lower()
+
+element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
+element_df["category_lowercase"] = element_df["category"].str.lower()
+
+help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
+help_df["command_lowercase"] = help_df["Command"].str.lower()
+help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n',regex=True)
+
+cc_color_dictionary = {"Mega": 0xA8E8E8,
+                         "ChitChat": 0xff8000,
+                         "Radical Spin": 0x3f5cff,
+                         "Underground Broadcast": 0x73ab50,
+                         "Mystic Lilies": 0x99004c,
+                         "Genso Network": 0xff605d,
+                         "Leximancy": 0x481f65,
+                         "Dark": 0xB088D0,
+                         "Item": 0xffffff}
+
+mysterydata_dict = {"common": {"color": 0x48C800,
+                               "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
+                    "uncommon": {"color": 0x00E1DF,
+                                 "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/uncommonmysterydata.png"},
+                    "rare": {"color": 0xD8E100,
+                             "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/raremysterydata.png"}}
 
 ##################
 # BASIC COMMANDS #
@@ -265,15 +311,25 @@ async def help(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_help.replace("{cp}",
                                                                                                       settings.commandprefix).replace(
             "{pd}", settings.paramdelim))
-    # Try to retrieve the help message for the query
+
+    help_msg = await find_value_in_table(context, help_df, "command_lowercase", args[0], override=True)
+
+    if help_msg is None:
+        help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
-        querycommand = args[0]
-        try:
-            # Use {cp} for command prefix and {pd} for parameter delimiter
-            return await koduck.sendmessage(context["message"], sendcontent=getattr(settings, "message_help_{}".format(
-                querycommand)).replace("{cp}", settings.commandprefix).replace("{pd}", settings.paramdelim))
-        except AttributeError:
-            return await koduck.sendmessage(context["message"], sendcontent=settings.message_help_unknowncommand)
+        help_response = help_msg["Response"]
+
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=help_response)
+
+    # Try to retrieve the help message for the query
+    #querycommand = args[0]
+    #try:
+        # Use {cp} for command prefix and {pd} for parameter delimiter
+    #    return await koduck.sendmessage(context["message"], sendcontent=getattr(settings, "message_help_{}".format(
+    #        querycommand)).replace("{cp}", settings.commandprefix).replace("{pd}", settings.paramdelim))
+    #except AttributeError:
+    #    return await koduck.sendmessage(context["message"], sendcontent=settings.message_help_unknowncommand)
 
 
 async def userinfo(context, *args, **kwargs):
@@ -314,7 +370,7 @@ async def userinfo(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
-async def roll(context, *args, **kwargs):
+async def roll(context, *args, **kwargs): #TODO: fix, add comments (parsing)
     parameters = [1, settings.rolldefaultmax, 0]  # quantity, max, filter
 
     # parse parameters
@@ -365,175 +421,266 @@ async def roll(context, *args, **kwargs):
 async def tag(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me a Battle Chip tag and I can pull up its info for you!")
-    table = yadon.ReadTable("tagdata")
-    case_insensitive = {key.lower(): key for key in table.keys()}
-    try:
-        name = case_insensitive[args[0].lower()]
-    except KeyError:
-        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that Battle Chip tag!")
-    values = table[name]
+                                        sendcontent="Give me a BattleChip tag or Virus/Chip category, and I can pull up its info for you!")
+
+    tag_info = await find_value_in_table(context, tag_df, "tag_lowercase", args[0])
+    if tag_info is None:
+        return
+
+    tag_title = tag_info["Tag"]
+    tag_description = tag_info["Description"]
+    tag_alt = tag_info["AltName"]
+
+    if tag_alt:
+        tag_title += " (%s)" % tag_alt
 
     embed = discord.Embed(
-        title="__{}{}__".format("{}".format(name), " ({})".format(table[name][0]) if values[0] != "-" else ""),
-        description=(table[name][1]), color=0x24ff00)
+        title="__%s__" % tag_title,
+        description=tag_description,
+        color=0x24ff00)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
+async def find_value_in_table(context, df, search_col, search_arg, override=False):
+    search_results = df[df[search_col] == search_arg.lower()]
+    if search_results.shape[0] == 0:
+        if not override:
+            await koduck.sendmessage(context["message"],
+                                     sendcontent="I can't find %s!" % search_arg)
+        return None
+    elif search_results.shape[0] > 1:
+        await koduck.sendmessage(context["message"],
+                                 sendcontent="Found more than one match for %s! You should probably let the devs know..." % search_arg)
+        return None
+    return search_results.iloc[0]
+
+
 async def chip(context, *args, **kwargss):
+    if len(args) == 1:
+        args = args[0].split()
+
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!")
     elif len(args) > 5:
-        return await koduck.sendmessage(context["message"], sendcontent="Too many chips, no spamming!")
-    table = yadon.ReadTable("chipdata")
-    case_insensitive = {key.lower(): key for key in table.keys()}
-    for arg in args:
-        try:
-            name = case_insensitive[arg.lower()]
-        except KeyError:
-            return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that Battle Chip!")
-            continue
-        values = table[name]
+        return await koduck.sendmessage(context["message"], sendcontent="Too many chips, no more than 5!")
 
-        damage = values[0]
-        type = values[1]
-        description = values[2]
-        categroy = values[3]
-        tags = values[4]
-        crossover = values[5]
+    for arg in args:
+        chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg)
+        if chip_info is None:
+            continue
+
+        chip_name = chip_info["Chip"]
+
+        chip_damage = "%s Damage" % chip_info["Dmg"]
+        chip_range = chip_info["Range"]
+        chip_description = chip_info["Effect"]
+        chip_category = chip_info["Category"]
+        chip_tags = chip_info["Tags"]
+        chip_crossover = chip_info["From?"]
 
         # this determines embed colors
-        if "Mega" in values[5]:
-            color = 0xA8E8E8
-        elif "ChitChat" in values[5]:
-            color = 0xff8000
-        elif "Radical Spin" in values[5]:
-            color = 0x3f5cff
-        elif "Underground Broadcast" in values[5]:
-            color = 0x73ab50
-        elif "Mystic Lilies" in values[5]:
-            color = 0x99004c
-        elif "Genso Network" in values[5]:
-            color = 0xff605d
-        elif "Leximancy" in values[5]:
-            color = 0x481f65
-        elif "Dark" in values[5]:
-            color = 0xB088D0
-        elif "Item" in values[3]:
-            color = 0xffffff
+        color = 0xbfbfbf
+        if chip_crossover in cc_color_dictionary:
+            color = cc_color_dictionary[chip_crossover]
+        if chip_tags:
+            if 'Dark' in chip_tags:
+                color = cc_color_dictionary['Dark']
+            elif 'Mega' in chip_tags:
+                color = cc_color_dictionary['Mega']
+            elif chip_category == 'Item':
+                color = cc_color_dictionary["Item"]
+
+        if chip_crossover == "Core":
+            chip_title = "__%s__" % chip_name
         else:
-            color = 0xbfbfbf
+            chip_title = "__%s (%s Chip)__" % (chip_name, chip_crossover)
+
+        subtitle = [chip_damage, chip_range, chip_category, chip_tags]
+        subtitle_trimmed = [i for i in subtitle if i and i[0] != '-']
+
         embed = discord.Embed(
-            title="__{}{}__".format("{}".format(name), " ({} Chip)".format(values[5]) if values[5] != "-" else ""),
+            title=chip_title,
             color=color)
-        embed.add_field(name="**[{}{}{}{}]**".format("{} Damage/".format(values[0]) if values[0] != "-" else "",
-                                                     "{}/".format(values[1]) if values[1] != "-" else "", values[3],
-                                                     "/{}".format(values[4]) if values[4] != "-" else ""),
-                        value="_{}_".format(values[2]))
+        embed.add_field(name="[%s]" % "/".join(subtitle_trimmed),
+                        value="_%s_" % chip_description)
         await koduck.sendmessage(context["message"], sendembed=embed)
 
 
+def find_skill_color(skill_key):
+    if skill_key in ["Sense", "Info", "Coding"]:
+        color = 0x81A7C6
+    elif skill_key in ["Strength", "Speed", "Stamina"]:
+        color = 0xDF8F8D
+    elif skill_key in ["Charm", "Bravery", "Affinity"]:
+        color = 0xF8E580
+    else:
+        color = -1 # error code
+    return color
+
+
+async def power_ncp(context, args, force_power = False):
+    arg = args[0]
+    power_info = await find_value_in_table(context, power_df, "power_lowercase", arg)
+    if power_info is None:
+        return None, None, None, None
+
+    power_name = power_info["Power/NCP"]
+    power_skill = power_info["Skill"]
+    power_type = power_info["Type"]
+    power_description = power_info["Effect"]
+    power_eb = power_info["EB"]
+    power_source = power_info["From?"]
+
+    # this determines embed colors
+    color = find_skill_color(power_skill)
+    if (color < 0) and power_source in cc_color_dictionary:
+        color = cc_color_dictionary[power_source]
+    elif (color < 0) and power_skill.lower() in power_df["power_lowercase"].values:
+        power_true_info = await find_value_in_table(context, power_df, "power_lowercase", power_skill)
+        color = find_skill_color(power_true_info["Skill"])
+    else:
+        color = 0xffffff
+
+    if power_eb == '-' or force_power: # display as power, rather than ncp
+
+        if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
+            field_title = 'Passive Power'
+        else:
+            field_title = "%s Power/%s" % (power_skill, power_type)
+
+        field_description = power_description
+    else:
+        field_title = '%s EB' % power_eb
+
+        if power_source == "Power Upgrades":
+            field_title += "/%s Upgrade NCP" % power_skill
+        elif power_source != "Core":
+            power_name += " (%s Crossover NCP)" % power_source
+
+        if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
+            field_description = power_description
+        else:
+            field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
+
+    return power_name, field_title, field_description, color
+
+
 async def power(context, *args, **kwargs):
+    #if ncp command, include EB; if power, don't include
+
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Navi Power and I can pull up its info for you!")
-    table = yadon.ReadTable("powerdata")
-    case_insensitive = {key.lower(): key for key in table.keys()}
-    try:
-        name = case_insensitive[args[0].lower()]
-    except KeyError:
-        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that NaviPower!")
-    values = table[name]
 
-    category = values[0]
-    type = values[1]
-    description = values[2]
+    power_name, field_title, field_description, power_color = await power_ncp(context, args, force_power=True)
+    if power_name is None:
+        return
 
-    # this determines embed colors
-    if category in ["Sense", "Info", "Coding"]:
-        color = 0x81A7C6
-    elif category in ["Strength", "Speed", "Stamina"]:
-        color = 0xDF8F8D
-    elif category in ["Charm", "Bravery", "Affinity"]:
-        color = 0xF8E580
-    else:
-        color = 0xffffff
-    embed = discord.Embed(title="__{}__".format(name), color=color)
-    embed.add_field(
-        name="**[{}{}]**".format("{} Power".format(values[0]), "/{}".format(values[1]) if values[1] != "-" else ""),
-        value="_{}_".format(values[2]))
+    embed = discord.Embed(title="__{}__".format(power_name),
+                          color=power_color)
+    embed.add_field(name="**[{}]**".format(field_title),
+                    value="_{}_".format(field_description))
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
 async def NCP(context, *args, **kwargs):
+    #navi power upgrades
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of an NCP and I can pull up its info for you!")
-    table = yadon.ReadTable("ncpdata")
-    case_insensitive = {key.lower(): key for key in table.keys()}
-    try:
-        name = case_insensitive[args[0].lower()]
-    except KeyError:
-        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that NCP!")
-    values = table[name]
+                                        sendcontent="Give me the name of a NaviCust Part and I can pull up its info for you!")
 
-    exabytes = values[0]
-    power = values[1]
-    description = values[2]
-    crossover = values[3]
+    power_name, field_title, field_description, power_color = await power_ncp(context, args, force_power=False)
+    if power_name is None:
+        return
 
-    # this determines embed colors
-    if power in ["LockOn", "Volley", "BlindMode", "Splash", "Tracker", "Refresh", "Reconfig", "Analyze", "Foresight",
-                 "Extend", "MapEdit", "HotSwap", "Disruption", "Firewall", "NoClip"]:
-        color = 0x81A7C6
-    elif power in ["Breakcharge", "Followthrough", "Gutsy", "Shockwave", "Shatter", "Warp", "Afterimages", "JumpJets",
-                   "Sneakrun", "ArtfulDodger", "Regenerate", "Clear", "KineticArmor", "Reflect", "HyperArmor"]:
-        color = 0xDF8F8D
-    elif power in ["Overwrite", "ModelEdit", "Playback", "Harmless", "Hypnotize", "Rally", "Bodyguard", "Vengeance",
-                   "Glare", "Duel", "Save", "CodeInjection", "Shift", "Control", "Alt"]:
-        color = 0xF8E580
-    elif crossover in ["ChitChat"]:
-        color = 0xff8000
-    elif crossover in ["Radical Spin"]:
-        color = 0x3f5cff
-    elif crossover in ["Skateboard Dog"]:
-        color = 0xff0000
-    elif crossover in ["Mystic Lilies"]:
-        color = 0x99004c
-    elif crossover in ["Genso Network"]:
-        color = 0xff605d
-    else:
-        color = 0xffffff
-    embed = discord.Embed(
-        title="__{}{}__".format((name), " ({} Crossover NCP)".format(values[3]) if values[3] != "-" else ""),
-        color=color)
-    embed.add_field(name="**[{}{}]**".format("{} EB".format(values[0]),
-                                             "/{} Power Upgrade NCP".format(values[1]) if values[1] != "-" else ""),
-                    value="_{}_".format(values[2]))
+    embed = discord.Embed(title="__{}__".format(power_name),
+                          color=power_color)
+    embed.add_field(name="**[{}]**".format(field_title),
+                    value="_{}_".format(field_description))
     return await koduck.sendmessage(context["message"], sendembed=embed)
+
+
+async def virus_master(context, arg, simplified=True):
+    virus_info = await find_value_in_table(context, virus_df, "name_lowercase", arg)
+
+    if virus_info is None:
+        return None, None, None, None, None, None
+
+    virus_name = virus_info["Name"]
+    virus_description = virus_info["Description"]
+    virus_category = virus_info["Category"]
+    virus_image = virus_info["ImageURL"]
+    virus_artist = virus_info["ImageArtist"]
+    virus_source = virus_info["From?"]
+    virus_hp = virus_info["HP"]
+    virus_element = virus_info["Element"]
+    virus_tags = virus_info["Tags"]
+    virus_stats = [int(virus_info["Mind"]), int(virus_info["Body"]), int(virus_info["Soul"])]
+    virus_skills = {'Sense': virus_info["Sense"], 'Info': virus_info["Info"], 'Coding': virus_info["Coding"],
+                    'Strength': virus_info["Strength"], 'Speed': virus_info["Speed"], 'Stamina': virus_info["Stamina"],
+                    'Charm': virus_info["Charm"], 'Bravery': virus_info["Bravery"], 'Affinity': virus_info["Affinity"]}
+    virus_powers = [virus_info["Powers1"], virus_info["Powers2"], virus_info["Powers3"], virus_info["Powers4"]]
+    virus_drops = [virus_info["Drops1"], virus_info["Drops2"]]
+
+    virus_footer = "Category: %s" % virus_category
+    if virus_artist:
+        virus_footer += "\n(Artwork by %s)" % virus_artist
+
+    if virus_source in cc_color_dictionary:
+        virus_color = cc_color_dictionary[virus_source]
+        virus_footer += " (%s Crossover Virus)" % virus_source
+    else:
+        virus_color = 0x7c00ff
+
+    virus_descript_block = ""
+    virus_title = ""
+
+    virus_skills = [(key, int(val)) for key, val in virus_skills.items() if int(val) != 0]
+
+    if not simplified:
+        virus_title = "HP %d" % int(virus_hp)
+        virus_descript_block = "**Element: %s**" % virus_element + \
+                               "\nMind %d, Body %d, Soul %d" % (*virus_stats,)
+        if virus_skills:
+            virus_descript_block += "\n%s" % ", ".join(["%s %s" % (key, val) for key, val in virus_skills])
+        if virus_powers:
+            virus_descript_block += "\nPowers: %s" % ", ".join([i for i in virus_powers if i])
+        if virus_drops:
+            virus_descript_block += "\nDrops: %s" % ", ".join([i for i in virus_drops if i])
+        virus_descript_block += "\n"
+
+    if simplified:
+        virus_descript_block += "*%s*\n" % virus_description
+
+    if not virus_tags:
+        virus_tags = "None"
+    virus_descript_block += "**__Tags: %s__**" % virus_tags
+
+    if not simplified:
+        virus_descript_block += "\n*%s*" % virus_description
+
+    return virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color
 
 
 async def virus(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a virus and I can pull up its info for you!")
+                                        sendcontent="Give me the name of one or more viruses and I can pull up their info for you!")
     elif len(args) > 5:
-        return await koduck.sendmessage(context["message"], sendcontent="Too many viruses, no spamming!")
-    table = yadon.ReadTable("virusdata")
-    case_insensitive = {key.lower(): key for key in table.keys()}
-    for arg in args:
-        try:
-            name = case_insensitive[args[0].lower()]
-        except KeyError:
-            return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that virus!")
-            continue
-        values = table[name]
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Too many viruses, no spamming!")
 
-        embed = discord.Embed(title="__{}__".format(name), description="_{}_".format(table[name][17]), color=0x7c00ff)
-        embed.set_thumbnail(url=values[19])
-        embed.set_footer(text="{}\n{}".format("Category: {}".format(values[18]),
-                                              "(Artwork by {})".format(values[20]) if values[20] != "-" else ""))
+    for arg in args:
+        virus_name, _, virus_description, virus_footer, virus_image, virus_color = await virus_master(context, arg, simplified=True)
+        if virus_name is None:
+            continue
+
+        embed = discord.Embed(title=virus_name,
+                              description=virus_description,
+                              color=virus_color)
+        embed.set_thumbnail(url=virus_image)
+        embed.set_footer(text=virus_footer)
         await koduck.sendmessage(context["message"], sendembed=embed)
 
 
@@ -541,55 +688,20 @@ async def virusx(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a virus and I can pull up its full info for you!")
-    table = yadon.ReadTable("virusdata")
-    case_insensitive = {key.lower(): key for key in table.keys()}
-    try:
-        name = case_insensitive[args[0].lower()]
-    except KeyError:
-        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that virus!")
-    values = table[name]
 
-    HP = values[0]
-    Element = values[1]
-    Mind = values[2]
-    Body = values[3]
-    Soul = values[4]
-    Sense = values[5]
-    Info = values[6]
-    Coding = values[7]
-    Strength = values[8]
-    Speed = values[9]
-    Stamina = values[10]
-    Charm = values[11]
-    Bravery = values[12]
-    Affinity = values[13]
-    Powers = values[14]
-    Drops = values[15]
-    Tags = values[16]
-    Description = values[17]
-    Category = values[18]
-    Link = values[19]
-    Artist = values[20]
+    virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color = await virus_master(context, args[0], simplified=False)
 
-    embed = discord.Embed(title="__{}__".format(name), color=0x7c00ff)
-    stats = ["HP", "Element", "Mind", "Body", "Soul", "Sense", "Info", "Coding", "Strength", "Speed", "Stamina",
-             "Charm", "Bravery", "Affinity"]
-    stats_string = ""
-    for i in range(5, len(stats)):
-        if values[i] != "-":
-            stats_string += "{} {}/".format(values[i], stats[i])
-    stats_string = stats_string[:-1]
+    embed = discord.Embed(title=virus_name, color=virus_color)
 
-    embed.set_thumbnail(url=values[19])
-    embed.add_field(name="**{} HP**".format(HP),
-                    value="**_Element: {}_**\n{} Mind/{} Body/{} Soul\n{}\nPowers: {}\nDrops: {}\n**__Tags: {}__**\n_''{}''_".format(
-                        Element, Mind, Body, Soul, stats_string, Powers, Drops, Tags, Description), inline=True)
-    embed.set_footer(text="{}\n{}".format("Category: {}".format(Category),
-                                          "(Artwork by {})".format(Artist) if Artist != "-" else ""))
+    embed.set_thumbnail(url=virus_image)
+    embed.add_field(name=virus_title,
+                    value=virus_descript_block, inline=True)
+    embed.set_footer(text=virus_footer)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
-
+# types of locks!!!
 async def query(context, *args, **kwargs):
+    #move these query commands: >upgrade [power], filter out virus skills for >query sense... (>power sense?)
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! Please type `>help query` for more information.")
@@ -609,153 +721,107 @@ async def query(context, *args, **kwargs):
                                             args[0], ", ".join(results)))
 
 
+def mysterydata_zenny(base_zen):
+    z_amount = random.randint(1, 6) + random.randint(1, 6)
+    return "%d Zenny!" % (z_amount * base_zen)
+
+
+def mysterydata_chip(df):
+    df_sub = df[df["Type"] == "Chip"]
+    row_num = random.randint(1, df_sub.shape[0]) - 1
+    result_chip = df_sub.iloc[row_num]["Value"]
+    return "%s Battle Chip!" % result_chip
+
+
+def mysterydata_ncp(df):
+    df_sub = df[df["Type"] == "NCP"]
+    row_num = random.randint(1, df_sub.shape[0]) - 1
+    result_ncp = df_sub.iloc[row_num]["Value"]
+    return "%s Battle Chip!" % result_ncp
+
+
+def mysterydata_event(df):
+    df_sub = df[df["Type"] == "Misc Table"]
+    row_num = random.randint(1, df_sub.shape[0]) - 1
+    result_event = df_sub.iloc[row_num]["Value"]
+    return result_event
+
+
+async def mysterydata_master(context, args, force_reward = False):
+    arg = args[0].lower()
+    mysterydata_type = mysterydata_df[mysterydata_df["mysterydata_lowercase"] == arg]
+
+    if mysterydata_type.shape[0] == 0:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
+    if force_reward:
+        firstroll = random.randint(3,5)
+    else:
+        firstroll = random.randint(1, 6)
+    if firstroll <= 2:
+        zenny_val = mysterydata_type[mysterydata_type["Type"] == "Zenny"].iloc[0]["Value"]
+        result_text = mysterydata_zenny(int(zenny_val))
+    elif firstroll <= 4:
+        result_text = mysterydata_chip(mysterydata_type)
+    elif firstroll == 5:
+        result_text = mysterydata_ncp(mysterydata_type)
+    else:
+        result_text = mysterydata_event(mysterydata_type)
+
+    if arg in mysterydata_dict:
+        md_color = mysterydata_dict[arg]["color"]
+        md_image_url = mysterydata_dict[arg]["image"]
+    else:
+        md_color = 0xffffff
+        md_image_url = ""
+
+    md_type = arg.capitalize()
+
+    embed = discord.Embed(title="__{} MysteryData__".format(md_type),
+                          description="_%s accessed the MysteryData..._\n" % context["message"].author.mention +
+                                      "\nGot: **%s**" % result_text,
+                          color=md_color)
+    embed.set_thumbnail(url=md_image_url)
+
+    return await koduck.sendmessage(context["message"], sendembed=embed)
+
+
 async def mysterydata(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
-    table = yadon.ReadTable("mysterydata")
+                                        sendcontent="I can roll Mystery Data for you! Specify `>mysterydata common`, `>mysterydata uncommon`, or `>mysterydata rare`!")
 
-    if args[0].lower() == "common":
-        firstroll = random.randint(1, 6)
-        if firstroll in [1, 2]:
-            secondroll = random.randint(700, 735)
-        elif firstroll in [3, 4]:
-            secondroll = random.randint(1, 36)
-        elif firstroll == 5:
-            secondroll = random.randint(37, 72)
-        elif firstroll == 6:
-            secondroll = random.randint(73, 78)
-
-    elif args[0].lower() == "uncommon":
-        firstroll = random.randint(1, 6)
-        if firstroll in [1, 2]:
-            secondroll = random.randint(800, 835)
-        elif firstroll in [3, 4]:
-            secondroll = random.randint(79, 114)
-        elif firstroll == 5:
-            secondroll = random.randint(115, 150)
-        elif firstroll == 6:
-            secondroll = random.randint(151, 156)
-
-    elif args[0].lower() == "rare":
-        firstroll = random.randint(1, 6)
-        if firstroll in [1, 2]:
-            secondroll = random.randint(900, 935)
-        elif firstroll in [3, 4]:
-            secondroll = random.randint(157, 192)
-        elif firstroll == 5:
-            secondroll = random.randint(193, 228)
-        elif firstroll == 6:
-            secondroll = random.randint(229, 234)
-
-    else:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
-    values = table[str(secondroll)]
-
-    # Color changes based on MysteryData Selection
-    if (values[1]) in ["Common"]:
-        color = 0x48C800
-    elif (values[1]) in ["Uncommon"]:
-        color = 0x00E1DF
-    elif (values[1]) in ["Rare"]:
-        color = 0xD8E100
-    else:
-        color = 0xffffff
-
-    embed = discord.Embed(title="__{} MysteryData__".format(values[1]),
-                          description="_{} accessed the MysteryData..._\n \nGot: **{}{}! **".format(
-                              context["message"].author.mention, values[0],
-                              " " + values[2] if values[2] != "-" else ""), color=color)
-    if values[1] in ["Common"]:
-        embed.set_thumbnail(
-            url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png")
-    elif values[1] in ["Uncommon"]:
-        embed.set_thumbnail(
-            url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/uncommonmysterydata.png")
-    elif values[1] in ["Rare"]:
-        embed.set_thumbnail(
-            url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/raremysterydata.png")
-
-    return await koduck.sendmessage(context["message"], sendembed=embed)
+    await mysterydata_master(context, args, force_reward=False)
 
 
 async def mysteryreward(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
-    table = yadon.ReadTable("mysterydata")
+                                        sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! Specify `>mysterydata common`, `>mysterydata uncommon`, or `>mysterydata rare`!")
 
-    if args[0].lower() == "common":
-        firstroll = random.randint(1, 3)
-        if firstroll in [1, 2]:
-            secondroll = random.randint(1, 36)
-        elif firstroll == 3:
-            secondroll = random.randint(37, 72)
-
-    elif args[0].lower() == "uncommon":
-        firstroll = random.randint(1, 3)
-        if firstroll in [1, 2]:
-            secondroll = random.randint(79, 114)
-        elif firstroll == 3:
-            secondroll = random.randint(115, 150)
-
-    elif args[0].lower() == "rare":
-        firstroll = random.randint(1, 3)
-        if firstroll in [1, 2]:
-            secondroll = random.randint(157, 192)
-        elif firstroll == 3:
-            secondroll = random.randint(193, 228)
-
-    else:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
-    values = table[str(secondroll)]
-
-    # Color changes based on MysteryData Selection
-    if (values[1]) in ["Common"]:
-        color = 0x48C800
-    elif (values[1]) in ["Uncommon"]:
-        color = 0x00E1DF
-    elif (values[1]) in ["Rare"]:
-        color = 0xD8E100
-    else:
-        color = 0xffffff
-
-    embed = discord.Embed(title="__{} MysteryData__".format(values[1]),
-                          description="_{} accessed the MysteryData..._\n \nGot: **{}{}! **".format(
-                              context["message"].author.mention, values[0],
-                              " " + values[2] if values[2] != "-" else ""), color=color)
-    if values[1] in ["Common"]:
-        embed.set_thumbnail(
-            url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png")
-    elif values[1] in ["Uncommon"]:
-        embed.set_thumbnail(
-            url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/uncommonmysterydata.png")
-    elif values[1] in ["Rare"]:
-        embed.set_thumbnail(
-            url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/raremysterydata.png")
-
-    return await koduck.sendmessage(context["message"], sendembed=embed)
+    await mysterydata_master(context, args, force_reward=True)
+    return
 
 
 async def bond(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a Bond Power and I can pull up its info for you!")
-    table = yadon.ReadTable("bonddata")
-    case_insensitive = {key.lower(): key for key in table.keys()}
-    try:
-        name = case_insensitive[args[0].lower()]
-    except KeyError:
-        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that Bond Power!")
-    values = table[name]
 
-    bondpoints = values[0]
-    description = values[1]
+    bond_info = await find_value_in_table(context, bond_df, "bondpower_lowercase", args[0])
+    if bond_info is None:
+        return
 
-    embed = discord.Embed(title="__{}__".format(name), color=0x24ff00)
-    embed.add_field(name="**({})**".format(values[0]), value="_{}_".format(values[1]))
+    bond_title = bond_info["BondPower"]
+    bond_cost = bond_info["Cost"]
+    bond_description = bond_info["Description"]
+
+    embed = discord.Embed(
+        title="__%s__" % bond_title,
+        color=0x24ff00)
+    embed.add_field(name="**({} Bond Point(s))**".format(bond_cost),
+                    value="_{}_".format(bond_description))
+
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
@@ -763,43 +829,46 @@ async def daemon(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Lists the complete information of a Daemon for DarkChip rules.")
-    table = yadon.ReadTable("daemondata")
-    case_insensitive = {key.lower(): key for key in table.keys()}
-    try:
-        name = case_insensitive[args[0].lower()]
-    except KeyError:
-        return await koduck.sendmessage(context["message"], sendcontent="I don't recognize that Daemon!")
-    values = table[name]
 
-    Name = "_''{}''_".format(values[0])
-    Domain = "**__Domain:__** _{}_".format(values[1])
-    Tribute = "\n\n**__Tribute:__** _{}_".format(values[2])
-    ChaosUnison = "\n\n**__ChaosUnison:__** _{}_".format(values[3])
-    SignatureChip = "\n\n**__Signature DarkChip:__** _{}_".format(values[4])
-    Description = "{}{}{}{}".format(Domain, Tribute, ChaosUnison, SignatureChip)
+    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", args[0])
+    if daemon_info is None:
+        return
 
-    embed = discord.Embed(title="**__{}__**".format("{}".format(name)), color=0x000000)
-    embed.set_thumbnail(url=values[5])
-    embed.add_field(name=Name, value=Description)
+    daemon_name = daemon_info["Name"]
+    daemon_quote = daemon_info["Quote"]
+    daemon_domain = daemon_info["Domain"]
+    daemon_tribute = daemon_info["Tribute"]
+    daemon_tribute_description = daemon_info["TributeDescription"]
+    daemon_chaosUnison = daemon_info["ChaosUnison"]
+    daemon_chaosUnison_description = daemon_info["ChaosUnisonDescription"]
+    daemon_signatureChip = daemon_info["SignatureDarkChip"]
+    daemon_description = "**__Domain:__** *%s*\n\n" % (daemon_domain) + \
+                         "**__Tribute:__** *%s*\n*%s*\n\n" % (daemon_tribute, daemon_tribute_description) + \
+                         "**__ChaosUnison:__** *%s*\n*%s*\n\n" % (daemon_chaosUnison, daemon_chaosUnison_description) + \
+                         "**__Signature DarkChip:__** *%s*" % daemon_signatureChip
+
+    embed = discord.Embed(title="**__{}__**".format(daemon_name),
+                          color=0x000000)
+    embed.set_thumbnail(url=daemon_info["ImageLink"])
+    embed.add_field(name="***''{}''***".format(daemon_quote),
+                    value=daemon_description)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
 async def element(context, *args, **kwargs):
+    current_element_categories = ", ".join(pd.unique(element_df["category"]))
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**")
-
-    element_category_list = {"Nature": 0, "Fantasy": 1, "Science": 2, "Actions": 3, "Art": 4, "???": 5}
-    element_table = yadon.ReadTable("elementdata")
-
+                                        sendcontent="Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\n" +
+                                                    "Categories: **%s**" % current_element_categories)
     args = args[0].split()
     if len(args) > 2:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Command is too long! Just give me `>element [#]` or `>element [category] [#]`!")
-    element_range_lo = 1
-    element_range_hi = 216
+
     element_return_number = 1  # number of elements to return
     element_category = None
+    sub_element_df = element_df
     for arg in args:
         try:
             element_return_number = int(arg)
@@ -807,13 +876,11 @@ async def element(context, *args, **kwargs):
         except ValueError:
             element_category = arg.lower().capitalize()
 
-            if element_category not in element_category_list:
+            sub_element_df = element_df[element_df["category_lowercase"] == arg.lower()]
+            if sub_element_df.shape[0] == 0:
                 return await koduck.sendmessage(context["message"],
-                                                sendcontent="Not a valid category!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**")
-
-            element_cat_index = element_category_list[element_category]
-            element_range_lo = 1 + element_cat_index * 36
-            element_range_hi = element_range_lo + 36
+                                                sendcontent="Not a valid category!\n" +
+                                                            "Categories: **%s**" % current_element_categories)
 
     if element_return_number < 1:
         return await koduck.sendmessage(context["message"],
@@ -822,8 +889,8 @@ async def element(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="That's too many elements! Are you sure you need more than 12?")
 
-    elements_selected = random.sample(range(element_range_lo, element_range_hi), element_return_number)
-    elements_name = [element_table[str(i)][0] for i in elements_selected]
+    elements_selected = random.sample(range(sub_element_df.shape[0]), element_return_number)
+    elements_name = [sub_element_df.iloc[i]["element"] for i in elements_selected]
 
     if element_category is None:
         element_flavor_title = "Picked {} random element(s)...".format(str(element_return_number))
@@ -841,7 +908,10 @@ async def element(context, *args, **kwargs):
 async def rulebook(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="NetBattlers Beta 6 Official Rulebook (high-res): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Full-Res.pdf>\nNetBattlers Beta 6 Official Rulebook (mobile-friendly): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Mobile.pdf>\nNetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Advance-5.pdf>\n\n**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
+                                        sendcontent="NetBattlers Beta 6 Official Rulebook (high-res): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Full-Res.pdf>\n" +
+                                                    "NetBattlers Beta 6 Official Rulebook (mobile-friendly): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Mobile.pdf>\n" +
+                                                    "NetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Advance-5.pdf>\n\n" +
+                                                    "**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
 
 
 async def invite(context, *args, **kwargs):
@@ -859,4 +929,5 @@ def setup():
 
 
 setup()
-koduck.client.run(settings.token)
+koduck.client.run("NzQ2NDgxMjg1MzgzMzIzNzA5.X0A83w.2iWcdtjfeRkLoPGN0G9MeW20bKw")
+#koduck.client.run(settings.token)
