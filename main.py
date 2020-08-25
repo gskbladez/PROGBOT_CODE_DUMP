@@ -680,7 +680,7 @@ async def power_ncp(context, arg, force_power = False):
     elif (color < 0) and power_skill.lower() in power_df["power_lowercase"].values:
         power_true_info = await find_value_in_table(context, power_df, "power_lowercase", power_skill)
         color = find_skill_color(power_true_info["Skill"])
-    else:
+    elif color < 0:
         color = 0xffffff
 
     if power_eb == '-' or force_power:  # display as power, rather than ncp
@@ -1236,7 +1236,7 @@ async def element(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Command is too long! Just give me `>element [#]` or `>element [category] [#]`!")
 
-    element_return_number = 1  # number of elements to return
+    element_return_number = 1  # number of elements to return, 1 by default
     element_category = None
     sub_element_df = element_df
     for arg in args:
