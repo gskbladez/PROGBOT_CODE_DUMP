@@ -20,37 +20,46 @@ MAX_ELEMENT_ROLL = 12
 skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
               'Charm', 'Bravery', 'Affinity']
+cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Underground Broadcast",
+           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast"]
+playermade_list = ["Genso Network"]
 
 settings.backgroundtask = backgroundtask
 
-chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
-chip_df["chip_lowercase"] = chip_df["Chip"].str.lower()
-chip_df["from_lowercase"] = chip_df["From?"].str.lower()
-chip_df["license_lowercase"] = chip_df["License"].str.lower()
-chip_df["category_lowercase"] = chip_df["Category"].str.lower()
-chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
-                          .stack() \
-                          .str.strip() \
-                          .str.lower() \
-                          .unique()
-chip_known_aliases = chip_df[chip_df["Aliases"] != ""]
 
-power_df = pd.read_csv(r"powerncpdata.tsv", sep="\t").fillna('')
-power_df["power_lowercase"] = power_df["Power/NCP"].str.lower()
-power_df["from_lowercase"] = power_df["From?"].str.lower()
+def prep_chip_df(df):
+    df = df.fillna('')
+    df["chip_lowercase"] = df["Chip"].str.lower()
+    df["from_lowercase"] = df["From?"].str.lower()
+    df["license_lowercase"] = df["License"].str.lower()
+    df["category_lowercase"] = df["Category"].str.lower()
 
-virus_df = pd.read_csv(r"virusdata.tsv", sep="\t").fillna('')
-virus_df["from_lowercase"] = virus_df["From?"].str.lower()
-virus_df["name_lowercase"] = virus_df["Name"].str.lower()
-virus_df["category_lowercase"] = virus_df["Category"].str.lower()
-virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
-                                 .stack() \
-                                 .str.strip() \
-                                 .str.lower() \
-                                 .unique()
+    return df
 
-daemon_df = pd.read_csv(r"daemondata.tsv", sep="\t").fillna('')
-daemon_df["name_lowercase"] = daemon_df["Name"].str.lower()
+
+def prep_power_df(df):
+    df = df.fillna('')
+    df["power_lowercase"] = df["Power/NCP"].str.lower()
+    df["from_lowercase"] = df["From?"].str.lower()
+    return df
+
+
+def prep_virus_df(df):
+    df = df.fillna('')
+    df["from_lowercase"] = df["From?"].str.lower()
+    df["name_lowercase"] = df["Name"].str.lower()
+    df["category_lowercase"] = df["Category"].str.lower()
+    return df
+
+def prep_daemon_df(df):
+    df = df.fillna('')
+    df["name_lowercase"] = df["Name"].str.lower()
+    return df
+
+chip_df = prep_chip_df(pd.read_csv(r"chipdata.tsv", sep="\t"))
+power_df = prep_power_df(pd.read_csv(r"powerncpdata.tsv", sep="\t"))
+virus_df = prep_virus_df(pd.read_csv(r"virusdata.tsv", sep="\t"))
+daemon_df = prep_daemon_df(pd.read_csv(r"daemondata.tsv", sep="\t"))
 
 bond_df = pd.read_csv(r"bonddata.tsv", sep="\t").fillna('')
 bond_df["bondpower_lowercase"] = bond_df["BondPower"].str.lower()
@@ -68,8 +77,23 @@ help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
 help_df["command_lowercase"] = help_df["Command"].str.lower()
 help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n',regex=True)
 
-cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Underground Broadcast",
-           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast"]
+chip_known_aliases = chip_df[chip_df["Aliases"] != ""]
+chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
+                               .stack() \
+                               .str.strip() \
+                               .str.lower() \
+                               .unique()
+virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
+                                 .stack() \
+                                 .str.strip() \
+                                 .str.lower() \
+                                 .unique()
+
+pmc_chip_df = prep_chip_df(pd.read_csv(r"playermade_chipdata.tsv", sep="\t"))
+pmc_power_df = prep_power_df(pd.read_csv(r"playermade_powerdata.tsv", sep="\t"))
+pmc_virus_df = prep_virus_df(pd.read_csv(r"playermade_virusdata.tsv", sep="\t"))
+pmc_daemon_df = prep_daemon_df(pd.read_csv(r"playermade_daemondata.tsv", sep="\t"))
+
 
 cc_color_dictionary = {"Mega": 0xA8E8E8,
                          "ChitChat": 0xff8000,
@@ -88,7 +112,6 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                     "rare": {"color": 0xD8E100,
                              "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/raremysterydata.png"}}
 
-# TODO: Integrate w/ Genso Network (must specifically search for content, left off of default queries?
 
 ##################
 # BASIC COMMANDS #
@@ -495,13 +518,13 @@ def query_chip(arg_lower):
         subdf = chip_df[chip_df["Tags"].str.contains("Incident|incident")]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in arg_lower in chip_tag_list:
-        subdf = chip_df[chip_df["Tags"].str.contains(r"(?i)%s" % arg_lower) &
-                        ~chip_df["Tags"].str.contains(r"(?i)dark|incident|mega")]
+        subdf = chip_df[chip_df["Tags"].str.contains(arg_lower, flags=re.IGNORECASE) &
+                        ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE )]
         return_title = "Pulling up all BattleChips with the `%s` tag (excluding MegaChips)..." % arg_lower.capitalize()
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in pd.unique(chip_df["category_lowercase"]):
         subdf = chip_df[(chip_df["category_lowercase"] == arg_lower) &
-                        ~chip_df["Tags"].str.contains(r"(?i)dark|incident|mega")]
+                        ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
         return_title = "Pulling up all chips in the `%s` category (excluding MegaChips)..." % subdf.iloc[0]["Category"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in pd.unique(chip_df["license_lowercase"]):
@@ -512,6 +535,10 @@ def query_chip(arg_lower):
         subdf = chip_df[chip_df["from_lowercase"] == arg_lower]
         return_title = "Pulling up all BattleChips from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
+    elif arg_lower in [i.lower() for i in playermade_list]:
+        subdf = pmc_chip_df[pmc_chip_df["from_lowercase"] == arg_lower]
+        return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
+        return_msg = ", ".join(subdf["Chip"])
     else:
         return False, "", ""
 
@@ -520,7 +547,7 @@ def query_chip(arg_lower):
 
 def pity_cc_check(arg):
     try:
-        would_be_valid = next(i for i in cc_list if re.match(r"^(?i)%s$" % arg, i))
+        would_be_valid = next(i for i in cc_list if re.match(r"^%s$" % arg, i, flags=re.IGNORECASE))
         return would_be_valid
     except StopIteration:
         return None
@@ -549,16 +576,18 @@ async def chip(context, *args, **kwargss):
         if not arg:
             continue
 
-        alias_check = chip_known_aliases[chip_known_aliases["Aliases"].str.contains(r"(?i)%s" % arg)]
+        alias_check = chip_known_aliases[chip_known_aliases["Aliases"].str.contains(arg, flags=re.IGNORECASE)]
         if alias_check.shape[0] > 1:
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Too many chips found! You should probably let the devs know...")
         elif alias_check.shape[0] != 0:
             arg = alias_check.iloc[0]["Chip"]
 
-        chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg)
+        chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg, override=True)
         if chip_info is None:
-            continue
+            chip_info = await find_value_in_table(context, pmc_chip_df, "chip_lowercase", arg)
+            if chip_info is None:
+                continue
 
         chip_name = chip_info["Chip"]
 
@@ -575,7 +604,9 @@ async def chip(context, *args, **kwargss):
         chip_tags_list = [i.strip() for i in chip_tags.split(",")]
 
         chip_title = chip_name
-        if chip_crossover != "Core" and chip_crossover != "DarkChips":
+        if chip_crossover in playermade_list:
+            chip_title_sub = "%s Unofficial " % chip_crossover
+        elif chip_crossover != "Core" and chip_crossover != "DarkChips":
             chip_title_sub = "%s " % chip_crossover
         else:
             chip_title_sub = ""
@@ -625,9 +656,12 @@ def find_skill_color(skill_key):
 
 
 async def power_ncp(context, arg, force_power = False):
-    power_info = await find_value_in_table(context, power_df, "power_lowercase", arg)
+    power_info = await find_value_in_table(context, power_df, "power_lowercase", arg, override=True)
+
     if power_info is None:
-        return None, None, None, None
+        power_info = await find_value_in_table(context, pmc_power_df, "power_lowercase", arg)
+        if power_info is None:
+            return None, None, None, None
 
     power_name = power_info["Power/NCP"]
     power_skill = power_info["Skill"]
@@ -658,10 +692,14 @@ async def power_ncp(context, arg, force_power = False):
 
         if power_source == "Power Upgrades":
             field_title += "/%s Power Upgrade NCP" % power_skill
+        elif power_type == "Minus":
+            power_name += " (%s Unofficial  MinusCust Program)" % power_source
+        elif power_source in playermade_list:
+            power_name += " (%s Unofficial NCP)" % power_source
         elif power_source != "Core":
             power_name += " (%s Crossover NCP)" % power_source
 
-        if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
+        if power_type in ['Passive', '-', 'Upgrade', 'Minus']:
             field_description = power_description
         else:
             field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
@@ -726,7 +764,7 @@ async def power(context, *args, **kwargs):
     for arg in cleaned_args:
         if not arg:
             continue
-        is_power_ncp = re.match(r"^(?i)(\S+)\s*ncp$", arg)
+        is_power_ncp = re.match(r"^(\S+)\s*ncp$", arg, flags=re.IGNORECASE)
         if is_power_ncp:
             arg = is_power_ncp.group(1)
         power_name, field_title, field_description, power_color = await power_ncp(context, arg, force_power=True)
@@ -745,7 +783,7 @@ def query_ncp(arg_lower):
     ncp_df = power_df[power_df["Sort"] != "Virus Power"]
     valid_cc_list = list(pd.unique(ncp_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core", "power upgrades"]]
-    eb_match = re.match(r"^(?i)(\d+)(?:\s*EB)$", arg_lower)
+    eb_match = re.match(r"^(\d+)(?:\s*EB)$", arg_lower, flags=re.IGNORECASE)
 
     if eb_match:
         eb_search = eb_match.group(1)
@@ -756,6 +794,15 @@ def query_ncp(arg_lower):
     elif arg_lower in valid_cc_list:
         subdf = ncp_df[ncp_df["from_lowercase"] == arg_lower]
         results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
+        results_msg = ", ".join(subdf["Power/NCP"])
+    elif arg_lower in [i.lower() for i in playermade_list]:
+        subdf = pmc_power_df[(pmc_power_df["from_lowercase"] == arg_lower) &
+                             (pmc_power_df["Sort"] != "Virus Power")]
+        results_title = "Pulling up all NCPs from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
+        results_msg = ", ".join(subdf["Power/NCP"])
+    elif arg_lower in ["minus", "minus cust", "minuscust"]:
+        subdf = pmc_power_df[pmc_power_df["Type"] == "Minus"]
+        results_title = "Pulling up all `MinusCust` Programs from the unofficial Genso Network Player-Made Content..."
         results_msg = ", ".join(subdf["Power/NCP"])
     else:
         return False, "", ""
@@ -800,7 +847,7 @@ async def ncp(context, *args, **kwargs):
 
 
 def query_npu(arg):
-    result_npu = power_df[power_df["Skill"].str.contains("(?i)%s" % arg)]
+    result_npu = power_df[power_df["Skill"].str.contains(arg, flags=re.IGNORECASE)]
     if result_npu.shape[0] == 0:
         return False, "", ""
     result_title = "Finding all Navi Power Upgrades for `%s`..." % result_npu.iloc[0]["Skill"]
@@ -808,6 +855,7 @@ def query_npu(arg):
     return True, result_title, result_string
 
 
+#TODO: add BlackBossom art
 async def upgrade(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
@@ -825,10 +873,12 @@ async def upgrade(context, *args, **kwargs):
 
 
 async def virus_master(context, arg, simplified=True):
-    virus_info = await find_value_in_table(context, virus_df, "name_lowercase", arg)
+    virus_info = await find_value_in_table(context, virus_df, "name_lowercase", arg, override=True)
 
     if virus_info is None:
-        return None, None, None, None, None, None
+        virus_info = await find_value_in_table(context, pmc_virus_df, "name_lowercase", arg)
+        if virus_info is None:
+            return None, None, None, None, None, None
 
     virus_name = virus_info["Name"]
     virus_description = virus_info["Description"]
@@ -847,19 +897,23 @@ async def virus_master(context, arg, simplified=True):
     virus_drops = [virus_info["Drops1"], virus_info["Drops2"]]
 
     virus_footer = "Category: %s" % virus_category
+
     if virus_artist:
         virus_footer += "\n(Artwork by %s)" % virus_artist
+    if virus_source in cc_list:
+        virus_footer += " (%s Crossover Virus)" % virus_source
+    elif virus_source in playermade_list:
+        virus_footer += " (%s Unofficial Virus)" % virus_source
 
     if virus_source in cc_color_dictionary:
         virus_color = cc_color_dictionary[virus_source]
-        virus_footer += " (%s Crossover Virus)" % virus_source
     else:
         virus_color = 0x7c00ff
 
     virus_descript_block = ""
     virus_title = ""
 
-    virus_skills = [(key, int(val)) for key, val in virus_skills.items() if int(val) != 0]
+    virus_skills = [(key, int(val)) for key, val in virus_skills.items() if val and int(val) != 0]
 
     if not simplified:
         virus_title = "HP %d" % int(virus_hp)
@@ -898,7 +952,7 @@ def query_virus(arg_lower):
         result_title = "Viruses in the `%s` category..." % sub_df.iloc[0]["Category"]
         result_msg = ", ".join(sub_df["Name"])
     elif arg_lower in virus_tag_list:
-        sub_df = virus_df[virus_df["Tags"].str.contains(r"(?i)%s" % arg_lower)]
+        sub_df = virus_df[virus_df["Tags"].str.contains(arg_lower, flags=re.IGNORECASE)]
         result_title = "Viruses with the `%s` tag..." % arg_lower.capitalize()
         result_msg = ", ".join(sub_df["Name"])
     else:
@@ -952,12 +1006,14 @@ async def virusx(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
+
 async def query(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! Please type `>help query` for more information.")
 
     arg = args[0].lower()
+
     is_chip_query, chip_title, chip_msg = query_chip(arg)
     is_ncp_query, ncp_title, ncp_msg = query_ncp(arg)
     if is_chip_query and is_ncp_query:
@@ -979,6 +1035,10 @@ async def query(context, *args, **kwargs):
         return await send_query_msg(context, result_title, result_msg)
     is_power_query, result_title, result_msg = query_power(clean_args(args))
     if is_power_query:
+        return await send_query_msg(context, result_title, result_msg)
+
+    if arg == 'daemon':
+        _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
 
     would_be_valid = pity_cc_check(arg)
@@ -1055,6 +1115,8 @@ async def mysteryreward(context, *args, **kwargs):
     return
 
 
+#TODO: add crimson noise
+
 async def bond(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
@@ -1077,31 +1139,49 @@ async def bond(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
+def query_daemon():
+    result_title = "Listing all Daemons (excluding Player Made Content)..."
+    result_msg = ", ".join(daemon_df["Name"])
+    return True, result_title, result_msg
+
+
 async def daemon(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Lists the complete information of a Daemon for DarkChip rules.")
+    if args[0].lower() in ["all", "list"]:
+        _, result_title, result_msg = query_daemon()
+        return await send_query_msg(context, result_title, result_msg)
 
-    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", args[0])
+    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", args[0], override=True)
     if daemon_info is None:
-        return
+        daemon_info = await find_value_in_table(context, pmc_daemon_df, "name_lowercase", args[0])
+        if daemon_info is None:
+            return
 
     daemon_name = daemon_info["Name"]
     daemon_quote = daemon_info["Quote"]
     daemon_domain = daemon_info["Domain"]
     daemon_tribute = daemon_info["Tribute"]
     daemon_tribute_description = daemon_info["TributeDescription"]
+    daemon_source = daemon_info["Source"]
     daemon_chaosUnison = daemon_info["ChaosUnison"]
     daemon_chaosUnison_description = daemon_info["ChaosUnisonDescription"]
     daemon_signatureChip = daemon_info["SignatureDarkChip"]
+    daemon_image = daemon_info["ImageLink"]
+
     daemon_description = "**__Domain:__** *%s*\n\n" % (daemon_domain) + \
                          "**__Tribute:__** *%s*\n*%s*\n\n" % (daemon_tribute, daemon_tribute_description) + \
                          "**__ChaosUnison:__** *%s*\n*%s*\n\n" % (daemon_chaosUnison, daemon_chaosUnison_description) + \
                          "**__Signature DarkChip:__** *%s*" % daemon_signatureChip
 
+    if daemon_source in cc_color_dictionary:
+        daemon_color = cc_color_dictionary[daemon_source]
+    else:
+        daemon_color = 0x000000
     embed = discord.Embed(title="**__{}__**".format(daemon_name),
-                          color=0x000000)
-    embed.set_thumbnail(url=daemon_info["ImageLink"])
+                          color=daemon_color)
+    embed.set_thumbnail(url=daemon_image)
     embed.add_field(name="***''{}''***".format(daemon_quote),
                     value=daemon_description)
     return await koduck.sendmessage(context["message"], sendembed=embed)
@@ -1181,4 +1261,5 @@ def setup():
 
 
 setup()
-koduck.client.run(settings.token)
+koduck.client.run("NzQ2NDgxMjg1MzgzMzIzNzA5.X0A83w.hOzaPywECeNB8a8FhfLG8-ODWCU")
+#koduck.client.run(settings.token)
