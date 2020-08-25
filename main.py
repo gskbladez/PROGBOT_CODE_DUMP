@@ -1155,8 +1155,6 @@ async def mysteryreward(context, *args, **kwargs):
     return
 
 
-#TODO: add crimson noise
-
 async def bond(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
