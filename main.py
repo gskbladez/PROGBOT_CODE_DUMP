@@ -70,6 +70,9 @@ tag_df["tag_lowercase"] = tag_df["Tag"].str.lower()
 mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
 mysterydata_df["mysterydata_lowercase"] = mysterydata_df["MysteryData"].str.lower()
 
+crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
+crimsonnoise_df["mysterydata_lowercase"] = crimsonnoise_df["MysteryData"].str.lower()
+
 element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
 element_df["category_lowercase"] = element_df["category"].str.lower()
 
@@ -569,7 +572,7 @@ async def chip(context, *args, **kwargss):
                                         sendcontent="`%s` has no Crossover Content BattleChips!" % would_be_valid)
 
     cleaned_args = clean_args(args)
-    if len(cleaned_args) >= MAX_CHIP_QUERY:
+    if len(cleaned_args) > MAX_CHIP_QUERY:
         return await koduck.sendmessage(context["message"], sendcontent="Too many chips, no more than 5!")
 
     for arg in cleaned_args:
@@ -714,6 +717,7 @@ def clean_args(args):
     return args
 
 
+# TODO: add PMC content to this shit
 def query_power(args):
     sub_df = power_df
     is_default = True
@@ -751,7 +755,7 @@ async def power(context, *args, **kwargs):
                                         sendcontent="Give me the name of a Navi Power and I can pull up its info for you!\n"+
                                                     "I can also query Powers by Skill, Type, and whether or not it is Virus-exclusive! Try giving me multiple queries at once, i.e. `>power sense cost` or `power virus passive`!")
     cleaned_args = clean_args(args)
-    if len(cleaned_args) >= MAX_POWER_QUERY:
+    if len(cleaned_args) > MAX_POWER_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many powers, no more than 5!")
 
@@ -825,7 +829,7 @@ async def ncp(context, *args, **kwargs):
                                         sendcontent="`%s` has no Crossover Content NCPs!" % would_be_valid)
 
     cleaned_args = clean_args(args)
-    if len(cleaned_args) >= MAX_NCP_QUERY:
+    if len(cleaned_args) > MAX_NCP_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many NCPs, no more than 5!")
 
@@ -900,10 +904,10 @@ async def virus_master(context, arg, simplified=True):
 
     if virus_artist:
         virus_footer += "\n(Artwork by %s)" % virus_artist
-    if virus_source in cc_list:
-        virus_footer += " (%s Crossover Virus)" % virus_source
-    elif virus_source in playermade_list:
+    if virus_source in playermade_list:
         virus_footer += " (%s Unofficial Virus)" % virus_source
+    elif virus_source in cc_list:
+        virus_footer += " (%s Crossover Virus)" % virus_source
 
     if virus_source in cc_color_dictionary:
         virus_color = cc_color_dictionary[virus_source]
@@ -965,7 +969,7 @@ async def virus(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of 1-%d viruses and I can pull up their info for you!\n" % MAX_VIRUS_QUERY +
                                                     "I can also query Viruses by Category, Tag, and Crossover Content!")
-    elif len(args) >= MAX_VIRUS_QUERY:
+    elif len(args) > MAX_VIRUS_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many viruses, no more than 5!")
     arg_lower = args[0].lower()
@@ -996,6 +1000,8 @@ async def virusx(context, *args, **kwargs):
                                         sendcontent="Give me the name of a virus and I can pull up its full info for you!")
 
     virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color = await virus_master(context, args[0], simplified=False)
+    if virus_name is None:
+        return
 
     embed = discord.Embed(title=virus_name, color=virus_color)
 
@@ -1004,7 +1010,6 @@ async def virusx(context, *args, **kwargs):
                     value=virus_descript_block, inline=True)
     embed.set_footer(text=virus_footer)
     return await koduck.sendmessage(context["message"], sendembed=embed)
-
 
 
 async def query(context, *args, **kwargs):
@@ -1104,6 +1109,41 @@ async def mysterydata(context, *args, **kwargs):
                                         sendcontent="I can roll Mystery Data for you! Specify `>mysterydata common`, `>mysterydata uncommon`, or `>mysterydata rare`!")
 
     await mysterydata_master(context, args, force_reward=False)
+
+
+async def crimsonnoise(context, *args, **kwargs):
+    if len(args) < 1:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="I can roll CrimsonNoise for you! Specify `>crimsonnoise common`, `>crimsonnoise`, or `>crimsonnoise rare`!")
+
+    arg = args[0].lower()
+    crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["mysterydata_lowercase"] == arg]
+
+    if crimsonnoise_type.shape[0] == 0:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Please specify either Common, Uncommon, or Rare CrimsonNoise.")
+    firstroll = random.randint(1, 6)
+    if firstroll != 6:
+        reward_type = "Chip"
+        result_text = " BattleChip!"
+    else:
+        reward_type = "NCP"
+        result_text = " NCP!"
+
+    df_sub = crimsonnoise_type[crimsonnoise_type["Type"] == reward_type]
+    row_num = random.randint(1, df_sub.shape[0]) - 1
+    result_chip = df_sub.iloc[row_num]["Value"]
+
+    result_text = "%s%s" % (result_chip, result_text)  # replaces any periods with exclamation marks!
+    cn_color = cc_color_dictionary["Genso Network"]
+    cn_type = arg.capitalize()
+
+    embed = discord.Embed(title="__{} CrimsonNoise__".format(cn_type),
+                          description="_%s accessed the CrimsonNoise..._\n" % context["message"].author.mention +
+                                      "\nGot: **%s**" % result_text,
+                          color=cn_color)
+
+    return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
 async def mysteryreward(context, *args, **kwargs):

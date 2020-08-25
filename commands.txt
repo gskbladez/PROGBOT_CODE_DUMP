@@ -34,3 +34,4 @@ mysteryreward	mysteryreward	prefix	1
 daemon	daemon	prefix	1
 invite	invite	prefix	1
 upgrade	upgrade	prefix	1
+crimsonnoise	crimsonnoise	prefix	1
