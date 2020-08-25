@@ -1261,5 +1261,4 @@ def setup():
 
 
 setup()
-koduck.client.run("NzQ2NDgxMjg1MzgzMzIzNzA5.X0A83w.hOzaPywECeNB8a8FhfLG8-ODWCU")
-#koduck.client.run(settings.token)
+koduck.client.run(settings.token)
