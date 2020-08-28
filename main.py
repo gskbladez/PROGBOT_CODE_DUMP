@@ -6,6 +6,8 @@ import settings
 import pandas as pd
 import numpy as np
 import re
+import dice_algebra
+import rply
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -16,6 +18,7 @@ MAX_NCP_QUERY = 5
 MAX_CHIP_QUERY = 5
 MAX_VIRUS_QUERY = 5
 MAX_ELEMENT_ROLL = 12
+ROLL_COMMENT_CHAR = '#'
 
 skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
@@ -24,8 +27,26 @@ cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Unde
            "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast"]
 playermade_list = ["Genso Network"]
 
-settings.backgroundtask = backgroundtask
+cc_color_dictionary = {"Mega": 0xA8E8E8,
+                         "ChitChat": 0xff8000,
+                         "Radical Spin": 0x3f5cff,
+                         "Underground Broadcast": 0x73ab50,
+                         "Mystic Lilies": 0x99004c,
+                         "Genso Network": 0xff605d,
+                         "Leximancy": 0x481f65,
+                         "Dark": 0xB088D0,
+                         "Item": 0xffffff}
 
+mysterydata_dict = {"common": {"color": 0x48C800,
+                               "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
+                    "uncommon": {"color": 0x00E1DF,
+                                 "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/uncommonmysterydata.png"},
+                    "rare": {"color": 0xD8E100,
+                             "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/raremysterydata.png"}}
+
+roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
+
+settings.backgroundtask = backgroundtask
 
 def prep_chip_df(df):
     df = df.fillna('')
@@ -55,6 +76,7 @@ def prep_daemon_df(df):
     df = df.fillna('')
     df["name_lowercase"] = df["Name"].str.lower()
     return df
+
 
 chip_df = prep_chip_df(pd.read_csv(r"chipdata.tsv", sep="\t"))
 power_df = prep_power_df(pd.read_csv(r"powerncpdata.tsv", sep="\t"))
@@ -97,23 +119,8 @@ pmc_power_df = prep_power_df(pd.read_csv(r"playermade_powerdata.tsv", sep="\t"))
 pmc_virus_df = prep_virus_df(pd.read_csv(r"playermade_virusdata.tsv", sep="\t"))
 pmc_daemon_df = prep_daemon_df(pd.read_csv(r"playermade_daemondata.tsv", sep="\t"))
 
-
-cc_color_dictionary = {"Mega": 0xA8E8E8,
-                         "ChitChat": 0xff8000,
-                         "Radical Spin": 0x3f5cff,
-                         "Underground Broadcast": 0x73ab50,
-                         "Mystic Lilies": 0x99004c,
-                         "Genso Network": 0xff605d,
-                         "Leximancy": 0x481f65,
-                         "Dark": 0xB088D0,
-                         "Item": 0xffffff}
-
-mysterydata_dict = {"common": {"color": 0x48C800,
-                               "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
-                    "uncommon": {"color": 0x00E1DF,
-                                 "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/uncommonmysterydata.png"},
-                    "rare": {"color": 0xD8E100,
-                             "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/raremysterydata.png"}}
+parser = dice_algebra.parser
+lexer = dice_algebra.lexer
 
 
 ##################
@@ -418,52 +425,62 @@ async def userinfo(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
-async def roll(context, *args, **kwargs): #TODO: fix, add comments (parsing)
-    parameters = [1, settings.rolldefaultmax, 0]  # quantity, max, filter
+async def roll(context, *args, **kwargs):
+    parser = dice_algebra.parser
+    lexer = dice_algebra.lexer
 
-    # parse parameters
-    if len(args) > 0:
-        try:
-            parameters[1] = int(args[0])
-        except ValueError:
-            temp = args[0].split("d")
-            if len(temp) > 1:
-                temp = temp[0:1] + temp[1].split(">")
-
-            for i in range(len(parameters)):
-                try:
-                    parameters[i] = int(temp[i])
-                except (IndexError, ValueError):
-                    pass
-
-    # quantity should not be negative
-    parameters[0] = max(parameters[0], 1)
-
-    # roll dice!
-    results = []
-    for i in range(parameters[0]):
-        if parameters[1] >= 0:
-            results.append(random.randint(1, parameters[1]))
-        else:
-            results.append(random.randint(parameters[1], 1))
-
-    # print output
-    if parameters[2] != 0:
-        successes = 0
-        for i in range(len(results)):
-            if results[i] <= parameters[2]:
-                results[i] = "~~{}~~".format(results[i])
-            else:
-                successes += 1
-        return await koduck.sendmessage(context["message"], sendcontent="{} _rolls..._ ({}) = **__{} hits!__**".format(
-            context["message"].author.mention, ", ".join([str(x) for x in results]) if len(results) > 1 else results[0],
-            successes))
-    else:
+    roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
+    if "paramline" not in context:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="{} _rolls a..._ **{}!**".format(context["message"].author.mention,
-                                                                                     ", ".join([str(x) for x in
-                                                                                                results]) if len(
-                                                                                         results) > 1 else results[0]))
+                                        sendcontent="I can roll dice for you! Try `>roll 5d6>4` or `>roll $N5`!")
+
+    roll_line = context["paramline"]
+    if ROLL_COMMENT_CHAR in roll_line:
+        roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
+    else:
+        roll_comment = ""
+
+    roll_line = re.sub("\s+", "", roll_line).lower()
+    if not roll_line:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="No roll given!")
+
+    roll_macro_match = re.match(r"\$?(E|N|H)(\d+)", roll_line, flags=re.IGNORECASE)
+    if roll_macro_match:
+        roll_difficulty = roll_difficulty_dict[roll_macro_match.group(1).upper()]
+        roll_dicenum = int(roll_macro_match.group(2))
+        zero_formatted_roll = "%dd6>%d" % (roll_dicenum, roll_difficulty)
+    else:
+        # adds 1 in front of bare d6, d20 references
+        roll_line = re.sub("(?P<baredice>^|\s+)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
+        zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
+
+    try:
+        roll_results = parser.parse(lexer.lex(zero_formatted_roll))
+        str_result = str(roll_results)
+        if 'hit' in str_result:
+            num_hits = roll_results.eval()
+            progroll_output = "{} *rolls...* {} = **__{} hits!__**".format(context["message"].author.mention,
+                                                                             str_result, num_hits)
+            if num_hits == 1:
+                progroll_output = progroll_output.replace("hits", "hit")
+        else:
+            progroll_output = "{} *rolls...* {} = **__{}__**".format(context["message"].author.mention,
+                                                                     str_result, roll_results.eval())
+
+        if roll_comment:
+            progroll_output += "   #".format(roll_comment.rstrip())
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=progroll_output)
+    except rply.errors.LexingError:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Unexpected characters found! Did you type out the roll correctly?")
+    except AttributeError:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Sorry, I can't understand the roll. Try writing it out differently!")
+    except dice_algebra.DiceError:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="The dice algebra is incorrect! Did you type out the roll correctly?")
 
 
 async def tag(context, *args, **kwargs):
@@ -505,6 +522,7 @@ async def find_value_in_table(context, df, search_col, search_arg, override=Fals
 
 async def send_query_msg(context, return_title, return_msg):
     return await koduck.sendmessage(context["message"], sendcontent="**%s**\n*%s*" % (return_title, return_msg))
+
 
 
 def query_chip(arg_lower):
@@ -556,6 +574,7 @@ def pity_cc_check(arg):
         return None
 
 
+# TODO: include license in title
 async def chip(context, *args, **kwargss):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
@@ -579,12 +598,16 @@ async def chip(context, *args, **kwargss):
         if not arg:
             continue
 
-        alias_check = chip_known_aliases[chip_known_aliases["Aliases"].str.contains(arg, flags=re.IGNORECASE)]
-        if alias_check.shape[0] > 1:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Too many chips found! You should probably let the devs know...")
-        elif alias_check.shape[0] != 0:
-            arg = alias_check.iloc[0]["Chip"]
+        try:
+            alias_check = chip_known_aliases[chip_known_aliases["Aliases"].str.contains(arg, flags=re.IGNORECASE)]
+            # TODO: ">chip a" returns this error because of the alias column
+            if alias_check.shape[0] > 1:
+                return await koduck.sendmessage(context["message"],
+                                                sendcontent="Too many chips found! You should probably let the devs know...")
+            elif alias_check.shape[0] != 0:
+                arg = alias_check.iloc[0]["Chip"]
+        except re.error:
+            pass
 
         chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg, override=True)
         if chip_info is None:
@@ -600,9 +623,7 @@ async def chip(context, *args, **kwargss):
         chip_category = chip_info["Category"]
         chip_tags = chip_info["Tags"]
         chip_crossover = chip_info["From?"]
-
-        # this determines embed colors
-        color = 0xbfbfbf
+        chip_license = chip_info["License"]
 
         chip_tags_list = [i.strip() for i in chip_tags.split(",")]
 
@@ -611,8 +632,13 @@ async def chip(context, *args, **kwargss):
             chip_title_sub = "%s Unofficial " % chip_crossover
         elif chip_crossover != "Core" and chip_crossover != "DarkChips":
             chip_title_sub = "%s " % chip_crossover
+        elif chip_license:
+            chip_title_sub = chip_license + " "
         else:
-            chip_title_sub = ""
+            chip_title_sub = chip_license
+
+        # this determines embed colors
+        color = 0xbfbfbf
         if chip_tags_list:
             if 'Dark' in chip_tags:
                 color = cc_color_dictionary['Dark']
@@ -626,7 +652,6 @@ async def chip(context, *args, **kwargss):
                 color = cc_color_dictionary['Mystic Lilies']
                 chip_tags_list.remove("Incident")
                 chip_title_sub += "Incident "
-
         if chip_title_sub:
             chip_title += " (%sChip)" % chip_title_sub
 
@@ -717,7 +742,6 @@ def clean_args(args):
     return args
 
 
-# TODO: add PMC content to this shit
 def query_power(args):
     sub_df = power_df
     is_default = True
@@ -851,7 +875,7 @@ async def ncp(context, *args, **kwargs):
 
 
 def query_npu(arg):
-    result_npu = power_df[power_df["Skill"].str.contains(arg, flags=re.IGNORECASE)]
+    result_npu = power_df[power_df["Skill"].str.contains("^%s$" % arg, flags=re.IGNORECASE)]
     if result_npu.shape[0] == 0:
         return False, "", ""
     result_title = "Finding all Navi Power Upgrades for `%s`..." % result_npu.iloc[0]["Skill"]
@@ -870,7 +894,7 @@ async def upgrade(context, *args, **kwargs):
         is_upgrade, result_title, result_msg = query_npu(arg)
         if not is_upgrade:
             await koduck.sendmessage(context["message"],
-                                            sendembed="Couldn't find any Navi Power Upgrades for `%s`!" % arg)
+                                            sendcontent="Couldn't find any Navi Power Upgrades for `%s`!" % arg)
             continue
         await send_query_msg(context, result_title, result_msg)
     return
@@ -1038,6 +1062,7 @@ async def query(context, *args, **kwargs):
     is_npu_query, result_title, result_msg = query_npu(arg)
     if is_npu_query:
         return await send_query_msg(context, result_title, result_msg)
+
     is_power_query, result_title, result_msg = query_power(clean_args(args))
     if is_power_query:
         return await send_query_msg(context, result_title, result_msg)
