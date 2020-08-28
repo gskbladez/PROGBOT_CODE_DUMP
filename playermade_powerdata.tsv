@@ -23,21 +23,21 @@ RunSoul	-	-	On jack-in, pick one skill from Soul. You may roll Speed as a replac
 FanClub	-	-	4 times per jack-in, summon a goon Near you that uses a starter BattleChip of your choice.	5	NCP	Genso Network
 HardObject	-	-	Summoned allies/objects/Viruses spawn with a free Guard, protecting against one attack.	5	NCP	Genso Network
 DamageGhost	-	-	When you take damage, you are given a Guard that absorbs a single hit.	6	NCP	Genso Network
-AcidBody	-	Minus	All healing from any source is halved (except for Regenerate), rounded down. Regenerate lasts for 3 rolls/chips instead of 5.	+2	MinusCust	Genso Network
-JunkBuster	-	Minus	All rolled attacks have -1 die.	+2	MinusCust	Genso Network
-Unshuffle	-	Minus	BattleChips must be used alphabetically, from A to Z.	+2	MinusCust	Genso Network
-CustomPain	-	Minus	On chip use, take 1 damage. Takes place before chip effects. Not capable of deleting.	+3	MinusCust	Genso Network
-LostCustom	-	Minus	Maximum Folder size reduced by 2. Cannot be used with Custom+3.	+3	MinusCust	Genso Network
-Slippery	-	Minus	Navi has trouble landing hits. All rolled attacks deal -1 damage. All chips used gain the Awkward tag as you slide around.	+4	MinusCust	Genso Network
-MeltSelf	-	Minus	Every time you take damage, you take 1 extra point of damage.	+4	MinusCust	Genso Network
-ElemFatigue	-	Minus	Your element is draining to you. Being Close to it upshifts all of your rolls. Taking damage will make it leak out.	+5	MinusCust	Genso Network
-LostLight	-	Minus	Navi has trouble perceiving the area. Can only attack at Close, no matter what. Further-ranged chips and powers must be used in Close range.	+5	MinusCust	Genso Network
-NoGuard	-	Minus	Your Navi’s chassis is fragile. All defense rolls are upshifted. Guard effects fizzle away on you.	+6	MinusCust	Genso Network
-UsedPain	-	Minus	Powers become painful. When using a Roll power, roll twice and take the lowest value. For Cost powers, this applies to your next roll.	+6	MinusCust	Genso Network
-DarkMind	-	Minus	No Bond Powers. All positive effects from allied chips, NCPs, elements, or powers fail on you.	+7	MinusCust	Genso Network
-LostArea	-	Minus	On rolling partial success/failure or using a chip, a medium Hazard spawns atop you, consuming any of your element present. Only affects you.	+7	MinusCust	Genso Network
-DeadBody	-	Minus	Max. HP is 1, and HP cannot go above 1, no matter what. Low HP benefits do not activate.	+10	MinusCust	Genso Network
-NebulaHole	-	Minus	You can feel yourself slipping away. Whenever you roll, spend a skill point in the rolled skill. Whenever you use a chip, sacrifice another chip.	+10	MinusCust	Genso Network
+AcidBody	-	Minus	All healing from any source is halved (except for Regenerate), rounded down. Regenerate lasts for 3 rolls/chips instead of 5.	2	MinusCust	Genso Network
+JunkBuster	-	Minus	All rolled attacks have -1 die.	2	MinusCust	Genso Network
+Unshuffle	-	Minus	BattleChips must be used alphabetically, from A to Z.	2	MinusCust	Genso Network
+CustomPain	-	Minus	On chip use, take 1 damage. Takes place before chip effects. Not capable of deleting.	3	MinusCust	Genso Network
+LostCustom	-	Minus	Maximum Folder size reduced by 2. Cannot be used with Custom+3.	3	MinusCust	Genso Network
+Slippery	-	Minus	Navi has trouble landing hits. All rolled attacks deal -1 damage. All chips used gain the Awkward tag as you slide around.	4	MinusCust	Genso Network
+MeltSelf	-	Minus	Every time you take damage, you take 1 extra point of damage.	4	MinusCust	Genso Network
+ElemFatigue	-	Minus	Your element is draining to you. Being Close to it upshifts all of your rolls. Taking damage will make it leak out.	5	MinusCust	Genso Network
+LostLight	-	Minus	Navi has trouble perceiving the area. Can only attack at Close, no matter what. Further-ranged chips and powers must be used in Close range.	5	MinusCust	Genso Network
+NoGuard	-	Minus	Your Navi’s chassis is fragile. All defense rolls are upshifted. Guard effects fizzle away on you.	6	MinusCust	Genso Network
+UsedPain	-	Minus	Powers become painful. When using a Roll power, roll twice and take the lowest value. For Cost powers, this applies to your next roll.	6	MinusCust	Genso Network
+DarkMind	-	Minus	No Bond Powers. All positive effects from allied chips, NCPs, elements, or powers fail on you.	7	MinusCust	Genso Network
+LostArea	-	Minus	On rolling partial success/failure or using a chip, a medium Hazard spawns atop you, consuming any of your element present. Only affects you.	7	MinusCust	Genso Network
+DeadBody	-	Minus	Max. HP is 1, and HP cannot go above 1, no matter what. Low HP benefits do not activate.	10	MinusCust	Genso Network
+NebulaHole	-	Minus	You can feel yourself slipping away. Whenever you roll, spend a skill point in the rolled skill. Whenever you use a chip, sacrifice another chip.	10	MinusCust	Genso Network
 						
 NotDifficult	-	Passive	Sense attacks are Piercing and ignore Guards.	-	Virus Power	Genso Network
 Reinforced	-	Passive	Immunity to stun or interrupting effects. Attacks always go off.	-	Virus Power	Genso Network

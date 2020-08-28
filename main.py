@@ -8,6 +8,10 @@ import numpy as np
 import re
 import dice_algebra
 import rply
+from dotenv import load_dotenv
+
+load_dotenv()
+bot_token = os.getenv('DISCORD_TOKEN')
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -28,14 +32,19 @@ cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Unde
 playermade_list = ["Genso Network"]
 
 cc_color_dictionary = {"Mega": 0xA8E8E8,
-                         "ChitChat": 0xff8000,
-                         "Radical Spin": 0x3f5cff,
-                         "Underground Broadcast": 0x73ab50,
-                         "Mystic Lilies": 0x99004c,
-                         "Genso Network": 0xff605d,
-                         "Leximancy": 0x481f65,
-                         "Dark": 0xB088D0,
-                         "Item": 0xffffff}
+                       "ChitChat": 0xff8000,
+                       "Radical Spin": 0x3f5cff,
+                       "Skateboard Dog": 0xff0000,
+                       "Night Drifters": 0x969696,
+                       "Mystic Lilies": 0x99004c,
+                       "Leximancy": 0x481f65,
+                       "Underground Broadcast": 0x73ab50,
+                       "Tarot": 0x0091ff,
+                       "Genso Network": 0xff605d,
+                       "Dark": 0xB088D0,
+                       "Item": 0xffffff}
+
+# TODO: add New Connections server mods
 
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
@@ -102,7 +111,7 @@ help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
 help_df["command_lowercase"] = help_df["Command"].str.lower()
 help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n',regex=True)
 
-chip_known_aliases = chip_df[chip_df["Aliases"] != ""]
+chip_known_aliases = chip_df[chip_df["Alias"] != ""]
 chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
                                .stack() \
                                .str.strip() \
@@ -347,12 +356,17 @@ async def removeresponse(context, *args, **kwargs):
 
 
 async def oops(context, *args, **kwargs):
+    if len(args) == 1:
+        if args[0].lower().strip() == "help":
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Deletes the bot message from the user's last valid command.")
+
     try:
         THEmessage = koduck.outputhistory[context["message"].author.id].pop()
     except (KeyError, IndexError):
         return settings.message_oops_failed
     try:
-        await koduck.client.delete_message(THEmessage)
+        await koduck.delete_message(THEmessage)
         return settings.message_oops_success
     except discord.errors.NotFound:
         return await oops(context, *args, **kwargs)
@@ -483,6 +497,7 @@ async def roll(context, *args, **kwargs):
                                         sendcontent="The dice algebra is incorrect! Did you type out the roll correctly?")
 
 
+# TODO: Support virus category and Support chip tag conflict with each other
 async def tag(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
@@ -525,6 +540,7 @@ async def send_query_msg(context, return_title, return_msg):
 
 
 
+# TODO: Include note of true name if chip was found via alias
 def query_chip(arg_lower):
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all `DarkChips`..."
@@ -599,7 +615,8 @@ async def chip(context, *args, **kwargss):
             continue
 
         try:
-            alias_check = chip_known_aliases[chip_known_aliases["Aliases"].str.contains(arg, flags=re.IGNORECASE)]
+
+            alias_check = chip_known_aliases[chip_known_aliases["Alias"].str.contains(arg, flags=re.IGNORECASE)]
             # TODO: ">chip a" returns this error because of the alias column
             if alias_check.shape[0] > 1:
                 return await koduck.sendmessage(context["message"],
@@ -699,14 +716,15 @@ async def power_ncp(context, arg, force_power = False):
     power_source = power_info["From?"]
 
     # this determines embed colors
-    color = find_skill_color(power_skill)
-    if (color < 0) and power_source in cc_color_dictionary:
-        color = cc_color_dictionary[power_source]
-    elif (color < 0) and power_skill.lower() in power_df["power_lowercase"].values:
-        power_true_info = await find_value_in_table(context, power_df, "power_lowercase", power_skill)
-        color = find_skill_color(power_true_info["Skill"])
-    elif color < 0:
-        color = 0xffffff
+    power_color = find_skill_color(power_skill)
+    if power_color < 0:
+        if power_source in cc_color_dictionary:
+            power_color = cc_color_dictionary[power_source]
+        elif (power_color < 0) and power_skill.lower() in power_df["power_lowercase"].values:
+            power_true_info = await find_value_in_table(context, power_df, "power_lowercase", power_skill)
+            power_color = find_skill_color(power_true_info["Skill"])
+        else:
+            power_color = 0xffffff
 
     if power_eb == '-' or force_power:  # display as power, rather than ncp
         if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
@@ -721,7 +739,8 @@ async def power_ncp(context, arg, force_power = False):
         if power_source == "Power Upgrades":
             field_title += "/%s Power Upgrade NCP" % power_skill
         elif power_type == "Minus":
-            power_name += " (%s Unofficial  MinusCust Program)" % power_source
+            power_name += " (%s Unofficial MinusCust Program)" % power_source
+            field_title = "+" + field_title
         elif power_source in playermade_list:
             power_name += " (%s Unofficial NCP)" % power_source
         elif power_source != "Core":
@@ -732,7 +751,7 @@ async def power_ncp(context, arg, force_power = False):
         else:
             field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
 
-    return power_name, field_title, field_description, color
+    return power_name, field_title, field_description, power_color
 
 
 def clean_args(args):
@@ -911,8 +930,8 @@ async def virus_master(context, arg, simplified=True):
     virus_name = virus_info["Name"]
     virus_description = virus_info["Description"]
     virus_category = virus_info["Category"]
-    virus_image = virus_info["ImageURL"]
-    virus_artist = virus_info["ImageArtist"]
+    virus_image = virus_info["Image URL"]
+    virus_artist = virus_info["Image Artist"]
     virus_source = virus_info["From?"]
     virus_hp = virus_info["HP"]
     virus_element = virus_info["Element"]
@@ -1227,11 +1246,11 @@ async def daemon(context, *args, **kwargs):
     daemon_domain = daemon_info["Domain"]
     daemon_tribute = daemon_info["Tribute"]
     daemon_tribute_description = daemon_info["TributeDescription"]
-    daemon_source = daemon_info["Source"]
+    daemon_source = daemon_info["From?"]
     daemon_chaosUnison = daemon_info["ChaosUnison"]
     daemon_chaosUnison_description = daemon_info["ChaosUnisonDescription"]
     daemon_signatureChip = daemon_info["SignatureDarkChip"]
-    daemon_image = daemon_info["ImageLink"]
+    daemon_image = daemon_info["Image URL"]
 
     daemon_description = "**__Domain:__** *%s*\n\n" % (daemon_domain) + \
                          "**__Tribute:__** *%s*\n*%s*\n\n" % (daemon_tribute, daemon_tribute_description) + \
@@ -1324,4 +1343,4 @@ def setup():
 
 
 setup()
-koduck.client.run(settings.token)
+koduck.client.run(bot_token)  # to run locally, ask a dev for the .env file
