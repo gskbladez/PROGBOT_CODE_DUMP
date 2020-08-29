@@ -10,9 +10,11 @@ import dice_algebra
 import rply
 from dotenv import load_dotenv
 
+is_python38 = sys.version[0:3] == '3.8'
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
 
+#TODO: make README
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
     pass
@@ -35,15 +37,16 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
                        "ChitChat": 0xff8000,
                        "Radical Spin": 0x3f5cff,
                        "Skateboard Dog": 0xff0000,
-                       "Night Drifters": 0x969696,
+                       "Night Drifters": 0xff0055,
                        "Mystic Lilies": 0x99004c,
                        "Leximancy": 0x481f65,
                        "Underground Broadcast": 0x73ab50,
-                       "Tarot": 0x0091ff,
+                       "Tarot": 0xfcf4dc,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
                        "Item": 0xffffff}
 
+BUGREPORT_CHANNEL_ID = 704684798584815636
 # TODO: add New Connections server mods
 
 mysterydata_dict = {"common": {"color": 0x48C800,
@@ -57,6 +60,9 @@ roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
 settings.backgroundtask = backgroundtask
 
+
+# Riject is a godsend: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
+# Other lists: https://docs.google.com/spreadsheets/d/1bnpvmU4KwmXzHUTuN3Al_W5ZKBuHAmy3Z-dEmCS6SqY/edit?usp=sharing
 def prep_chip_df(df):
     df = df.fillna('')
     df["chip_lowercase"] = df["Chip"].str.lower()
@@ -164,17 +170,23 @@ async def sendmessage(context, *args, **kwargs):
 async def bugreport(context, *args, **kwargs):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_bugreport_noparam)
-    channelid = "704684798584815636"
-    THEchannel = koduck.client.get_channel(channelid)
+
+    if not is_python38:
+        channelid = str(BUGREPORT_CHANNEL_ID)
+    else:
+        channelid = BUGREPORT_CHANNEL_ID
+
+    progbot_bugreport_channel = koduck.client.get_channel(channelid)
     THEmessagecontent = context["paramline"]
-    originchannel = "<#{}>".format(context["message"].channel.id) if isinstance(context["message"].channel,
-                                                                                discord.Channel) else ""
-    embed = discord.Embed(title="**__New Bug Report!__**", description="_{}_".format(context["paramline"]),
+    THEmessageauthor = context["message"].author
+    #originchannel = "<#{}>".format(context["message"].channel.id) if isinstance(context["message"].channel,
+    #                                                                            discord.TextChannel) else ""
+    embed = discord.Embed(title="**__New Bug Report!__**", description="_{}_".format(THEmessagecontent),
                           color=0x5058a8)
     embed.set_footer(
-        text="Submitted by: {}#{}".format(context["message"].author.name, context["message"].author.discriminator))
+        text="Submitted by: {}#{}".format(THEmessageauthor.name, THEmessageauthor.discriminator))
     embed.set_thumbnail(url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png")
-    await koduck.sendmessage(context["message"], sendchannel=THEchannel, sendembed=embed, ignorecd=True)
+    await koduck.sendmessage(context["message"], sendchannel=progbot_bugreport_channel, sendembed=embed, ignorecd=True)
     return await koduck.sendmessage(context["message"], sendcontent="**_Bug Report Submitted!_**\nThanks for the help!")
 
 
@@ -539,7 +551,6 @@ async def send_query_msg(context, return_title, return_msg):
     return await koduck.sendmessage(context["message"], sendcontent="**%s**\n*%s*" % (return_title, return_msg))
 
 
-
 # TODO: Include note of true name if chip was found via alias
 def query_chip(arg_lower):
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
@@ -590,7 +601,6 @@ def pity_cc_check(arg):
         return None
 
 
-# TODO: include license in title
 async def chip(context, *args, **kwargss):
     if len(args) < 1:
         return await koduck.sendmessage(context["message"],
@@ -615,9 +625,9 @@ async def chip(context, *args, **kwargss):
             continue
 
         try:
-
             alias_check = chip_known_aliases[chip_known_aliases["Alias"].str.contains(arg, flags=re.IGNORECASE)]
-            # TODO: ">chip a" returns this error because of the alias column
+            # TODO: ">chip a" returns this error because of the alias column; go for complete match, not just contain
+            # chip_known_aliases["Alias"].str.split(",")
             if alias_check.shape[0] > 1:
                 return await koduck.sendmessage(context["message"],
                                                 sendcontent="Too many chips found! You should probably let the devs know...")

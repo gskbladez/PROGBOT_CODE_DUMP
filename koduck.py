@@ -15,8 +15,6 @@ import sys, os, traceback
 import datetime
 import settings, yadon
 
-#TODO: OOPS FUCKING BROKE ON 3.8
-
 client = discord.Client()
 
 #command -> (function, type, tier)
@@ -134,7 +132,10 @@ async def sendmessage(receivemessage, sendchannel=None, sendcontent="", sendembe
     
     #send the message and track some data
     if is_python38:
-        THEmessage = await receivemessage.channel.send(sendcontent, embed=sendembed)
+        if sendchannel is None:
+            THEmessage = await receivemessage.channel.send(sendcontent, embed=sendembed)
+        else:
+            THEmessage = await sendchannel.send(sendcontent, embed=sendembed)
     else:
         THEmessage = await client.send_message(sendchannel, sendcontent, embed=sendembed)
     log(THEmessage)
