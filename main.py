@@ -644,7 +644,11 @@ async def chip(context, *args, **kwargss):
 
         chip_name = chip_info["Chip"]
 
-        chip_damage = "%s Damage" % chip_info["Dmg"]
+        chip_damage = chip_info["Dmg"]
+        if chip_damage:
+            chip_damage += " Damage"
+        else:
+            chip_damage = "-"
         chip_range = chip_info["Range"]
         chip_description = chip_info["Effect"]
         chip_category = chip_info["Category"]
