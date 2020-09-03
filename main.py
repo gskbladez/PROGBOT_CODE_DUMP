@@ -692,7 +692,7 @@ async def rulebook(context, *args, **kwargs):
 
 async def invite(context, *args, **kwargs):
     color=0x71c142
-    embed = discord.Embed(title="Just click [here](https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0) or the title above to invite me!", color=color, url="https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0", title="Invite ProgBOT to your server!")
+    embed = discord.Embed(description="Just click [here](https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0) or the title above to invite me!", color=color, url="https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0", title="Invite ProgBOT to your server!")
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 def setup():
