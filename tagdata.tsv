@@ -1,0 +1,29 @@
+Tag	AltName	Description
+Accurate	Accu.	Defending against this with Speed is upshifted. 
+Awkward	Awkd.	Doing something else at the same time will be difficult or impossible.
+Dangerous	Dngr.	This chip tends to cause collateral damage. 
+Guard		Only one Guard chip can passively benefit the user at a time.
+Piercing	Prcn.	Defending against this with Stamina is upshifted.
+Simple	Simp.	The chip’s effects happen instantly, and can be used while performing other actions. These do **NOT** count towards liberation mission alarm counters.
+Slow		It takes extra time for this to activate. Using it at a moment’s notice is difficult or impossible.
+		
+Blade		These turn a part of the Navi into a sword! They hit hard, and some even have extra non-combat utility! Navis can **parry** with these chips.
+Hazard		These alter the environment, either by creating new terrain or destroying what’s already there.
+Impact		These are melee-focused chips that do less damage, but often have a wide range of effects! Navis can **parry** with these chips.
+Rush		These chips tend to move your Navi, typically into Close range of your target! Downshift defense rolls if used below listed range.
+Shot		These chips are powerful projectiles! They can be fired beyond the listed range, but the defense roll is downshifted.
+Summon		These create something to assist the Navi, whether it be a tool, a specialized Virus, or even cover!
+Support		These chips boost the Navi's abilities, and create debilitating effects!
+Thrown		These chips are similar to Shot chips, these are more difficult to use but carry powerful effects!
+Wave		These chips create explosive and/or wide attacks. All **Close** to the target get hit too, potentially including the user.
+		
+Artillery		These Viruses deal high amounts of damage at range, typically using Sense or Affinity.
+Disruption		These Viruses hinder Navis to make them vulnerable to other attackers.
+Striker		These Viruses are durable and melee-focused, needing to get up close to be a threat.
+Support		These Viruses aid other enemies, protecting them and boosting their abilities.
+Wrecker		These Viruses introduce environmental obstacles and threats.
+		
+Hovering		The Virus hovers a few inches off the ground, avoiding grounded attacks and some terrain.
+Flying		The Virus is able to freely fly through the air.
+Inanimate		The Virus acts according to simplistic programming. It can be hacked with Coding.
+Immobile		The Virus cannot move by itself. However, other things may be able to move it.

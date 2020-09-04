@@ -1,0 +1,31 @@
+Command	Response
+oops	Deletes the bot message from the user's last valid command
+commands	Provides the list of commands available for the user to run
+help	Do you really need help with help? :thinking:
+userinfo	Shows some info on the mentioned user (or yourself if there is no mentioned user)
+roll	Generate a random number between 0 and an optional given maximum (default is 6)
+unknowncommand	I don't know this command or there is no help message for this command.
+chip	BattleChips are one-use attacks that NetOps slot into their PETs.\nYour PET's folder space is determined by your **Navi's Mind + Navi's Info + 2**.\nWhen making a new character, pick starter BattleChips equal to your **NetOp's Mind + NetOp's Info + 2**.\n\nAfter a Navi uses a BattleChip, they need to jack out to make that BattleChip usable again, or to change your BattleChip folder. **Folders often may not have duplicate BattleChips, or more than 1 MegaChip.**\n\nThis command can display info on BattleChips. It can also search for all BattleChips from a specific category, with a specific tag, Crossover Content source, or in a specific license.
+ncp	NCPs (Or Navi Customizer Programs) are installable software NetOps can use to modify their Navi! They can give various perks like increasing folder size, granting access to special Navi powers, and more!\n**Check with your GM to see how many EB (Exabytes) your character starts with!**\n\nThis command can display NCPs.
+power	All Navis have Navi Powers: special abilities they can use whenever they like.\nThere are two types: Cost and Roll powers.\n**    - Cost powers reduce the listed stat by 1 until jack out and __do not affect liberation mission alarm countdowns__.\n    - Roll powers roll the associated skill to use the power.**\n\nThis command can display navi and virus powers: Cost, Roll, and Passive powers.
+virus	Viruses are programs with simple, animal-like intelligences that wreak havoc across the internet. With lots of different shapes and sizes, some are more dangerous than others. Viruses use powers just like navis, and some even have special passive abilities!\n**All viruses have data within them that can be downloaded with a blankchip upon deletion.**\n\nThis command can pull up a basic Virus description.
+virusx	This specific command pulls up full stats for viruses, like stats and drops. __This command is more for GMs rather than players in a session.__
+tag	Viruses and Battlechips have tags that determine how they behave or work in battle.\n\nThis command displays tags for various things.
+rulebook	Pulls up links for the rulebooks.
+bond	**Nothing can dispel or mitigate a Bond Power's effects.** This command displays bond powers, along with points needed, and what they do!
+mysterydata	This command rolls MysteryData and gives you the result automatically!
+sense	Study your surroundings, find jack-in ports, and take aim!
+info	Possess knowledge and expertly wield Battle Chips!
+coding	Program, hack, and rewire things in both the real and digital worlds!
+strength	Lift, throw, and punch objects and people!
+speed	Run, jump, and roll places, or out of danger!
+stamina	Endure pain and danger!
+charm	Sweet-talk, feign innocence, and gain allies!
+bravery	Resist fear, intimidate enemies, and inspire your allies!
+affinity	Manipulate your Navi element, and sync your NetOp and Navi!
+parry	A character can try to counter a melee attack with a melee attack of their own, called a **__parry__**. Both parties roll using the appropriate skill, likely Strength. Whoever has the most hits wins, and the loser takes damage equal to the winner’s roll. This damage is not reduced by how many hits the loser rolled.\n\nIf the two characters tie, they have a choice: back out or escalate. Both parties should declare this simultaneously. If both back out, nobody takes damage and the parry ends. If one escalates and the other backs out, the parry ends and the one that backed out is the loser. If both parties escalate, roll to melee attack each other again. Whoever rolls higher is the winner, unless they tie; in which case, the cycle continues until someone comes out on top. \n\nUnless both back out, when the parry ends, the loser takes damage equal to the winner’s strongest attack. However, if the loser backed out, they take half the damage they normally would, rounded up.
+query	The Query command can be used to filter through **Chips**, **NCPs **, **Powers**, and **Viruses** by *Tag*, *Category*, or *Crossover Content*! It can also look up **Navi Power Upgrades** and **Navi Powers by skill and type**! 
+talents	NetOps often get one Talent. Talents can be any area of expertise or interest. They should be general enough that they could organically come up (e.g. “Theater,” not “Ancient Opera”), but not so general that they apply more often than they don’t (e.g. “Judo,” not “Fighting”).\n**Once per session, a NetOp can turn a failure/partial success into a success if it falls under their Talent. __This only applies to NetOp rolls.__**
+talent	NetOps often get one Talent. Talents can be any area of expertise or interest. They should be general enough that they could organically come up (e.g. “Theater,” not “Ancient Opera”), but not so general that they apply more often than they don’t (e.g. “Judo,” not “Fighting”).\n**Once per session, a NetOp can turn a failure/partial success into a success if it falls under their Talent. __This only applies to NetOp rolls.__**
+upgrade	Looks up all upgrades for a default Navi Power!
+crimsonnoise	This commands rolls CrimsonNoise and gives you the result automatically!\n**Please note that CrimsonNoise is player-made content and is not official.**

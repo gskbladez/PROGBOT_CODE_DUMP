@@ -13879,3 +13879,746 @@
 2020-07-12 18:42:11	Merry Mancer Games	#free-play-3	ProgBOT#5635		
 2020-07-12 18:42:26	Merry Mancer Games	#free-play-3	GSK Bladez#7356	>virus spikey	
 2020-07-12 18:42:27	Merry Mancer Games	#free-play-3	ProgBOT#5635		
+2020-08-21 23:45:37	FishbowlTest	#general	Iza#0395	>help	
+2020-08-21 23:45:37	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-21 23:45:49	FishbowlTest	#general	RiJect#8629	>chip sword	
+2020-08-21 23:45:49	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:45:51	FishbowlTest	#general	Iza#0395	>power modeledit	
+2020-08-21 23:46:07	FishbowlTest	#general	RiJect#8629	>power shatter	
+2020-08-21 23:48:39	FishbowlTest	#general	Iza#0395	>help	
+2020-08-21 23:48:39	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-21 23:48:45	FishbowlTest	#general	Iza#0395	>im scared	Command not recognized
+2020-08-21 23:48:48	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-21 23:48:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:48:53	FishbowlTest	#general	Iza#0395	>power mapedit	
+2020-08-21 23:48:53	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:49:09	FishbowlTest	#general	RiJect#8629	>ncp hp+4	
+2020-08-21 23:49:09	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:49:14	FishbowlTest	#general	Iza#0395	>query parrying	
+2020-08-21 23:49:15	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-21 23:49:17	FishbowlTest	#general	Iza#0395	>help parry	
+2020-08-21 23:49:18	FishbowlTest	#general	ProgTest#5253	A character can try to counter a melee attack with a melee attack of their own, called a **__parry__**. Both parties roll using the appropriate skill, likely Strength. Whoever has the most hits wins, and the loser takes damage equal to the winner’s roll. This damage is not reduced by how many hits the loser rolled.\n\nIf the two characters tie, they have a choice: back out or escalate. Both parties should declare this simultaneously. If both back out, nobody takes damage and the parry ends. If one escalates and the other backs out, the parry ends and the one that backed out is the loser. If both parties escalate, roll to melee attack each other again. Whoever rolls higher is the winner, unless they tie; in which case, the cycle continues until someone comes out on top. \n\nUnless both back out, when the parry ends, the loser takes damage equal to the winner’s strongest attack. However, if the loser backed out, they take half the damage they normally would, rounded up.	
+2020-08-21 23:49:23	FishbowlTest	#general	RiJect#8629	>daemon cache	
+2020-08-21 23:49:23	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:49:24	FishbowlTest	#general	Iza#0395	>query help	
+2020-08-21 23:49:24	FishbowlTest	#general	Iza#0395	>query help	Cooldown active
+2020-08-21 23:49:35	FishbowlTest	#general	ProgTest#5253	You do not have permission to use this command	
+2020-08-21 19:49:35		#			You do not have permission to use this command
+2020-08-21 23:49:42	FishbowlTest	#general	ProgTest#5253	You do not have permission to use this command	
+2020-08-21 19:49:42		#			You do not have permission to use this command
+2020-08-21 23:52:26	FishbowlTest	#general	Iza#0395	>help	
+2020-08-21 23:52:26	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-21 23:52:29	FishbowlTest	#general	Iza#0395	>query daemon	
+2020-08-21 23:52:29	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-21 23:52:34	FishbowlTest	#general	Iza#0395	>query tags	
+2020-08-21 23:52:34	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-21 23:52:37	FishbowlTest	#general	Iza#0395	>tag cannon	
+2020-08-21 23:52:37	FishbowlTest	#general	ProgTest#5253	I don't recognize that Battle Chip tag!	
+2020-08-21 23:52:42	FishbowlTest	#general	Iza#0395	>element	
+2020-08-21 23:52:42	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-21 23:53:00	FishbowlTest	#general	RiJect#8629	>chip cannon	
+2020-08-21 23:53:00	FishbowlTest	#general	ProgTest#5253		
+2020-08-21 23:53:52	FishbowlTest	#general	RiJect#8629	>element	
+2020-08-21 23:53:52	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-21 23:54:04	FishbowlTest	#general	RiJect#8629	>element 69	
+2020-08-21 23:54:04	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need that many?	
+2020-08-21 23:54:09	FishbowlTest	#general	RiJect#8629	>yes	Command not recognized
+2020-08-21 23:54:14	FishbowlTest	#general	RiJect#8629	>element 5	
+2020-08-21 23:54:14	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-21 23:54:14	FishbowlTest	#general	RiJect#8629	>element 5	Unhandled error
+2020-08-22 00:10:35	FishbowlTest	#general	Iza#0395	>element	
+2020-08-22 00:10:35	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:10:38	FishbowlTest	#general	Iza#0395	>element 5	
+2020-08-22 00:10:38	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:11:01	FishbowlTest	#general	Iza#0395	>element nature 2	
+2020-08-22 00:11:02	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:11:01	FishbowlTest	#general	Iza#0395	>element nature 2	Unhandled error
+2020-08-22 00:15:23	FishbowlTest	#general	Iza#0395	>element nature 2	
+2020-08-22 00:15:23	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:15:23	FishbowlTest	#general	Iza#0395	>element nature 2	Unhandled error
+2020-08-22 00:16:22	FishbowlTest	#general	Iza#0395	>element nature 2	
+2020-08-22 00:16:22	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:16:37	FishbowlTest	#general	RiJect#8629	>element ??? 12	
+2020-08-22 00:16:37	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:16:37	FishbowlTest	#general	RiJect#8629	>element ??? 12	Unhandled error
+2020-08-22 00:20:49	FishbowlTest	#general	Iza#0395	>element art 12	
+2020-08-22 00:20:49	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:21:00	FishbowlTest	#general	RiJect#8629	>element ??? 12	
+2020-08-22 00:21:00	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:21:15	FishbowlTest	#general	Iza#0395	>element -5	
+2020-08-22 00:21:15	FishbowlTest	#general	ProgTest#5253	The number of elements can't be 0 or negative!	
+2020-08-22 00:21:29	FishbowlTest	#general	RiJect#8629	>element sex 6	
+2020-08-22 00:21:29	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:21:29	FishbowlTest	#general	RiJect#8629	>element sex 6	Unhandled error
+2020-08-22 00:23:59	FishbowlTest	#general	Iza#0395	>element sex 69	
+2020-08-22 00:23:59	FishbowlTest	#general	ProgTest#5253	Not a valid category!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???	
+2020-08-22 00:24:15	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-22 00:24:15	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:24:54	FishbowlTest	#general	Iza#0395	>element sex 69	
+2020-08-22 00:24:54	FishbowlTest	#general	ProgTest#5253	Not a valid category!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:24:57	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-22 00:24:58	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:25:28	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-22 00:25:28	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:25:36	FishbowlTest	#general	Iza#0395	>element	
+2020-08-22 00:25:36	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:25:40	FishbowlTest	#general	Iza#0395	>element nature	
+2020-08-22 00:25:40	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:25:59	FishbowlTest	#general	RiJect#8629	>element ???	
+2020-08-22 00:25:59	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:26:04	FishbowlTest	#general	Iza#0395	>element ??? 36	
+2020-08-22 00:26:04	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need that many?	
+2020-08-22 00:26:08	FishbowlTest	#general	Iza#0395	>element 0	
+2020-08-22 00:26:08	FishbowlTest	#general	ProgTest#5253	The number of elements can't be 0 or negative!	
+2020-08-22 00:26:23	FishbowlTest	#general	RiJect#8629	>element 13	
+2020-08-22 00:26:23	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need that many?	
+2020-08-22 00:26:27	FishbowlTest	#general	Iza#0395	>element 1	
+2020-08-22 00:26:27	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:26:49	FishbowlTest	#general	RiJect#8629	>element	
+2020-08-22 00:26:49	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:26:56	FishbowlTest	#general	RiJect#8629	>element 13	
+2020-08-22 00:26:56	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need more than 12?	
+2020-08-22 00:27:08	FishbowlTest	#general	Iza#0395	>element category category	
+2020-08-22 00:27:08	FishbowlTest	#general	ProgTest#5253	Not a valid category!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-22 00:27:11	FishbowlTest	#general	Iza#0395	>element nature fantasy	
+2020-08-22 00:27:11	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:27:26	FishbowlTest	#general	Iza#0395	>element 12	
+2020-08-22 00:27:26	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:27:33	FishbowlTest	#general	Iza#0395	>chip gatemagic	
+2020-08-22 00:27:33	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:27:57	FishbowlTest	#general	Iza#0395	>chip bich bich bich	
+2020-08-22 00:27:57	FishbowlTest	#general	ProgTest#5253	I don't recognize that Battle Chip!	
+2020-08-22 00:28:05	FishbowlTest	#general	RiJect#8629	>chip kackledackle	
+2020-08-22 00:28:05	FishbowlTest	#general	ProgTest#5253	I don't recognize that Battle Chip!	
+2020-08-22 00:28:06	FishbowlTest	#general	Iza#0395	>element bich bich bich	
+2020-08-22 00:28:06	FishbowlTest	#general	ProgTest#5253	Command is too long! Just give me `>element [#]` or `>element [category] [#]`!	
+2020-08-22 00:28:15	FishbowlTest	#general	RiJect#8629	>chip cackledackle	
+2020-08-22 00:28:15	FishbowlTest	#general	ProgTest#5253	I don't recognize that Battle Chip!	
+2020-08-22 00:28:43	FishbowlTest	#general	RiJect#8629	>chip CackelDackel	
+2020-08-22 00:28:43	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:29:10	FishbowlTest	#general	Iza#0395	>power easer eggs	
+2020-08-22 00:29:10	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:13	FishbowlTest	#general	Iza#0395	>power easter eggsd	
+2020-08-22 00:29:13	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:16	FishbowlTest	#general	Iza#0395	>power easter eggs	
+2020-08-22 00:29:16	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:27	FishbowlTest	#general	Iza#0395	>power EASTER EGGS	
+2020-08-22 00:29:27	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:28	FishbowlTest	#general	RiJect#8629	>query easter eggs	
+2020-08-22 00:29:29	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-22 00:29:32	FishbowlTest	#general	Iza#0395	>power you	
+2020-08-22 00:29:32	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:38	FishbowlTest	#general	Iza#0395	>power You	
+2020-08-22 00:29:38	FishbowlTest	#general	ProgTest#5253	I don't recognize that NaviPower!	
+2020-08-22 00:29:39	FishbowlTest	#general	RiJect#8629	>query your mom	
+2020-08-22 00:29:39	FishbowlTest	#general	ProgTest#5253	I can't find any chips, NCPs, or Powers in that Category, or from that Crossover title.	
+2020-08-22 00:30:01	FishbowlTest	#general	Iza#0395	>ncp You	
+2020-08-22 00:30:01	FishbowlTest	#general	ProgTest#5253	I don't recognize that NCP!	
+2020-08-22 00:30:19	FishbowlTest	#general	Iza#0395	>virusx SwangardeOmega	
+2020-08-22 00:30:19	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:30:27	FishbowlTest	#general	Iza#0395	>virus SwangardeOmega	
+2020-08-22 00:30:28	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:30:31	FishbowlTest	#general	Iza#0395	>virus BonziBuddy	
+2020-08-22 00:30:31	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:30:34	FishbowlTest	#general	RiJect#8629	>virus bonzibuddy	
+2020-08-22 00:30:34	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:30:38	FishbowlTest	#general	Iza#0395	>virusx Bonzibuddy	
+2020-08-22 00:30:38	FishbowlTest	#general	ProgTest#5253	I don't recognize that virus!	
+2020-08-22 00:38:23	FishbowlTest	#general	Iza#0395	>chip	
+2020-08-22 00:38:23	FishbowlTest	#general	ProgTest#5253	Give me the name of a Battle Chip and I can pull up its info for you!	
+2020-08-22 00:38:26	FishbowlTest	#general	Iza#0395	>help	
+2020-08-22 00:38:26	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-22 00:38:28	FishbowlTest	#general	Iza#0395	>commands	
+2020-08-22 00:38:29	FishbowlTest	#general	ProgTest#5253	bugreport, oops, commands, help, roll, r, chip, power, ncp, virus, virusx, tag, query, bond, mysterydata, rulebook, element, mysteryreward, daemon, invite	
+2020-08-22 00:38:33	FishbowlTest	#general	Iza#0395	>invite	
+2020-08-22 00:38:33	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 00:38:33	FishbowlTest	#general	Iza#0395	>invite	Unhandled error
+2020-08-22 00:39:16	FishbowlTest	#general	Iza#0395	>invite	
+2020-08-22 00:39:16	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:46:16	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-22 00:46:16	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 00:46:22	FishbowlTest	#general	Iza#0395	>chip xiii-death	
+2020-08-22 00:46:22	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 11:58:31	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-22 11:58:31	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 11:58:31	FishbowlTest	#general	Iza#0395	>chip sword	Unhandled error
+2020-08-22 12:01:54	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-22 12:01:54	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:02:12	FishbowlTest	#general	Iza#0395	>chip peek	
+2020-08-22 12:02:12	FishbowlTest	#general	ProgTest#5253	I can't find BattleChip peek!	
+2020-08-22 12:02:17	FishbowlTest	#general	Iza#0395	>chip	
+2020-08-22 12:02:17	FishbowlTest	#general	ProgTest#5253	Give me the name of a Battle Chip and I can pull up its info for you!	
+2020-08-22 12:02:25	FishbowlTest	#general	Iza#0395	>chip sword, cannon, barrier	
+2020-08-22 12:02:25	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:06:57	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-22 12:06:57	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 12:06:57	FishbowlTest	#general	Iza#0395	>chip sword	Unhandled error
+2020-08-22 12:08:06	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-22 12:08:06	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:08:20	FishbowlTest	#general	Iza#0395	>chip sword, cannon, barrier	
+2020-08-22 12:08:20	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:08:31	FishbowlTest	#general	Iza#0395	>chip sword cannon barrier	
+2020-08-22 12:08:31	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:08:31	FishbowlTest	#general	Iza#0395	>chip sword cannon barrier	Cooldown active
+2020-08-22 12:08:31	FishbowlTest	#general	Iza#0395	>chip sword cannon barrier	Cooldown active
+2020-08-22 12:10:12	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-22 12:10:12	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:10:20	FishbowlTest	#general	Iza#0395	>chip 0-TheFool	
+2020-08-22 12:10:20	FishbowlTest	#general	ProgTest#5253	I can't find the BattleChip 0-TheFool!	
+2020-08-22 12:10:41	FishbowlTest	#general	Iza#0395	>chip XXI-TheWorld	
+2020-08-22 12:10:41	FishbowlTest	#general	ProgTest#5253	I can't find the BattleChip XXI-TheWorld!	
+2020-08-22 12:10:48	FishbowlTest	#general	Iza#0395	>chip cannon	
+2020-08-22 12:10:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:10:52	FishbowlTest	#general	Iza#0395	>chip sword, cannon, barrier	
+2020-08-22 12:10:52	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:11:07	FishbowlTest	#general	Iza#0395	>chip sword cannon barrier	
+2020-08-22 12:11:07	FishbowlTest	#general	ProgTest#5253	I can't find the BattleChip sword cannon barrier!	
+2020-08-22 12:14:42	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-22 12:14:42	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:14:45	FishbowlTest	#general	Iza#0395	>chip 0-thefool	
+2020-08-22 12:14:45	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 12:14:45	FishbowlTest	#general	Iza#0395	>chip 0-thefool	Unhandled error
+2020-08-22 12:20:00	FishbowlTest	#general	Iza#0395	>chip 0-the-fool	
+2020-08-22 12:20:00	FishbowlTest	#general	ProgTest#5253	I can't find the BattleChip 0-the-fool!	
+2020-08-22 12:20:05	FishbowlTest	#general	Iza#0395	>chip 0-thefool	
+2020-08-22 12:20:05	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:20:13	FishbowlTest	#general	Iza#0395	>chip elementalist	
+2020-08-22 12:20:13	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:20:27	FishbowlTest	#general	Iza#0395	>chip elementalist, 0-thefool, sword	
+2020-08-22 12:20:28	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:20:43	FishbowlTest	#general	Iza#0395	>chip elementalist 0-thefool sword	
+2020-08-22 12:20:44	FishbowlTest	#general	ProgTest#5253	I can't find the BattleChip elementalist 0-thefool sword!	
+2020-08-22 12:22:43	FishbowlTest	#general	Iza#0395	>chip asd	
+2020-08-22 12:22:43	FishbowlTest	#general	ProgTest#5253	I can't find the BattleChip asd!	
+2020-08-22 12:24:11	FishbowlTest	#general	Iza#0395	>chip asd	
+2020-08-22 12:24:11	FishbowlTest	#general	ProgTest#5253	I can't find the BattleChip asd!	
+2020-08-22 12:24:18	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	
+2020-08-22 12:24:18	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:24:18	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	Cooldown active
+2020-08-22 12:25:29	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	
+2020-08-22 12:25:30	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:25:29	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	Cooldown active
+2020-08-22 12:25:29	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	Cooldown active
+2020-08-22 12:25:29	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	Cooldown active
+2020-08-22 12:31:22	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	
+2020-08-22 12:31:22	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:31:22	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	Cooldown active
+2020-08-22 12:33:10	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	
+2020-08-22 12:33:10	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:33:10	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:34:37	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	
+2020-08-22 12:34:37	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:34:37	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:34:40	FishbowlTest	#general	Iza#0395	>chip sword 0-thefool	
+2020-08-22 12:34:41	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:34:41	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:49:01	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-22 12:49:01	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 12:49:01	FishbowlTest	#general	Iza#0395	>chip sword	Unhandled error
+2020-08-22 12:51:17	FishbowlTest	#general	Iza#0395	>chip sword	
+2020-08-22 12:51:17	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:51:41	FishbowlTest	#general	Iza#0395	>chip sword, 0-thefool	
+2020-08-22 12:51:41	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:51:41	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 12:52:44	FishbowlTest	#general	Iza#0395	>chip asdasda	
+2020-08-22 12:52:44	FishbowlTest	#general	ProgTest#5253	I can't find asdasda!	
+2020-08-22 12:52:49	FishbowlTest	#general	Iza#0395	>chip asda sword	
+2020-08-22 12:52:49	FishbowlTest	#general	ProgTest#5253	I can't find asda!	
+2020-08-22 12:52:49	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:03:14	FishbowlTest	#general	Iza#0395	>power lockon	
+2020-08-22 13:03:14	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-22 13:03:14	FishbowlTest	#general	Iza#0395	>power lockon	Unhandled error
+2020-08-22 13:04:20	FishbowlTest	#general	Iza#0395	>power lockon	
+2020-08-22 13:04:20	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:04:36	FishbowlTest	#general	Iza#0395	>power lockon ncp	
+2020-08-22 13:04:36	FishbowlTest	#general	ProgTest#5253	I can't find lockon ncp!	
+2020-08-22 13:05:17	FishbowlTest	#general	Iza#0395	>power lockon	
+2020-08-22 13:05:18	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:05:38	FishbowlTest	#general	Iza#0395	>power lockon	
+2020-08-22 13:05:38	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:05:43	FishbowlTest	#general	Iza#0395	>power followthrough	
+2020-08-22 13:05:43	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:05:48	FishbowlTest	#general	Iza#0395	>power lurker	
+2020-08-22 13:05:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:05:54	FishbowlTest	#general	Iza#0395	>power hardhead	
+2020-08-22 13:05:54	FishbowlTest	#general	ProgTest#5253	I can't find hardhead!	
+2020-08-22 13:06:02	FishbowlTest	#general	Iza#0395	>virusx hardhead	
+2020-08-22 13:06:02	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:06:08	FishbowlTest	#general	Iza#0395	>power ammoswap	
+2020-08-22 13:06:08	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:06:11	FishbowlTest	#general	Iza#0395	>power headstrong	
+2020-08-22 13:06:11	FishbowlTest	#general	ProgTest#5253		
+2020-08-22 13:06:14	FishbowlTest	#general	Iza#0395	>power spreader	
+2020-08-22 13:06:14	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:14:16	FishbowlTest	#general	Iza#0395	>power lockon	
+2020-08-23 15:14:16	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 15:14:16	FishbowlTest	#general	Iza#0395	>power lockon	Unhandled error
+2020-08-23 15:14:58	FishbowlTest	#general	Iza#0395	>power lockon	
+2020-08-23 15:14:58	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:15:02	FishbowlTest	#general	Iza#0395	>ncp lockon	
+2020-08-23 15:15:02	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:15:13	FishbowlTest	#general	Iza#0395	>power mimicstrike	
+2020-08-23 15:15:13	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:15:27	FishbowlTest	#general	RiJect#8629	>chip cackeldackel	
+2020-08-23 15:15:27	FishbowlTest	#general	ProgTest#5253	I can't find cackeldackel!	
+2020-08-23 15:18:29	FishbowlTest	#general	Iza#0395	>power mimicstrike	
+2020-08-23 15:18:29	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:18:48	FishbowlTest	#general	Iza#0395	>ncp mimicstrike	
+2020-08-23 15:18:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:20:38	FishbowlTest	#general	Iza#0395	>power mimicstrike	
+2020-08-23 15:20:38	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:20:41	FishbowlTest	#general	Iza#0395	>ncp mimicstrike	
+2020-08-23 15:20:41	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 15:20:41	FishbowlTest	#general	Iza#0395	>ncp mimicstrike	Unhandled error
+2020-08-23 15:21:08	FishbowlTest	#general	Iza#0395	>power mimicstrike	
+2020-08-23 15:21:08	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:21:11	FishbowlTest	#general	Iza#0395	>ncp mimicstrike	
+2020-08-23 15:21:11	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:23:26	FishbowlTest	#general	Iza#0395	>ncp actionreplay	
+2020-08-23 15:23:26	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:33:32	FishbowlTest	#general	Iza#0395	>ncp actionreplay	
+2020-08-23 15:33:32	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:33:58	FishbowlTest	#general	Iza#0395	>ncp actionreplay	
+2020-08-23 15:33:58	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:35:08	FishbowlTest	#general	Iza#0395	>ncp actionreplay	
+2020-08-23 15:35:08	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:35:15	FishbowlTest	#general	Iza#0395	>power actionreplay	
+2020-08-23 15:35:15	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:35:20	FishbowlTest	#general	Iza#0395	>power meld	
+2020-08-23 15:35:20	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:36:01	FishbowlTest	#general	Iza#0395	>power addon	
+2020-08-23 15:36:01	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:36:03	FishbowlTest	#general	Iza#0395	>ncp addon	
+2020-08-23 15:36:04	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:36:55	FishbowlTest	#general	Iza#0395	>ncp encryptedchat	
+2020-08-23 15:36:55	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:37:00	FishbowlTest	#general	Iza#0395	>power encryptedchat	
+2020-08-23 15:37:00	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:40:05	FishbowlTest	#general	Iza#0395	>power encryptedchat	
+2020-08-23 15:40:05	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:40:11	FishbowlTest	#general	Iza#0395	>power encryptedchat	
+2020-08-23 15:40:11	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:40:44	FishbowlTest	#general	Iza#0395	>power temposhift	
+2020-08-23 15:40:44	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 15:40:53	FishbowlTest	#general	Iza#0395	>power foxglove	
+2020-08-23 15:40:53	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:27:48	FishbowlTest	#general	Iza#0395	>ncp interception	
+2020-08-23 16:27:48	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 16:27:48	FishbowlTest	#general	Iza#0395	>ncp interception	Unhandled error
+2020-08-23 16:28:12	FishbowlTest	#general	Iza#0395	>ncp interception	
+2020-08-23 16:28:13	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 16:28:12	FishbowlTest	#general	Iza#0395	>ncp interception	Unhandled error
+2020-08-23 16:29:40	FishbowlTest	#general	Iza#0395	>ncp interception	
+2020-08-23 16:29:40	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 16:29:40	FishbowlTest	#general	Iza#0395	>ncp interception	Unhandled error
+2020-08-23 16:32:28	FishbowlTest	#general	Iza#0395	>ncp interception	
+2020-08-23 16:32:29	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 16:32:28	FishbowlTest	#general	Iza#0395	>ncp interception	Unhandled error
+2020-08-23 16:35:00	FishbowlTest	#general	Iza#0395	>ncp interception	
+2020-08-23 16:35:00	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:35:05	FishbowlTest	#general	Iza#0395	>ncp lasthit	
+2020-08-23 16:35:05	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:36:11	FishbowlTest	#general	Iza#0395	>ncp lasthit	
+2020-08-23 16:36:11	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:36:35	FishbowlTest	#general	Iza#0395	>ncp interception	
+2020-08-23 16:36:35	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:39:32	FishbowlTest	#general	Iza#0395	>power foxglove	
+2020-08-23 16:39:32	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:40:34	FishbowlTest	#general	Iza#0395	>ncp pocketbase	
+2020-08-23 16:40:34	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:40:40	FishbowlTest	#general	Iza#0395	>power progpal	
+2020-08-23 16:40:40	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:40:45	FishbowlTest	#general	Iza#0395	>ncp progpal	
+2020-08-23 16:40:45	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 16:41:07	FishbowlTest	#general	Iza#0395	>chip perfectchaos	
+2020-08-23 16:41:08	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 17:08:11	FishbowlTest	#general	Iza#0395	>virus mettaur	
+2020-08-23 17:08:11	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 17:08:11	FishbowlTest	#general	Iza#0395	>virus mettaur	Unhandled error
+2020-08-23 17:08:59	FishbowlTest	#general	Iza#0395	>virus mettaur	
+2020-08-23 17:08:59	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 17:09:23	FishbowlTest	#general	Iza#0395	>virus mettaur	
+2020-08-23 17:09:23	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 17:09:29	FishbowlTest	#general	Iza#0395	>virus squeaker	
+2020-08-23 17:09:30	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 17:09:41	FishbowlTest	#general	Iza#0395	>virus swangarde, mettaur	
+2020-08-23 17:09:41	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 17:09:41	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 18:05:45	FishbowlTest	#general	Iza#0395	>chip sword, cannon	
+2020-08-23 18:05:45	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 18:05:45	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 18:06:08	FishbowlTest	#general	Iza#0395	>element 4	
+2020-08-23 18:06:09	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 18:06:25	FishbowlTest	#general	Iza#0395	>element	
+2020-08-23 18:06:26	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-23 18:07:17	FishbowlTest	#general	Iza#0395	>virus mettaur, canodumb, fishy2	
+2020-08-23 18:07:17	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 18:07:17	FishbowlTest	#general	Iza#0395	>virus mettaur, canodumb, fishy2	Unhandled error
+2020-08-23 18:07:35	FishbowlTest	#general	Iza#0395	>chip sword, cannon	
+2020-08-23 18:07:35	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 18:07:35	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 19:07:57	FishbowlTest	#general	Iza#0395	>virus mettaur	
+2020-08-23 19:07:57	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 19:07:57	FishbowlTest	#general	Iza#0395	>virus mettaur	Unhandled error
+2020-08-23 19:09:45	FishbowlTest	#general	Iza#0395	>virus mettaur	
+2020-08-23 19:09:45	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 19:10:52	FishbowlTest	#general	Iza#0395	>virus mettaur	
+2020-08-23 19:10:52	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 19:11:05	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 19:11:05	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 19:11:05	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 19:12:12	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 19:12:12	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 19:12:12	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 19:12:26	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 19:12:26	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 19:12:26	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 19:16:31	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 19:16:31	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 19:16:31	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 19:36:43	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 19:36:44	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 19:36:43	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 19:38:37	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 19:38:37	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 19:38:37	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 20:25:26	FishbowlTest	#general	Iza#0395	>power impersonate	
+2020-08-23 20:25:26	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 20:32:13	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 20:32:13	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:32:13	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 20:33:35	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 20:33:35	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:33:35	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 20:35:51	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 20:35:51	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:35:51	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 20:37:14	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 20:37:14	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:37:14	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 20:42:33	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 20:42:34	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:42:33	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 20:47:29	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 20:47:29	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:47:29	FishbowlTest	#general	Iza#0395	>virusx mettaur	Unhandled error
+2020-08-23 20:48:24	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 20:48:24	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 20:48:51	FishbowlTest	#general	Iza#0395	>virusx mettaur	
+2020-08-23 20:48:51	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 20:49:02	FishbowlTest	#general	Iza#0395	>virus mettaur	
+2020-08-23 20:49:02	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 20:49:53	FishbowlTest	#general	Iza#0395	>virus mettaur	
+2020-08-23 20:49:53	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 20:50:05	FishbowlTest	#general	Iza#0395	>virus mettaur, canodumb, cattack	
+2020-08-23 20:50:05	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 20:50:05	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 20:50:05	FishbowlTest	#general	ProgTest#5253	I can't find cattack!	
+2020-08-23 20:50:05	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:50:05	FishbowlTest	#general	Iza#0395	>virus mettaur, canodumb, cattack	Unhandled error
+2020-08-23 20:52:14	FishbowlTest	#general	Iza#0395	>virus cattack	
+2020-08-23 20:52:14	FishbowlTest	#general	ProgTest#5253	I can't find cattack!	
+2020-08-23 20:52:14	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:52:14	FishbowlTest	#general	Iza#0395	>virus cattack	Unhandled error
+2020-08-23 20:55:41	FishbowlTest	#general	Iza#0395	>virus catack	
+2020-08-23 20:55:41	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 20:55:46	FishbowlTest	#general	Iza#0395	>virus cattack	
+2020-08-23 20:55:46	FishbowlTest	#general	ProgTest#5253	I can't find cattack!	
+2020-08-23 20:55:46	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 20:55:46	FishbowlTest	#general	Iza#0395	>virus cattack	Unhandled error
+2020-08-23 21:10:01	FishbowlTest	#general	Iza#0395	>virus cattack	
+2020-08-23 21:10:01	FishbowlTest	#general	ProgTest#5253	I can't find cattack!	
+2020-08-23 21:10:05	FishbowlTest	#general	Iza#0395	>virus mettaur, cattack	
+2020-08-23 21:10:05	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 21:10:05	FishbowlTest	#general	ProgTest#5253	I can't find cattack!	
+2020-08-23 21:10:12	FishbowlTest	#general	Iza#0395	>ncp asda	
+2020-08-23 21:10:12	FishbowlTest	#general	ProgTest#5253	I can't find asda!	
+2020-08-23 21:10:12	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 21:10:12	FishbowlTest	#general	Iza#0395	>ncp asda	Unhandled error
+2020-08-23 21:12:14	FishbowlTest	#general	Iza#0395	>ncp asdasda	
+2020-08-23 21:12:14	FishbowlTest	#general	ProgTest#5253	I can't find asdasda!	
+2020-08-23 21:12:17	FishbowlTest	#general	Iza#0395	>power asdasdasda	
+2020-08-23 21:12:17	FishbowlTest	#general	ProgTest#5253	I can't find asdasdasda!	
+2020-08-23 21:12:22	FishbowlTest	#general	Iza#0395	>chip asdasdadas	
+2020-08-23 21:12:22	FishbowlTest	#general	ProgTest#5253	I can't find asdasdadas!	
+2020-08-23 21:12:33	FishbowlTest	#general	Iza#0395	>virusx number	
+2020-08-23 21:12:33	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 21:39:18	FishbowlTest	#general	RiJect#8629	>virus catack	
+2020-08-23 21:39:18	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 22:06:09	FishbowlTest	#general	Iza#0395	>tag accurate	
+2020-08-23 22:06:09	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-23 22:06:09	FishbowlTest	#general	Iza#0395	>tag accurate	Unhandled error
+2020-08-23 22:06:28	FishbowlTest	#general	Iza#0395	>tag accurate	
+2020-08-23 22:06:28	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 22:06:34	FishbowlTest	#general	Iza#0395	>tag inanimate	
+2020-08-23 22:06:34	FishbowlTest	#general	ProgTest#5253	I can't find inanimate!	
+2020-08-23 22:06:34	FishbowlTest	#general	ProgTest#5253	Sorry, I don't recognize that tag or category!	
+2020-08-23 22:07:08	FishbowlTest	#general	Iza#0395	>tag inanimate	
+2020-08-23 22:07:08	FishbowlTest	#general	ProgTest#5253	I can't find inanimate!	
+2020-08-23 22:07:11	FishbowlTest	#general	Iza#0395	>tag blade	
+2020-08-23 22:07:11	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 22:12:12	FishbowlTest	#general	Iza#0395	>tag inanimate	
+2020-08-23 22:12:12	FishbowlTest	#general	ProgTest#5253		
+2020-08-23 22:12:18	FishbowlTest	#general	Iza#0395	>tag hovering	
+2020-08-23 22:12:18	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:05:46	FishbowlTest	#general	Iza#0395	>virus volcano	
+2020-08-24 00:05:47	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:05:55	FishbowlTest	#general	Iza#0395	>virusx volcano	
+2020-08-24 00:05:55	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:07:01	FishbowlTest	#general	RiJect#8629	>virus brushman	
+2020-08-24 00:07:01	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:07:09	FishbowlTest	#general	RiJect#8629	>virusx brushman	
+2020-08-24 00:07:09	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:11:26	FishbowlTest	#general	RiJect#8629	>jelly	Command not recognized
+2020-08-24 00:11:30	FishbowlTest	#general	RiJect#8629	>virus jelly	
+2020-08-24 00:11:30	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:11:36	FishbowlTest	#general	RiJect#8629	>virusx jelly	
+2020-08-24 00:11:36	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:12:15	FishbowlTest	#general	RiJect#8629	>virus jelly	
+2020-08-24 00:12:15	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:13:19	FishbowlTest	#general	Iza#0395	>virusx jelly	
+2020-08-24 00:13:19	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:13:23	FishbowlTest	#general	Iza#0395	>virus jelly	
+2020-08-24 00:13:24	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:14:36	FishbowlTest	#general	Iza#0395	>virus jelly	
+2020-08-24 00:14:36	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 00:14:43	FishbowlTest	#general	Iza#0395	>virusx jelly	
+2020-08-24 00:14:43	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 01:59:19	FishbowlTest	#general	Iza#0395	>mysterydata common	
+2020-08-24 01:59:20	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 01:59:19	FishbowlTest	#general	Iza#0395	>mysterydata common	Unhandled error
+2020-08-24 01:59:45	FishbowlTest	#general	Iza#0395	>mysterydata common	
+2020-08-24 01:59:45	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 01:59:50	FishbowlTest	#general	Iza#0395	>mysterydata common	
+2020-08-24 01:59:50	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 01:59:51	FishbowlTest	#general	Iza#0395	>mysterydata common	
+2020-08-24 01:59:51	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 01:59:52	FishbowlTest	#general	Iza#0395	>mysterydata common	
+2020-08-24 01:59:52	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 01:59:55	FishbowlTest	#general	Iza#0395	>mysterydata common	
+2020-08-24 01:59:55	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 01:59:59	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 01:59:59	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:00:05	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 02:00:05	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:00:06	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 02:00:06	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:00:07	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 02:00:07	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:00:08	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 02:00:08	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:00:09	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 02:00:09	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:00:10	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 02:00:11	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:00:12	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 02:00:12	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:00:15	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:00:15	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 02:00:15	FishbowlTest	#general	Iza#0395	>mysterydata rare	Unhandled error
+2020-08-24 02:04:28	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:28	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:04:29	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:29	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:04:30	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:30	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:04:31	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:31	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:04:32	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:33	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:04:34	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:34	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:04:35	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:35	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:04:35	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:36	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:04:36	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:04:36	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:05:42	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:05:42	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:05:47	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:05:47	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:05:48	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:05:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:05:48	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:05:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:05:49	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:05:49	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 02:05:49	FishbowlTest	#general	Iza#0395	>mysterydata rare	Unhandled error
+2020-08-24 02:06:34	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:34	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:35	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:35	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:36	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:36	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:37	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:37	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:37	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:38	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:38	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:40	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:41	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:41	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:42	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:42	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:42	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:42	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:43	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:43	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:44	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:46	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:47	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:48	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:49	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:49	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:06:50	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:06:50	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 02:06:50	FishbowlTest	#general	Iza#0395	>mysterydata rare	Unhandled error
+2020-08-24 02:07:48	FishbowlTest	#general	Iza#0395	>mysterydata rare	Command not recognized
+2020-08-24 02:07:51	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:07:51	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:07:53	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:07:53	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:07:56	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:07:56	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:15	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:14:15	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:16	FishbowlTest	#general	Iza#0395	>mysterydata rare	
+2020-08-24 02:14:17	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:19	FishbowlTest	#general	Iza#0395	>mysterydata uncommon	
+2020-08-24 02:14:20	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:24	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:24	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:28	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:29	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:29	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:29	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:30	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:30	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:31	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:31	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:46	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:46	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:47	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:47	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:48	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:48	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:48	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:49	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:49	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:49	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:50	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:51	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:52	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:52	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:53	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:53	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:54	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:54	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:57	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:57	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:14:59	FishbowlTest	#general	Iza#0395	>mysteryreward rare	
+2020-08-24 02:14:59	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:17:38	FishbowlTest	#general	Iza#0395	>virus squeaker	
+2020-08-24 02:17:39	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:17:44	FishbowlTest	#general	Iza#0395	>virus asdasda	
+2020-08-24 02:17:44	FishbowlTest	#general	ProgTest#5253	I can't find asdasda!	
+2020-08-24 02:17:48	FishbowlTest	#general	Iza#0395	>mysterydata	
+2020-08-24 02:17:48	FishbowlTest	#general	ProgTest#5253	I can roll Mystery Data for you! Specify Common, Uncommon, or Rare!	
+2020-08-24 02:17:52	FishbowlTest	#general	Iza#0395	>mysterydata asdasdasda	
+2020-08-24 02:17:52	FishbowlTest	#general	ProgTest#5253	Please specify either Common, Uncommon, or Rare MysteryData.	
+2020-08-24 02:24:59	FishbowlTest	#general	Iza#0395	>bond crosssoul	
+2020-08-24 02:24:59	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:25:05	FishbowlTest	#general	Iza#0395	>bond overload	
+2020-08-24 02:25:05	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:25:09	FishbowlTest	#general	Iza#0395	>bond fullsynchro	
+2020-08-24 02:25:09	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:25:22	FishbowlTest	#general	Iza#0395	>bond standtogether	
+2020-08-24 02:25:22	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:25:25	FishbowlTest	#general	Iza#0395	>bond crossfusion	
+2020-08-24 02:25:25	FishbowlTest	#general	ProgTest#5253	I can't find crossfusion!	
+2020-08-24 02:41:46	FishbowlTest	#general	Iza#0395	>daemon lifevirus	
+2020-08-24 02:41:46	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 02:41:46	FishbowlTest	#general	Iza#0395	>daemon lifevirus	Unhandled error
+2020-08-24 02:42:25	FishbowlTest	#general	Iza#0395	>daemon lifevirus	
+2020-08-24 02:42:25	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:43:51	FishbowlTest	#general	Iza#0395	>daemon lifevirus	
+2020-08-24 02:43:51	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:44:53	FishbowlTest	#general	Iza#0395	>daemon lifevirus	
+2020-08-24 02:44:53	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:45:30	FishbowlTest	#general	Iza#0395	>daemon lifevirus	
+2020-08-24 02:45:30	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:46:22	FishbowlTest	#general	Iza#0395	>daemon lifevirus	
+2020-08-24 02:46:22	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:46:39	FishbowlTest	#general	Iza#0395	>daemon kikuri	
+2020-08-24 02:46:39	FishbowlTest	#general	ProgTest#5253	I don't recognize that Daemon!	
+2020-08-24 02:46:52	FishbowlTest	#general	Iza#0395	>daemon Kikuri	
+2020-08-24 02:46:52	FishbowlTest	#general	ProgTest#5253	I don't recognize that Daemon!	
+2020-08-24 02:47:41	FishbowlTest	#general	Iza#0395	>daemon kikuri	
+2020-08-24 02:47:42	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 02:47:41	FishbowlTest	#general	Iza#0395	>daemon kikuri	Unhandled error
+2020-08-24 02:49:20	FishbowlTest	#general	Iza#0395	>daemon kikuri	
+2020-08-24 02:49:20	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:58:17	FishbowlTest	#general	Iza#0395	>element	
+2020-08-24 02:58:17	FishbowlTest	#general	ProgTest#5253	Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-24 02:58:19	FishbowlTest	#general	Iza#0395	>element 1	
+2020-08-24 02:58:19	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:58:21	FishbowlTest	#general	Iza#0395	>element 3	
+2020-08-24 02:58:21	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:58:26	FishbowlTest	#general	Iza#0395	>element actions 12	
+2020-08-24 02:58:26	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 02:58:26	FishbowlTest	#general	Iza#0395	>element actions 12	Unhandled error
+2020-08-24 02:59:12	FishbowlTest	#general	Iza#0395	>elements actions 12	Command not recognized
+2020-08-24 02:59:16	FishbowlTest	#general	Iza#0395	>elements actions 12	Command not recognized
+2020-08-24 02:59:20	FishbowlTest	#general	Iza#0395	>element actions 12	
+2020-08-24 02:59:20	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:59:26	FishbowlTest	#general	Iza#0395	>element actions 13	
+2020-08-24 02:59:26	FishbowlTest	#general	ProgTest#5253	That's too many elements! Are you sure you need more than 12?	
+2020-08-24 02:59:31	FishbowlTest	#general	Iza#0395	>element actions	
+2020-08-24 02:59:31	FishbowlTest	#general	ProgTest#5253		
+2020-08-24 02:59:36	FishbowlTest	#general	Iza#0395	>element action 13	
+2020-08-24 02:59:36	FishbowlTest	#general	ProgTest#5253	Not a valid category!\nCategories: **Nature, Fantasy, Science, Actions, Art, ???**	
+2020-08-24 03:09:11	FishbowlTest	#general	Iza#0395	>help	
+2020-08-24 03:09:12	FishbowlTest	#general	ProgTest#5253	Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! My prefix for commands is ``>``. To see a list of all commands you can use, type ``>commands``. You can type ``>help`` and any other command for more info on that command!	
+2020-08-24 03:09:16	FishbowlTest	#general	Iza#0395	>help asdasda	
+2020-08-24 03:09:16	FishbowlTest	#general	ProgTest#5253	I can't find asdasda!	
+2020-08-24 03:09:16	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 03:09:16	FishbowlTest	#general	Iza#0395	>help asdasda	Unhandled error
+2020-08-24 03:09:59	FishbowlTest	#general	Iza#0395	>help asdasda	
+2020-08-24 03:09:59	FishbowlTest	#general	ProgTest#5253	I can't find asdasda!	
+2020-08-24 03:09:59	FishbowlTest	#general	ProgTest#5253	I don't know this command or there is no help message for this command.	
+2020-08-24 03:10:58	FishbowlTest	#general	Iza#0395	>help asdasda	
+2020-08-24 03:10:58	FishbowlTest	#general	ProgTest#5253	:warning::warning: **SOMETHING BROKE** :warning::warning:	
+2020-08-24 03:10:58	FishbowlTest	#general	Iza#0395	>help asdasda	Unhandled error
+2020-08-24 03:11:59	FishbowlTest	#general	Iza#0395	>help asdasda	
+2020-08-24 03:11:59	FishbowlTest	#general	ProgTest#5253	I don't know this command or there is no help message for this command.	
+2020-08-24 03:12:03	FishbowlTest	#general	Iza#0395	>help oops	
+2020-08-24 03:12:03	FishbowlTest	#general	ProgTest#5253	Deletes the bot message from the user's last valid command	
+2020-08-24 03:12:07	FishbowlTest	#general	Iza#0395	>help userinfo	
+2020-08-24 03:12:07	FishbowlTest	#general	ProgTest#5253	Shows some info on the mentioned user (or yourself if there is no mentioned user)	
+2020-08-24 03:12:10	FishbowlTest	#general	Iza#0395	>help tag	
+2020-08-24 03:12:10	FishbowlTest	#general	ProgTest#5253	Viruses and Battlechips have tags that determine how they behave or work in battle.\n\nThis command displays tags for various things.	
+2020-08-24 03:12:13	FishbowlTest	#general	Iza#0395	>help mysterydata	
+2020-08-24 03:12:13	FishbowlTest	#general	ProgTest#5253	This command rolls MysteryData and gives you the result automaticlly!	
+2020-08-24 03:17:53	FishbowlTest	#general	Iza#0395	>help tag	
+2020-08-24 03:17:53	FishbowlTest	#general	ProgTest#5253	Viruses and Battlechips have tags that determine how they behave or work in battle.\n\nThis command displays tags for various things.	
+2020-08-24 03:18:01	FishbowlTest	#general	Iza#0395	>help tag	
+2020-08-24 03:18:01	FishbowlTest	#general	ProgTest#5253	Viruses and Battlechips have tags that determine how they behave or work in battle.\n\nThis command displays tags for various things.	
+2020-08-24 03:18:04	FishbowlTest	#general	Iza#0395	>help power	
+2020-08-24 03:18:04	FishbowlTest	#general	ProgTest#5253	All Navis have Navi Powers: special abilities they can use whenever they like.\nThere are two types: Cost and Roll powers.\n**    - Cost powers reduce the listed stat by 1 until jack out and __do not affect liberation mission alarm countdowns__.\n    - Roll powers roll the associated skill to use the power.**\n\nThis command can display navi and virus powers: Cost, Roll, and Passive powers.	
+2020-08-24 03:19:19	FishbowlTest	#general	Iza#0395	>help power	
+2020-08-24 03:19:19	FishbowlTest	#general	ProgTest#5253	All Navis have Navi Powers: special abilities they can use whenever they like.\nThere are two types: Cost and Roll powers.\n**    - Cost powers reduce the listed stat by 1 until jack out and __do not affect liberation mission alarm countdowns__.\n    - Roll powers roll the associated skill to use the power.**\n\nThis command can display navi and virus powers: Cost, Roll, and Passive powers.	
+2020-08-24 03:19:24	FishbowlTest	#general	Iza#0395	>help power	
+2020-08-24 03:19:24	FishbowlTest	#general	ProgTest#5253	All Navis have Navi Powers: special abilities they can use whenever they like.\nThere are two types: Cost and Roll powers.\n**    - Cost powers reduce the listed stat by 1 until jack out and __do not affect liberation mission alarm countdowns__.\n    - Roll powers roll the associated skill to use the power.**\n\nThis command can display navi and virus powers: Cost, Roll, and Passive powers.	
+2020-08-24 03:19:40	FishbowlTest	#general	Iza#0395	>help power	
+2020-08-24 03:19:40	FishbowlTest	#general	ProgTest#5253	All Navis have Navi Powers: special abilities they can use whenever they like.\nThere are two types: Cost and Roll powers.\n**    - Cost powers reduce the listed stat by 1 until jack out and __do not affect liberation mission alarm countdowns__.\n    - Roll powers roll the associated skill to use the power.**\n\nThis command can display navi and virus powers: Cost, Roll, and Passive powers.	
+2020-08-24 03:31:10	FishbowlTest	#general	Iza#0395	>help power	
+2020-08-24 03:31:10	FishbowlTest	#general	ProgTest#5253	All Navis have Navi Powers: special abilities they can use whenever they like.\nThere are two types: Cost and Roll powers.\n**    - Cost powers reduce the listed stat by 1 until jack out and __do not affect liberation mission alarm countdowns__.\n    - Roll powers roll the associated skill to use the power.**\n\nThis command can display navi and virus powers: Cost, Roll, and Passive powers.	
+2020-08-24 03:31:15	FishbowlTest	#general	Iza#0395	>help bonds	
+2020-08-24 03:31:15	FishbowlTest	#general	ProgTest#5253	I don't know this command or there is no help message for this command.	
+2020-08-24 03:31:18	FishbowlTest	#general	Iza#0395	>help bond	
+2020-08-24 03:31:19	FishbowlTest	#general	ProgTest#5253	**Nothing can dispel or mitigate a Bond Power's effects.** This command displays bond powers, along with points needed, and what they do!	
+2020-08-24 03:31:21	FishbowlTest	#general	Iza#0395	>help chip	
+2020-08-24 03:31:22	FishbowlTest	#general	ProgTest#5253	Battle Chips are one-use attacks that NetOps slot into their PETs.\nYour PET's folder space is determined by your **Navi's Mind + Navi's Info + 2**.\nWhen making a new character, pick starter Battle Chips equal to your **NetOp's Mind + NetOp's Info + 2**.\n\nAfter a Navi uses a Battle Chip, they need to jack out to make that Battle Chip usable again, or to change your Battle Chip folder. **Folders often may not have duplicate Battle Chips, or more than 1 Mega Chip.**\n\nThis command can display info on Battle Chips.	

@@ -1,0 +1,57 @@
+Chip	Dmg	Range	Effect	Category	Tags	Tags In Brackets	Single Description	From?	License	Alias
+9Rush	2	Near	Create an ice block and slide across, crashing into Close range. Leaves a trail of ice behind.	Rush	Awkward, Dangerous			Genso Network		
+BioSpray	2	Near	Poison spray! Can be used repeatedly if you sacrifice defenses/movement while active; keep spraying!	Wave	Prcn., Awkd., Dngr.			Genso Network		
+BraveSword	2	Close	A weapon for the bold! If this hits a target, downshift your next two Bravery rolls.	Blade	Slow			Genso Network		
+ChargeCannon	3	Near	Huge gun fires a rail blast! Can spend 1 Sense to remove Slow and add Accurate.	Shot	Awkward, Slow			Genso Network		
+CleanUp		Near	Area restored to original state, removing all summoned objects, elements, and hazards.	Support	Slow			Genso Network		
+CrashLink		Close	A small ice mine! If something touches it, it freezes everything Close for 2 Piercing damage.	Summon	Dangerous, Slow			Genso Network		
+EarthPower	3	Near	Near area features animate and briefly attack all targets (swinging, crushing, etc) Close to them.	Hazard	Awkward, Dangerous			Genso Network		
+ElChain	1	Near	Electrified chain that stuns and pulls a foe into Close range.	Impact	Awkward, Slow			Genso Network		
+FlashBang	1	Near	Grenade explodes in a flash. Briefly stops enemy movement, reveals hidden foes in range.	Thrown				Genso Network		
+GasGarden		Close	Grows a poison lily that starts emitting gas. All Close to it upshift their attacks.	Summon	Dangerous			Genso Network		
+GravityBall	2	Near	Hovering gravity orb that makes the target extremely heavy, cracking the ground under them!	Thrown				Genso Network		
+GravityField		Near	Gravity intensifies, sending everything in range flying in 1 range band direction of your choice.	Hazard	Dangerous			Genso Network		
+Hakkero	2	Near	A large wall that shoots a magical beam. Can instead be used to downshift a Stamina defense	Wave	Guard			Genso Network		
+Hakurouken	X	Close	Legendary blade cuts defenses! X = target Body. Ignores Guards. Spend 1 Bravery to upshift defense.	Blade	Dangerous			Genso Network		
+Hanrei		Close	Ghostly double! Body turns invincible; ghost shares HP, disappears when damaged. It can't go past Far.	Summon	Guard, Slow			Genso Network		
+HeavyAnchor	3	Near	Lob an anchor to crush anything below. Can instead be used to temporarily lock yourself in place.	Thrown	Awkward, Dangerous			Genso Network		
+HyperSpanner	2	Near	Throw a gigantic spanner! Can also be used to power up nearby equipment.	Thrown	Awkward			Genso Network		
+LeafWave	1	Near	Dead leaves zigzag forward, leaving tripping debris behind on hit.	Wave				Genso Network		
+MagiBomb	2x2	Near	Magic cross-bomb that explodes twice. Spend 1 Affinity to hit all Close to the target.	Thrown	Piercing			Genso Network		
+MedusaEye		Close	Wicked eye opens up and periodically fires 1 damage petrifying rays at Near targets, up to 5 times.	Summon	Dangerous			Genso Network		
+MonkeyPole		Far	Many sturdy staffs rise from the ground; can be used as a small wall, prop, handle, etc. Difficult to break.	Summon	Simple			Genso Network		
+PaladinLance	2	Close	For the noble! Spend 1 Bravery to instead add +2 hits and Piercing to an ally’s attack roll.	Blade	Piercing, Awkward			Genso Network		
+Resist			Ignore secondary effects of a single damaging chip. Spend 1 Coding to refresh this chip.	Support	Guard, Simple			Genso Network		
+Roukanken	2	Close	Legendary blade cuts data! Deals +2 damage if target’s element has been disabled or changed.	Blade	Piercing, Awkward			Genso Network		
+ScatterShot	2x2	Close	Reckless blast also hits an additional chosen Close target. Spend X Sense to choose X more targets.	Shot	Dangerous			Genso Network		
+SeedCannon		Near	Slot in a Hazard chip, fire it as a Shot chip. It gains +1 dmg, Slow, Dngr., and triggers at the target’s feet.	Shot	Simple			Genso Network		
+ShellArmor			Reduce damage of next 2 attacks you take by half, round down. Downshift next 2 defenses to hazards.	Support	Guard			Genso Network		
+ShellHockey	1+X	Near	Bouncing shell! If no damage taken: bounce to Close target until hit. X = # missed. Vanishes on 3 bounces.	Rush	Accurate, Dangerous			Genso Network		
+SilverKnife		Far	Gleaming blade! Damage depends on range to target. Close: 2x2 Dmg; Near: 2 Dmg; Far: 2 Dmg + Slow.	Blade	Awkward			Genso Network		
+TankMissiles	3	Near	Targeting reticles appear everywhere in range. After a delay, missiles rain down and hammer the earth.	Hazard	Dangerous, Slow			Genso Network		
+VenomShot	3	Near	Coats the floor in a pool of poison on a miss.	Thrown	Dangerous, Slow			Genso Network		
+VirusBall			Used to contain a Virus. Must be in the Folder to tame a Virus. When in combat, slot in to summon Virus.	Summon				Genso Network		
+WhiteCard			Your next attack roll mimics the secondary effects of the last two damaging chips used.	Support	Slow			Genso Network		
+WhiteLily		Close	Fragile lily poisons a Near target. While active, they take 1 extra damage whenever damaged.	Summon				Genso Network		
+AreaHold		Far	The server sector temporarily sees you as the admin. The area may not be altered (summons, hazards, elements, MapEdit, etc) without your permission.	Support	Mega, Slow			Genso Network		
+DisasterClaw	2x3	Close	Data-nullifying claw that cuts through code. Disable 1 per hit for 5 rolls: Element, Powers, NCPs, Folder, one Skill, PET connection, or movement.	Blade	Mega, Piercing			Genso Network		
+DruidWave	5	Near	Recall 3 elements of Navis you’ve defeated before. They, plus your element, coalesce into a destructive wave ahead. All elements linger afterwards.	Wave	Mega, Dangerous			Genso Network		
+ElemAura			If your Affinity is <4, it is now 4. Can use Affinity as defense. Gain another +1 Affinity whenever you’re attacked by an enemy. Lasts 7 rolls.	Support	Mega, Guard, Slow			Genso Network		
+GodSoul			For the next 3 rolls, every stat + skill reduction becomes an addition instead. May spend HP to add that many additional rolls (max 5).	Support	Mega, Simple			Genso Network		
+HeroBuster	3+X	Near	Memories of your friends inspire you, channeling your power into a final blow! Spend up to 5 Bond Points to add that much damage.	Shot	Mega, Slow			Genso Network		
+LittleLegion		Near	Summon 10 animated 1 HP dolls around you, supplementing your actions. Can sacrifice up to 4 dolls per roll to add that many hits. (Use before rolling)	Summon	Mega, Slow			Genso Network		
+RageCannon	1+X	Near	A giant cannon fueled by blood and anger! X = missing HP (Max 5). If you’re at or below 2 HP, upshift defenses against this chip.	Shot	Mega, Dangerous			Genso Network		
+SweetMedicine	4	Far	Chemical spray over an area and envelop enemies! Enemies must break out, losing 1 HP every failure. Allies standing in it heal 1 HP per roll.	Thrown	Mega, Slow			Genso Network		
+AlongWith	3+X	Near	Purple flames feeding on emotions. X = Their total Bond Levels (max 10). If this would delete a Navi, pick 1: you operate them, you take their place.	Shot	Dark, Piercing, Dangerous			Genso Network		
+DarkAnchor	2	Near	Anchor breaks everything below. Anything Close on impact is shackled to the anchor and gradually drug under into the abyss. Hard Strength to break free.	Thrown	Dark, Piercing, Dangerous			Genso Network		
+DarkBreath	X	Near	Absorb in, then spew out bad code. X = Allies’ skill reductions (max 10). Targets (and you) copy all highest reduction values. All allies remove reductions.	Wave	Dark, Dangerous			Genso Network		
+DarkDefender		Near	Permanently erase a happy memory you have. It forms an infallible barrier around an ally. For 7 rolls,they ignore <4 damage, status changes, and hazards.	Support	Dark, Guard, Simple			Genso Network		
+DarkDesert	2	Far	Navi’s chassis burns to ash, multiplying infinitely. Foes start drowning, upshifting rolls. Move allies any area in range instantly. Lasts [Daemon Bond]+2 rolls.	Hazard	Dark, Dangerous			Genso Network		
+DarkFall	2x4	Near	Sacrifice a limb. It rips apart, pieces flying out to shred the server and all caught in it. Damaged targets are blinded for a long time, even after jack-out.	Wave	Dark, Accurate, Piercing, Dangerous			Genso Network		
+DarkInverse			For the next [Daemon Bond+1] rolls, dice rolls are flipped: rather than needing to roll over for success, you roll under. Your body goes numb afterwards.	Support	Dark, Simple			Genso Network		
+DarkSavior		Near	Spend a portion of your core to instantly restore a recently-deleted ally back to perfect state. Your data will be purged in 7+X days. X = Daemon bond level.	Support	Dark, Simple			Genso Network		
+DarkSeeker			Pick any target, living or dead. Until you find them, you will know their location, status, feelings, and thoughts. One thing can be whispered into their mind.	Support	Dark, Slow			Genso Network		
+DarkSpark	5	Near	Your mind blanks. A large wall manifests in front of you, firing a dark beam. Your thoughts are written on it. The wall will stay there forever, no matter what.	Wave	Dark, Dangerous			Genso Network		
+DarkStorm	4	Rng	Invoke a terrible storm in the server. Pick 1: Deadly cyclone, instant flood, lethal icestorm, toxic miasma, or searing firestorm. The server will never recover.	Hazard	Dark, Dangerous			Genso Network		
+DarkWiper	3	Rng	Wicked scythe purges code! Your choice stat of target becomes 1, related skills are 0. On delete, target is erased from all memory databanks in the server.	Blade	Dark, Piercing, Dangerous			Genso Network		
+DarkWorld		Rng	Until jack-out, all your peers in range endure echoes of your feelings. They must roll Hard Bravery, else their thoughts will happily conform with yours. Finally.	Hazard	Dark, Awkward, Dangerous			Genso Network		

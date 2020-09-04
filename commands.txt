@@ -13,12 +13,14 @@ unrestrict	unrestrictuser	prefix	2
 bugreport	bugreport	prefix	1
 oops	oops	prefix	1
 commands	commands	prefix	1
-help	help	prefix	1
+help	help_cmd	prefix	1
 roll	roll	prefix	1
 r	roll	prefix	1
 chip	chip	prefix	1
+chips   chip    prefix  1
 power	power	prefix	1
-NCP	NCP	prefix	1
+powers	power	prefix	1
+ncp	ncp	prefix	1
 virus	virus	prefix	1
 virusx	virusx	prefix	1
 tag	tag	prefix	1
@@ -27,7 +29,9 @@ NPC	NPC	prefix	1
 bond	bond	prefix	1
 mysterydata	mysterydata	prefix	1
 rulebook	rulebook	prefix	1
-element	element	prefix	3
+element	element	prefix	1
 mysteryreward	mysteryreward	prefix	1
 daemon	daemon	prefix	1
 invite	invite	prefix	1
+upgrade	upgrade	prefix	1
+crimsonnoise	crimsonnoise	prefix	1
