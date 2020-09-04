@@ -102,15 +102,6 @@ async def sendmessage(receivemessage, sendchannel=None, sendcontent="", sendembe
         #Check channel cooldown
         cooldownactive = False
         userlevel = getuserlevel(receivemessage.author.id)
-        if userlevel < settings.ignorecdlevel:
-            #calculate time since the last bot output on this channel
-            global lastmessageDT
-            try:
-                TD = datetime.datetime.now() - lastmessageDT[sendchannel.id]
-                cooldownactive = ((TD.microseconds / 1000) + (TD.seconds * 1000) < settings.channelcooldown)
-            except KeyError:
-                pass
-        
         try:
             userlastoutputs = outputhistory[receivemessage.author.id]
         except KeyError:
@@ -140,8 +131,13 @@ async def sendmessage(receivemessage, sendchannel=None, sendcontent="", sendembe
         sendcontent = settings.message_resulttoolong.format(len(sendcontent))
     
     #send the message and track some data
-    #THEmessage = await client.send_message(sendchannel, sendcontent, embed=sendembed)
-    THEmessage = await receivemessage.channel.send(sendcontent, embed=sendembed)
+    if is_python38:
+        if sendchannel is None:
+            THEmessage = await receivemessage.channel.send(sendcontent, embed=sendembed)
+        else:
+            THEmessage = await sendchannel.send(sendcontent, embed=sendembed)
+    else:
+        THEmessage = await client.send_message(sendchannel, sendcontent, embed=sendembed)
     log(THEmessage)
     if receivemessage is not None:
         userlastoutputs.append(THEmessage)
@@ -149,6 +145,12 @@ async def sendmessage(receivemessage, sendchannel=None, sendcontent="", sendembe
     lastmessageDT[sendchannel.id] = datetime.datetime.now()
     
     return THEmessage
+
+
+async def delete_message(receivemessage):
+    await receivemessage.delete()
+    return
+
 
 #Assciates a String to a Function.
 #- command: a string which represents the command name (will be converted to lowercase)
