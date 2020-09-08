@@ -30,8 +30,6 @@ containcommands = []
 outputhistory = {} #userid -> list of Discord Messages sent by bot in response to the user, oldest first (only keeps track since bot startup)
 lastmessageDT = {} #channelid -> datetime of most recent Discord Message sent
 
-is_python38 = sys.version[0:3] == '3.8'
-
 #######################
 #GENERAL BOT FUNCTIONS#
 #######################
@@ -57,16 +55,10 @@ def log(message=None, logresult=""):
     else:
         #determine some values
         logmessage = message.content.replace("\n", "\\n")
-        if is_python38:
-            timestamp = message.created_at.strftime("%Y-%m-%d %H:%M:%S")
-        else:
-            timestamp = message.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = message.created_at.strftime("%Y-%m-%d %H:%M:%S")
         username = message.author.name
         discr = message.author.discriminator
-        if is_python38:
-            server = message.guild
-        else:
-            server = message.server
+        server = message.guild
         if server is not None:
             servername = server.name
             nickname = message.author.nick or ""
@@ -109,10 +101,7 @@ async def sendmessage(receivemessage, sendchannel=None, sendcontent="", sendembe
             userlastoutputs = outputhistory[receivemessage.author.id]
         if len(userlastoutputs) > 0:
             #calculate time since the last bot output from the user
-            if is_python38:
-                TD = datetime.datetime.now() - userlastoutputs[-1].created_at
-            else:
-                TD = datetime.datetime.now() - userlastoutputs[-1].timestamp
+            TD = datetime.datetime.now() - userlastoutputs[-1].created_at
             usercooldown = 0
             while usercooldown == 0 and userlevel >= 0:
                 try:
@@ -131,13 +120,10 @@ async def sendmessage(receivemessage, sendchannel=None, sendcontent="", sendembe
         sendcontent = settings.message_resulttoolong.format(len(sendcontent))
     
     #send the message and track some data
-    if is_python38:
-        if sendchannel is None:
-            THEmessage = await receivemessage.channel.send(sendcontent, embed=sendembed)
-        else:
-            THEmessage = await sendchannel.send(sendcontent, embed=sendembed)
+    if sendchannel is None:
+        THEmessage = await receivemessage.channel.send(sendcontent, embed=sendembed)
     else:
-        THEmessage = await client.send_message(sendchannel, sendcontent, embed=sendembed)
+        THEmessage = await sendchannel.send(sendcontent, embed=sendembed)
     log(THEmessage)
     if receivemessage is not None:
         userlastoutputs.append(THEmessage)
@@ -317,10 +303,7 @@ async def on_ready():
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
     await runcommand("updatecommands")
-    if is_python38:
-        await client.change_presence(status=discord.Status.online, activity=discord.Game(name='NetBattlers RPG'))
-    else:
-        await client.change_presence(status=discord.Status.Online, activity=discord.Game(name='NetBattlers RPG'))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(name='NetBattlers RPG'))
 
 ##############
 #INPUT OUTPUT#
