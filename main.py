@@ -492,7 +492,7 @@ async def roll(context, *args, **kwargs):
                                                                      str_result, roll_results.eval())
 
         if roll_comment:
-            progroll_output += "   #".format(roll_comment.rstrip())
+            progroll_output += "   #{}".format(roll_comment.rstrip())
         return await koduck.sendmessage(context["message"],
                                         sendcontent=progroll_output)
     except rply.errors.LexingError:
