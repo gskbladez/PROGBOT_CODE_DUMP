@@ -1066,7 +1066,6 @@ async def virus(context, *args, **kwargs):
         await koduck.sendmessage(context["message"], sendembed=embed)
 
 
-
 async def virusx(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
