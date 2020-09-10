@@ -1,0 +1,16 @@
+Name	Description
+AnonyMode	All Navi identities are hidden. Everyone has a generic appearance and voice. Attempts to expose users’ identities is a bannable offense.
+ChatLog	All spoken and written dialogue is recorded, including the timestamp, speaker’s identity, and information about their connection.
+CloudbankPolling	All Navis periodically get to vote on aesthetic details, like the sky’s color, the weather, and the presence of birdsong. Navis can pay 1000z to instantly toggle a vote on one topic.
+CommFilter	Nobody can speak. Any form of text is erased. Navis can only communicate via body language, facial expression, and an array of server-approved emoji.
+
+ContinueFunction	When Navis are reduced to 0 HP, they can heal back up to half HP (rounded down) by paying 2000z. Restoration takes a minute.
+EjectTimer	Navis are forced to jack out after being inside for one hour. Independent Navis are automatically deleted after an hour.
+
+HoloNet	Holograms display the server’s contents in the real world. Navis see the world around their holograms as if they were standing in the real world.
+
+Instanced	The server generates a new copy of the area for each Navi. Each copy is separate from the others, preventing Navis from interacting with other areas and Navis.
+Labyrinth	The layout of the server periodically shuffles. Every door leads to a different room, every hallway turns differently, and every warp point leads somewhere else.
+OutdatedEngine	Failed rolls can cause glitches, like getting stuck in the floor or corrupting a Near object. It may be possible to exploit the server’s buggy code to end up in strange/hidden places.
+SkullBrand	Any Navi that damages a target is branded as Hostile for a week. Brands are visible from Near range.
+WikiDecor	Any Navi marked “trusted” can make a Coding roll to add to or modify the server’s contents. Adding or modifying decor is Easy, and adding or modifying new rooms is Hard.

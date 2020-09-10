@@ -22,13 +22,14 @@ MAX_NCP_QUERY = 5
 MAX_CHIP_QUERY = 5
 MAX_VIRUS_QUERY = 5
 MAX_ELEMENT_ROLL = 12
+MAX_MOD_QUERY = 5
 ROLL_COMMENT_CHAR = '#'
 
 skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
               'Charm', 'Bravery', 'Affinity']
 cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Underground Broadcast",
-           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast"]
+           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Nyx"]
 playermade_list = ["Genso Network"]
 
 cc_color_dictionary = {"Mega": 0xA8E8E8,
@@ -39,14 +40,16 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
                        "Mystic Lilies": 0x99004c,
                        "Leximancy": 0x481f65,
                        "Underground Broadcast": 0x73ab50,
+                       "New Connections": 0xededed,
                        "Tarot": 0xfcf4dc,
+                       "Nyx": 0x878787,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
                        "Item": 0xffffff}
 
 BUGREPORT_CHANNEL_ID = 704684798584815636
-# TODO: add New Connections server mods
 
+# TODO: add Nyx CC
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -104,6 +107,9 @@ tag_df["tag_lowercase"] = tag_df["Tag"].str.lower()
 
 mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
 mysterydata_df["mysterydata_lowercase"] = mysterydata_df["MysteryData"].str.lower()
+
+networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
+networkmod_df["name_lowercase"] = networkmod_df["Name"].str.lower()
 
 crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
 crimsonnoise_df["mysterydata_lowercase"] = crimsonnoise_df["MysteryData"].str.lower()
@@ -1039,7 +1045,7 @@ async def virus(context, *args, **kwargs):
                                                     "I can also query Viruses by Category, Tag, and Crossover Content!")
     elif len(cleaned_args) > MAX_VIRUS_QUERY:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Too many viruses, no more than 5!")
+                                        sendcontent="Too many viruses, no more than %d!" % MAX_VIRUS_QUERY)
     arg_lower = args[0].lower()
     is_query, result_title, result_msg = query_virus(arg_lower)
     if is_query:
@@ -1117,6 +1123,10 @@ async def query(context, *args, **kwargs):
 
     if arg == 'daemon':
         _, result_title, result_msg = query_daemon()
+        return await send_query_msg(context, result_title, result_msg)
+
+    if arg in ['networkmod', 'mod']:
+        _, result_title, result_msg = query_network()
         return await send_query_msg(context, result_title, result_msg)
 
     would_be_valid = pity_cc_check(arg)
@@ -1273,9 +1283,9 @@ async def daemon(context, *args, **kwargs):
         _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
 
-    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", args[0], override=True)
+    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", cleaned_args[0], override=True)
     if daemon_info is None:
-        daemon_info = await find_value_in_table(context, pmc_daemon_df, "name_lowercase", args[0])
+        daemon_info = await find_value_in_table(context, pmc_daemon_df, "name_lowercase", cleaned_args[0])
         if daemon_info is None:
             return
 
@@ -1352,6 +1362,7 @@ async def element(context, *args, **kwargs):
                                                                                             element_category)
     element_color = 0x48C800
     elements_list = ", ".join(elements_name)
+
     embed = discord.Embed(title=element_flavor_title,
                           color=element_color,
                           description=elements_list)
@@ -1365,6 +1376,46 @@ async def rulebook(context, *args, **kwargs):
                                                     "NetBattlers Beta 6 Official Rulebook (mobile-friendly): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Mobile.pdf>\n" +
                                                     "NetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Advance-5.pdf>\n\n" +
                                                     "**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
+
+
+def query_network():
+    result_title = "Listing all Network Modifiers from the New Connections crossover content..."
+    result_msg = ", ".join(networkmod_df["Name"])
+    return True, result_title, result_msg
+
+
+async def networkmod(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+    if len(cleaned_args) < 1:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Pulls up info for 1-%d Network Modifiers! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY )
+
+    if len(cleaned_args) > MAX_MOD_QUERY:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Can't pull up more than %d Network Mods!" % MAX_MOD_QUERY)
+
+    if cleaned_args[0] in ["list", "all"]:
+        _, result_title, result_msg = query_network()
+        return await send_query_msg(context, result_title, result_msg)
+
+    for arg in cleaned_args:
+        networkmod_info = await find_value_in_table(context, networkmod_df, "name_lowercase", arg, override=True)
+        if networkmod_info is None:
+            continue
+
+        networkmod_name = networkmod_info["Name"]
+        networkmod_description = networkmod_info["Description"]
+        networkmod_color = cc_color_dictionary["New Connections"]
+
+        networkmod_field = 'New Connections Crossover Network Modifier'
+
+        embed = discord.Embed(title="__{}__".format(networkmod_name),
+                              color=networkmod_color)
+        embed.add_field(name="**[{}]**".format(networkmod_field),
+                        value="_{}_".format(networkmod_description))
+        await koduck.sendmessage(context["message"], sendembed=embed)
+
+    return
 
 
 async def invite(context, *args, **kwargs):
