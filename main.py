@@ -50,6 +50,7 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
 BUGREPORT_CHANNEL_ID = 704684798584815636
 
 # TODO: add Nyx CC
+# TODO: Add error log file
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -87,6 +88,7 @@ def prep_virus_df(df):
     df["name_lowercase"] = df["Name"].str.lower()
     df["category_lowercase"] = df["Category"].str.lower()
     return df
+
 
 def prep_daemon_df(df):
     df = df.fillna('')
@@ -175,7 +177,10 @@ async def sendmessage(context, *args, **kwargs):
 
 async def bugreport(context, *args, **kwargs):
     if len(args) < 1:
-        return await koduck.sendmessage(context["message"], sendcontent=settings.message_bugreport_noparam)
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Sends a bug report to the ProgBot Devs! " + \
+                                                    "Please describe the error in full. " + \
+                                                    "(i.e. `>bugreport Sword is listed as 3 damage when it is 2 damage.`)")
 
     channelid = BUGREPORT_CHANNEL_ID
 
@@ -401,9 +406,13 @@ async def commands(context, *args, **kwargs):
 async def help_cmd(context, *args, **kwargs):
     # Default message if no parameter is given
     if len(args) == 0:
-        return await koduck.sendmessage(context["message"], sendcontent=settings.message_help.replace("{cp}",
-                                                                                                      settings.commandprefix).replace(
-            "{pd}", settings.paramdelim))
+        message_help = "Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! " + \
+                       "My prefix for commands is `{cp}`.\n" + \
+                       "To see a list of all commands you can use, type `{cp}commands`. " + \
+                       "You can type `{cp}help` and any other command for more info on that command!\n" + \
+                       "I can also pull up info on some rules and descriptions! (i.e. Bond Powers, Parrying, Talents, Skills)"
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}", settings.paramdelim))
 
     help_msg = await find_value_in_table(context, help_df, "command_lowercase", args[0], override=True)
 
@@ -778,7 +787,7 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
 
 def clean_args(args):
     if len(args) == 1:
-        args = re.split(r"(?:,|;)", args[0])
+        args = re.split(r"(?:,|;|\s+)", args[0])
     args = [i.lower().strip() for i in args if i]
     return args
 
