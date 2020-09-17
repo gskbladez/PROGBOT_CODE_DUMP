@@ -23,6 +23,7 @@ MAX_CHIP_QUERY = 5
 MAX_VIRUS_QUERY = 5
 MAX_ELEMENT_ROLL = 12
 MAX_MOD_QUERY = 5
+MAX_NPU_QUERY = MAX_NCP_QUERY
 ROLL_COMMENT_CHAR = '#'
 
 skill_list = ['Sense', 'Info', 'Coding',
@@ -31,6 +32,7 @@ skill_list = ['Sense', 'Info', 'Coding',
 cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Underground Broadcast",
            "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Nyx"]
 playermade_list = ["Genso Network"]
+joke_list = ["Nyx"]
 
 cc_color_dictionary = {"Mega": 0xA8E8E8,
                        "ChitChat": 0xff8000,
@@ -42,15 +44,16 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
                        "Underground Broadcast": 0x73ab50,
                        "New Connections": 0xededed,
                        "Tarot": 0xfcf4dc,
-                       "Nyx": 0x878787,
+                       "Nyx": 0xa29e14,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
                        "Item": 0xffffff}
 
 BUGREPORT_CHANNEL_ID = 704684798584815636
 
-# TODO: add Nyx CC
 # TODO: Add error log file
+# TODO: Aliasing on other things
+# TODO: actually literal dicebomb command
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -65,6 +68,7 @@ settings.backgroundtask = backgroundtask
 
 # Riject is a godsend: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
 # Other lists: https://docs.google.com/spreadsheets/d/1bnpvmU4KwmXzHUTuN3Al_W5ZKBuHAmy3Z-dEmCS6SqY/edit?usp=sharing
+# Nyx CC data: https://docs.google.com/spreadsheets/d/1L6qB-AaK8kB8mI1yhixlLmxQZQDrhHYfJ273WTyR8Ms/edit#gid=139979102
 def prep_chip_df(df):
     df = df.fillna('')
     df["chip_lowercase"] = df["Chip"].str.lower()
@@ -120,10 +124,9 @@ element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
 element_df["category_lowercase"] = element_df["category"].str.lower()
 current_element_categories = ", ".join(pd.unique(element_df["category"]))
 
-
 help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
 help_df["command_lowercase"] = help_df["Command"].str.lower()
-help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n',regex=True)
+help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
 
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
 chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
@@ -141,6 +144,9 @@ pmc_chip_df = prep_chip_df(pd.read_csv(r"playermade_chipdata.tsv", sep="\t"))
 pmc_power_df = prep_power_df(pd.read_csv(r"playermade_powerdata.tsv", sep="\t"))
 pmc_virus_df = prep_virus_df(pd.read_csv(r"playermade_virusdata.tsv", sep="\t"))
 pmc_daemon_df = prep_daemon_df(pd.read_csv(r"playermade_daemondata.tsv", sep="\t"))
+
+nyx_chip_df = prep_chip_df(pd.read_csv(r"nyx_chipdata.tsv", sep="\t"))
+nyx_power_df = prep_power_df(pd.read_csv(r"nyx_powerdata.tsv", sep="\t"))
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -415,11 +421,10 @@ async def help_cmd(context, *args, **kwargs):
                                         sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}", settings.paramdelim))
 
     help_msg = await find_value_in_table(context, help_df, "command_lowercase", args[0], override=True)
-
     if help_msg is None:
         help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
-        help_response = help_msg["Response"]
+        help_response = help_msg["Response"].replace("{cp}", settings.commandprefix)
 
     return await koduck.sendmessage(context["message"],
                                     sendcontent=help_response)
@@ -463,11 +468,13 @@ async def userinfo(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
-async def roll(context, *args, **kwargs):
-    parser = dice_algebra.parser
-    lexer = dice_algebra.lexer
+def get_roll_from_macro(diff, dicenum):
+    roll_difficulty = roll_difficulty_dict[diff.upper()]
+    roll_dicenum = int(dicenum)
+    return "%dd6>%d" % (roll_dicenum, roll_difficulty)
 
-    roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
+
+async def roll(context, *args, **kwargs):
     if "paramline" not in context:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll dice for you! Try `>roll 5d6>4` or `>roll $N5`!")
@@ -482,16 +489,12 @@ async def roll(context, *args, **kwargs):
     if not roll_line:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="No roll given!")
-
-    roll_macro_match = re.match(r"\$?(E|N|H)(\d+)", roll_line, flags=re.IGNORECASE)
-    if roll_macro_match:
-        roll_difficulty = roll_difficulty_dict[roll_macro_match.group(1).upper()]
-        roll_dicenum = int(roll_macro_match.group(2))
-        zero_formatted_roll = "%dd6>%d" % (roll_dicenum, roll_difficulty)
-    else:
-        # adds 1 in front of bare d6, d20 references
-        roll_line = re.sub("(?P<baredice>^|\s+)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
-        zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
+    # subs out the macros
+    macro_regex = r"\$?(E|N|H)(\d+)"
+    roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line, flags=re.IGNORECASE)
+    # adds 1 in front of bare d6, d20 references
+    roll_line = re.sub("(?P<baredice>^|\s+)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
+    zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
 
     try:
         roll_results = parser.parse(lexer.lex(zero_formatted_roll))
@@ -507,7 +510,7 @@ async def roll(context, *args, **kwargs):
                                                                      str_result, roll_results.eval())
 
         if roll_comment:
-            progroll_output += "   #{}".format(roll_comment.rstrip())
+            progroll_output += " #{}".format(roll_comment.rstrip())
         return await koduck.sendmessage(context["message"],
                                         sendcontent=progroll_output)
     except rply.errors.LexingError:
@@ -590,6 +593,10 @@ def query_chip(arg_lower):
         subdf = chip_df[chip_df["license_lowercase"] == arg_lower]
         return_title = "Pulling up all `%s` BattleChips..." % subdf.iloc[0]["License"]
         return_msg = ", ".join(subdf["Chip"])
+    elif arg_lower in ["nyx"]:
+        subdf = nyx_chip_df[nyx_chip_df["from_lowercase"] == arg_lower]
+        return_title = "Pulling up all BattleChips from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
+        return_msg = ", ".join(subdf["Chip"])
     elif arg_lower not in ["core"] and arg_lower in pd.unique(chip_df["from_lowercase"]):
         subdf = chip_df[chip_df["from_lowercase"] == arg_lower]
         return_title = "Pulling up all BattleChips from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
@@ -618,12 +625,12 @@ async def chip(context, *args, **kwargss):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!\n"+
                                                     "I can also query chips by Category, Tag, License, and Crossover Content!")
-    arg_lower = cleaned_args[0]
-    is_query, return_title, return_msg = query_chip(arg_lower)
+    arg_combined = ' '.join(cleaned_args)
+    is_query, return_title, return_msg = query_chip(arg_combined)
     if is_query:
         return await send_query_msg(context, return_title, return_msg)
 
-    would_be_valid = pity_cc_check(arg_lower)
+    would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="`%s` has no Crossover Content BattleChips!" % would_be_valid)
@@ -650,11 +657,14 @@ async def chip(context, *args, **kwargss):
         except re.error:
             pass
 
+        # TODO: de-nest somehow
         chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg, override=True)
         if chip_info is None:
-            chip_info = await find_value_in_table(context, pmc_chip_df, "chip_lowercase", arg)
+            chip_info = await find_value_in_table(context, pmc_chip_df, "chip_lowercase", arg, override=True)
             if chip_info is None:
-                continue
+                chip_info = await find_value_in_table(context, nyx_chip_df, "chip_lowercase", arg, override=False)
+                if chip_info is None:
+                    continue
 
         chip_name = chip_info["Chip"]
 
@@ -681,6 +691,13 @@ async def chip(context, *args, **kwargss):
             chip_title_sub = chip_license + " "
         else:
             chip_title_sub = chip_license
+
+        if chip_crossover == "Nyx":
+            msg_time = context["message"].created_at
+            if msg_time.month == 4 and msg_time.day == 1:
+                chip_title_sub = "%s Official!! Crossover " % chip_crossover
+            else:
+                chip_title_sub = "%s Unofficial Crossover " % chip_crossover
 
         # this determines embed colors
         color = 0xbfbfbf
@@ -727,6 +744,7 @@ def find_skill_color(skill_key):
         color = -1  # error code
     return color
 
+
 async def power_ncp(context, arg, force_power = False, ncp_only = False):
     if ncp_only:
         local_power_df = power_df[power_df["Sort"] != "Virus Power"]
@@ -735,9 +753,11 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
     power_info = await find_value_in_table(context, local_power_df, "power_lowercase", arg, override=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(context, pmc_power_df, "power_lowercase", arg)
+        power_info = await find_value_in_table(context, pmc_power_df, "power_lowercase", arg, override=True)
         if power_info is None:
-            return None, None, None, None
+            power_info = await find_value_in_table(context, nyx_power_df, "power_lowercase", arg, override=False)
+            if power_info is None:
+                return None, None, None, None, None
 
     power_name = power_info["Power/NCP"]
     power_skill = power_info["Skill"]
@@ -756,6 +776,7 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
             power_color = find_skill_color(power_true_info["Skill"])
         else:
             power_color = 0xffffff
+    field_footer = ""
 
     if power_eb == '-' or force_power:  # display as power, rather than ncp
         if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
@@ -764,6 +785,13 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
             field_title = "%s Power/%s" % (power_skill, power_type)
 
         field_description = power_description
+
+        # TODO: might take out
+        #if power_source in playermade_list:
+        #    field_footer = "Source: %s (Unofficial)" % power_source
+        #elif power_source in cc_list:
+        #    field_footer = "Source: %s (Crossover Content)" % power_source
+
     else:
         field_title = '%s EB' % power_eb
 
@@ -774,15 +802,22 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
             field_title = "+" + field_title
         elif power_source in playermade_list:
             power_name += " (%s Unofficial NCP)" % power_source
+        elif power_source == "Nyx":
+            msg_time = context["message"].created_at
+            if msg_time.month == 4 and msg_time.day == 1:
+                power_name += (" (%s Official!! Crossover NCP) " % power_source)
+            else:
+                power_name += (" (%s Unofficial Crossover NCP) " % power_source)
         elif power_source != "Core":
             power_name += " (%s Crossover NCP)" % power_source
+
 
         if power_type in ['Passive', '-', 'Upgrade', 'Minus']:
             field_description = power_description
         else:
             field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
 
-    return power_name, field_title, field_description, power_color
+    return power_name, field_title, field_description, power_color, field_footer
 
 
 def clean_args(args):
@@ -839,7 +874,8 @@ async def power(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many powers, no more than 5!")
 
-    is_query, results_title, results_msg = query_power(cleaned_args)
+    arg_combined = " ".join(cleaned_args)
+    is_query, results_title, results_msg = query_power(arg_combined)
     if is_query:
         if not results_msg:
             return await koduck.sendmessage(context["message"], sendcontent="No powers found with that query!")
@@ -852,7 +888,7 @@ async def power(context, *args, **kwargs):
         is_power_ncp = re.match(r"^(\S+)\s*ncp$", arg, flags=re.IGNORECASE)
         if is_power_ncp:
             arg = is_power_ncp.group(1)
-        power_name, field_title, field_description, power_color = await power_ncp(context, arg, force_power=True)
+        power_name, field_title, field_description, power_color, field_footer = await power_ncp(context, arg, force_power=True)
         if power_name is None:
             continue
 
@@ -860,6 +896,8 @@ async def power(context, *args, **kwargs):
                               color=power_color)
         embed.add_field(name="**[{}]**".format(field_title),
                         value="_{}_".format(field_description))
+        if field_footer:
+            embed.set_footer(text=field_footer)
         await koduck.sendmessage(context["message"], sendembed=embed)
     return
 
@@ -876,6 +914,10 @@ def query_ncp(arg_lower):
         results_title = "Finding all `%s EB` NCPs..." % eb_search
         results_msg = ", ".join(subdf["Power/NCP"])
         return True, results_title, results_msg
+    elif arg_lower in ["nyx"]:
+        subdf = nyx_power_df
+        results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
+        results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in valid_cc_list:
         subdf = ncp_df[ncp_df["from_lowercase"] == arg_lower]
         results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
@@ -894,17 +936,18 @@ def query_ncp(arg_lower):
 
     return True, results_title, results_msg
 
+
 async def ncp(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a NaviCust Part and I can pull up its info for you!\n"+
                                                     "I can also query NCPs by EB and Crossover Content!")
-    arg_lower = cleaned_args[0]
-    is_query, results_title, results_msg = query_ncp(arg_lower)
+    arg_combined = " ".join(cleaned_args)
+    is_query, results_title, results_msg = query_ncp(arg_combined)
     if is_query:
         return await send_query_msg(context, results_title, results_msg)
-    would_be_valid = pity_cc_check(arg_lower)
+    would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="`%s` has no Crossover Content NCPs!" % would_be_valid)
@@ -918,7 +961,7 @@ async def ncp(context, *args, **kwargs):
             continue
         if any(power_df["power_lowercase"] == "%sncp" % arg):
             arg += "ncp"
-        power_name, field_title, field_description, power_color = await power_ncp(context, arg, force_power=False, ncp_only=True)
+        power_name, field_title, field_description, power_color, _ = await power_ncp(context, arg, force_power=False, ncp_only=True)
         if power_name is None:
             continue
 
@@ -943,7 +986,10 @@ async def upgrade(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a default NaviPower and I can find its upgrades for you!")
+                                        sendcontent="Give me the name of 1-%d default Navi Powers and I can find its upgrades for you!" % MAX_NPU_QUERY)
+    elif len(cleaned_args) > MAX_NPU_QUERY:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="I can't pull up more than %d Navi Power Upgrades at a time!" % MAX_NPU_QUERY)
 
     for arg in cleaned_args:
         arg = arg.lower()
@@ -1055,8 +1101,9 @@ async def virus(context, *args, **kwargs):
     elif len(cleaned_args) > MAX_VIRUS_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many viruses, no more than %d!" % MAX_VIRUS_QUERY)
-    arg_lower = args[0].lower()
-    is_query, result_title, result_msg = query_virus(arg_lower)
+
+    arg_combined = " ".join(cleaned_args)
+    is_query, result_title, result_msg = query_virus(arg_combined)
     if is_query:
         return await send_query_msg(context, result_title, result_msg)
 
@@ -1104,9 +1151,10 @@ async def query(context, *args, **kwargs):
                                         sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! Please type `>help query` for more information.")
 
     arg = cleaned_args[0]
+    arg_combined = " ".join(cleaned_args)
 
-    is_chip_query, chip_title, chip_msg = query_chip(arg)
-    is_ncp_query, ncp_title, ncp_msg = query_ncp(arg)
+    is_chip_query, chip_title, chip_msg = query_chip(arg_combined)
+    is_ncp_query, ncp_title, ncp_msg = query_ncp(arg_combined)
     if is_chip_query and is_ncp_query:
         result_title = "Pulling up all BattleChips and NCPs from %s..." % re.match(r".*(`.+`).*", chip_title).group(1)
         ncp_addon = ["%s(NCP)" % i for i in ncp_msg.split(", ")]
@@ -1117,11 +1165,11 @@ async def query(context, *args, **kwargs):
     elif is_ncp_query:
         return await send_query_msg(context, ncp_title, ncp_msg)
 
-    is_virus_query, result_title, result_msg = query_virus(arg)
+    is_virus_query, result_title, result_msg = query_virus(arg_combined)
     if is_virus_query:
         return await send_query_msg(context, result_title, result_msg)
 
-    is_npu_query, result_title, result_msg = query_npu(arg)
+    is_npu_query, result_title, result_msg = query_npu(arg_combined)
     if is_npu_query:
         return await send_query_msg(context, result_title, result_msg)
 
@@ -1133,11 +1181,11 @@ async def query(context, *args, **kwargs):
         _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
 
-    if arg in ['networkmod', 'mod']:
+    if arg_combined in ['networkmod', 'mod', 'new connections', 'newconnections']:
         _, result_title, result_msg = query_network()
         return await send_query_msg(context, result_title, result_msg)
 
-    would_be_valid = pity_cc_check(arg)
+    would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="`%s` has no queryable Crossover Content!" % would_be_valid)
@@ -1254,8 +1302,8 @@ async def bond(context, *args, **kwargs):
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a Bond Power and I can pull up its info for you!")
-
-    bond_info = await find_value_in_table(context, bond_df, "bondpower_lowercase", cleaned_args[0])
+    funkyarg = ''.join(cleaned_args)
+    bond_info = await find_value_in_table(context, bond_df, "bondpower_lowercase", funkyarg)
     if bond_info is None:
         return
 
@@ -1280,20 +1328,30 @@ def query_daemon():
 
 async def daemon(context, *args, **kwargs):
     cleaned_args = clean_args(args)
+    arg_combined = " ".join(cleaned_args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Lists the complete information of a Daemon for DarkChip rules.")
-    elif len(cleaned_args) > 1:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can only pull up one Daemon's information at a time!")
 
-    if cleaned_args[0] in ["all", "list"]:
+    if arg_combined in ["all", "list"]:
         _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
 
-    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", cleaned_args[0], override=True)
+    try:
+        alias_check = daemon_df[daemon_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" %
+                                                                re.escape(arg_combined),
+                                                                flags=re.IGNORECASE)]
+        if alias_check.shape[0] > 1:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Too many daemons found! You should probably let the devs know...")
+        elif alias_check.shape[0] != 0:
+            arg_combined = alias_check.iloc[0]["Name"].lower()
+    except re.error:
+        pass
+
+    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", arg_combined, override=True)
     if daemon_info is None:
-        daemon_info = await find_value_in_table(context, pmc_daemon_df, "name_lowercase", cleaned_args[0])
+        daemon_info = await find_value_in_table(context, pmc_daemon_df, "name_lowercase", arg_combined)
         if daemon_info is None:
             return
 
@@ -1387,7 +1445,7 @@ async def rulebook(context, *args, **kwargs):
 
 
 def query_network():
-    result_title = "Listing all Network Modifiers from the New Connections crossover content..."
+    result_title = "Listing all Network Modifiers from the `New Connections` crossover content..."
     result_msg = ", ".join(networkmod_df["Name"])
     return True, result_title, result_msg
 
