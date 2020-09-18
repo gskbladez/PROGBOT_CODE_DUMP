@@ -1,17 +1,17 @@
 Command	Alias	Response
-oops		Deletes the bot message from the user's last valid command
-commands		Provides the list of commands available for the user to run
+oops		Deletes the bot message from the user's last valid command.
+commands		Provides the list of commands available for the user to run.
 help		Do you really need help with help? :thinking:
-userinfo		Shows some info on the mentioned user (or yourself if there is no mentioned user)
-roll	r	Rolls a number of X-sided dice, including success/fail thresholds or additional hits. (Note: Not all functionality from Sidekick was ported over.)
+userinfo		Shows some info on the mentioned user (or yourself if there is no mentioned user).
+roll	r	Rolls a number of X-sided dice, including success/fail thresholds or additional hits. 
 unknowncommand		I don't know this command, or there is no help message for this command.
 chip	chips	BattleChips are one-use attacks that NetOps slot into their PETs.\nYour PET's folder space is determined by your **Navi's Mind + Navi's Info + 2**.\nWhen making a new character, pick starter BattleChips equal to your **NetOp's Mind + NetOp's Info + 2**.\n\nAfter a Navi uses a BattleChip, they need to jack out to make that BattleChip usable again, or to change your BattleChip folder. **Folders often may not have duplicate BattleChips, or more than 1 MegaChip.**\n\nThis command can display info on BattleChips. It can also search for all BattleChips from a specific category, with a specific tag, Crossover Content source, or in a specific license.
 ncp		NCPs (Or Navi Customizer Programs) are installable software NetOps can use to modify their Navi! They can give various perks like increasing folder size, granting access to special Navi powers, and more!\n**Check with your GM to see how many EB (Exabytes) your character starts with!**\n\nThis command can display NCPs.
 power	powers	All Navis have Navi Powers: special abilities they can use whenever they like.\nThere are two types: Cost and Roll powers.\n**    - Cost powers reduce the listed skill by 1 until jack out and __do not affect liberation mission alarm countdowns__.\n    - Roll powers roll the associated skill to use the power.**\n\nThis command can display Navi and Virus powers (Cost, Roll, and Passive). It can also search powers by type, such as Navi Sense/Cost and Virus Passive. Type `{cp}power` to learn more!
 virus		Viruses are programs with simple, animal-like intelligences that wreak havoc across the internet. With lots of different shapes and sizes, some are more dangerous than others. Viruses use powers just like navis, and some even have special passive abilities!\n**All viruses have data within them that can be downloaded into a Blank Chip upon deletion.**\n\nThis command can pull up a basic Virus description.
 virusx		This specific command pulls up full stats for viruses, like stats and drops. __This command is more for GMs rather than players in a session.__
-tag		Viruses and Battlechips have tags that determine how they behave or work in battle.  This command displays tags for various things.
-rulebook		Pulls up links for the rulebooks.
+tag		Viruses and Battlechips have tags that determine how they behave or work in battle.\n\nThis command displays tags for various things.
+rulebook		Pulls up links for the latest NetBattlers rulebooks.
 bond		**Nothing can dispel or mitigate a Bond Power's effects.** This command displays bond powers, along with points needed, and what they do!
 mysterydata		This command rolls Mystery Data and gives you the result automatically!
 mysteryreward		This command rolls Mystery Data (BattleChips and NCPs only) and gives you the result automatically!
