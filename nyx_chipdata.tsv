@@ -1,0 +1,10 @@
+Chip	Dmg	Range	Effect	Category	Tags	Tags In Brackets	Single Description	From?	License	Alias
+Level1Summon	-	Close	A basic magic spell! Summon (pick 1): a loaf of bread; a pebble; a squirrel.	Summon	Awkward	 [Awkward]	A basic magic spell! Summon (pick 1): a loaf of bread; a pebble; a squirrel. [Awkward]	Nyx		
+ObjectivelyBetter	-	-	On your next roll, roll 20-sided dice instead of six-sided dice.	Support	Slow	 [Slow]	On your next roll, roll 20-sided dice instead of six-sided dice. [Slow]	Nyx		
+CombatResolution	X	-	A simple punch! X=d20+Attacker Strength+Attacker Stamina*(1/3)-d20-Defender Stamina	Impact			A simple punch! X=d20+Attacker Strength+Attacker Stamina*(1/3)-d20-Defender Stamina	Nyx		
+PleaseBehave	X	Near	Condescending crash! X=# of times the target said “lulz,” “pwn,” or “XD” in the past 5 minutes.	Thrown			Condescending crash! X=# of times the target said “lulz,” “pwn,” or “XD” in the past 5 minutes.	Nyx		
+Miniaturization	-	Near	Shrink an object to half its original size.	Hazard	Slow	 [Slow]	Shrink an object to half its original size. [Slow]	Nyx		
+ProgrammingAdvance	-	-	Combine two or more items into one advanced item.	Support	Slow	 [Slow]	Combine two or more items into one advanced item. [Slow]	Nyx		
+Level2Summon	-	Close, Near	Magic spell! Summon (pick 1): a fruit basket; any weather condition; a rope; a barrel; a spider.	Summon			Magic spell! Summon (pick 1): a fruit basket; any weather condition; a rope; a barrel; a spider.	Nyx		
+Level4Summon	-	Close	Magic spell! Summon (pick 1): a pistol; a dagger; a log; a feral dog; a bowl of pasta.	Summon	Slow	 [Slow]	Magic spell! Summon (pick 1): a pistol; a dagger; a log; a feral dog; a bowl of pasta. [Slow]	Nyx		
+Level3Summon	-	Close	Magic spell! Summon (pick 1): a pail of water; a crow; a club; a mirror; a pail of sand.	Summon			Magic spell! Summon (pick 1): a pail of water; a crow; a club; a mirror; a pail of sand.	Nyx		
