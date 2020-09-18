@@ -420,7 +420,7 @@ async def help_cmd(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}", settings.paramdelim))
 
-    help_msg = await find_value_in_table(context, help_df, "command_lowercase", args[0], override=True)
+    help_msg = await find_value_in_table(context, help_df, "command_lowercase", args[0], suppress_notfound=True)
     if help_msg is None:
         help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
@@ -548,10 +548,22 @@ async def tag(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
-async def find_value_in_table(context, df, search_col, search_arg, override=False):
+async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False):
+    if "Alias" in df:
+        alias_check = df[df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
+        if alias_check.shape[0] > 1:
+            await koduck.sendmessage(context["message"],
+                                            sendcontent="Found more than one match for %s! You should probably let the devs know...")
+            return None
+        if alias_check.shape[0] != 0:
+            search_arg = alias_check.iloc[0][search_col]
+            if alias_message:
+                await koduck.sendmessage(context["message"],
+                                        sendcontent="Found as an alternative name for **%s**!" % search_arg)
+
     search_results = df[df[search_col] == search_arg.lower()]
     if search_results.shape[0] == 0:
-        if not override:
+        if not suppress_notfound:
             await koduck.sendmessage(context["message"],
                                      sendcontent="I can't find `%s`!" % search_arg)
         return None
@@ -642,27 +654,12 @@ async def chip(context, *args, **kwargss):
         if not arg:
             continue
 
-        try:
-            alias_check = chip_known_aliases[chip_known_aliases["Alias"].str.contains( "(?:^|,|;)\s*%s\s*(?:$|,|;)" %
-                                                                                       re.escape(arg),
-                                                                                       flags=re.IGNORECASE)]
-            if alias_check.shape[0] > 1:
-                return await koduck.sendmessage(context["message"],
-                                                sendcontent="Too many chips found! You should probably let the devs know...")
-            elif alias_check.shape[0] != 0:
-                arg = alias_check.iloc[0]["Chip"]
-                await koduck.sendmessage(context["message"],
-                                         sendcontent="Found as an alternative name for **%s**!" % arg)
-
-        except re.error:
-            pass
-
         # TODO: de-nest somehow
-        chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg, override=True)
+        chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg, suppress_notfound=True, alias_message=True)
         if chip_info is None:
-            chip_info = await find_value_in_table(context, pmc_chip_df, "chip_lowercase", arg, override=True)
+            chip_info = await find_value_in_table(context, pmc_chip_df, "chip_lowercase", arg, suppress_notfound=True)
             if chip_info is None:
-                chip_info = await find_value_in_table(context, nyx_chip_df, "chip_lowercase", arg, override=False)
+                chip_info = await find_value_in_table(context, nyx_chip_df, "chip_lowercase", arg, suppress_notfound=False)
                 if chip_info is None:
                     continue
 
@@ -750,12 +747,12 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
         local_power_df = power_df[power_df["Sort"] != "Virus Power"]
     else:
         local_power_df = power_df
-    power_info = await find_value_in_table(context, local_power_df, "power_lowercase", arg, override=True)
+    power_info = await find_value_in_table(context, local_power_df, "power_lowercase", arg, suppress_notfound=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(context, pmc_power_df, "power_lowercase", arg, override=True)
+        power_info = await find_value_in_table(context, pmc_power_df, "power_lowercase", arg, suppress_notfound=True)
         if power_info is None:
-            power_info = await find_value_in_table(context, nyx_power_df, "power_lowercase", arg, override=False)
+            power_info = await find_value_in_table(context, nyx_power_df, "power_lowercase", arg, suppress_notfound=False)
             if power_info is None:
                 return None, None, None, None, None
 
@@ -868,7 +865,7 @@ async def power(context, *args, **kwargs):
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Navi Power and I can pull up its info for you!\n"+
-                                                    "I can also query Powers by Skill, Type, and whether or not it is Virus-exclusive! Try giving me multiple queries at once, i.e. `>power sense cost` or `power virus passive`!")
+                                                    "I can also query Powers by Skill, Type, and whether or not it is Virus-exclusive! Try giving me multiple queries at once, i.e. `>power sense cost` or `>power virus passive`!")
 
     if len(cleaned_args) > MAX_POWER_QUERY:
         return await koduck.sendmessage(context["message"],
@@ -1004,7 +1001,7 @@ async def upgrade(context, *args, **kwargs):
 
 #TODO: add BlackBossom art
 async def virus_master(context, arg, simplified=True):
-    virus_info = await find_value_in_table(context, virus_df, "name_lowercase", arg, override=True)
+    virus_info = await find_value_in_table(context, virus_df, "name_lowercase", arg, suppress_notfound=True)
 
     if virus_info is None:
         virus_info = await find_value_in_table(context, pmc_virus_df, "name_lowercase", arg)
@@ -1349,7 +1346,7 @@ async def daemon(context, *args, **kwargs):
     except re.error:
         pass
 
-    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", arg_combined, override=True)
+    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", arg_combined, suppress_notfound=True)
     if daemon_info is None:
         daemon_info = await find_value_in_table(context, pmc_daemon_df, "name_lowercase", arg_combined)
         if daemon_info is None:
@@ -1465,7 +1462,7 @@ async def networkmod(context, *args, **kwargs):
         return await send_query_msg(context, result_title, result_msg)
 
     for arg in cleaned_args:
-        networkmod_info = await find_value_in_table(context, networkmod_df, "name_lowercase", arg, override=True)
+        networkmod_info = await find_value_in_table(context, networkmod_df, "name_lowercase", arg, suppress_notfound=True)
         if networkmod_info is None:
             continue
 
