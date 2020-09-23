@@ -56,6 +56,7 @@ BUGREPORT_CHANNEL_ID = 704684798584815636
 # TODO: Aliasing on other things
 # TODO: actually literal dicebomb command
 # TODO: error log report to Playhouse
+# TODO: exclude npus from ncp query
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
