@@ -52,11 +52,10 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
 
 BUGREPORT_CHANNEL_ID = 704684798584815636
 
-# TODO: Add error log file
-# TODO: Aliasing on other things
-# TODO: actually literal dicebomb command
-# TODO: error log report to Playhouse
 # TODO: exclude npus from ncp query
+# TODO: pull up a specific rulebook if you give it an argument
+# TODO: add BlackBossom art
+# TODO: Add virus aliases (MettaurOmega for Omega character)
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -125,7 +124,7 @@ crimsonnoise_df["mysterydata_lowercase"] = crimsonnoise_df["MysteryData"].str.lo
 
 element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
 element_df["category_lowercase"] = element_df["category"].str.lower()
-current_element_categories = ", ".join(pd.unique(element_df["category"]))
+element_category_list = pd.unique(element_df["category"].dropna())
 
 help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
 help_df["command_lowercase"] = help_df["Command"].str.lower()
@@ -142,6 +141,8 @@ virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
                                  .str.strip() \
                                  .str.lower() \
                                  .unique()
+virus_category_list = pd.unique(virus_df["Category"].str.strip())
+virus_category_list = [i for i in virus_category_list if i]
 
 pmc_chip_df = prep_chip_df(pd.read_csv(r"playermade_chipdata.tsv", sep="\t"))
 pmc_power_df = prep_power_df(pd.read_csv(r"playermade_powerdata.tsv", sep="\t"))
@@ -527,13 +528,13 @@ async def roll(context, *args, **kwargs):
                                         sendcontent="The dice algebra is incorrect! Did you type out the roll correctly?")
 
 
-# TODO: Support virus category and Support chip tag conflict with each other
 async def tag(context, *args, **kwargs):
-    if len(args) < 1:
+    cleaned_args = clean_args(args)
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a BattleChip tag or Virus/Chip category, and I can pull up its info for you!")
-
-    tag_info = await find_value_in_table(context, tag_df, "Tag", args[0])
+    full_arg = "".join(cleaned_args)
+    tag_info = await find_value_in_table(context, tag_df, "Tag", full_arg)
     if tag_info is None:
         return
 
@@ -636,10 +637,11 @@ def pity_cc_check(arg):
 
 async def chip(context, *args, **kwargss):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!\n"+
-                                                    "I can also query chips by Category, Tag, License, and Crossover Content!")
+                                                    "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! "+
+                                                    "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace("{cp}", settings.commandprefix))
     arg_combined = ' '.join(cleaned_args)
     is_query, return_title, return_msg = query_chip(arg_combined)
     if is_query:
@@ -657,7 +659,6 @@ async def chip(context, *args, **kwargss):
         if not arg:
             continue
 
-        # TODO: de-nest somehow
         chip_info = await find_value_in_table(context, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
         if chip_info is None:
             chip_info = await find_value_in_table(context, pmc_chip_df, "Chip", arg, suppress_notfound=True)
@@ -786,11 +787,12 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
 
         field_description = power_description
 
-        # TODO: might take out
-        #if power_source in playermade_list:
-        #    field_footer = "Source: %s (Unofficial)" % power_source
-        #elif power_source in cc_list:
-        #    field_footer = "Source: %s (Crossover Content)" % power_source
+        # Unused Source description line
+        if False:
+            if power_source in playermade_list:
+                field_footer = "Source: %s (Unofficial)" % power_source
+            elif power_source in cc_list:
+                field_footer = "Source: %s (Crossover Content)" % power_source
 
     else:
         field_title = '%s EB' % power_eb
@@ -860,7 +862,7 @@ def query_power(args):
 
 async def power(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Navi Power and I can pull up its info for you!\n"+
                                                     "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
@@ -934,7 +936,7 @@ def query_ncp(arg_lower):
 
 async def ncp(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a NaviCust Part and I can pull up its info for you!\n"+
                                                     "I can also query NCPs by EB and Crossover Content!")
@@ -979,7 +981,7 @@ def query_npu(arg):
 
 async def upgrade(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of 1-%d default Navi Powers and I can find its upgrades for you!" % MAX_NPU_QUERY)
     elif len(cleaned_args) > MAX_NPU_QUERY:
@@ -997,7 +999,6 @@ async def upgrade(context, *args, **kwargs):
     return
 
 
-#TODO: add BlackBossom art
 async def virus_master(context, arg, simplified=True):
     virus_info = await find_value_in_table(context, virus_df, "Name", arg, suppress_notfound=True)
 
@@ -1086,13 +1087,17 @@ def query_virus(arg_lower):
     return True, result_title, result_msg
 
 
-#TODO: Add virus aliases (MettaurOmega for Omega character)
 async def virus(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of 1-%d viruses and I can pull up their info for you!\n" % MAX_VIRUS_QUERY +
-                                                    "I can also query Viruses by Category, Tag, and Crossover Content!")
+                                        sendcontent="Give me the name of 1-%d Viruses and I can pull up their info for you!\n" % MAX_VIRUS_QUERY +
+                                                    "I can query Viruses by **Category**, **Tag**, or **Crossover Content**, and pull up the list of Virus categories with `{cp}virus category`! ".replace("{cp}", settings.commandprefix) +
+                                                    "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag artillery`)".replace("{cp}", settings.commandprefix))
+    elif cleaned_args[0] in ['category', 'categories']:
+        result_title = "Displaying all known Virus Categories..."
+        result_text = ", ".join(virus_category_list)
+        return await send_query_msg(context, result_title, result_text)
     elif len(cleaned_args) > MAX_VIRUS_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many viruses, no more than %d!" % MAX_VIRUS_QUERY)
@@ -1119,9 +1124,9 @@ async def virus(context, *args, **kwargs):
 
 async def virusx(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a virus and I can pull up its full info for you!")
+                                        sendcontent="Give me the name of a Virus and I can pull up its full info for you!")
     elif len(cleaned_args) > 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can only output one virusx block at a time!")
@@ -1240,7 +1245,7 @@ async def mysterydata_master(context, args, force_reward = False):
 
 async def mysterydata(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll Mystery Data for you! Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace("{cp}", settings.commandprefix))
 
@@ -1249,7 +1254,7 @@ async def mysterydata(context, *args, **kwargs):
 
 async def crimsonnoise(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll CrimsonNoise for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace("{cp}", settings.commandprefix))
 
@@ -1285,7 +1290,7 @@ async def crimsonnoise(context, *args, **kwargs):
 
 async def mysteryreward(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! " +
                                                     "Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace("{cp}", settings.commandprefix))
@@ -1296,10 +1301,10 @@ async def mysteryreward(context, *args, **kwargs):
 
 async def bond(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a Bond Power and I can pull up its info for you!")
-    funkyarg = ''.join(cleaned_args)
+    funkyarg = ' '.join(cleaned_args)
     bond_info = await find_value_in_table(context, bond_df, "BondPower", funkyarg)
     if bond_info is None:
         return
@@ -1311,7 +1316,7 @@ async def bond(context, *args, **kwargs):
     embed = discord.Embed(
         title="__%s__" % bond_title,
         color=0x24ff00)
-    embed.add_field(name="**({} Bond Point(s))**".format(bond_cost),
+    embed.add_field(name="**({})**".format(bond_cost),
                     value="_{}_".format(bond_description))
 
     return await koduck.sendmessage(context["message"], sendembed=embed)
@@ -1326,7 +1331,7 @@ def query_daemon():
 async def daemon(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     arg_combined = " ".join(cleaned_args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Lists the complete information of a Daemon for DarkChip rules.")
 
@@ -1370,21 +1375,19 @@ async def daemon(context, *args, **kwargs):
 
 async def element(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give you random elements from the Element Generation table. "+
                                                     "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n".replace("{cp}", settings.commandprefix) +
-                                                    "Categories: **%s**" % current_element_categories)
-
-    args = cleaned_args[0].split()
-    if len(args) > 2:
+                                                    "Categories: **%s**" % ", ".join(element_category_list))
+    if len(cleaned_args) > 2:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace("{cp}", settings.commandprefix))
 
     element_return_number = 1  # number of elements to return, 1 by default
     element_category = None
     sub_element_df = element_df
-    for arg in args:
+    for arg in cleaned_args:
         try:
             element_return_number = int(arg)
             break
@@ -1395,7 +1398,7 @@ async def element(context, *args, **kwargs):
             if sub_element_df.shape[0] == 0:
                 return await koduck.sendmessage(context["message"],
                                                 sendcontent="Not a valid category!\n" +
-                                                            "Categories: **%s**" % current_element_categories)
+                                                            "Categories: **%s**" % ", ".join(element_category_list))
 
     if element_return_number < 1:
         return await koduck.sendmessage(context["message"],
@@ -1438,7 +1441,7 @@ def query_network():
 
 async def networkmod(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if len(cleaned_args) < 1:
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Pulls up info for 1-%d Network Modifiers! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY )
 
