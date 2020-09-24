@@ -832,12 +832,10 @@ def query_power(args):
     is_default = True
     search_tag_list = []
 
-    args = args.split()
-
     for arg in args:
         arg_capital = arg.capitalize()
         if arg in [i.lower() for i in skill_list]:
-            sub_df = sub_df[(power_df["Skill"] == arg_capital)]
+            sub_df = sub_df[(sub_df["Skill"] == arg_capital)]
             search_tag_list.append(arg_capital)
         elif arg in ['cost', 'roll', 'passive']:
             sub_df = sub_df[(sub_df["Type"] == arg_capital)]
@@ -872,9 +870,7 @@ async def power(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many powers, no more than 5!")
 
-    arg_combined = " ".join(cleaned_args)
-
-    is_query, results_title, results_msg = query_power(arg_combined)
+    is_query, results_title, results_msg = query_power(cleaned_args)
     if is_query:
         if not results_msg:
             return await koduck.sendmessage(context["message"], sendcontent="No powers found with that query!")
