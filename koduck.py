@@ -374,6 +374,12 @@ async def on_message(message):
             log(None, result)
     
     except Exception as e:
-        traceback.print_exc()
+        exc_inf = traceback.format_exc()
+        print(exc_inf)
+        error_log_channel = client.get_channel(int(settings.errorlog_channel_id))
         await sendmessage(message, sendcontent=settings.message_somethingbroke)
+        #SENDS ERROR LOG MESSAGE TO A SPECIFIC ERROR LOG CHANNEL
+        #await sendmessage(message, sendchannel=error_log_channel, sendcontent="%s\n" % settings.message_somethingbroke +
+        #                                                                      "**Command:** ```%s```" % message.content +
+        #                                                                      "**Error:** ```%s```" % exc_inf)
         log(message, logresult=settings.message_unhandlederror)

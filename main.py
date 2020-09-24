@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
 
+
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
     pass
@@ -54,6 +55,8 @@ BUGREPORT_CHANNEL_ID = 704684798584815636
 # TODO: Add error log file
 # TODO: Aliasing on other things
 # TODO: actually literal dicebomb command
+# TODO: error log report to Playhouse
+# TODO: exclude npus from ncp query
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -186,9 +189,9 @@ async def bugreport(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Sends a bug report to the ProgBot Devs! " + \
                                                     "Please describe the error in full. " + \
-                                                    "(i.e. `>bugreport Sword is listed as 3 damage when it is 2 damage.`)")
+                                                    "(i.e. `{cp}bugreport Sword is listed as 3 damage when it is 2 damage.`)".replace("{cp}", settings.commandprefix))
 
-    channelid = BUGREPORT_CHANNEL_ID
+    channelid = int(settings.bugreport_channel_id)
 
     progbot_bugreport_channel = koduck.client.get_channel(channelid)
     THEmessagecontent = context["paramline"]
@@ -420,7 +423,7 @@ async def help_cmd(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}", settings.paramdelim))
 
-    help_msg = await find_value_in_table(context, help_df, "command_lowercase", args[0], suppress_notfound=True)
+    help_msg = await find_value_in_table(context, help_df, "Command", args[0], suppress_notfound=True)
     if help_msg is None:
         help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
@@ -477,7 +480,7 @@ def get_roll_from_macro(diff, dicenum):
 async def roll(context, *args, **kwargs):
     if "paramline" not in context:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll dice for you! Try `>roll 5d6>4` or `>roll $N5`!")
+                                        sendcontent="I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!".replace("{cp}", settings.commandprefix))
 
     roll_line = context["paramline"]
     if ROLL_COMMENT_CHAR in roll_line:
@@ -530,7 +533,7 @@ async def tag(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a BattleChip tag or Virus/Chip category, and I can pull up its info for you!")
 
-    tag_info = await find_value_in_table(context, tag_df, "tag_lowercase", args[0])
+    tag_info = await find_value_in_table(context, tag_df, "Tag", args[0])
     if tag_info is None:
         return
 
@@ -561,7 +564,7 @@ async def find_value_in_table(context, df, search_col, search_arg, suppress_notf
                 await koduck.sendmessage(context["message"],
                                         sendcontent="Found as an alternative name for **%s**!" % search_arg)
 
-    search_results = df[df[search_col] == search_arg.lower()]
+    search_results = df[df[search_col].str.contains("\s*^%s\s*$" % re.escape(search_arg), flags=re.IGNORECASE)]
     if search_results.shape[0] == 0:
         if not suppress_notfound:
             await koduck.sendmessage(context["message"],
@@ -655,11 +658,11 @@ async def chip(context, *args, **kwargss):
             continue
 
         # TODO: de-nest somehow
-        chip_info = await find_value_in_table(context, chip_df, "chip_lowercase", arg, suppress_notfound=True, alias_message=True)
+        chip_info = await find_value_in_table(context, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
         if chip_info is None:
-            chip_info = await find_value_in_table(context, pmc_chip_df, "chip_lowercase", arg, suppress_notfound=True)
+            chip_info = await find_value_in_table(context, pmc_chip_df, "Chip", arg, suppress_notfound=True)
             if chip_info is None:
-                chip_info = await find_value_in_table(context, nyx_chip_df, "chip_lowercase", arg, suppress_notfound=False)
+                chip_info = await find_value_in_table(context, nyx_chip_df, "Chip", arg, suppress_notfound=False)
                 if chip_info is None:
                     continue
 
@@ -747,12 +750,12 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
         local_power_df = power_df[power_df["Sort"] != "Virus Power"]
     else:
         local_power_df = power_df
-    power_info = await find_value_in_table(context, local_power_df, "power_lowercase", arg, suppress_notfound=True)
+    power_info = await find_value_in_table(context, local_power_df, "Power/NCP", arg, suppress_notfound=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(context, pmc_power_df, "power_lowercase", arg, suppress_notfound=True)
+        power_info = await find_value_in_table(context, pmc_power_df, "Power/NCP", arg, suppress_notfound=True)
         if power_info is None:
-            power_info = await find_value_in_table(context, nyx_power_df, "power_lowercase", arg, suppress_notfound=False)
+            power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=False)
             if power_info is None:
                 return None, None, None, None, None
 
@@ -768,8 +771,8 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
     if power_color < 0:
         if power_source in cc_color_dictionary:
             power_color = cc_color_dictionary[power_source]
-        elif (power_color < 0) and power_skill.lower() in local_power_df["power_lowercase"].values:
-            power_true_info = await find_value_in_table(context, local_power_df, "power_lowercase", power_skill)
+        elif (power_color < 0) and power_skill in local_power_df["Power/NCP"].values:
+            power_true_info = await find_value_in_table(context, local_power_df, "Power/NCP", power_skill)
             power_color = find_skill_color(power_true_info["Skill"])
         else:
             power_color = 0xffffff
@@ -829,11 +832,8 @@ def query_power(args):
     is_default = True
     search_tag_list = []
 
-    if len(args) > 1:
-        args = " ".join(args)
-    else:
-        args = args[0]
     args = args.split()
+
     for arg in args:
         arg_capital = arg.capitalize()
         if arg in [i.lower() for i in skill_list]:
@@ -865,13 +865,15 @@ async def power(context, *args, **kwargs):
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Navi Power and I can pull up its info for you!\n"+
-                                                    "I can also query Powers by Skill, Type, and whether or not it is Virus-exclusive! Try giving me multiple queries at once, i.e. `>power sense cost` or `>power virus passive`!")
+                                                    "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
+                                                    "Try giving me multiple queries at once, i.e. `{cp}power sense cost` or `{cp}power virus passive`!".replace("{cp}", settings.commandprefix))
 
     if len(cleaned_args) > MAX_POWER_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many powers, no more than 5!")
 
     arg_combined = " ".join(cleaned_args)
+
     is_query, results_title, results_msg = query_power(arg_combined)
     if is_query:
         if not results_msg:
@@ -1001,10 +1003,10 @@ async def upgrade(context, *args, **kwargs):
 
 #TODO: add BlackBossom art
 async def virus_master(context, arg, simplified=True):
-    virus_info = await find_value_in_table(context, virus_df, "name_lowercase", arg, suppress_notfound=True)
+    virus_info = await find_value_in_table(context, virus_df, "Name", arg, suppress_notfound=True)
 
     if virus_info is None:
-        virus_info = await find_value_in_table(context, pmc_virus_df, "name_lowercase", arg)
+        virus_info = await find_value_in_table(context, pmc_virus_df, "Name", arg)
         if virus_info is None:
             return None, None, None, None, None, None
 
@@ -1145,7 +1147,8 @@ async def query(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! Please type `>help query` for more information.")
+                                        sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! " +
+                                                    "Please type `{cp}help query` for more information.".replace("{cp}", settings.commandprefix))
 
     arg = cleaned_args[0]
     arg_combined = " ".join(cleaned_args)
@@ -1243,7 +1246,7 @@ async def mysterydata(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll Mystery Data for you! Specify `>mysterydata common`, `>mysterydata uncommon`, or `>mysterydata rare`!")
+                                        sendcontent="I can roll Mystery Data for you! Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace("{cp}", settings.commandprefix))
 
     await mysterydata_master(context, cleaned_args, force_reward=False)
 
@@ -1252,7 +1255,7 @@ async def crimsonnoise(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll CrimsonNoise for you! Specify `>crimsonnoise common`, `>crimsonnoise`, or `>crimsonnoise rare`!")
+                                        sendcontent="I can roll CrimsonNoise for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace("{cp}", settings.commandprefix))
 
     arg = cleaned_args[0]
     crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["mysterydata_lowercase"] == arg]
@@ -1288,7 +1291,8 @@ async def mysteryreward(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! Specify `>mysterydata common`, `>mysterydata uncommon`, or `>mysterydata rare`!")
+                                        sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! " +
+                                                    "Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace("{cp}", settings.commandprefix))
 
     await mysterydata_master(context, cleaned_args, force_reward=True)
     return
@@ -1300,7 +1304,7 @@ async def bond(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a Bond Power and I can pull up its info for you!")
     funkyarg = ''.join(cleaned_args)
-    bond_info = await find_value_in_table(context, bond_df, "bondpower_lowercase", funkyarg)
+    bond_info = await find_value_in_table(context, bond_df, "BondPower", funkyarg)
     if bond_info is None:
         return
 
@@ -1334,21 +1338,9 @@ async def daemon(context, *args, **kwargs):
         _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
 
-    try:
-        alias_check = daemon_df[daemon_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" %
-                                                                re.escape(arg_combined),
-                                                                flags=re.IGNORECASE)]
-        if alias_check.shape[0] > 1:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Too many daemons found! You should probably let the devs know...")
-        elif alias_check.shape[0] != 0:
-            arg_combined = alias_check.iloc[0]["Name"].lower()
-    except re.error:
-        pass
-
-    daemon_info = await find_value_in_table(context, daemon_df, "name_lowercase", arg_combined, suppress_notfound=True)
+    daemon_info = await find_value_in_table(context, daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
-        daemon_info = await find_value_in_table(context, pmc_daemon_df, "name_lowercase", arg_combined)
+        daemon_info = await find_value_in_table(context, pmc_daemon_df, "Name", arg_combined)
         if daemon_info is None:
             return
 
@@ -1384,13 +1376,14 @@ async def element(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give you random elements from the Element Generation table. To use, enter `>element [#]` or `>element [category] [#]`!\n" +
+                                        sendcontent="Give you random elements from the Element Generation table. "+
+                                                    "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n".replace("{cp}", settings.commandprefix) +
                                                     "Categories: **%s**" % current_element_categories)
 
     args = cleaned_args[0].split()
     if len(args) > 2:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Command is too long! Just give me `>element [#]` or `>element [category] [#]`!")
+                                        sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace("{cp}", settings.commandprefix))
 
     element_return_number = 1  # number of elements to return, 1 by default
     element_category = None
@@ -1437,7 +1430,7 @@ async def rulebook(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="NetBattlers Beta 6 Official Rulebook (high-res): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Full-Res.pdf>\n" +
                                                     "NetBattlers Beta 6 Official Rulebook (mobile-friendly): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Mobile.pdf>\n" +
-                                                    "NetBattlers Advance, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Advance-5.pdf>\n\n" +
+                                                    "NetBattlers Advance Version 5, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Advance-5.pdf>\n\n" +
                                                     "**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
 
 
@@ -1462,7 +1455,7 @@ async def networkmod(context, *args, **kwargs):
         return await send_query_msg(context, result_title, result_msg)
 
     for arg in cleaned_args:
-        networkmod_info = await find_value_in_table(context, networkmod_df, "name_lowercase", arg, suppress_notfound=True)
+        networkmod_info = await find_value_in_table(context, networkmod_df, "Name", arg, suppress_notfound=True)
         if networkmod_info is None:
             continue
 
@@ -1488,6 +1481,10 @@ async def invite(context, *args, **kwargs):
                           color=color,
                           url=invite_link)
     return await koduck.sendmessage(context["message"], sendembed=embed)
+
+
+async def break_test(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"], sendcontent=str(0/0))
 
 
 def setup():
