@@ -32,7 +32,8 @@ skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
               'Charm', 'Bravery', 'Affinity']
 cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Underground Broadcast",
-           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Nyx"]
+           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Tarot",
+           "Nyx"]
 playermade_list = ["Genso Network"]
 joke_list = ["Nyx"]
 
@@ -56,6 +57,9 @@ BUGREPORT_CHANNEL_ID = 704684798584815636
 # TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
 # TODO: add BlackBossom art
+# TODO: Query/help for Liberation Mission generators would be neat
+# TODO: A help command for downloading chip data - I always forget what the 3 criteria are
+# TODO: A list of available "help" commands
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -71,41 +75,11 @@ settings.backgroundtask = backgroundtask
 # Riject is a godsend: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
 # Other lists: https://docs.google.com/spreadsheets/d/1bnpvmU4KwmXzHUTuN3Al_W5ZKBuHAmy3Z-dEmCS6SqY/edit?usp=sharing
 # Nyx CC data: https://docs.google.com/spreadsheets/d/1L6qB-AaK8kB8mI1yhixlLmxQZQDrhHYfJ273WTyR8Ms/edit#gid=139979102
-def prep_chip_df(df):
-    df = df.fillna('')
-    df["chip_lowercase"] = df["Chip"].str.lower()
-    df["from_lowercase"] = df["From?"].str.lower()
-    df["license_lowercase"] = df["License"].str.lower()
-    df["category_lowercase"] = df["Category"].str.lower()
 
-    return df
-
-
-def prep_power_df(df):
-    df = df.fillna('')
-    df["power_lowercase"] = df["Power/NCP"].str.lower()
-    df["from_lowercase"] = df["From?"].str.lower()
-    return df
-
-
-def prep_virus_df(df):
-    df = df.fillna('')
-    df["from_lowercase"] = df["From?"].str.lower()
-    df["name_lowercase"] = df["Name"].str.lower()
-    df["category_lowercase"] = df["Category"].str.lower()
-    return df
-
-
-def prep_daemon_df(df):
-    df = df.fillna('')
-    df["name_lowercase"] = df["Name"].str.lower()
-    return df
-
-
-chip_df = prep_chip_df(pd.read_csv(r"chipdata.tsv", sep="\t"))
-power_df = prep_power_df(pd.read_csv(r"powerncpdata.tsv", sep="\t"))
-virus_df = prep_virus_df(pd.read_csv(r"virusdata.tsv", sep="\t"))
-daemon_df = prep_daemon_df(pd.read_csv(r"daemondata.tsv", sep="\t"))
+chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
+power_df = pd.read_csv(r"powerncpdata.tsv", sep="\t").fillna('')
+virus_df = pd.read_csv(r"virusdata.tsv", sep="\t").fillna('')
+daemon_df = pd.read_csv(r"daemondata.tsv", sep="\t").fillna('')
 
 bond_df = pd.read_csv(r"bonddata.tsv", sep="\t").fillna('')
 bond_df["bondpower_lowercase"] = bond_df["BondPower"].str.lower()
@@ -136,6 +110,11 @@ chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
     .str.strip() \
     .str.lower() \
     .unique()
+chip_category_list = pd.unique(chip_df["Category"])
+chip_category_list = [i for i in chip_category_list if i]
+chip_license_list = pd.unique(chip_df["License"].str.lower())
+chip_from_list = pd.unique(chip_df["From?"].str.lower())
+
 virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .stack() \
     .str.strip() \
@@ -144,13 +123,13 @@ virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
 virus_category_list = pd.unique(virus_df["Category"].str.strip())
 virus_category_list = [i for i in virus_category_list if i]
 
-pmc_chip_df = prep_chip_df(pd.read_csv(r"playermade_chipdata.tsv", sep="\t"))
-pmc_power_df = prep_power_df(pd.read_csv(r"playermade_powerdata.tsv", sep="\t"))
-pmc_virus_df = prep_virus_df(pd.read_csv(r"playermade_virusdata.tsv", sep="\t"))
-pmc_daemon_df = prep_daemon_df(pd.read_csv(r"playermade_daemondata.tsv", sep="\t"))
+pmc_chip_df = pd.read_csv(r"playermade_chipdata.tsv", sep="\t").fillna('')
+pmc_power_df = pd.read_csv(r"playermade_powerdata.tsv", sep="\t").fillna('')
+pmc_virus_df = pd.read_csv(r"playermade_virusdata.tsv", sep="\t").fillna('')
+pmc_daemon_df = pd.read_csv(r"playermade_daemondata.tsv", sep="\t").fillna('')
 
-nyx_chip_df = prep_chip_df(pd.read_csv(r"nyx_chipdata.tsv", sep="\t"))
-nyx_power_df = prep_power_df(pd.read_csv(r"nyx_powerdata.tsv", sep="\t"))
+nyx_chip_df = pd.read_csv(r"nyx_chipdata.tsv", sep="\t").fillna('')
+nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -426,7 +405,9 @@ async def help_cmd(context, *args, **kwargs):
                                         sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}",
                                                                                                                  settings.paramdelim))
 
-    help_msg = await find_value_in_table(context, help_df, "Command", args[0], suppress_notfound=True)
+    cleaned_args = clean_args(args)
+    funkyarg = ''.join(cleaned_args)
+    help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True)
     if help_msg is None:
         help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
@@ -607,27 +588,36 @@ def query_chip(arg_lower):
         return_title = "Pulling up all BattleChips with the `%s` tag (excluding MegaChips)..." % re.escape(
             arg_lower).capitalize()
         return_msg = ", ".join(subdf["Chip"])
-    elif arg_lower in pd.unique(chip_df["category_lowercase"]):
-        subdf = chip_df[(chip_df["category_lowercase"] == arg_lower) &
+    elif arg_lower in [i.lower() for i in chip_category_list]:
+        subdf = chip_df[(chip_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)) &
                         ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
+        if subdf.shape[0] == 0:
+            return False, "", ""
         return_title = "Pulling up all chips in the `%s` category (excluding MegaChips)..." % subdf.iloc[0]["Category"]
         return_msg = ", ".join(subdf["Chip"])
-    elif arg_lower in pd.unique(chip_df["license_lowercase"]):
-        subdf = chip_df[chip_df["license_lowercase"] == arg_lower]
+    elif arg_lower in chip_license_list:
+        subdf = chip_df[chip_df["License"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        if subdf.shape[0] == 0:
+            return False, "", ""
         return_title = "Pulling up all `%s` BattleChips..." % subdf.iloc[0]["License"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in ["nyx"]:
-        subdf = nyx_chip_df[nyx_chip_df["from_lowercase"] == arg_lower]
+        subdf = nyx_chip_df
+        if subdf.shape[0] == 0:
+            return False, "", ""
         return_title = "Pulling up all BattleChips from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
-    elif arg_lower not in ["core"] and arg_lower in pd.unique(chip_df["from_lowercase"]):
-        subdf = chip_df[chip_df["from_lowercase"] == arg_lower]
+    elif arg_lower not in ["core"] and arg_lower in chip_from_list:
+        subdf = chip_df[chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        if subdf.shape[0] == 0:
+            return False, "", ""
         return_title = "Pulling up all BattleChips from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_chip_df[pmc_chip_df["from_lowercase"] == arg_lower]
-        return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % subdf.iloc[0][
-            "From?"]
+        subdf = pmc_chip_df[pmc_chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        if subdf.shape[0] == 0:
+            return False, "", ""
+        return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     else:
         return False, "", ""
@@ -650,6 +640,14 @@ async def chip(context, *args, **kwargss):
                                         sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!\n" +
                                                     "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! " +
                                                     "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace(
+                                                        "{cp}", settings.commandprefix))
+    if cleaned_args[0] in ['category', 'categories']:
+        result_title = "Displaying all known BattleChip Categories..."
+        result_text = ", ".join(chip_category_list)
+        return await send_query_msg(context, result_title, result_text)
+    elif cleaned_args[0] in ['navi', 'navichip']:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="NaviChips are **MegaChips** that store attack data from defeated Navis! Each NaviChip is unique, based off the Navi it was downloaded from. NaviChips are determined by the GM.".replace(
                                                         "{cp}", settings.commandprefix))
     arg_combined = ' '.join(cleaned_args)
     is_query, return_title, return_msg = query_chip(arg_combined)
@@ -926,11 +924,11 @@ def query_ncp(arg_lower):
         results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in valid_cc_list:
-        subdf = ncp_df[ncp_df["from_lowercase"] == arg_lower]
+        subdf = ncp_df[ncp_df["From?"].str.contains(re.escape(arg_lower))]
         results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_power_df[(pmc_power_df["from_lowercase"] == arg_lower) &
+        subdf = pmc_power_df[(pmc_power_df["From?"].str.contains(re.escape(arg_lower))) &
                              (pmc_power_df["Sort"] != "Virus Power")]
         results_title = "Pulling up all NCPs from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
@@ -966,7 +964,7 @@ async def ncp(context, *args, **kwargs):
     for arg in cleaned_args:
         if not arg:
             continue
-        if any(power_df["power_lowercase"] == "%sncp" % arg):
+        if any(power_df["Power/NCP"].str.contains("%sncp" % arg, flags=re.IGNORECASE)):
             arg += "ncp"
         power_name, field_title, field_description, power_color, _ = await power_ncp(context, arg, force_power=False,
                                                                                      ncp_only=True)
@@ -1082,11 +1080,11 @@ def query_virus(arg_lower):
     valid_cc_list = list(pd.unique(virus_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core"]]
     if arg_lower in valid_cc_list:
-        sub_df = virus_df[virus_df["from_lowercase"] == arg_lower]
+        sub_df = virus_df[virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
         result_title = "Viruses from the `%s` Crossover Content..." % sub_df.iloc[0]["From?"]
         result_msg = ", ".join(sub_df["Name"])
-    elif arg_lower in list(pd.unique(virus_df["category_lowercase"])):
-        sub_df = virus_df[virus_df["Category"] == arg_lower.capitalize()]
+    elif arg_lower in [i.lower() for i in virus_category_list]:
+        sub_df = virus_df[virus_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
         result_title = "Viruses in the `%s` category..." % sub_df.iloc[0]["Category"]
         result_msg = ", ".join(sub_df["Name"])
     elif arg_lower in virus_tag_list:
@@ -1144,6 +1142,11 @@ async def virusx(context, *args, **kwargs):
     elif len(cleaned_args) > 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can only output one virusx block at a time!")
+
+    if cleaned_args[0] in ['category', 'categories']:
+        result_title = "Displaying all known Virus Categories..."
+        result_text = ", ".join(virus_category_list)
+        return await send_query_msg(context, result_title, result_text)
 
     virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color = await virus_master(context,
                                                                                                                args[0],
@@ -1214,7 +1217,7 @@ async def query(context, *args, **kwargs):
 
 async def mysterydata_master(context, args, force_reward=False):
     arg = args[0]
-    mysterydata_type = mysterydata_df[mysterydata_df["mysterydata_lowercase"] == arg]
+    mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains(arg, flags=re.IGNORECASE)]
 
     if mysterydata_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
@@ -1279,7 +1282,7 @@ async def crimsonnoise(context, *args, **kwargs):
                                             "{cp}", settings.commandprefix))
 
     arg = cleaned_args[0]
-    crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["mysterydata_lowercase"] == arg]
+    crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains(arg, flags=re.IGNORECASE)]
 
     if crimsonnoise_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
@@ -1417,7 +1420,7 @@ async def element(context, *args, **kwargs):
         except ValueError:
             element_category = arg.lower().capitalize()
 
-            sub_element_df = element_df[element_df["category_lowercase"] == arg.lower()]
+            sub_element_df = element_df[element_df["category"].str.contains(arg, flags=re.IGNORECASE)]
             if sub_element_df.shape[0] == 0:
                 return await koduck.sendmessage(context["message"],
                                                 sendcontent="Not a valid category!\n" +
