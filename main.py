@@ -18,6 +18,7 @@ bot_token = os.getenv('DISCORD_TOKEN')
 async def backgroundtask():
     pass
 
+
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
 MAX_CHIP_QUERY = 5
@@ -132,15 +133,15 @@ help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
 
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
 chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
-                               .stack() \
-                               .str.strip() \
-                               .str.lower() \
-                               .unique()
+    .stack() \
+    .str.strip() \
+    .str.lower() \
+    .unique()
 virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
-                                 .stack() \
-                                 .str.strip() \
-                                 .str.lower() \
-                                 .unique()
+    .stack() \
+    .str.strip() \
+    .str.lower() \
+    .unique()
 virus_category_list = pd.unique(virus_df["Category"].str.strip())
 virus_category_list = [i for i in virus_category_list if i]
 
@@ -190,14 +191,15 @@ async def bugreport(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Sends a bug report to the ProgBot Devs! " + \
                                                     "Please describe the error in full. " + \
-                                                    "(i.e. `{cp}bugreport Sword is listed as 3 damage when it is 2 damage.`)".replace("{cp}", settings.commandprefix))
+                                                    "(i.e. `{cp}bugreport Sword is listed as 3 damage when it is 2 damage.`)".replace(
+                                                        "{cp}", settings.commandprefix))
 
     channelid = int(settings.bugreport_channel_id)
 
     progbot_bugreport_channel = koduck.client.get_channel(channelid)
     THEmessagecontent = context["paramline"]
     THEmessageauthor = context["message"].author
-    #originchannel = "<#{}>".format(context["message"].channel.id) if isinstance(context["message"].channel,
+    # originchannel = "<#{}>".format(context["message"].channel.id) if isinstance(context["message"].channel,
     #                                                                            discord.TextChannel) else ""
     embed = discord.Embed(title="**__New Bug Report!__**", description="_{}_".format(THEmessagecontent),
                           color=0x5058a8)
@@ -422,7 +424,8 @@ async def help_cmd(context, *args, **kwargs):
                        "You can type `{cp}help` and any other command for more info on that command!\n" + \
                        "I can also pull up info on some rules and descriptions! (i.e. Bond Powers, Parrying, Talents, Skills)"
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}", settings.paramdelim))
+                                        sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}",
+                                                                                                                 settings.paramdelim))
 
     help_msg = await find_value_in_table(context, help_df, "Command", args[0], suppress_notfound=True)
     if help_msg is None:
@@ -481,7 +484,8 @@ def get_roll_from_macro(diff, dicenum):
 async def roll(context, *args, **kwargs):
     if "paramline" not in context:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!".replace("{cp}", settings.commandprefix))
+                                        sendcontent="I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!".replace(
+                                            "{cp}", settings.commandprefix))
 
     roll_line = context["paramline"]
     if ROLL_COMMENT_CHAR in roll_line:
@@ -495,7 +499,8 @@ async def roll(context, *args, **kwargs):
                                         sendcontent="No roll given!")
     # subs out the macros
     macro_regex = r"\$?(E|N|H)(\d+)"
-    roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line, flags=re.IGNORECASE)
+    roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
+                       flags=re.IGNORECASE)
     # adds 1 in front of bare d6, d20 references
     roll_line = re.sub("(?P<baredice>^|\s+)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
     zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
@@ -506,7 +511,7 @@ async def roll(context, *args, **kwargs):
         if 'hit' in str_result:
             num_hits = roll_results.eval()
             progroll_output = "{} *rolls...* {} = **__{} hits!__**".format(context["message"].author.mention,
-                                                                             str_result, num_hits)
+                                                                           str_result, num_hits)
             if num_hits == 1:
                 progroll_output = progroll_output.replace("hits", "hit")
         else:
@@ -554,16 +559,18 @@ async def tag(context, *args, **kwargs):
 
 async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False):
     if "Alias" in df:
-        alias_check = df[df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
+        #print("Alias!")
+        alias_check = df[
+            df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
         if alias_check.shape[0] > 1:
             await koduck.sendmessage(context["message"],
-                                            sendcontent="Found more than one match for %s! You should probably let the devs know...")
+                                     sendcontent="Found more than one match for %s! You should probably let the devs know...")
             return None
         if alias_check.shape[0] != 0:
             search_arg = alias_check.iloc[0][search_col]
             if alias_message:
                 await koduck.sendmessage(context["message"],
-                                        sendcontent="Found as an alternative name for **%s**!" % search_arg)
+                                         sendcontent="Found as an alternative name for **%s**!" % search_arg)
 
     search_results = df[df[search_col].str.contains("\s*^%s\s*$" % re.escape(search_arg), flags=re.IGNORECASE)]
     if search_results.shape[0] == 0:
@@ -598,7 +605,8 @@ def query_chip(arg_lower):
     elif arg_lower in arg_lower in chip_tag_list:
         subdf = chip_df[chip_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE) &
                         ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
-        return_title = "Pulling up all BattleChips with the `%s` tag (excluding MegaChips)..." % re.escape(arg_lower).capitalize()
+        return_title = "Pulling up all BattleChips with the `%s` tag (excluding MegaChips)..." % re.escape(
+            arg_lower).capitalize()
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in pd.unique(chip_df["category_lowercase"]):
         subdf = chip_df[(chip_df["category_lowercase"] == arg_lower) &
@@ -619,7 +627,8 @@ def query_chip(arg_lower):
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in [i.lower() for i in playermade_list]:
         subdf = pmc_chip_df[pmc_chip_df["from_lowercase"] == arg_lower]
-        return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
+        return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % subdf.iloc[0][
+            "From?"]
         return_msg = ", ".join(subdf["Chip"])
     else:
         return False, "", ""
@@ -639,9 +648,10 @@ async def chip(context, *args, **kwargss):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!\n"+
-                                                    "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! "+
-                                                    "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace("{cp}", settings.commandprefix))
+                                        sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!\n" +
+                                                    "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! " +
+                                                    "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace(
+                                                        "{cp}", settings.commandprefix))
     arg_combined = ' '.join(cleaned_args)
     is_query, return_title, return_msg = query_chip(arg_combined)
     if is_query:
@@ -746,12 +756,13 @@ def find_skill_color(skill_key):
     return color
 
 
-async def power_ncp(context, arg, force_power = False, ncp_only = False):
+async def power_ncp(context, arg, force_power=False, ncp_only=False):
     if ncp_only:
         local_power_df = power_df[power_df["Sort"] != "Virus Power"]
     else:
         local_power_df = power_df
-    power_info = await find_value_in_table(context, local_power_df, "Power/NCP", arg, suppress_notfound=True)
+    power_info = await find_value_in_table(context, local_power_df, "Power/NCP", arg, suppress_notfound=True,
+                                           alias_message=True)
 
     if power_info is None:
         power_info = await find_value_in_table(context, pmc_power_df, "Power/NCP", arg, suppress_notfound=True)
@@ -813,7 +824,6 @@ async def power_ncp(context, arg, force_power = False, ncp_only = False):
         elif power_source != "Core":
             power_name += " (%s Crossover NCP)" % power_source
 
-
         if power_type in ['Passive', '-', 'Upgrade', 'Minus']:
             field_description = power_description
         else:
@@ -864,9 +874,10 @@ async def power(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a Navi Power and I can pull up its info for you!\n"+
+                                        sendcontent="Give me the name of a Navi Power and I can pull up its info for you!\n" +
                                                     "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
-                                                    "Try giving me multiple queries at once, i.e. `{cp}power sense cost` or `{cp}power virus passive`!".replace("{cp}", settings.commandprefix))
+                                                    "Try giving me multiple queries at once, i.e. `{cp}power sense cost` or `{cp}power virus passive`!".replace(
+                                                        "{cp}", settings.commandprefix))
 
     if len(cleaned_args) > MAX_POWER_QUERY:
         return await koduck.sendmessage(context["message"],
@@ -878,14 +889,14 @@ async def power(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"], sendcontent="No powers found with that query!")
         return await send_query_msg(context, results_title, results_msg)
 
-
     for arg in cleaned_args:
         if not arg:
             continue
         is_power_ncp = re.match(r"^(\S+)\s*ncp$", arg, flags=re.IGNORECASE)
         if is_power_ncp:
             arg = is_power_ncp.group(1)
-        power_name, field_title, field_description, power_color, field_footer = await power_ncp(context, arg, force_power=True)
+        power_name, field_title, field_description, power_color, field_footer = await power_ncp(context, arg,
+                                                                                                force_power=True)
         if power_name is None:
             continue
 
@@ -938,7 +949,7 @@ async def ncp(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a NaviCust Part and I can pull up its info for you!\n"+
+                                        sendcontent="Give me the name of a NaviCust Part and I can pull up its info for you!\n" +
                                                     "I can also query NCPs by EB and Crossover Content!")
     arg_combined = " ".join(cleaned_args)
     is_query, results_title, results_msg = query_ncp(arg_combined)
@@ -958,7 +969,8 @@ async def ncp(context, *args, **kwargs):
             continue
         if any(power_df["power_lowercase"] == "%sncp" % arg):
             arg += "ncp"
-        power_name, field_title, field_description, power_color, _ = await power_ncp(context, arg, force_power=False, ncp_only=True)
+        power_name, field_title, field_description, power_color, _ = await power_ncp(context, arg, force_power=False,
+                                                                                     ncp_only=True)
         if power_name is None:
             continue
 
@@ -993,14 +1005,14 @@ async def upgrade(context, *args, **kwargs):
         is_upgrade, result_title, result_msg = query_npu(arg)
         if not is_upgrade:
             await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find any Navi Power Upgrades for `%s`!" % arg)
+                                     sendcontent="Couldn't find any Navi Power Upgrades for `%s`!" % arg)
             continue
         await send_query_msg(context, result_title, result_msg)
     return
 
 
 async def virus_master(context, arg, simplified=True):
-    virus_info = await find_value_in_table(context, virus_df, "Name", arg, suppress_notfound=True)
+    virus_info = await find_value_in_table(context, virus_df, "Name", arg, suppress_notfound=True, alias_message=True)
 
     if virus_info is None:
         virus_info = await find_value_in_table(context, pmc_virus_df, "Name", arg)
@@ -1092,8 +1104,10 @@ async def virus(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of 1-%d Viruses and I can pull up their info for you!\n" % MAX_VIRUS_QUERY +
-                                                    "I can query Viruses by **Category**, **Tag**, or **Crossover Content**, and pull up the list of Virus categories with `{cp}virus category`! ".replace("{cp}", settings.commandprefix) +
-                                                    "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag artillery`)".replace("{cp}", settings.commandprefix))
+                                                    "I can query Viruses by **Category**, **Tag**, or **Crossover Content**, and pull up the list of Virus categories with `{cp}virus category`! ".replace(
+                                                        "{cp}", settings.commandprefix) +
+                                                    "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag artillery`)".replace(
+                                                        "{cp}", settings.commandprefix))
     elif cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known Virus Categories..."
         result_text = ", ".join(virus_category_list)
@@ -1110,7 +1124,8 @@ async def virus(context, *args, **kwargs):
     for arg in cleaned_args:
         if not arg:
             continue
-        virus_name, _, virus_description, virus_footer, virus_image, virus_color = await virus_master(context, arg, simplified=True)
+        virus_name, _, virus_description, virus_footer, virus_image, virus_color = await virus_master(context, arg,
+                                                                                                      simplified=True)
         if virus_name is None:
             continue
 
@@ -1131,7 +1146,9 @@ async def virusx(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can only output one virusx block at a time!")
 
-    virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color = await virus_master(context, args[0], simplified=False)
+    virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color = await virus_master(context,
+                                                                                                               args[0],
+                                                                                                               simplified=False)
     if virus_name is None:
         return
 
@@ -1149,7 +1166,8 @@ async def query(context, *args, **kwargs):
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! " +
-                                                    "Please type `{cp}help query` for more information.".replace("{cp}", settings.commandprefix))
+                                                    "Please type `{cp}help query` for more information.".replace("{cp}",
+                                                                                                                 settings.commandprefix))
 
     arg = cleaned_args[0]
     arg_combined = " ".join(cleaned_args)
@@ -1195,7 +1213,7 @@ async def query(context, *args, **kwargs):
                                     sendcontent="`%s` is not a valid query!" % args[0])
 
 
-async def mysterydata_master(context, args, force_reward = False):
+async def mysterydata_master(context, args, force_reward=False):
     arg = args[0]
     mysterydata_type = mysterydata_df[mysterydata_df["mysterydata_lowercase"] == arg]
 
@@ -1203,7 +1221,7 @@ async def mysterydata_master(context, args, force_reward = False):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
     if force_reward:
-        firstroll = random.randint(3,5)
+        firstroll = random.randint(3, 5)
     else:
         firstroll = random.randint(1, 6)
     if firstroll <= 2:
@@ -1223,7 +1241,8 @@ async def mysterydata_master(context, args, force_reward = False):
         df_sub = mysterydata_type[mysterydata_type["Type"] == reward_type]
         row_num = random.randint(1, df_sub.shape[0]) - 1
         result_chip = df_sub.iloc[row_num]["Value"]
-    result_text = "%s%s" % (re.sub(r"\.$", '!', result_chip), result_text)  # replaces any periods with exclamation marks!
+    result_text = "%s%s" % (
+    re.sub(r"\.$", '!', result_chip), result_text)  # replaces any periods with exclamation marks!
 
     if arg in mysterydata_dict:
         md_color = mysterydata_dict[arg]["color"]
@@ -1247,7 +1266,8 @@ async def mysterydata(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll Mystery Data for you! Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace("{cp}", settings.commandprefix))
+                                        sendcontent="I can roll Mystery Data for you! Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace(
+                                            "{cp}", settings.commandprefix))
 
     await mysterydata_master(context, cleaned_args, force_reward=False)
 
@@ -1256,7 +1276,8 @@ async def crimsonnoise(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll CrimsonNoise for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace("{cp}", settings.commandprefix))
+                                        sendcontent="I can roll CrimsonNoise for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace(
+                                            "{cp}", settings.commandprefix))
 
     arg = cleaned_args[0]
     crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["mysterydata_lowercase"] == arg]
@@ -1293,7 +1314,8 @@ async def mysteryreward(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! " +
-                                                    "Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace("{cp}", settings.commandprefix))
+                                                    "Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace(
+                                                        "{cp}", settings.commandprefix))
 
     await mysterydata_master(context, cleaned_args, force_reward=True)
     return
@@ -1377,12 +1399,14 @@ async def element(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give you random elements from the Element Generation table. "+
-                                                    "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n".replace("{cp}", settings.commandprefix) +
+                                        sendcontent="Give you random elements from the Element Generation table. " +
+                                                    "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n".replace(
+                                                        "{cp}", settings.commandprefix) +
                                                     "Categories: **%s**" % ", ".join(element_category_list))
     if len(cleaned_args) > 2:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace("{cp}", settings.commandprefix))
+                                        sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace(
+                                            "{cp}", settings.commandprefix))
 
     element_return_number = 1  # number of elements to return, 1 by default
     element_category = None
@@ -1443,7 +1467,7 @@ async def networkmod(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Pulls up info for 1-%d Network Modifiers! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY )
+                                        sendcontent="Pulls up info for 1-%d Network Modifiers! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY)
 
     if len(cleaned_args) > MAX_MOD_QUERY:
         return await koduck.sendmessage(context["message"],
@@ -1483,7 +1507,7 @@ async def invite(context, *args, **kwargs):
 
 
 async def break_test(context, *args, **kwargs):
-    return await koduck.sendmessage(context["message"], sendcontent=str(0/0))
+    return await koduck.sendmessage(context["message"], sendcontent=str(0 / 0))
 
 
 def setup():
