@@ -53,10 +53,9 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
 
 BUGREPORT_CHANNEL_ID = 704684798584815636
 
-# TODO: exclude npus from ncp query
+# TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
 # TODO: add BlackBossom art
-# TODO: Add virus aliases (MettaurOmega for Omega character)
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
