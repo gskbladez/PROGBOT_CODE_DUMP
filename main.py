@@ -58,8 +58,7 @@ BUGREPORT_CHANNEL_ID = 704684798584815636
 # TODO: pull up a specific rulebook if you give it an argument
 # TODO: add BlackBossom art
 # TODO: Query/help for Liberation Mission generators would be neat
-# TODO: A help command for downloading chip data - I always forget what the 3 criteria are
-# TODO: A list of available "help" commands
+# TODO: NaviChip creation rules?
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -77,33 +76,6 @@ settings.backgroundtask = backgroundtask
 # Nyx CC data: https://docs.google.com/spreadsheets/d/1L6qB-AaK8kB8mI1yhixlLmxQZQDrhHYfJ273WTyR8Ms/edit#gid=139979102
 
 chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
-power_df = pd.read_csv(r"powerncpdata.tsv", sep="\t").fillna('')
-virus_df = pd.read_csv(r"virusdata.tsv", sep="\t").fillna('')
-daemon_df = pd.read_csv(r"daemondata.tsv", sep="\t").fillna('')
-
-bond_df = pd.read_csv(r"bonddata.tsv", sep="\t").fillna('')
-bond_df["bondpower_lowercase"] = bond_df["BondPower"].str.lower()
-
-tag_df = pd.read_csv(r"tagdata.tsv", sep="\t").fillna('')
-tag_df["tag_lowercase"] = tag_df["Tag"].str.lower()
-
-mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
-mysterydata_df["mysterydata_lowercase"] = mysterydata_df["MysteryData"].str.lower()
-
-networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
-networkmod_df["name_lowercase"] = networkmod_df["Name"].str.lower()
-
-crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
-crimsonnoise_df["mysterydata_lowercase"] = crimsonnoise_df["MysteryData"].str.lower()
-
-element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
-element_df["category_lowercase"] = element_df["category"].str.lower()
-element_category_list = pd.unique(element_df["category"].dropna())
-
-help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
-help_df["command_lowercase"] = help_df["Command"].str.lower()
-help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
-
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
 chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
     .stack() \
@@ -115,6 +87,8 @@ chip_category_list = [i for i in chip_category_list if i]
 chip_license_list = pd.unique(chip_df["License"].str.lower())
 chip_from_list = pd.unique(chip_df["From?"].str.lower())
 
+power_df = pd.read_csv(r"powerncpdata.tsv", sep="\t").fillna('')
+virus_df = pd.read_csv(r"virusdata.tsv", sep="\t").fillna('')
 virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .stack() \
     .str.strip() \
@@ -122,6 +96,21 @@ virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .unique()
 virus_category_list = pd.unique(virus_df["Category"].str.strip())
 virus_category_list = [i for i in virus_category_list if i]
+
+daemon_df = pd.read_csv(r"daemondata.tsv", sep="\t").fillna('')
+bond_df = pd.read_csv(r"bonddata.tsv", sep="\t").fillna('')
+tag_df = pd.read_csv(r"tagdata.tsv", sep="\t").fillna('')
+mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
+networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
+crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
+
+element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
+element_category_list = pd.unique(element_df["category"].dropna())
+
+help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
+help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
+help_cmd_list = [i for i in help_df["Command"] if i]
+hidden_help_cmd = ["help", "me"]
 
 pmc_chip_df = pd.read_csv(r"playermade_chipdata.tsv", sep="\t").fillna('')
 pmc_power_df = pd.read_csv(r"playermade_powerdata.tsv", sep="\t").fillna('')
@@ -400,12 +389,20 @@ async def help_cmd(context, *args, **kwargs):
                        "My prefix for commands is `{cp}`.\n" + \
                        "To see a list of all commands you can use, type `{cp}commands`. " + \
                        "You can type `{cp}help` and any other command for more info on that command!\n" + \
-                       "I can also pull up info on some rules and descriptions! (i.e. Bond Powers, Parrying, Talents, Skills)"
+                       "I can also pull up info on some rules and descriptions! Check `{cp}help all` for the list of details I can help with!"
         return await koduck.sendmessage(context["message"],
                                         sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}",
                                                                                                                  settings.paramdelim))
 
     cleaned_args = clean_args(args)
+    if cleaned_args[0] in ['list', 'all']:
+        return_title = "Pulling up all `help` responses..."
+        for i in hidden_help_cmd:
+            if i in help_cmd_list:
+                help_cmd_list.remove(i)
+        return_msg = ", ".join(help_cmd_list)
+        return await send_query_msg(context, return_title, return_msg)
+
     funkyarg = ''.join(cleaned_args)
     help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True)
     if help_msg is None:
@@ -417,14 +414,15 @@ async def help_cmd(context, *args, **kwargs):
                                     sendcontent=help_response)
 
 
+# this command is currently unused in ProgBot. lbr it's kind of creepy
 async def userinfo(context, *args, **kwargs):
     # if there is no mentioned user (apparently they have to be in the server to be considered "mentioned"), use the message sender instead
-    if context["message"].server is None:
+    if context["message"].guild is None:
         user = context["message"].author
     elif len(context["message"].mentions) == 0:
-        user = context["message"].server.get_member(context["message"].author.id)
+        user = context["message"].guild.get_member(context["message"].author.id)
     elif len(context["message"].mentions) == 1:
-        user = context["message"].server.get_member(context["message"].mentions[0].id)
+        user = context["message"].guild.get_member(context["message"].mentions[0].id)
     else:
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_nomentioneduser2)
 
@@ -434,15 +432,22 @@ async def userinfo(context, *args, **kwargs):
     creationdate = user.created_at
 
     # these properties only appear in Member object (subclass of User) which is only available from Servers
-    if context["message"].server is not None:
-        game = user.game
+    if context["message"].guild is not None:
+        game = user.activity
         joindate = user.joined_at
         color = user.color
         if game is None:
-            embed = discord.Embed(title="{}#{}".format(username, discr), description=str(user.status), color=color)
+            status_line = str(user.status).capitalize()
         else:
-            embed = discord.Embed(title="{}#{}".format(username, discr), description="Playing {}".format(game.name),
-                                  color=color)
+            act_type_dict = {discord.ActivityType.playing: "Playing",
+                             discord.ActivityType.streaming: "Streaming",
+                             discord.ActivityType.listening: "Listening to",
+                             discord.ActivityType.watching: "Watching"}
+            if game.type in act_type_dict:
+                status_line = "%s %s" % (act_type_dict[game.type], game.name)
+            else:
+                status_line = game.name
+        embed = discord.Embed(title="{}#{}".format(username, discr), description=status_line, color=color)
         embed.add_field(name="Account creation date", value=creationdate.strftime("%Y-%m-%d %H:%M:%S UTC"),
                         inline=False)
         embed.add_field(name="Server join date", value=joindate.strftime("%Y-%m-%d %H:%M:%S UTC"), inline=False)

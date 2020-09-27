@@ -16,6 +16,8 @@ Summon	SummonChip, SummonC, SummonBattleChip, SummonChips, SummonBattleChips,  S
 Support (Chip)	SupportChip, SupportC, SupportBattleChip, SupportChips, SupportBattleChips,  Support(C), (C)Support, Support(BattleChip)		These chips boost the Navi's abilities, and create debilitating effects!
 Thrown	ThrownChip, ThrownC, ThrownBattleChip, ThrownChips, ThrownBattleChips,  Thrown(C), (C)Thrown, Thrown(BattleChip), Thrown(Chip)		These chips are similar to Shot chips, these are more difficult to use but carry powerful effects!
 Wave	WaveChip, WaveC, WaveBattleChip, WaveChips, WaveBattleChips,  Wave(C), (C)Wave, Wave(BattleChip), Wave(Chip)		These chips create explosive and/or wide attacks. All **Close** to the target get hit too, potentially including the user.
+Navi	NaviChip, NaviChips		NaviChips are **MegaChips** that store attack data from defeated Navis. Each NaviChip is unique, based off the Navi it was downloaded from. NaviChips are determined by the GM.
+MegaChip	Mega, MegaChips		**MegaChips** are impossibly rare, exceptionally powerful, one-of-a-kind BattleChips. Folders can only hold one MegaChip at a time. Navi Powers, NCPs, and BattleChips that affect chips ignore MegaChips unless stated otherwise.
 
 Artillery	ArtilleryVirus, ArtilleryV,  ArtilleryViruses, Artillery(V), Artillery(Viruses), (V)Artillery		These Viruses deal high amounts of damage at range, typically using Sense or Affinity.
 Disruption	DisruptionVirus, DisruptionV,  DisruptionViruses, Disruption(V), Disruption(Viruses), (V)Disruption		These Viruses hinder Navis to make them vulnerable to other attackers.
