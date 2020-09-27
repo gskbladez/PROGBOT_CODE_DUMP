@@ -110,7 +110,7 @@ element_category_list = pd.unique(element_df["category"].dropna())
 help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
 help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
 help_cmd_list = [i for i in help_df["Command"] if i]
-hidden_help_cmd = ["help", "me"]
+hidden_help_cmd = ["help", "me", "unknowncommand"]
 
 pmc_chip_df = pd.read_csv(r"playermade_chipdata.tsv", sep="\t").fillna('')
 pmc_power_df = pd.read_csv(r"playermade_powerdata.tsv", sep="\t").fillna('')
