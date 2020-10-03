@@ -286,8 +286,8 @@ Specialist	Rally	Upgrade	On jack-in, pick any skill. Rally can add 3 dice to an 
 							
 AltTab	Alt	Upgrade	You can make any roll via your minion instead, including Navi Powers.	3	NPU	Power Upgrades	
 Payload	Alt	Upgrade	Whenever something destroys your minion, it explodes into your element.	2	NPU	Power Upgrades	
-ControlA	Control	Upgrade	Detonate all abundances of your element in Near range, damaging all Close to one.	2	NPU	Power Upgrades	
-ControlX	Control	Upgrade	Control is now a melee attack. Can use the element of the last enemy you deleted.	3	NPU	Power Upgrades	
+ControlA	Control	Upgrade	Detonate all abundances of your element in Near range, damaging all Close to one.	2	NPU	Power Upgrades	CtrlA, Control-A, Ctrl-A
+ControlX	Control	Upgrade	Control is now a melee attack. Can use the element of the last enemy you deleted.	3	NPU	Power Upgrades	CtrlX, Control-X, Ctrl-X
 BurstTransmission	Shift	Upgrade	When appearing at your destination, cover everything Close in your element.	1	NPU	Power Upgrades	
 Redirect	Shift	Upgrade	You can Shift with a known Near abundance of your element not in sight.	2	NPU	Power Upgrades	
 BufferOverflow	CodeInjection	Upgrade	If your next attack deletes, cover all Close to the target with your element.	1	NPU	Power Upgrades	

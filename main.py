@@ -56,7 +56,6 @@ BUGREPORT_CHANNEL_ID = 704684798584815636
 
 # TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
-# TODO: add BlackBossom art
 # TODO: Query/help for Liberation Mission generators would be neat
 # TODO: NaviChip creation rules?
 mysterydata_dict = {"common": {"color": 0x48C800,
@@ -69,7 +68,6 @@ mysterydata_dict = {"common": {"color": 0x48C800,
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
 settings.backgroundtask = backgroundtask
-
 
 # Riject is a godsend: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
 # Other lists: https://docs.google.com/spreadsheets/d/1bnpvmU4KwmXzHUTuN3Al_W5ZKBuHAmy3Z-dEmCS6SqY/edit?usp=sharing
@@ -1039,12 +1037,12 @@ async def virus_master(context, arg, simplified=True):
 
     virus_footer = "Category: %s" % virus_category
 
-    if virus_artist:
-        virus_footer += "\n(Artwork by %s)" % virus_artist
     if virus_source in playermade_list:
         virus_footer += " (%s Unofficial Virus)" % virus_source
     elif virus_source in cc_list:
         virus_footer += " (%s Crossover Virus)" % virus_source
+    if virus_artist:
+        virus_footer += "\n(Artwork by %s)" % virus_artist
 
     if virus_source in cc_color_dictionary:
         virus_color = cc_color_dictionary[virus_source]
