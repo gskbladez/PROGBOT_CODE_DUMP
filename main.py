@@ -927,11 +927,11 @@ def query_ncp(arg_lower):
         results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in valid_cc_list:
-        subdf = ncp_df[ncp_df["From?"].str.contains(re.escape(arg_lower))]
+        subdf = ncp_df[ncp_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
         results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_power_df[(pmc_power_df["From?"].str.contains(re.escape(arg_lower))) &
+        subdf = pmc_power_df[(pmc_power_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)) &
                              (pmc_power_df["Sort"] != "Virus Power")]
         results_title = "Pulling up all NCPs from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
@@ -1173,7 +1173,6 @@ async def query(context, *args, **kwargs):
                                         sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! " +
                                                     "Please type `{cp}help query` for more information.".replace("{cp}",
                                                                                                                  settings.commandprefix))
-
     arg = cleaned_args[0]
     arg_combined = " ".join(cleaned_args)
 
@@ -1182,7 +1181,7 @@ async def query(context, *args, **kwargs):
     if is_chip_query and is_ncp_query:
         result_title = "Pulling up all BattleChips and NCPs from %s..." % re.match(r".*(`.+`).*", chip_title).group(1)
         ncp_addon = ["%s(NCP)" % i for i in ncp_msg.split(", ")]
-        result_msg = chip_msg + ", ".join(ncp_addon)
+        result_msg = chip_msg + ", " + ", ".join(ncp_addon)
         return await send_query_msg(context, result_title, result_msg)
     elif is_chip_query:
         return await send_query_msg(context, chip_title, chip_msg)
