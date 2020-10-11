@@ -1,5 +1,5 @@
-BondPower	Cost	Description
-Overload	1+	When an attack would delete you, consume all your remaining bond points. You are left with 1HP. Your next roll is easy, no matter what.
-StandTogether	2	Immediately appear Close to an ally and act. Jacks you in if you weren’t already. Downshifts the user’s first [NetOp Bravery + Navi Bravery + 1] rolls if they are protecting the ally.
-CrossSoul	3	Temporarily gain the energy of the Navi of a friend you have 2+ Bond level with. You can use their element as well as your own. In addition, you can replace **one of your stat scores** and two of your skill scores with theirs. Ends after your Navi makes 5 rolls.
-FullSynchro	4	Add all of your NetOp's stats + skills to your Navi's. When your Navi takes damage, your NetOp does too. Ends either after [NetOp Soul + Affinity + 3] actions, or when the NetOp hits 0 HP.
+BondPower	Alias	Cost	Description
+Overload		1+ Bond Point	When an attack would delete you, consume all your remaining Bond Points. You are left with 1HP. Your next roll is Easy, no matter what.
+StandTogether	Stand Together	2 Bond Points	Immediately appear Close to an ally and act. Jacks you in if you weren’t already. Downshifts the user’s first [NetOp Bravery + Navi Bravery + 1] rolls if they are protecting the ally. (For Independent Navis, [Navi Soul + Navi Bravery + 1])
+CrossSoul	Cross Soul, crossoul	3 Bond Points	Temporarily gain the energy of the Navi of a friend you have 2+ Bond Level with. You can use their element as well as your own. In addition, you can replace **one of your stat scores and two of your skill scores** with theirs. Ends after your Navi makes 5 rolls.
+FullSynchro	Full Synchro	4 Bond Points	Add all of your NetOp's stats + skills to your Navi's. When your Navi takes damage, your NetOp does too. Ends either after [NetOp Soul + NetOp Affinity + 3] actions, or when the NetOp hits 0 HP. Unusable by Independent Navis.

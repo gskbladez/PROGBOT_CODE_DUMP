@@ -26,7 +26,7 @@ StyleSword	2	Close	A super-stylish sword. Can instead be used to make 3 Charm ro
 Sword	2	Close	Transforms a part of the Navi into a glowing, razor-sharp blade.	Blade	Piercing	 [Piercing]	Transforms a part of the Navi into a glowing, razor-sharp blade. [Piercing]	Core	Starter	
 TripleRod	3	Close	Extending lance! Spend 1 Speed to do a spin attack, hitting all Close.	Blade	Awkward	 [Awkward]	Extending lance! Spend 1 Speed to do a spin attack, hitting all Close. [Awkward]	Core		
 TurboSlice	2	Close	Spend 1 Speed to deal +2 damage.	Blade			Spend 1 Speed to deal +2 damage.	Core		
-VarSword	2	Close	Spend 1 Info to pick 2: is Accurate; is Piercing; upshifts parries; range is Near; hits twice.	Blade			Spend 1 Info to pick 2: is Accurate; is Piercing; upshifts parries; range is Near; hits twice.	Core		
+VarSword	2	Close	Spend 1 Info to pick 2: is Accurate; is Piercing; upshifts parries; range is Near; hits twice.	Blade			Spend 1 Info to pick 2: is Accurate; is Piercing; upshifts parries; range is Near; hits twice.	Core		VariableSword
 VesselBlade	4	Close	You must spend 1 Affinity point. Spreads your element on impact.	Blade			You must spend 1 Affinity point. Spreads your element on impact.	Core		
 Z-Saber	2	Close	A glowing teal blade. Spend 1 Soul to charge it up and deal double damage on 2 targets.	Blade			A glowing teal blade. Spend 1 Soul to charge it up and deal double damage on 2 targets.	Core		ZSaber
 										
@@ -83,7 +83,7 @@ PhantomGrasp	-	Close	Pick 2 on hit: target rolls Bravery to not panic; target Mi
 Plasma	2	Close	Two orbs of electricity orbit the Navi, striking all enemies in range.	Impact			Two orbs of electricity orbit the Navi, striking all enemies in range.	Core	Starter	
 PowerCycle	1	Close	Reboots Viruses, momentarily disabling them and wiping their short-term memory.	Impact	Piercing	 [Piercing]	Reboots Viruses, momentarily disabling them and wiping their short-term memory. [Piercing]	Core		
 PressurePoint	2	Close	Spend 1 Info to pick 2: is Piercing; hits twice; isn’t Awkward; upshifts target’s next Body roll.	Impact	Awkward	 [Awkward]	Spend 1 Info to pick 2: is Piercing; hits twice; isn’t Awkward; upshifts target’s next Body roll. [Awkward]	Core		
-RiseNShine	1	Close	Target wakes up and downshifts their next Mind roll, even if damage is resisted.	Impact			Target wakes up and downshifts their next Mind roll, even if damage is resisted.	Core		RiseAndShine
+RiseNShine	1	Close	Target wakes up and downshifts their next Mind roll, even if damage is resisted.	Impact			Target wakes up and downshifts their next Mind roll, even if damage is resisted.	Core		RiseAndShine, Rise&Shine
 SilverFist	3	Close	A magic gauntlet! Can instead be used to make 3 Affinity rolls using your Strength instead.	Impact	Awkward, Slow	 [Awkward, Slow]	A magic gauntlet! Can instead be used to make 3 Affinity rolls using your Strength instead. [Awkward, Slow]	Core		
 SnakeBite	2	Close	Hand is a snake! Pick 1: is Piercing; on hit, upshift next Speed roll; target’s Bravery is briefly 0.	Impact	Awkward	 [Awkward]	Hand is a snake! Pick 1: is Piercing; on hit, upshift next Speed roll; target’s Bravery is briefly 0. [Awkward]	Core		
 TopSpin	3	Close	Spin and hit all Close! Upshift your next roll unless you rest for a bit to stop being dizzy.	Impact	Awkward	 [Awkward]	Spin and hit all Close! Upshift your next roll unless you rest for a bit to stop being dizzy. [Awkward]	Core		
@@ -150,7 +150,7 @@ NeedleCannon	1x4	Near	Fire a volley of tiny needles.	Shot	Accurate	 [Accurate]	F
 ShotGun	2	Near	Fires an explosive shot that upshifts the defense of targets hiding behind cover.	Shot			Fires an explosive shot that upshifts the defense of targets hiding behind cover.	Core		
 TankCannon	3	Near	On miss, creates a shattering explosion.	Shot	Piercing, Dangerous, Slow	 [Piercing, Dangerous, Slow]	On miss, creates a shattering explosion. [Piercing, Dangerous, Slow]	Core		
 Thunder	1	Near	A sluggish thunderball that upshifts the target’s next action.	Shot	Accurate, Slow	 [Accurate, Slow]	A sluggish thunderball that upshifts the target’s next action. [Accurate, Slow]	Core		
-VarGun	2	Near	Spend 1 Info to pick 2: is Accurate; is Piercing; range is Far; covers target with your element.	Shot			Spend 1 Info to pick 2: is Accurate; is Piercing; range is Far; covers target with your element.	Core		
+VarGun	2	Near	Spend 1 Info to pick 2: is Accurate; is Piercing; range is Far; covers target with your element.	Shot			Spend 1 Info to pick 2: is Accurate; is Piercing; range is Far; covers target with your element.	Core		VariableGun
 Yo-Yo	2x2	Near	Shoot a razor yo-yo! Spend 1 Sense to make it Accurate.	Shot			Shoot a razor yo-yo! Spend 1 Sense to make it Accurate.	Core		YoYo
 ZapRing	1	Near	Stuns the target for one second.	Shot			Stuns the target for one second.	Core	Starter	
 										
