@@ -421,3 +421,42 @@ XVIII-TheMoon	-	Near	Dream bomb! Target briefly (pick 1): can’t see allies; se
 XIX-TheSun	-	Near	Revealing light (pick 2): exposes invisible/disguised targets; shows everyone’s Max HP; highlights liars.	Hazard	Slow	 [Slow]	Revealing light (pick 2): exposes invisible/disguised targets; shows everyone’s Max HP; highlights liars. [Slow]	Tarot		Sun, TheSun
 XX-Judgement	2	Near	Holy trumpet! Deafening blast removes all temporary effects (e.g. Guards, stuns, shifted rolls).	Wave	Slow	 [Slow]	Holy trumpet! Deafening blast removes all temporary effects (e.g. Guards, stuns, shifted rolls). [Slow]	Tarot		Judgement, Judgment
 XXI-TheWorld	-	Far	Can use the elements of all in range for 5 rolls. Roll Xd6 to summon/manipulate; X=Bond Points.	Support	Mega, Simple	 [Mega, Simple]	Can use the elements of all in range for 5 rolls. Roll Xd6 to summon/manipulate; X=Bond Points. [Mega, Simple]	Tarot		World, TheWorld
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+AnteUp	-	-	The loser of your next opposed roll drops the rolled skill by 2. Refresh this chip if you lose.	Support	Guard, Slow	 [Guard, Slow]	The loser of your next opposed roll drops the rolled skill by 2. Refresh this chip if you lose. [Guard, Slow]	Silicon Skin		
+BareMetal	-	-	Shut down & bare your code. 1 ally can roll Coding to heal you 2 HP per hit. They reboot you.	Support	Awkward, Slow	 [Awkward, Slow]	Shut down & bare your code. 1 ally can roll Coding to heal you 2 HP per hit. They reboot you. [Awkward, Slow]	Silicon Skin		
+BloodyMerry	-	Close	3 spicy cocktails. Drink 1 for +1 die next Mind roll, no stacking. Throw 1 to light a fire on impact.	Summon	Awkward, Slow	 [Awkward, Slow]	3 spicy cocktails. Drink 1 for +1 die next Mind roll, no stacking. Throw 1 to light a fire on impact. [Awkward, Slow]	Silicon Skin		
+ChromeLipstick	-	-	Until you take damage, your words cannot be silenced or ignored, muting all other sound.	Support	Guard, Simple	 [Guard, Simple]	Until you take damage, your words cannot be silenced or ignored, muting all other sound. [Guard, Simple]	Silicon Skin		
+Cosmicpolitan	-	Close	Sweet purple drink! On drinking, you have zero gravity for a minute. Upshift Speed defending.	Summon	Awkward, Slow	 [Awkward, Slow]	Sweet purple drink! On drinking, you have zero gravity for a minute. Upshift Speed defending. [Awkward, Slow]	Silicon Skin		
+FatalAttraction	-	-	Next time an enemy fails a Charm roll on you, warp Close and respond with a 4-damage slash.	Support	Guard, Slow	 [Guard, Slow]	Next time an enemy fails a Charm roll on you, warp Close and respond with a 4-damage slash. [Guard, Slow]	Silicon Skin		
+FluffyDaydream	-	Close	Sweet drink! When drank, pick a Bond; heal HP = Bond Lvl+2 & say your true feelings about them.	Summon	Awkward, Slow	 [Awkward, Slow]	Sweet drink! When drank, pick a Bond; heal HP = Bond Lvl+2 & say your true feelings about them. [Awkward, Slow]	Silicon Skin		
+GlamourLegs	2	Close	Can instead use to make 3 Speed rolls using your Charm instead. Puts all eyes on you, baby.	Impact	Awkard, Dangerous	 [Awkard, Dangerous]	Can instead use to make 3 Speed rolls using your Charm instead. Puts all eyes on you, baby. [Awkard, Dangerous]	Silicon Skin		
+GuiltyPleasure	-	Close	Shimmering unstable energy! Your next Cost Power is free, but your next failure is catastrophic.	Summon	Simple	 [Simple]	Shimmering unstable energy! Your next Cost Power is free, but your next failure is catastrophic. [Simple]	Silicon Skin		
+Mettini	-	Close	Dry cocktail served in a yellow helmet. After you drink it, you can speak with Viruses for 5 rolls.	Summon	Awkward, Slow	 [Awkward, Slow]	Dry cocktail served in a yellow helmet. After you drink it, you can speak with Viruses for 5 rolls. [Awkward, Slow]	Silicon Skin		
+MidnightRunner	-	Close	Smoke cloud makes all hit invisible. Ends in a minute, when attacking, or if Close to an enemy.	Wave	Awkward	 [Awkward]	Smoke cloud makes all hit invisible. Ends in a minute, when attacking, or if Close to an enemy. [Awkward]	Silicon Skin		
+PoisonParadise	-	Near	Pick a hazard - it is disguised as something enticing and inviting. Disguise expires on touch.	Hazard	Awkward, Slow	 [Awkward, Slow]	Pick a hazard - it is disguised as something enticing and inviting. Disguise expires on touch. [Awkward, Slow]	Silicon Skin		
+Shampain	-	Close	Gold wine! On drinking, next roll, reroll your failed dice. -400z per rerolled die; -3 HP if you hit 0z.	Summon	Awkward, Slow	 [Awkward, Slow]	Gold wine! On drinking, next roll, reroll your failed dice. -400z per rerolled die; -3 HP if you hit 0z. [Awkward, Slow]	Silicon Skin		
+SteelHeart	-	-	Suppress all emotion (e.g. fear, temptation) for 5 rolls. Can’t use Charm, Bravery, or Bonds.	Support	Guard, Simple	 [Guard, Simple]	Suppress all emotion (e.g. fear, temptation) for 5 rolls. Can’t use Charm, Bravery, or Bonds. [Guard, Simple]	Silicon Skin		
+VoltageSpike	-	Close	A yellow cocktail served in a big battery! Electrifies your next 3 rolls, then stuns you.	Summon	Awkward, Slow	 [Awkward, Slow]	A yellow cocktail served in a big battery! Electrifies your next 3 rolls, then stuns you. [Awkward, Slow]	Silicon Skin		
