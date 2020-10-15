@@ -32,8 +32,8 @@ skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
               'Charm', 'Bravery', 'Affinity']
 cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Underground Broadcast",
-           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Tarot",
-           "Nyx"]
+           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Silicon Skin",
+           "Tarot", "Nyx"]
 playermade_list = ["Genso Network"]
 joke_list = ["Nyx"]
 
@@ -46,6 +46,7 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
                        "Leximancy": 0x481f65,
                        "Underground Broadcast": 0x73ab50,
                        "New Connections": 0xededed,
+                       "Silicon Skin": 0xff00ff,
                        "Tarot": 0xfcf4dc,
                        "Nyx": 0xa29e14,
                        "Genso Network": 0xff605d,
