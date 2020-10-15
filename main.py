@@ -32,8 +32,8 @@ skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
               'Charm', 'Bravery', 'Affinity']
 cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Underground Broadcast",
-           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Tarot",
-           "Nyx"]
+           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Silicon Skin",
+           "Tarot", "Nyx"]
 playermade_list = ["Genso Network"]
 joke_list = ["Nyx"]
 
