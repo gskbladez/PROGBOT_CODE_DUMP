@@ -25,6 +25,7 @@ MAX_CHIP_QUERY = 5
 MAX_VIRUS_QUERY = 5
 MAX_ELEMENT_ROLL = 12
 MAX_MOD_QUERY = 5
+MAX_BOND_QUERY = 4
 MAX_NPU_QUERY = MAX_NCP_QUERY
 ROLL_COMMENT_CHAR = '#'
 
@@ -1368,6 +1369,9 @@ async def bond(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a Bond Power and I can pull up its info for you!")
+    elif (len(cleaned_args) > MAX_BOND_QUERY):
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Too many Bond Powers; no more than %d!\nBesides, there's only four Bond Powers in the game!" % MAX_BOND_QUERY)
     if cleaned_args[0] in ['all', 'list']:
         result_title = "Pulling up all Bond Powers..."
         result_msg = ', '.join(bond_df["BondPower"])
