@@ -5,7 +5,7 @@ from rply import LexerGenerator
 from rply import ParserGenerator
 from rply.token import BaseBox
 
-
+DICE_NUM_LIMIT = 1000
 lg = LexerGenerator()
 
 EXPLODE_TOKEN = r"\!"
@@ -60,6 +60,9 @@ bold = lambda x : '**{}**'.format(x)
 class DiceError(Exception):
     pass
 
+class OutOfDiceBounds(Exception):
+    pass
+
 class Number(BaseBox):
     def __init__(self, value):
         self.value = value
@@ -102,6 +105,8 @@ class DiceOp(BaseBox):
         self.left = copy.deepcopy(left)
         self.right = copy.deepcopy(right)
         self.number_of_dice = left.eval()
+        if self.number_of_dice > DICE_NUM_LIMIT:
+            raise OutOfDiceBounds("Too many dice! No more than %d!" % DICE_NUM_LIMIT)
         self.size_of_dice = right.eval()
         self.results = [random.randint(1,self.size_of_dice) for i in range(self.number_of_dice)]
         initial_roll = "{}d{}".format(self.left, self.right)

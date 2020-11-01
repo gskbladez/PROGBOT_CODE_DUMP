@@ -1,7 +1,8 @@
 .env
 .idea
 __pycache__
-log.txt
-formattedlog.txt
+log
+formattedlog
+channel_id_notes
 venv
 virusart

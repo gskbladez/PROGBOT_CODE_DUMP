@@ -31,11 +31,14 @@ ROLL_COMMENT_CHAR = '#'
 skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
               'Charm', 'Bravery', 'Affinity']
-cc_list = ["ChitChat", "Radical Spin", "Skateboard Dog", "Night Drifters", "Underground Broadcast",
-           "Mystic Lilies", "Genso Network", "Leximancy", "Underground Broadcast", "New Connections", "Silicon Skin",
-           "Tarot", "Nyx"]
+cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard Dog": "SkateboardDog",
+           "Night Drifters": "NightDrifters", "Underground Broadcast": "UndergroundBroadcast",
+           "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
+           "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
+           "Tarot": "", "Nyx": ""}
+cc_list = list(cc_dict.keys())
+cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 playermade_list = ["Genso Network"]
-joke_list = ["Nyx"]
 
 cc_color_dictionary = {"Mega": 0xA8E8E8,
                        "ChitChat": 0xff8000,
@@ -53,12 +56,12 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
                        "Dark": 0xB088D0,
                        "Item": 0xffffff}
 
-BUGREPORT_CHANNEL_ID = 704684798584815636
-
 # TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
 # TODO: Query/help for Liberation Mission generators would be neat
 # TODO: NaviChip creation rules?
+# TODO: Stat+1, Skill+1, NaviPowerNCP, Mind/Body/SoulPower
+# TODO: Comments on all progbot commands
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -81,6 +84,7 @@ chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
     .str.strip() \
     .str.lower() \
     .unique()
+chip_tag_list = [i for i in chip_tag_list if i]
 chip_category_list = pd.unique(chip_df["Category"])
 chip_category_list = [i for i in chip_category_list if i]
 chip_license_list = pd.unique(chip_df["License"].str.lower())
@@ -163,14 +167,15 @@ async def bugreport(context, *args, **kwargs):
     channelid = int(settings.bugreport_channel_id)
 
     progbot_bugreport_channel = koduck.client.get_channel(channelid)
-    THEmessagecontent = context["paramline"]
-    THEmessageauthor = context["message"].author
+    message_content = context["paramline"]
+    message_author = context["message"].author
+    message_guild = context["message"].guild.name
     # originchannel = "<#{}>".format(context["message"].channel.id) if isinstance(context["message"].channel,
     #                                                                            discord.TextChannel) else ""
-    embed = discord.Embed(title="**__New Bug Report!__**", description="_{}_".format(THEmessagecontent),
+    embed = discord.Embed(title="**__New Bug Report!__**", description="_{}_".format(message_content),
                           color=0x5058a8)
     embed.set_footer(
-        text="Submitted by: {}#{}".format(THEmessageauthor.name, THEmessageauthor.discriminator))
+        text="Submitted by: {}#{} ({})".format(message_author.name, message_author.discriminator, message_guild))
     embed.set_thumbnail(url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png")
     await koduck.sendmessage(context["message"], sendchannel=progbot_bugreport_channel, sendembed=embed, ignorecd=True)
     return await koduck.sendmessage(context["message"], sendcontent="**_Bug Report Submitted!_**\nThanks for the help!")
@@ -501,9 +506,9 @@ async def roll(context, *args, **kwargs):
         else:
             progroll_output = "{} *rolls...* {} = **__{}__**".format(context["message"].author.mention,
                                                                      str_result, roll_results.eval())
-
         if roll_comment:
             progroll_output += " #{}".format(roll_comment.rstrip())
+
         return await koduck.sendmessage(context["message"],
                                         sendcontent=progroll_output)
     except rply.errors.LexingError:
@@ -515,7 +520,9 @@ async def roll(context, *args, **kwargs):
     except dice_algebra.DiceError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="The dice algebra is incorrect! Did you type out the roll correctly?")
-
+    except dice_algebra.OutOfDiceBounds:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
 
 async def tag(context, *args, **kwargs):
     cleaned_args = clean_args(args)
@@ -574,6 +581,11 @@ async def send_query_msg(context, return_title, return_msg):
 
 
 def query_chip(arg_lower):
+    alias_check = cc_df[
+        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    if alias_check.shape[0] > 0:
+        arg_lower = alias_check.iloc[0]["Source"].lower()
+
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all `DarkChips`..."
         subdf = chip_df[chip_df["Tags"].str.contains("Dark|dark")]
@@ -630,6 +642,11 @@ def query_chip(arg_lower):
 
 
 def pity_cc_check(arg):
+    alias_check = cc_df[
+        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg), flags=re.IGNORECASE)]
+    if alias_check.shape[0] > 0:
+        arg = alias_check.iloc[0]["Source"]
+        return arg
     try:
         would_be_valid = next(i for i in cc_list if re.match(r"^%s$" % re.escape(arg), i, flags=re.IGNORECASE))
         return would_be_valid
@@ -648,6 +665,10 @@ async def chip(context, *args, **kwargss):
     if cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known BattleChip Categories..."
         result_text = ", ".join(chip_category_list)
+        return await send_query_msg(context, result_title, result_text)
+    elif cleaned_args[0] in ['tag', 'tags']:
+        result_title = "Displaying all known BattleChip Tags..."
+        result_text = ", ".join([i.capitalize() for i in chip_tag_list])
         return await send_query_msg(context, result_title, result_text)
     elif cleaned_args[0] in ['navi', 'navichip']:
         return await koduck.sendmessage(context["message"],
@@ -707,9 +728,9 @@ async def chip(context, *args, **kwargss):
         if chip_crossover == "Nyx":
             msg_time = context["message"].created_at
             if msg_time.month == 4 and msg_time.day == 1:
-                chip_title_sub = "%s Official!! Crossover " % chip_crossover
+                chip_title_sub = "%s Legal!! Crossover " % chip_crossover
             else:
-                chip_title_sub = "%s Unofficial Crossover " % chip_crossover
+                chip_title_sub = "%s Illegal Crossover " % chip_crossover
 
         # this determines embed colors
         color = 0xbfbfbf
@@ -912,6 +933,11 @@ async def power(context, *args, **kwargs):
 
 
 def query_ncp(arg_lower):
+    alias_check = cc_df[
+        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    if alias_check.shape[0] > 0:
+        arg_lower = alias_check.iloc[0]["Source"].lower()
+
     ncp_df = power_df[power_df["Sort"] != "Virus Power"]
     valid_cc_list = list(pd.unique(ncp_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core", "power upgrades"]]
@@ -1081,13 +1107,14 @@ async def virus_master(context, arg, simplified=True):
 
 
 def query_virus(arg_lower):
+    alias_check = cc_df[
+        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    if alias_check.shape[0] > 0:
+        arg_lower = alias_check.iloc[0]["Source"].lower()
+
     valid_cc_list = list(pd.unique(virus_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core"]]
-    if arg_lower in valid_cc_list:
-        sub_df = virus_df[virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        result_title = "Viruses from the `%s` Crossover Content..." % sub_df.iloc[0]["From?"]
-        result_msg = ", ".join(sub_df["Name"])
-    elif arg_lower in [i.lower() for i in virus_category_list]:
+    if arg_lower in [i.lower() for i in virus_category_list]:
         sub_df = virus_df[virus_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
         result_title = "Viruses in the `%s` category..." % sub_df.iloc[0]["Category"]
         result_msg = ", ".join(sub_df["Name"])
@@ -1095,6 +1122,16 @@ def query_virus(arg_lower):
         sub_df = virus_df[virus_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
         result_title = "Viruses with the `%s` tag..." % arg_lower.capitalize()
         result_msg = ", ".join(sub_df["Name"])
+    elif arg_lower in valid_cc_list:
+        sub_df = virus_df[virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        result_title = "Viruses from the `%s` Crossover Content..." % sub_df.iloc[0]["From?"]
+        result_msg = ", ".join(sub_df["Name"])
+    elif arg_lower in [i.lower() for i in playermade_list]:
+        subdf = pmc_virus_df[pmc_virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        if subdf.shape[0] == 0:
+            return False, "", ""
+        result_title = "Pulling up all Viruses from unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
+        result_msg = ", ".join(subdf["Name"])
     else:
         return False, "", ""
     return True, result_title, result_msg
@@ -1327,26 +1364,32 @@ async def mysteryreward(context, *args, **kwargs):
 
 
 async def bond(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+    cleaned_args = [arg.lower() for arg in args]
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a Bond Power and I can pull up its info for you!")
-    funkyarg = ' '.join(cleaned_args)
-    bond_info = await find_value_in_table(context, bond_df, "BondPower", funkyarg)
-    if bond_info is None:
-        return
+    if cleaned_args[0] in ['all', 'list']:
+        result_title = "Pulling up all Bond Powers..."
+        result_msg = ', '.join(bond_df["BondPower"])
+        return await send_query_msg(context, result_title, result_msg)
 
-    bond_title = bond_info["BondPower"]
-    bond_cost = bond_info["Cost"]
-    bond_description = bond_info["Description"]
+    for arg in cleaned_args:
+        bond_info = await find_value_in_table(context, bond_df, "BondPower", arg)
+        if bond_info is None:
+            return
 
-    embed = discord.Embed(
-        title="__%s__" % bond_title,
-        color=0x24ff00)
-    embed.add_field(name="**({})**".format(bond_cost),
-                    value="_{}_".format(bond_description))
+        bond_title = bond_info["BondPower"]
+        bond_cost = bond_info["Cost"]
+        bond_description = bond_info["Description"]
 
-    return await koduck.sendmessage(context["message"], sendembed=embed)
+        embed = discord.Embed(
+            title="__%s__" % bond_title,
+            color=0x24ff00)
+        embed.add_field(name="**({})**".format(bond_cost),
+                        value="_{}_".format(bond_description))
+
+        await koduck.sendmessage(context["message"], sendembed=embed)
+    return
 
 
 def query_daemon():
