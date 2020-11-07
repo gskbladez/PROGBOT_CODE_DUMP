@@ -62,7 +62,8 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
 # TODO: Query/help for Liberation Mission generators would be neat
 # TODO: NaviChip creation rules?
 # TODO: Stat+1, Skill+1, NaviPowerNCP, Mind/Body/SoulPower
-# TODO: Comments on all progbot commands
+# TODO: Update "help" messages to mention >chip/>virus tag and >chip/virus category
+# TODO: >virus tag
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -1258,7 +1259,7 @@ async def query(context, *args, **kwargs):
 
 async def mysterydata_master(context, args, force_reward=False):
     arg = args[0]
-    mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains(arg, flags=re.IGNORECASE)]
+    mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains("^%s$" % arg, flags=re.IGNORECASE)]
 
     if mysterydata_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
@@ -1323,7 +1324,7 @@ async def crimsonnoise(context, *args, **kwargs):
                                             "{cp}", settings.commandprefix))
 
     arg = cleaned_args[0]
-    crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains(arg, flags=re.IGNORECASE)]
+    crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains("^%s$" % arg, flags=re.IGNORECASE)]
 
     if crimsonnoise_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
