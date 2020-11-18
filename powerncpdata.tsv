@@ -235,8 +235,8 @@ Demolition	Shatter	Upgrade	Before rolling, can choose for the target object to b
 Infiltrate	Shatter	Upgrade	Shatter can be silent if you have a few moments of uninterrupted preparation.	1	NPU	Power Upgrades	
 Tremor	Shockwave	Upgrade	Deal one less damage to knock the target over on hit.	2	NPU	Power Upgrades	
 WaveMod	Shockwave	Upgrade	Spend 1 Wave chip to give Shockwave its properties for X+1 rolls. X=chip dmg.	2	NPU	Power Upgrades	
-BreakSlot	Breakcharge	Upgrade	Can use BreakCharge with melee chips. They also become Piercing.	3	NPU	Power Upgrades	
-Debilitate	Breakcharge	Upgrade	Can upshift one of the target’s skills instead of Body rolls. (Does not stack.)	2	NPU	Power Upgrades	
+BreakSlot	BreakCharge	Upgrade	Can use BreakCharge with melee chips. They also become Piercing.	3	NPU	Power Upgrades	
+Debilitate	BreakCharge	Upgrade	Can upshift one of the target’s skills instead of Body rolls. (Does not stack.)	2	NPU	Power Upgrades	
 Blowback	Followthrough	Upgrade	One target can be Near range if you pick a Close target to launch at them.	2	NPU	Power Upgrades	
 LastHit	Followthrough	Upgrade	Followthrough is free if it deletes a target. Reset Strength penalties on multi-delete.	2	NPU	Power Upgrades	
 							

@@ -64,6 +64,9 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
 # TODO: Stat+1, Skill+1, NaviPowerNCP, Mind/Body/SoulPower
 # TODO: Update "help" messages to mention >chip/>virus tag and >chip/virus category
 # TODO: >virus tag
+# TODO: Indie refresh??
+# TODO: indie rules?
+# TODO: power-esque virus querying
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
