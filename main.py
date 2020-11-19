@@ -67,6 +67,8 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
 # TODO: Indie refresh??
 # TODO: indie rules?
 # TODO: power-esque virus querying
+# TODO: Repeating outputs??
+# TODO: Audience participation: >cheer/>jeer can be used to roll a random cheer/jeer from the table., >cheer options/>jeer options can be used to see all of them., >megacheer/>megajeer can also list the options.
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -1361,7 +1363,7 @@ async def mysteryreward(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! " +
-                                                    "Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace(
+                                                    "Specify `{cp}mysteryreward common`, `{cp}mysteryreward uncommon`, or `{cp}mysteryreward rare`!".replace(
                                                         "{cp}", settings.commandprefix))
 
     await mysterydata_master(context, cleaned_args, force_reward=True)
