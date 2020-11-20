@@ -5,6 +5,7 @@ userlevelstablename = "userlevels"
 customresponsestablename = "customresponses"
 logfile = "log.txt"
 formattedlogfile = "formattedlog.txt"
+audiencefile = "audience.json"
 
 #BOT SETTINGS
 botname = "Koduck"

@@ -28,20 +28,26 @@ MAX_MOD_QUERY = 5
 MAX_BOND_QUERY = 4
 MAX_NPU_QUERY = MAX_NCP_QUERY
 ROLL_COMMENT_CHAR = '#'
+MAX_CHEER_JEER_ROLL = 5
 
 skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
               'Charm', 'Bravery', 'Affinity']
+skill_color_dictionary = {"Mind": 0x81A7C6,
+                          "Body": 0xDF8F8D,
+                          "Soul": 0xF8E580}
+
 cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard Dog": "SkateboardDog",
            "Night Drifters": "NightDrifters", "Underground Broadcast": "UndergroundBroadcast",
            "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
            "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
+           "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
            "Tarot": "", "Nyx": ""}
 cc_list = list(cc_dict.keys())
 cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 playermade_list = ["Genso Network"]
 
-cc_color_dictionary = {"Mega": 0xA8E8E8,
+cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "ChitChat": 0xff8000,
                        "Radical Spin": 0x3f5cff,
                        "Skateboard Dog": 0xff0000,
@@ -51,11 +57,17 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
                        "Underground Broadcast": 0x73ab50,
                        "New Connections": 0xededed,
                        "Silicon Skin": 0xf012be,
+                       "The Walls Will Swallow You": 0x000000,
                        "Tarot": 0xfcf4dc,
                        "Nyx": 0xa29e14,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
-                       "Item": 0xffffff}
+                       "Item": 0xffffff,
+                       "Chip": 0xbfbfbf,
+                       "Virus": 0x7c00ff,
+                       "MegaVirus": 0x000000,
+                       "OmegaVirus": 0x000000}
+cj_colors = {"cheer": 0xFFD700, "jeer": 0xff605d}
 
 # TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
@@ -67,7 +79,6 @@ cc_color_dictionary = {"Mega": 0xA8E8E8,
 # TODO: Indie refresh??
 # TODO: indie rules?
 # TODO: power-esque virus querying
-# TODO: Repeating outputs??
 # TODO: Audience participation: >cheer/>jeer can be used to roll a random cheer/jeer from the table., >cheer options/>jeer options can be used to see all of them., >megacheer/>megajeer can also list the options.
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
@@ -82,7 +93,6 @@ settings.backgroundtask = backgroundtask
 
 # Riject is a godsend: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
 # Other lists: https://docs.google.com/spreadsheets/d/1bnpvmU4KwmXzHUTuN3Al_W5ZKBuHAmy3Z-dEmCS6SqY/edit?usp=sharing
-# Nyx CC data: https://docs.google.com/spreadsheets/d/1L6qB-AaK8kB8mI1yhixlLmxQZQDrhHYfJ273WTyR8Ms/edit#gid=139979102
 
 chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
@@ -113,6 +123,7 @@ tag_df = pd.read_csv(r"tagdata.tsv", sep="\t").fillna('')
 mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
 networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
 crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
+audience_df = pd.read_csv(r"audiencedata.tsv", sep="\t").fillna('')
 
 element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
 element_category_list = pd.unique(element_df["category"].dropna())
@@ -132,7 +143,6 @@ nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
-
 
 ##################
 # BASIC COMMANDS #
@@ -740,14 +750,14 @@ async def chip(context, *args, **kwargss):
                 chip_title_sub = "%s Illegal Crossover " % chip_crossover
 
         # this determines embed colors
-        color = 0xbfbfbf
+        color = cc_color_dictionary["Chip"]
         if chip_tags_list:
             if 'Dark' in chip_tags:
                 color = cc_color_dictionary['Dark']
                 chip_tags_list.remove("Dark")
                 chip_title_sub += "Dark"
             elif 'Mega' in chip_tags:
-                color = cc_color_dictionary['Mega']
+                color = cc_color_dictionary['MegaChip']
                 chip_tags_list.remove("Mega")
                 chip_title_sub += "Mega"
             elif 'Incident' in chip_tags:
@@ -775,11 +785,11 @@ async def chip(context, *args, **kwargss):
 
 def find_skill_color(skill_key):
     if skill_key in ["Sense", "Info", "Coding"]:
-        color = 0x81A7C6
+        color = skill_color_dictionary["Mind"]
     elif skill_key in ["Strength", "Speed", "Stamina"]:
-        color = 0xDF8F8D
+        color = skill_color_dictionary["Body"]
     elif skill_key in ["Charm", "Bravery", "Affinity"]:
-        color = 0xF8E580
+        color = skill_color_dictionary["Soul"]
     else:
         color = -1  # error code
     return color
@@ -1081,7 +1091,7 @@ async def virus_master(context, arg, simplified=True):
     if virus_source in cc_color_dictionary:
         virus_color = cc_color_dictionary[virus_source]
     else:
-        virus_color = 0x7c00ff
+        virus_color = cc_color_dictionary["Virus"]
 
     virus_descript_block = ""
     virus_title = ""
@@ -1562,6 +1572,121 @@ async def invite(context, *args, **kwargs):
                           color=color,
                           url=invite_link)
     return await koduck.sendmessage(context["message"], sendembed=embed)
+
+async def cheer(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+    if len(cleaned_args) >= 1:
+        if cleaned_args[0] == 'help':
+            audience_help_msg = "Roll a random Cheer with `{cp}cheer!` (Up to %d at once!)\n " % MAX_CHEER_JEER_ROLL + \
+                            "I can also list all Cheers and MegaCheers with `{cp}cheer all`. " + \
+                            "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`!"
+                            #"I can also list all Cheers with `{cp}cheer all`.\n\n" + \
+                            #"Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
+                            #"You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
+                            #"and pull up the current Cheer/Jeer points with `{cp}audience now`.\n" + \
+                            #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
+            return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+    appended_arg = ("cheer",) + args
+    await audience(context, *appended_arg, **kwargs)
+    return
+
+async def jeer(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+    if len(cleaned_args) >= 1:
+        if cleaned_args[0] == 'help':
+            audience_help_msg = "Roll a random Jeer with `{cp}jeer!` (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
+                            "I can also list all Jeers and MegaJeers with `{cp}jeer all`. " + \
+                            "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`!"
+                            #"I can also list all Cheers with `{cp}cheer all`.\n\n" + \
+                            #"Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
+                            #"You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
+                            #"and pull up the current Cheer/Jeer points with `{cp}audience now`.\n" + \
+                            #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
+            return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+    appended_arg = ("jeer",) + args
+    await audience(context, *appended_arg, **kwargs)
+    return
+
+
+async def audience(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        audience_help_msg = "Roll a random Cheer or Jeer with `{cp}audience cheer` or `{cp}audience jeer`! (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
+                            "I can also list all Cheers or Jeers with `{cp}audience cheer all` or `{cp}audience jeer all`."
+                            #"I can also list all Cheers or Jeers with `{cp}audience cheer all` or `{cp}audience jeer all`.\n\n" + \
+                            #"Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
+                            #"You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
+                            #"and pull up the current Cheer/Jeer points with `{cp}audience now`.\n" + \
+                            #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
+        return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+
+    # if os.path.isfile(settings.audiencefile):
+    is_query = False
+    is_spend = False
+    query_details = ["", 1]
+    for arg in cleaned_args:
+        if arg in ["mega", "megacheer", "megajeer"]:
+            is_query = True
+            query_details[0] = arg
+            break
+        elif arg in ["add", "subtract", "spend", "gain"]:
+            is_spend = True
+        elif arg in ["all", "list", "option", "options"]:
+            is_query = True
+        elif arg in ["cheer", "jeer", "cheers", "jeers", "c", "j"]:
+            if query_details[0]:
+                return await koduck.sendmessage(context["message"], sendcontent="Sorry, you can't ask for both Cheers and Jeers!")
+            if "c" in arg:
+                query_details[0] = "cheer"
+            else:
+                query_details[0] = "jeer"
+        elif arg.isnumeric():
+            query_details[1] = int(arg)
+        else:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Sorry, I'm not sure what `%s` means here!" % arg)
+
+    if is_spend:
+        return await koduck.sendmessage(context["message"], sendcontent="Sorry, can't keep track of Cheers/Jeers yet!")
+    elif is_query:
+        if not query_details[0]:
+            query_details[0] = "eer"
+            embed_msg = "**Listing all Cheers/Jeers from the Audience Participation rules...**\n"
+        else:
+            embed_msg = "**Listing `%s`(s) from the Audience Participation rules...**\n" % query_details[0]
+        sub_df = audience_df[audience_df["Type"].str.contains(re.escape(query_details[0]), flags=re.IGNORECASE)]
+        embed_bits = []
+        for cj_type in sub_df["Type"].unique():
+            subsub_df = sub_df[sub_df["Type"] == cj_type]
+            subsub_index = range(1, subsub_df.shape[0] + 1)
+            line_items = ["> *%d. %s*"%(i, val) for i, val in zip(subsub_index, subsub_df["Option"].values)]
+            embed_submsg = "> **%s**\n" % cj_type + "\n".join(line_items)
+            embed_bits.append(embed_submsg)
+        embed_msg += "\n\n".join(embed_bits)
+        return await koduck.sendmessage(context["message"], sendcontent=embed_msg)
+    else:
+        if query_details[1] > MAX_CHEER_JEER_ROLL:
+            return await koduck.sendmessage(context["message"], sendcontent="Rolling too many Cheers or Jeers! Up to %d!" % MAX_CHEER_JEER_ROLL)
+        elif query_details[1] <= 0:
+            embed = discord.Embed(title="__Audience Participation__",
+                                  description="_%s rolled ... %d %ss! Wait, huh??_\n\n" %
+                                              (context["message"].author.mention, query_details[1], query_details[0].capitalize()),
+                                  color=cj_colors[query_details[0]])
+            return await koduck.sendmessage(context["message"], sendembed=embed)
+        sub_df = audience_df[audience_df["Type"].str.contains("^%s$" % re.escape(query_details[0]), flags=re.IGNORECASE)]
+        random_roll = [random.randrange(sub_df.shape[0]) for i in range(query_details[1])]
+        cj_roll = ["*%s*" % sub_df["Option"].iloc[i] for i in random_roll]
+        if len(cj_roll) == 1:
+            noun_term = "a %s" % query_details[0].capitalize()
+        else:
+            noun_term = "%d %ss" % (query_details[1], query_details[0].capitalize())
+        embed = discord.Embed(title="__Audience Participation__",
+                              description="_%s rolled %s!_\n\n" % (context["message"].author.mention, noun_term) + \
+                                          "\n".join(cj_roll),
+                              color=cj_colors[query_details[0]])
+        #embed.set_footer(text="Testing")
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+
 
 
 async def break_test(context, *args, **kwargs):
