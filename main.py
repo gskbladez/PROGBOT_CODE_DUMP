@@ -57,17 +57,17 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Underground Broadcast": 0x73ab50,
                        "New Connections": 0xededed,
                        "Silicon Skin": 0xf012be,
-                       "The Walls Will Swallow You": 0x000000,
+                       "The Walls Will Swallow You": 0x4f4f4f,
                        "Tarot": 0xfcf4dc,
                        "Nyx": 0xa29e14,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
                        "Item": 0xffffff,
-                       "Chip": 0xbfbfbf,
-                       "Virus": 0x7c00ff,
-                       "MegaVirus": 0x000000,
-                       "OmegaVirus": 0x000000}
-cj_colors = {"cheer": 0xFFD700, "jeer": 0xff605d}
+                       "Chip": 0xbfbfbf}
+virus_colors = {"Virus": 0x7c00ff,
+                "MegaVirus": 0xffffff,
+                "OmegaVirus": 0xffffff}
+cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 
 # TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
@@ -79,7 +79,7 @@ cj_colors = {"cheer": 0xFFD700, "jeer": 0xff605d}
 # TODO: Indie refresh??
 # TODO: indie rules?
 # TODO: power-esque virus querying
-# TODO: Audience participation: >cheer/>jeer can be used to roll a random cheer/jeer from the table., >cheer options/>jeer options can be used to see all of them., >megacheer/>megajeer can also list the options.
+# TODO: audience tracking per-text channel
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -1669,7 +1669,7 @@ async def audience(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"], sendcontent="Rolling too many Cheers or Jeers! Up to %d!" % MAX_CHEER_JEER_ROLL)
         elif query_details[1] <= 0:
             embed = discord.Embed(title="__Audience Participation__",
-                                  description="_%s rolled ... %d %ss! Wait, huh??_\n\n" %
+                                  description="_%s rolled ... %d %ss! Huh?!_\n\n" %
                                               (context["message"].author.mention, query_details[1], query_details[0].capitalize()),
                                   color=cj_colors[query_details[0]])
             return await koduck.sendmessage(context["message"], sendembed=embed)
