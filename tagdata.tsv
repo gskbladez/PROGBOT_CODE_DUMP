@@ -2,7 +2,7 @@ Tag	Alias	AltName	Description
 Accurate	Accu	Accu.	Defending against this with Speed is upshifted. 
 Awkward	Awkd	Awkd.	Doing something else at the same time will be difficult or impossible.
 Dangerous	Dngr	Dngr.	This chip tends to cause collateral damage. 
-Guard			Only one Guard chip can passively benefit the user at a time.
+Guard			Only one Guard effect can passively benefit the user at a time.
 Piercing	Prcn	Prcn.	Defending against this with Stamina is upshifted.
 Simple	Simp	Simp.	The chip’s effects happen instantly, and can be used while performing other actions.
 Slow			It takes extra time for this to activate. Using it at a moment’s notice is difficult or impossible.

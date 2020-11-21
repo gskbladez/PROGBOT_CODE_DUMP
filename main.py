@@ -9,14 +9,11 @@ import re
 import dice_algebra
 import rply
 from dotenv import load_dotenv
+import json
+import datetime
 
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
-
-
-# Background task is run every set interval while bot is running (by default every 10 seconds)
-async def backgroundtask():
-    pass
 
 
 MAX_POWER_QUERY = 5
@@ -29,6 +26,27 @@ MAX_BOND_QUERY = 4
 MAX_NPU_QUERY = MAX_NCP_QUERY
 ROLL_COMMENT_CHAR = '#'
 MAX_CHEER_JEER_ROLL = 5
+MAX_CHEER_JEER_VALUE = 100
+AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
+
+# Background task is run every set interval while bot is running (by default every 10 seconds)
+async def backgroundtask():
+    clean_audience()
+    pass
+
+async def clean(context, *args, **kwargs):
+    clean_audience() # cleans up audience.json once per hour
+    return
+
+def clean_audience():
+    with open(settings.audiencefile, "r") as afp:
+        audience_data = json.load(afp)
+        del_keys = [key for key in audience_data if
+                    (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key]["last_modified"], '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT]
+        for key in del_keys: del audience_data[key]
+    with open(settings.audiencefile, 'w') as afp:
+        json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+    return
 
 skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
@@ -57,7 +75,7 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Underground Broadcast": 0x73ab50,
                        "New Connections": 0xededed,
                        "Silicon Skin": 0xf012be,
-                       "The Walls Will Swallow You": 0x4f4f4f,
+                       "The Walls Will Swallow You": 0x734b38,
                        "Tarot": 0xfcf4dc,
                        "Nyx": 0xa29e14,
                        "Genso Network": 0xff605d,
@@ -66,7 +84,7 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Chip": 0xbfbfbf}
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xffffff,
-                "OmegaVirus": 0xffffff}
+                "OmegaVirus": 0xA8E8E8}
 cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 
 # TODO: exclude npus from ncp query?
@@ -79,7 +97,6 @@ cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 # TODO: Indie refresh??
 # TODO: indie rules?
 # TODO: power-esque virus querying
-# TODO: audience tracking per-text channel
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -143,6 +160,13 @@ nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
+
+#if not os.path.exists("audience.json"):
+# reinitializes audience data on powerup
+test_data = {"668525535705694211": {"cheer": 0, "jeer": 0 , "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}}
+with open(settings.audiencefile, 'w') as afp:
+    json.dump(test_data, afp, sort_keys=True, indent=4)
+    #json.dump({}, afp, sort_keys=True, indent=4)
 
 ##################
 # BASIC COMMANDS #
@@ -1090,8 +1114,12 @@ async def virus_master(context, arg, simplified=True):
 
     if virus_source in cc_color_dictionary:
         virus_color = cc_color_dictionary[virus_source]
+    elif 'Mega' in virus_tags:
+        virus_color = virus_colors["MegaVirus"]
+    elif 'Omega' in virus_tags:
+        virus_color = virus_colors["OmegaVirus"]
     else:
-        virus_color = cc_color_dictionary["Virus"]
+        virus_color = virus_colors["Virus"]
 
     virus_descript_block = ""
     virus_title = ""
@@ -1573,6 +1601,80 @@ async def invite(context, *args, **kwargs):
                           url=invite_link)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
+
+def change_audience(channel_id, cj_type, amount):
+    id = str(channel_id)
+    with open(settings.audiencefile, "r") as afp:
+        audience_data = json.load(afp)
+        if id not in audience_data:
+            return (-1, "Audience Participation hasn't been started in this channel!")
+        currentval = audience_data[id][cj_type]
+        tempval = currentval + amount
+        if tempval < 0:
+            return (-1, "There's not enough %ss for that! (Current %ss: %d)" % (*[cj_type.capitalize()]*2, currentval), "")
+        if tempval > MAX_CHEER_JEER_VALUE:
+            return (-1, "That adds too many %s! (Current %ss: %d, Max: %d)" % (MAX_CHEER_JEER_VALUE, *[cj_type.capitalize()]*2, currentval), "")
+
+        audience_data[id][cj_type] = tempval
+        audience_data[id]["last_modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        if amount > 0:
+            word_term = "Added %d %s!" % (amount, cj_type.capitalize())
+        elif amount < 0:
+            word_term = "Spent %d %s!" % (-1*amount, cj_type.capitalize())
+        else:
+            word_term = "Added... 0 %s! Huh?" % (cj_type.capitalize())
+        c_val = audience_data[id]["cheer"]
+        j_val = audience_data[id]["jeer"]
+
+    with open(settings.audiencefile, 'w') as afp:
+        json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+
+    return (0, word_term, "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
+
+
+def get_audience(channel_id):
+    id = str(channel_id)
+    with open(settings.audiencefile, "r") as afp:
+        audience_data = json.load(afp)
+        if id not in audience_data:
+            return (-1, "Audience Participation hasn't been started in this channel!")
+        c_val = audience_data[id]["cheer"]
+        j_val = audience_data[id]["jeer"]
+    return (0, (c_val, j_val))
+
+
+def start_audience(channel_id):
+    id = str(channel_id)
+    with open(settings.audiencefile, "r") as afp:
+        audience_data = json.load(afp)
+        if id in audience_data:
+            c_val = audience_data[id]["cheer"]
+            j_val = audience_data[id]["jeer"]
+            return (-1,
+                    "Audience Participation was already started in this channel!",
+                    "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
+        audience_data[id] = {"cheer": 0, "jeer": 0, "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+
+    with open(settings.audiencefile, 'w') as afp:
+        json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+
+    return (0, "", "")
+
+
+def end_audience(channel_id):
+    id = str(channel_id)
+    with open(settings.audiencefile, "r") as afp:
+        audience_data = json.load(afp)
+        try:
+            del audience_data[id]
+            with open(settings.audiencefile, 'w') as afp:
+                json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+            return 0
+        except KeyError:
+            return -1
+
+
 async def cheer(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) >= 1:
@@ -1586,9 +1688,14 @@ async def cheer(context, *args, **kwargs):
                             #"and pull up the current Cheer/Jeer points with `{cp}audience now`.\n" + \
                             #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
             return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
-    appended_arg = ("cheer",) + args
-    await audience(context, *appended_arg, **kwargs)
+    modded_arg = list(args)
+    if modded_arg:
+        modded_arg[0] = modded_arg[0] + " cheer"
+    else:
+        modded_arg = ["cheer"]
+    await audience(context, *modded_arg, **kwargs)
     return
+
 
 async def jeer(context, *args, **kwargs):
     cleaned_args = clean_args(args)
@@ -1603,12 +1710,19 @@ async def jeer(context, *args, **kwargs):
                             #"and pull up the current Cheer/Jeer points with `{cp}audience now`.\n" + \
                             #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
             return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
-    appended_arg = ("jeer",) + args
-    await audience(context, *appended_arg, **kwargs)
+    modded_arg = list(args)
+    if modded_arg:
+        modded_arg[0] = modded_arg[0] + " jeer"
+    else:
+        modded_arg = ["jeer"]
+    await audience(context, *modded_arg, **kwargs)
     return
 
 
 async def audience(context, *args, **kwargs):
+    channel_id = context["message"].channel.id
+    channel_name = context["message"].channel.name
+    channel_server = context["message"].channel.guild
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         audience_help_msg = "Roll a random Cheer or Jeer with `{cp}audience cheer` or `{cp}audience jeer`! (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
@@ -1620,10 +1734,33 @@ async def audience(context, *args, **kwargs):
                             #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
         return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
 
-    # if os.path.isfile(settings.audiencefile):
     is_query = False
     is_spend = False
-    query_details = ["", 1]
+    is_pullup = False
+    query_details = ["", 1, ""]
+
+    if cleaned_args[0] == 'start':
+        retvalue = start_audience(channel_id)
+        if retvalue[0] == -1:
+            embed_descript = retvalue[1]
+            embed_foot = retvalue[2]
+        else:
+            embed_descript = "Starting up the audience for #%s! (%s)" % (channel_name, channel_server)
+            embed_foot = "Cheer Points: 0, Jeer Points: 0"
+        embed = discord.Embed(title="__Audience Participation__",
+                              description=embed_descript,
+                              color=cj_colors["cheer"])
+        embed.set_footer(text=embed_foot)
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+    elif cleaned_args[0] == 'end':
+        ret_val = end_audience(channel_id)
+        if ret_val == -1:
+            return await koduck.sendmessage(context["message"], sendcontent="An audience hasn't been started for this channel yet")
+        embed = discord.Embed(title="__Audience Participation__",
+                              description="Ending the audience session for #%s! (%s)\nGoodnight!" % (channel_name, channel_server),
+                              color=cj_colors["jeer"])
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+
     for arg in cleaned_args:
         if arg in ["mega", "megacheer", "megajeer"]:
             is_query = True
@@ -1631,6 +1768,10 @@ async def audience(context, *args, **kwargs):
             break
         elif arg in ["add", "subtract", "spend", "gain"]:
             is_spend = True
+            if arg in ["add", "gain"]:
+                query_details[2] = "+"
+            else:
+                query_details[2] = "-"
         elif arg in ["all", "list", "option", "options"]:
             is_query = True
         elif arg in ["cheer", "jeer", "cheers", "jeers", "c", "j"]:
@@ -1642,12 +1783,45 @@ async def audience(context, *args, **kwargs):
                 query_details[0] = "jeer"
         elif arg.isnumeric():
             query_details[1] = int(arg)
+        elif arg in ["now", "current", "show"]:
+            is_pullup = True
         else:
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Sorry, I'm not sure what `%s` means here!" % arg)
+    if is_pullup:
+        retval = get_audience(channel_id)
+        if retval[0] == -1:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Audience Participation hasn't been started in this channel!")
+        c_val = retval[1][0]
+        j_val = retval[1][1]
+        if c_val >= j_val:
+            embed_color = cj_colors["cheer"]
+        else:
+            embed_color = cj_colors["jeer"]
+        embed = discord.Embed(title="__Audience Participation__",
+                              description="Pulling up the audience for #%s! (%s)" % (channel_name, channel_server),
+                              color=embed_color)
+        embed.set_footer(text="Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
+        return await koduck.sendmessage(context["message"], sendembed=embed)
 
     if is_spend:
-        return await koduck.sendmessage(context["message"], sendcontent="Sorry, can't keep track of Cheers/Jeers yet!")
+        if not query_details[0]:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Did not specify Cheer or Jeer!")
+        if query_details[2] == '-':
+            change_amount = -1 * query_details[1]
+        else:
+            change_amount = query_details[1]
+        retval = change_audience(channel_id, query_details[0], change_amount)
+        if retval[0] == -1:
+            return await koduck.sendmessage(context["message"], sendcontent=retval[1])
+        embed = discord.Embed(title="__Audience Participation__",
+                              description=retval[1],
+                              color=cj_colors[query_details[0]])
+        embed.set_footer(text=retval[2])
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+
     elif is_query:
         if not query_details[0]:
             query_details[0] = "eer"
@@ -1667,26 +1841,40 @@ async def audience(context, *args, **kwargs):
     else:
         if query_details[1] > MAX_CHEER_JEER_ROLL:
             return await koduck.sendmessage(context["message"], sendcontent="Rolling too many Cheers or Jeers! Up to %d!" % MAX_CHEER_JEER_ROLL)
-        elif query_details[1] <= 0:
-            embed = discord.Embed(title="__Audience Participation__",
-                                  description="_%s rolled ... %d %ss! Huh?!_\n\n" %
-                                              (context["message"].author.mention, query_details[1], query_details[0].capitalize()),
-                                  color=cj_colors[query_details[0]])
-            return await koduck.sendmessage(context["message"], sendembed=embed)
-        sub_df = audience_df[audience_df["Type"].str.contains("^%s$" % re.escape(query_details[0]), flags=re.IGNORECASE)]
-        random_roll = [random.randrange(sub_df.shape[0]) for i in range(query_details[1])]
-        cj_roll = ["*%s*" % sub_df["Option"].iloc[i] for i in random_roll]
-        if len(cj_roll) == 1:
-            noun_term = "a %s" % query_details[0].capitalize()
-        else:
-            noun_term = "%d %ss" % (query_details[1], query_details[0].capitalize())
-        embed = discord.Embed(title="__Audience Participation__",
-                              description="_%s rolled %s!_\n\n" % (context["message"].author.mention, noun_term) + \
-                                          "\n".join(cj_roll),
-                              color=cj_colors[query_details[0]])
-        #embed.set_footer(text="Testing")
-        return await koduck.sendmessage(context["message"], sendembed=embed)
 
+        if query_details[1] <= 0:
+            embed_descript = "%s rolled ... %d %ss! Huh?!\n\n" % (context["message"].author.mention, query_details[1], query_details[0].capitalize())
+        else:
+            sub_df = audience_df[audience_df["Type"].str.contains("^%s$" % re.escape(query_details[0]), flags=re.IGNORECASE)]
+            random_roll = [random.randrange(sub_df.shape[0]) for i in range(query_details[1])]
+            cj_roll = ["*%s*" % sub_df["Option"].iloc[i] for i in random_roll]
+
+            if len(cj_roll) == 1:
+                noun_term = "a %s" % query_details[0].capitalize()
+            else:
+                noun_term = "%d %ss" % (query_details[1], query_details[0].capitalize())
+            embed_descript = "%s rolled %s!\n\n" % (context["message"].author.mention, noun_term) + "\n".join(cj_roll)
+
+        retval = get_audience(channel_id)
+        if retval[0] == 0:
+            c_val = retval[1][0]
+            j_val = retval[1][1]
+            if ('c' in query_details[0] and (query_details[1] > c_val)) or (
+                    'j' in query_details[0] and (query_details[1] > j_val)):
+                embed_descript = "Not enough %s!" % query_details[0].capitalize()
+                embed_footer = "Cheer Points: %d, Jeer Points: %d" % retval[1]
+            else:
+                _, _, embed_footer = change_audience(channel_id, query_details[0], -1 * query_details[1])
+        else:
+            embed_footer = ""
+
+        embed = discord.Embed(title="__Audience Participation__",
+                              description=embed_descript,
+                              color=cj_colors[query_details[0]])
+        if embed_footer:
+            embed.set_footer(text=embed_footer)
+
+        return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
 async def break_test(context, *args, **kwargs):
