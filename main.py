@@ -161,12 +161,9 @@ nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
 
-#if not os.path.exists("audience.json"):
 # reinitializes audience data on powerup
-test_data = {"668525535705694211": {"cheer": 0, "jeer": 0 , "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}}
 with open(settings.audiencefile, 'w') as afp:
-    json.dump(test_data, afp, sort_keys=True, indent=4)
-    #json.dump({}, afp, sort_keys=True, indent=4)
+    json.dump({}, afp, sort_keys=True, indent=4)
 
 ##################
 # BASIC COMMANDS #
@@ -981,7 +978,7 @@ def query_ncp(arg_lower):
 
     ncp_df = power_df[power_df["Sort"] != "Virus Power"]
     valid_cc_list = list(pd.unique(ncp_df["From?"].str.lower().str.strip()))
-    [valid_cc_list.remove(i) for i in ["core", "power upgrades"]]
+    [valid_cc_list.remove(i) for i in ["core", "navi power upgrades"]]
     eb_match = re.match(r"^(\d+)(?:\s*EB)$", arg_lower, flags=re.IGNORECASE)
 
     if eb_match:
@@ -1613,7 +1610,7 @@ def change_audience(channel_id, cj_type, amount):
         if tempval < 0:
             return (-1, "There's not enough %ss for that! (Current %ss: %d)" % (*[cj_type.capitalize()]*2, currentval), "")
         if tempval > MAX_CHEER_JEER_VALUE:
-            return (-1, "That adds too many %s! (Current %ss: %d, Max: %d)" % (MAX_CHEER_JEER_VALUE, *[cj_type.capitalize()]*2, currentval), "")
+            return (-1, "That adds too many %ss! (Current %ss: %d, Max: %d)" % (*[cj_type.capitalize()]*2, currentval, MAX_CHEER_JEER_VALUE), "")
 
         audience_data[id][cj_type] = tempval
         audience_data[id]["last_modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -1680,13 +1677,10 @@ async def cheer(context, *args, **kwargs):
     if len(cleaned_args) >= 1:
         if cleaned_args[0] == 'help':
             audience_help_msg = "Roll a random Cheer with `{cp}cheer!` (Up to %d at once!)\n " % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Cheers and MegaCheers with `{cp}cheer all`. " + \
-                            "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`!"
-                            #"I can also list all Cheers with `{cp}cheer all`.\n\n" + \
-                            #"Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
-                            #"You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
-                            #"and pull up the current Cheer/Jeer points with `{cp}audience now`.\n" + \
-                            #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
+                            "I can also list all Cheers with `{cp}cheer all`.\n\n " + \
+                            "You can add Cheer Points with `{cp}cheer add 2`, remove them with `{cp}cheer spend 2`, " + \
+                            "and pull up the current Cheer points with `{cp}cheer now`.\n\n" + \
+                            "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`."
             return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
     modded_arg = list(args)
     if modded_arg:
@@ -1702,13 +1696,10 @@ async def jeer(context, *args, **kwargs):
     if len(cleaned_args) >= 1:
         if cleaned_args[0] == 'help':
             audience_help_msg = "Roll a random Jeer with `{cp}jeer!` (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Jeers and MegaJeers with `{cp}jeer all`. " + \
-                            "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`!"
-                            #"I can also list all Cheers with `{cp}cheer all`.\n\n" + \
-                            #"Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
-                            #"You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
-                            #"and pull up the current Cheer/Jeer points with `{cp}audience now`.\n" + \
-                            #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
+                            "I can also list all Jeers and MegaJeers with `{cp}jeer all`.\n\n " + \
+                            "You can add Jeer Points with `{cp}jeer add 2`, remove them with `{cp}jeer spend 2`, " + \
+                            "and pull up the current Jeer Points with `{cp}jeer now`.\n\n" + \
+                            "For more details on Audience Participation rules, try `{cp}help jeer` or `{cp}help audience`."
             return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
     modded_arg = list(args)
     if modded_arg:
@@ -1726,12 +1717,11 @@ async def audience(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         audience_help_msg = "Roll a random Cheer or Jeer with `{cp}audience cheer` or `{cp}audience jeer`! (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Cheers or Jeers with `{cp}audience cheer all` or `{cp}audience jeer all`."
-                            #"I can also list all Cheers or Jeers with `{cp}audience cheer all` or `{cp}audience jeer all`.\n\n" + \
-                            #"Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
-                            #"You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
-                            #"and pull up the current Cheer/Jeer points with `{cp}audience now`.\n" + \
-                            #"Once you're done, make sure to dismiss the audience with `{cp}audience end`."
+                            "I can also list all Cheers or Jeers with `{cp}audience cheer all` or `{cp}audience jeer all`.\n\n" + \
+                            "Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
+                            "You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
+                            "and pull up the current Cheer/Jeer points with `{cp}audience now`.\n\n" + \
+                            "Once you're done, make sure to dismiss the audience with `{cp}audience end`."
         return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
 
     is_query = False
@@ -1766,7 +1756,7 @@ async def audience(context, *args, **kwargs):
             is_query = True
             query_details[0] = arg
             break
-        elif arg in ["add", "subtract", "spend", "gain"]:
+        elif arg in ["add", "subtract", "spend", "gain", "remove"]:
             is_spend = True
             if arg in ["add", "gain"]:
                 query_details[2] = "+"
