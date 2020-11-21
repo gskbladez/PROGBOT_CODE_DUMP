@@ -83,7 +83,7 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Item": 0xffffff,
                        "Chip": 0xbfbfbf}
 virus_colors = {"Virus": 0x7c00ff,
-                "MegaVirus": 0xffffff,
+                "MegaVirus": 0xA8E8E8,
                 "OmegaVirus": 0xA8E8E8}
 cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 
