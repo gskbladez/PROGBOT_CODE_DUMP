@@ -27,6 +27,7 @@ MAX_NPU_QUERY = MAX_NCP_QUERY
 ROLL_COMMENT_CHAR = '#'
 MAX_CHEER_JEER_ROLL = 5
 MAX_CHEER_JEER_VALUE = 100
+MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
@@ -89,14 +90,13 @@ cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 
 # TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
-# TODO: Query/help for Liberation Mission generators would be neat
 # TODO: NaviChip creation rules?
-# TODO: Stat+1, Skill+1, NaviPowerNCP, Mind/Body/SoulPower
 # TODO: Update "help" messages to mention >chip/>virus tag and >chip/virus category
 # TODO: >virus tag
 # TODO: Indie refresh??
 # TODO: indie rules?
 # TODO: power-esque virus querying
+# TODO: ">query info" says it's finding NPUs for "Info"
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -141,6 +141,7 @@ mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
 networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
 crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
 audience_df = pd.read_csv(r"audiencedata.tsv", sep="\t").fillna('')
+rulebook_df = pd.read_csv(r"rulebookdata.tsv", sep="\t").fillna('')
 
 element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
 element_category_list = pd.unique(element_df["category"].dropna())
@@ -148,7 +149,7 @@ element_category_list = pd.unique(element_df["category"].dropna())
 help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
 help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
 help_cmd_list = [i for i in help_df["Command"] if i]
-hidden_help_cmd = ["help", "me", "unknowncommand"]
+hidden_help_cmd = ["help", "me", "you", "unknowncommand"]
 
 pmc_chip_df = pd.read_csv(r"playermade_chipdata.tsv", sep="\t").fillna('')
 pmc_power_df = pd.read_csv(r"playermade_powerdata.tsv", sep="\t").fillna('')
@@ -1542,12 +1543,20 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    if len(args) < 1:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="NetBattlers Beta 6 Official Rulebook (high-res): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Full-Res.pdf>\n" +
-                                                    "NetBattlers Beta 6 Official Rulebook (mobile-friendly): <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Beta-6-Mobile.pdf>\n" +
-                                                    "NetBattlers Advance Version 5, The Supplementary Rulebook: <https://www.merrymancergames.com/wp-content/uploads/2020/04/NetBattlers-Advance-5.pdf>\n\n" +
-                                                    "**_For player made content, check the Player-Made Repository!:_**\n<https://docs.google.com/document/d/19-5o7flAimvN7Xk8V1x5BGUuPh_l7JWmpJ9-Boam-nE/edit>")
+    cleaned_args = clean_args(args)
+    if cleaned_args:
+        if cleaned_args[0] == "all":
+            ret_books = rulebook_df.loc[rulebook_df.groupby(["Type", "Name"])["Version"].idxmax()]
+            book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
+            book_names += ["", "For player-made content, check out the Player-Made Repository! <https://www.notion.so/dc469d3ae5f147cab389b6f61bce102e?v=085a409506684722a8ec91ae6f56640c>"]
+        else:
+            cleaned_args = []
+
+    if not cleaned_args:
+        ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["Version"].idxmax()]
+        book_names = ["%s %s %s: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in ret_books.iterrows()]
+
+    return await koduck.sendmessage(context["message"],  sendcontent="\n".join(book_names))
 
 
 def query_network():
@@ -1645,6 +1654,8 @@ def start_audience(channel_id):
     id = str(channel_id)
     with open(settings.audiencefile, "r") as afp:
         audience_data = json.load(afp)
+        if len(audience_data) > MAX_AUDIENCES:
+            return (-2, "ProgBot's hosting too many audiences right now! Try again later!", "")
         if id in audience_data:
             c_val = audience_data[id]["cheer"]
             j_val = audience_data[id]["jeer"]
@@ -1734,6 +1745,8 @@ async def audience(context, *args, **kwargs):
         if retvalue[0] == -1:
             embed_descript = retvalue[1]
             embed_foot = retvalue[2]
+        elif retvalue[0] == -2:
+            return await koduck.sendmessage(context["message"], sendcontent=retvalue[1])
         else:
             embed_descript = "Starting up the audience for #%s! (%s)" % (channel_name, channel_server)
             embed_foot = "Cheer Points: 0, Jeer Points: 0"
