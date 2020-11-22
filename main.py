@@ -1049,6 +1049,8 @@ async def ncp(context, *args, **kwargs):
 
 
 def query_npu(arg):
+    if arg.capitalize() in skill_list:
+        return False, "", ""
     result_npu = power_df[power_df["Skill"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
     if result_npu.shape[0] == 0:
         return False, "", ""
@@ -1068,6 +1070,7 @@ async def upgrade(context, *args, **kwargs):
 
     for arg in cleaned_args:
         arg = arg.lower()
+
         is_upgrade, result_title, result_msg = query_npu(arg)
         if not is_upgrade:
             await koduck.sendmessage(context["message"],
