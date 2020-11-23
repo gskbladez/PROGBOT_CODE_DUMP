@@ -8,6 +8,8 @@ TBD
 TBD
 
 ### Commands
+Command prefix is `>`.
+
 `oops`
 Undoes the last bot output from the user.
 
@@ -15,7 +17,7 @@ Undoes the last bot output from the user.
 Displays all known commands.
 
 `help`
-Outputs help messages for commands or various rule tidbits.
+Outputs help messages for commands or various rule tidbits. Can pull up a list of all help messages available with `help all`/`help list`.
 
 `invite`
 Generates an invite link for ProgBot.

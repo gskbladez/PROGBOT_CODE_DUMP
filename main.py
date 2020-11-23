@@ -93,6 +93,7 @@ cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 # TODO: NaviChip creation rules?
 # TODO: Indie refresh??
 # TODO: indie rules?
+# TODO: help message for navi power upgrades
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -438,10 +439,11 @@ async def help_cmd(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if cleaned_args[0] in ['list', 'all']:
         return_title = "Pulling up all `help` responses..."
-        for i in hidden_help_cmd:
-            if i in help_cmd_list:
-                help_cmd_list.remove(i)
-        return_msg = ", ".join(help_cmd_list)
+        vis_cmd = help_df[help_df["Hidden?"] == False]
+        #for i in hidden_help_cmd:
+        #    if i in help_cmd_list:
+        #        help_cmd_list.remove(i)
+        return_msg = ", ".join(vis_cmd["Command"].values)
         return await send_query_msg(context, return_title, return_msg)
 
     funkyarg = ''.join(cleaned_args)
@@ -450,6 +452,12 @@ async def help_cmd(context, *args, **kwargs):
         help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
         help_response = help_msg["Response"].replace("{cp}", settings.commandprefix)
+        if help_msg["Ruling?"]:
+            ruling_msg = await find_value_in_table(context, help_df, "Command", help_msg["Ruling?"], suppress_notfound=True)
+            if ruling_msg is None:
+                return await koduck.sendmessage(context["message"],
+                                    sendcontent="Couldn't pull up additional ruling information for %s! You should probably let the devs know..." % help_msg["Ruling?"])
+            help_response = ruling_msg["Response"] + "\n\n" + help_response
 
     return await koduck.sendmessage(context["message"],
                                     sendcontent=help_response)
@@ -699,6 +707,13 @@ async def chip(context, *args, **kwargss):
                                                     "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! \n" +
                                                     "I can also list all current chip categories with `{cp}chip category`, and all current chip tags with `{cp}chip tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace(
                                                         "{cp}", settings.commandprefix))
+    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "chipruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=ruling_msg["Response"])
     if cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known BattleChip Categories..."
         result_text = ", ".join(chip_category_list)
@@ -937,6 +952,13 @@ async def power(context, *args, **kwargs):
                                                     "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
                                                     "Try giving me multiple queries at once, i.e. `{cp}power sense cost` or `{cp}power virus passive`!".replace(
                                                         "{cp}", settings.commandprefix))
+    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "powerruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=ruling_msg["Response"])
 
     if len(cleaned_args) > MAX_POWER_QUERY:
         return await koduck.sendmessage(context["message"],
@@ -1015,6 +1037,15 @@ async def ncp(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a NaviCust Part and I can pull up its info for you!\n" +
                                                     "I can also query NCPs by EB and Crossover Content!")
+
+    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "ncpruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=ruling_msg["Response"])
+
     arg_combined = " ".join(cleaned_args)
     is_query, results_title, results_msg = query_ncp(arg_combined)
     if is_query:
@@ -1062,9 +1093,17 @@ async def upgrade(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of 1-%d default Navi Powers and I can find its upgrades for you!" % MAX_NPU_QUERY)
-    elif len(cleaned_args) > MAX_NPU_QUERY:
+    if len(cleaned_args) > MAX_NPU_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can't pull up more than %d Navi Power Upgrades at a time!" % MAX_NPU_QUERY)
+
+    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "npuruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=ruling_msg["Response"])
 
     for arg in cleaned_args:
         arg = arg.lower()
@@ -1203,6 +1242,13 @@ async def virus(context, *args, **kwargs):
         result_title = "Displaying all known Virus Tags..."
         result_text = ", ".join([i.capitalize() for i in virus_tag_list])
         return await send_query_msg(context, result_title, result_text)
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "virusruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=ruling_msg["Response"])
     elif len(cleaned_args) > MAX_VIRUS_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many viruses, no more than %d!" % MAX_VIRUS_QUERY)
@@ -1421,6 +1467,13 @@ async def bond(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me a Bond Power and I can pull up its info for you!")
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "bondruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=ruling_msg["Response"])
     elif (len(cleaned_args) > MAX_BOND_QUERY):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many Bond Powers; no more than %d!\nBesides, there's only four Bond Powers in the game!" % MAX_BOND_QUERY)
@@ -1507,6 +1560,14 @@ async def element(context, *args, **kwargs):
                                                     "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n".replace(
                                                         "{cp}", settings.commandprefix) +
                                                     "Categories: **%s**" % ", ".join(element_category_list))
+
+    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "elementruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
     if len(cleaned_args) > 2:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace(
@@ -1703,6 +1764,15 @@ async def cheer(context, *args, **kwargs):
                             "and pull up the current Cheer points with `{cp}cheer now`.\n\n" + \
                             "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`."
             return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+
+    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "cheerruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+
     modded_arg = list(args)
     if modded_arg:
         modded_arg[0] = modded_arg[0] + " cheer"
@@ -1722,6 +1792,15 @@ async def jeer(context, *args, **kwargs):
                             "and pull up the current Jeer Points with `{cp}jeer now`.\n\n" + \
                             "For more details on Audience Participation rules, try `{cp}help jeer` or `{cp}help audience`."
             return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+
+    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "jeerruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+
     modded_arg = list(args)
     if modded_arg:
         modded_arg[0] = modded_arg[0] + " jeer"
@@ -1744,6 +1823,14 @@ async def audience(context, *args, **kwargs):
                             "and pull up the current Cheer/Jeer points with `{cp}audience now`.\n\n" + \
                             "Once you're done, make sure to dismiss the audience with `{cp}audience end`."
         return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+
+    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "audienceruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
 
     is_query = False
     is_spend = False
