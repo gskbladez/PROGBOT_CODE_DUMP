@@ -1170,7 +1170,7 @@ async def virus_master(context, arg, simplified=True):
     virus_skills = [(key, int(val)) for key, val in virus_skills.items() if val and int(val) != 0]
 
     if not simplified:
-        virus_title = "HP %d" % int(virus_hp)
+        virus_title = "HP %s" % virus_hp
         virus_descript_block = "**Element: %s**" % virus_element + \
                                "\nMind %d, Body %d, Soul %d" % (*virus_stats,)
         if virus_skills:
