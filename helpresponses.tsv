@@ -1,7 +1,7 @@
 Command	Alias	Hidden?	Ruling?	Response
 oops		FALSE		Deletes the bot message from the user's last valid command.
 commands		FALSE		Provides the list of commands available for the user to run.
-help		FALSE		Do you really need help with help? :thinking:
+help		TRUE		Do you really need help with help? :thinking:
 roll	r	FALSE		Rolls a number of X-sided dice, including success/fail thresholds or additional hits.
 unknowncommand		TRUE		I don't know this command, or there is no help message for this command.
 chip	chips	FALSE	chipruling	This command can display info on BattleChips. It can also search for all BattleChips from a specific category, with a specific tag, Crossover Content source, or in a specific license.
