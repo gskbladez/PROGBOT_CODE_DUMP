@@ -91,12 +91,8 @@ cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 # TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
 # TODO: NaviChip creation rules?
-# TODO: Update "help" messages to mention >chip/>virus tag and >chip/virus category
-# TODO: >virus tag
 # TODO: Indie refresh??
 # TODO: indie rules?
-# TODO: power-esque virus querying
-# TODO: ">query info" says it's finding NPUs for "Info"
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -131,6 +127,8 @@ virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .str.strip() \
     .str.lower() \
     .unique()
+virus_tag_list = [i for i in virus_tag_list if i]
+[virus_tag_list.remove(i) for i in ["none", "None"] if i in virus_tag_list]
 virus_category_list = pd.unique(virus_df["Category"].str.strip())
 virus_category_list = [i for i in virus_category_list if i]
 
@@ -698,8 +696,8 @@ async def chip(context, *args, **kwargss):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!\n" +
-                                                    "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! " +
-                                                    "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace(
+                                                    "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! \n" +
+                                                    "I can also list all current chip categories with `{cp}chip category`, and all current chip tags with `{cp}chip tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace(
                                                         "{cp}", settings.commandprefix))
     if cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known BattleChip Categories..."
@@ -925,7 +923,7 @@ def query_power(args):
     else:
         sub_df = sub_df[sub_df["Sort"] == "Virus Power"]
         search_tag_list.append('Virus')
-    results_title = "Searching for `%s` Powers..." % " ".join(search_tag_list)
+    results_title = "Searching for `%s` Powers..." % "` `".join(search_tag_list)
     results_msg = ", ".join(sub_df["Power/NCP"])
 
     return True, results_title, results_msg
@@ -1106,19 +1104,24 @@ async def virus_master(context, arg, simplified=True):
 
     virus_footer = "Category: %s" % virus_category
 
+    if 'Mega' in virus_tags:
+        virus_footer_bit = "MegaVirus"
+    else:
+        virus_footer_bit = "Virus"
     if virus_source in playermade_list:
-        virus_footer += " (%s Unofficial Virus)" % virus_source
+        virus_footer += " (%s Unofficial %s)" % (virus_source, virus_footer_bit)
     elif virus_source in cc_list:
-        virus_footer += " (%s Crossover Virus)" % virus_source
+        virus_footer += " (%s Crossover %s)" % (virus_source, virus_footer_bit)
     if virus_artist:
         virus_footer += "\n(Artwork by %s)" % virus_artist
 
     if virus_source in cc_color_dictionary:
         virus_color = cc_color_dictionary[virus_source]
     elif 'Mega' in virus_tags:
-        virus_color = virus_colors["MegaVirus"]
-    elif 'Omega' in virus_tags:
-        virus_color = virus_colors["OmegaVirus"]
+        if 'Ω' in virus_name:
+            virus_color = virus_colors["OmegaVirus"]
+        else:
+            virus_color = virus_colors["MegaVirus"]
     else:
         virus_color = virus_colors["Virus"]
 
@@ -1188,13 +1191,17 @@ async def virus(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of 1-%d Viruses and I can pull up their info for you!\n" % MAX_VIRUS_QUERY +
-                                                    "I can query Viruses by **Category**, **Tag**, or **Crossover Content**, and pull up the list of Virus categories with `{cp}virus category`! ".replace(
+                                                    "I can query Viruses by **Category**, **Tag**, or **Crossover Content**, and pull up the list of Virus categories with `{cp}virus category`!\n".replace(
                                                         "{cp}", settings.commandprefix) +
-                                                    "To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag artillery`)".replace(
+                                                    "For a list of all Virus categories, use `{cp}virus category`, and all current Virus tags with `{cp}virus tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag artillery`)".replace(
                                                         "{cp}", settings.commandprefix))
     elif cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known Virus Categories..."
         result_text = ", ".join(virus_category_list)
+        return await send_query_msg(context, result_title, result_text)
+    elif cleaned_args[0] in ['tag', 'tags']:
+        result_title = "Displaying all known Virus Tags..."
+        result_text = ", ".join([i.capitalize() for i in virus_tag_list])
         return await send_query_msg(context, result_title, result_text)
     elif len(cleaned_args) > MAX_VIRUS_QUERY:
         return await koduck.sendmessage(context["message"],
