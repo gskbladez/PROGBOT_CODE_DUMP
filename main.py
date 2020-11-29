@@ -94,7 +94,6 @@ cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 # TODO: NaviChip creation rules?
 # TODO: Indie refresh??
 # TODO: indie rules?
-# TODO: support wrecker and artillery
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -1175,6 +1174,8 @@ async def virus_master(context, arg, simplified=True):
             hp_int = int(virus_hp)
             if hp_int > PROBABLY_INFINITE:
                 virus_hp = "∞"
+            else:
+                virus_hp = "%d" % hp_int
         except ValueError:
             pass
         virus_title = "HP %s" % virus_hp
