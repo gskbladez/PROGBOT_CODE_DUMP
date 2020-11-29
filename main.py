@@ -29,6 +29,7 @@ MAX_CHEER_JEER_ROLL = 5
 MAX_CHEER_JEER_VALUE = 100
 MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
+PROBABLY_INFINITE = 99
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -886,7 +887,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
     else:
         field_title = '%s EB' % power_eb
 
-        if power_source == "Power Upgrades":
+        if power_source == "Navi Power Upgrades":
             field_title += "/%s Power Upgrade NCP" % power_skill
         elif power_type == "Minus":
             power_name += " (%s Unofficial MinusCust Program)" % power_source
@@ -1174,6 +1175,12 @@ async def virus_master(context, arg, simplified=True):
     virus_skills = [(key, int(val)) for key, val in virus_skills.items() if val and int(val) != 0]
 
     if not simplified:
+        try:
+            hp_int = int(virus_hp)
+            if hp_int > PROBABLY_INFINITE:
+                virus_hp = "∞"
+            except ValueError:
+                pass
         virus_title = "HP %s" % virus_hp
         virus_descript_block = "**Element: %s**" % virus_element + \
                                "\nMind %d, Body %d, Soul %d" % (*virus_stats,)
