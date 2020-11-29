@@ -94,6 +94,10 @@ cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 # TODO: Indie refresh??
 # TODO: indie rules?
 # TODO: help message for navi power upgrades
+# TODO: npu strength
+# TODO: Navi power upgrade “crossover” NCP
+# TODO: bondpower rule formatting
+# TODO: support wrecker and artillery
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
