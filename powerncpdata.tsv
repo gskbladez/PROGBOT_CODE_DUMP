@@ -47,6 +47,9 @@ Alt	Affinity	Roll	Consume all of your element to create a minion with one purpos
 Control	Affinity	Roll	Make a ranged attack with your element if it is present.	-	Power	Core	
 Shift	Affinity	Roll	Swap places with an abundance of your element in line of sight.	-	Power	Core	
 							
+RefreshIndie	Info	Cost	Increase your Folder size by 2 until rest.	-	Power	Core	Refresh(i), (i)Refresh, (Indie)Refresh
+ReconfigIndie	Info	Cost	Instantly trade BattleChips with a Near ally.	-	Power	Core	Reconfig(i), (i)Reconfig, (Indie)Reconfig
+							
 Mind+1	-	-	Increase your Mind by 1.	5	BoostNCP	Core	
 Body+1	-	-	Increase your Body by 1.	5	BoostNCP	Core	
 Soul+1	-	-	Increase your Soul by 1.	5	BoostNCP	Core	
@@ -107,6 +110,9 @@ SaveNCP	Affinity	Cost	If your element is present, heal someone for 3 HP.	3	Power
 AltNCP	Affinity	Roll	Consume all of your element to create a minion with one purpose.	3	PowerNCP	Core	
 ControlNCP	Affinity	Roll	Make a ranged attack with your element if it is present.	3	PowerNCP	Core	
 ShiftNCP	Affinity	Roll	Swap places with an abundance of your element in line of sight.	3	PowerNCP	Core	
+							
+RefreshIndieNCP	Info	Cost	Increase your Folder size by 2 until rest.	3	PowerNCP	Core	
+ReconfigIndieNCP	Info	Cost	Instantly trade BattleChips with a Near ally.	3	PowerNCP	Core	
 							
 BaRecycle	-	-	You can turn Guard chips into your element after slot-in.	1	NCP	Core	
 Brand	-	-	You can mark anything with your symbol. This mark acts like a hand-sized sticker.	1	NCP	Core	
@@ -310,7 +316,7 @@ Germination	-	Passive	Attacks are delayed, but spread your element.	-	Virus Powe
 							
 Dazzler	-	Passive	Attacks that hit can deal -1 damage to briefly drop the target’s Sense by 1.	-	Virus Power	Core	
 Zapper	-	Passive	Attacks paralyze for a moment on hit.	-	Virus Power	Core	
-Metrid	Affinity	Roll	Your element falls from above, damaging the next Near target that rolls & all Close.	-	Virus Power	Core	
+Skyfall	Affinity	Roll	Your element falls from above, damaging the next Near target that rolls & all Close.	-	Virus Power	Core	
 SuctionCups	-	Passive	Able to run up walls and ceilings without complication.	-	Virus Power	Core	
 ShadowStrike	-	Passive	Ranged attacks are silent.	-	Virus Power	Core	
 IceBlocker	-	Passive	When on your element, double your dice for defense rolls.	-	Virus Power	Core	
@@ -336,6 +342,7 @@ Skim	Coding	Roll	Roll when someone Near spends Zenny. For every hit, you steal 1
 Moneybags	-	Passive	On Speed rolls with <2 hits, drop some Zenny. Drop all Zenny on deletion.	-	Virus Power	Core	
 VenomFangs	-	Passive	Your attacks disable passive Virus/NCP abilities for 2 rolls. (Stat/skill/Folder/HP changes unaffected.)	-	Virus Power	Core	
 Spoof	Coding	Roll	Change any number’s appearance (no actual effect); like Navi HP, dice pool size, etc.	-	Virus Power	Core	
+Haunt	Coding	Roll	Turn invisible and able to pass through walls for 3 rolls.	-	Virus Power	Core	
 Startle	Bravery	Roll	Upshift a Close target’s next 3 Mind rolls.	-	Virus Power	Core	
 Touché	Coding	Roll	Knocks the alphabetically first BattleChip out of the target’s Folder.	-	Virus Power	Core	
 Catch	Info	Roll	Copy & use a chip of your choice from a Near target’s Folder.	-	Virus Power	Core	
@@ -476,6 +483,7 @@ GapingAbyss	Affinity	Roll	Create your element inside of you. It gradually pulls 
 Primordial	-	Passive	You cannot die from HP loss; dmg pushes you away. Upshift rolls to move range bands.	-	Virus Power	The Walls Will Swallow You	
 BlinkStep	Speed	Roll	Move up to a range band silently and almost instantly, as if moving in fast-motion.	-	Virus Power	The Walls Will Swallow You	
 Dread	Coding	Cost	Near lights and cameras fade, then go dark for a few seconds. Usable while immobile.	-	Virus Power	The Walls Will Swallow You	
+DreadΩ	Coding	Cost	Near lights and cameras fade, then go dark for a few seconds. Usable while immobile. Disconnects PETs.	-	Virus Power	The Walls Will Swallow You	DreadOmega
 Scopophobia	-	Passive	If anyone sees you, you are immobilized. While immobilized, you are invincible.	-	Virus Power	The Walls Will Swallow You	
 OpticalExploit	-	Passive	When someone looks at a picture of you, learn exactly where they are.	-	Virus Power	The Walls Will Swallow You	
 Parasitosis	Coding	Roll	Enter a Close recently-deleted Navi/Virus, fully reviving them. You can’t be hurt while inside.	-	Virus Power	The Walls Will Swallow You	
@@ -484,6 +492,7 @@ InTheEyes	-	Passive	You control parasitized targets. Replace their element with 
 Plaguebringer	Affinity	Cost	Must be within an Infested target. They lose 2 HP. Spawn another WhiteMist Close.	-	Virus Power	The Walls Will Swallow You	
 							
 Inhale	Coding	Roll	Suck in up to 3 Near objects. Every object inside you adds 1 Stamina; max 9.	-	Virus Power	Mega Viruses	
+InhaleΩ	Coding	Roll	Suck in up to 3 Near objects or Viruses. Every object/Virus inside you adds 1 Stamina; max 9. Viruses are unharmed.	-	Virus Power	Mega Viruses	InhaleOmega
 Exhale	Stamina	Cost	Your next Sense attack launches an object from inside you for +1 dmg. Stacks to +3.	-	Virus Power	Mega Viruses	
 Ventilate	Stamina	Cost	Eject an object to Near and change your element to something related to it. Lasts 3 rolls.	-	Virus Power	Mega Viruses	
 JunkShield	-	Passive	When attacked at range, you can spend Stamina to negate incoming damage, 1-to-1.	-	Virus Power	Mega Viruses	
@@ -498,6 +507,7 @@ VoidBurst	Affinity	Cost	Detonate your element! Removes temp. positive effects (e
 							
 BlackThorn	Charm	Cost	Pick 2 targets and a Near enemy who picks which target you stun. Failure to pick stuns both.	-	Virus Power	Mega Viruses	
 Narcissus	Bravery	Roll	Attack a Near target with cursed petals. They can divert this attack to all their Near allies.	-	Virus Power	Mega Viruses	
+NarcissusΩ	Bravery	Roll	Attack a Near target with cursed petals. They can divert this attack to all their Near allies. Stuns targets.	-	Virus Power	Mega Viruses	NarcissusOmega
 SnapDragon	Affinity	Cost	Ask every Near stunned enemy a question. If they lie (even by omission), they light on fire.	-	Virus Power	Mega Viruses	
 MonksHood	Charm	Cost	Warp a range band, then copy a Far target’s appearance and voice. Ends on taking dmg.	-	Virus Power	Mega Viruses	
 ChromaWave	Strength	Roll	Make a ranged attack on a Near target, covering them with all elements you control.	-	Virus Power	Mega Viruses	
@@ -505,30 +515,37 @@ Resonate	Affinity	Cost	Gain the use of a Near ally’s element in addition to yo
 AddFriend	Charm	Roll	Create a token of affection for the target. Functionally useless, but thoughtful & caring.	-	Virus Power	Mega Viruses	
 GuiltTrip	-	Passive	Everyone you meet instantly learns your unique name, favorite color, and favorite treat.	-	Virus Power	Mega Viruses	
 ILoveYou	-	Passive	When you roll, Far Viruses learn your location. Starts undetectable, gradually gets obvious.	-	Virus Power	Mega Viruses	
+ILoveYouΩ	-	Passive	When you roll, Far Viruses learn your location and gain +1 die to their next roll, stacking. Starts undetectable, gradually gets obvious.	-	Virus Power	Mega Viruses	ILoveYouOmega
 Sorry	-	Passive	On deletion, you only drop an apology letter. Other drops only come from signal nodes.	-	Virus Power	Mega Viruses	
 Engulf	Strength	Roll	Engulf a Close target, binding them and jamming their Folder until they break free.	-	Virus Power	Mega Viruses	
 Infest	Affinity	Roll	Infest a Close object, taking control of it. You also heal 2 HP and grow in size.	-	Virus Power	Mega Viruses	
+InfestΩ	Affinity	Roll	Infest a Close object or Virus, taking control of it. You also heal 2 HP and grow in size.	-	Virus Power	Mega Viruses	InfestOmega
 InNumbers	-	Passive	Your Strength always equals half your HP, rounded up. Changing one changes the other.	-	Virus Power	Mega Viruses	
 Swarm	Strength	Cost	Launch latching worms at a Near target. The worms disable powers/NCPs until removed.	-	Virus Power	Mega Viruses	
 							
 IronMaiden	Bravery	Roll	Trap a Close target inside you, blocking PET interaction. One at a time; escape is Hard.	-	Virus Power	Mega Viruses	
+IronMaidenΩ	Bravery	Roll	Trap a Near target inside you, blocking PET interaction. One at a time; escape is Hard.	-	Virus Power	Mega Viruses	IronMaidenOmega
 IronCradle	-	Passive	When rolling with someone inside, drain 1 HP. (No defense.) Eject anyone at 1 HP.	-	Virus Power	Mega Viruses	
 IronBull	-	Passive	Add the stats, skills, and powers of trapped targets to your own.	-	Virus Power	Mega Viruses	
 IronCurtain	Affinity	Cost	Turn all Near summoned element into your element.	-	Virus Power	Mega Viruses	
 Replicate	Affinity	Cost	Disguise yourself by copying a Near object’s form. You must undisguise to act.	-	Virus Power	Mega Viruses	
 Duplicate	-	Passive	After taking damage, halve your HP (round up) and spawn a copy of yourself Near.	-	Virus Power	Mega Viruses	
 Recycle	-	Passive	When anyone Near is deleted, add their stats to yours.	-	Virus Power	Mega Viruses	
+RecycleΩ	-	Passive	When anyone Near is deleted, add their stats and skills to yours.	-	Virus Power	Mega Viruses	RecycleOmega
 Simulacrum	-	Passive	When you are targeted with a power or chip, you can use it three times.	-	Virus Power	Mega Viruses	
 Bloodstone	Bravery	Cost	Next time you’re attacked, your element covers everything Close in a Normal hazard.	-	Virus Power	Mega Viruses	
+BloodstoneΩ	-	Passive	When you’re attacked, your element covers everything Close in a Normal hazard.	-	Virus Power	Mega Viruses	BloodstoneOmega
 OcularRifts	-	Passive	Your vision is foggy. Enemies beyond Close are only visible if they are moving.	-	Virus Power	Mega Viruses	
 AbyssalRoar	Bravery	Cost	Loose a deafening, horrifying roar. It jams all Near PET connections for 3 rolls.	-	Virus Power	Mega Viruses	
 							
 AllAboard	Speed	Roll	Load a Close ally/object into a carriage (max 3). Loaded things move with you.	-	Virus Power	Mega Viruses	
+AllAboardΩ	Speed	Roll	Load a Close ally/object into a carriage (max 5). Loaded things move with you.	-	Virus Power	Mega Viruses	AllAboardOmega
 Disembark	Bravery	Roll	Launch up to 2 carriages’ contents a range band in any direction.	-	Virus Power	Mega Viruses	
 FirstClass	-	Passive	Allies in carriages heal 1 HP when they roll, and you roll to defend them from all attacks.	-	Virus Power	Mega Viruses	
 PainTrain	Speed	Roll	Ram a Near target, damaging and moving Close. You can unload any carriage(s) on them.	-	Virus Power	Mega Viruses	
 Moonwalk	Speed	Roll	Slide a range band, returning any broken/removed hazards or summons in your path.	-	Virus Power	Mega Viruses	
 ThrillerNight	Charm	Roll	Dance to resurrect a deleted Near Virus ally. HP = hits. Replace their element with yours.	-	Virus Power	Mega Viruses	
+ThrillerNightΩ	Charm	Roll	Dance to resurrect a deleted Near ally. HP = hits. Replace their element with yours.	-	Virus Power	Mega Viruses	ThrillerNightOmega
 DanseMacabre	Affinity	Roll	Dance with any Close targets. They will explode on deletion, spreading their element.	-	Virus Power	Mega Viruses	
 Hustle	-	Passive	Near allies can roll using your Soul instead of theirs.	-	Virus Power	Mega Viruses	
 CodeSwitch	Coding	Cost	Pick a Near ally — they use Strength or Coding to manipulate their element for 3 rolls.	-	Virus Power	Mega Viruses	
@@ -537,6 +554,7 @@ WithABang	-	Passive	Allies you use powers on will blast into their element on de
 MixedBlessing	Charm	Cost	Pick a Near Virus ally — they get +3 dice to all rolls, but lose 2 HP per roll until deletion.	-	Virus Power	Mega Viruses	
 ForbiddenArt	Strength	Roll	Parry any attack. Loser takes dmg = the total of the winner’s parry attacks. You can’t back out.	-	Virus Power	Mega Viruses	
 PowerDrain	Affinity	Cost	Vaporize a Near object and get a Death token. Spend a token to live while 0 HP for 1 roll.	-	Virus Power	Mega Viruses	
+PowerDrainΩ	Affinity	Cost	Vaporize a Near object or a real life object Near the server and get a Death token. Spend a token to live while 0 HP for 1 roll.	-	Virus Power	Mega Viruses	PowerDrainOmega
 Combine	-	Passive	ose allies can equip you, adding your skills, element, and other powers to theirs.	-	Virus Power	Mega Viruses	
 Deathwish	-	Passive	Add +1 die per missing point of HP to every roll except for defense rolls.	-	Virus Power	Mega Viruses	
 							
@@ -551,21 +569,9 @@ EleMajesty	-	Passive	You can control up to 3 elements at once.	-	Virus Power	Meg
 Redshift	Coding	Cost	Your element briefly (pick 1): reveals invisibility; blinds Close to it; starts growing in size.	-	Virus Power	Mega Viruses	
 SolarFlare	Affinity	Roll	(Requires 8+ Affinity.) Overheat a Near target’s PET. Interrupts the connection.	-	Virus Power	Mega Viruses	
 Supernova	-	Passive	After rolling Affinity, gain 1 Affinity, lose 1 HP, and increase the server’s temperature.	-	Virus Power	Mega Viruses	
+SupernovaΩ	-	Passive	After rolling Affinity, gain 2 Affinity, lose 2 HP, and greatly increase the server’s temperature.	-	Virus Power	Mega Viruses	SupernovaOmega
 StarCrossed	Affinity	Roll	(Requires 20+ Affinity.) Pick an object Near the real-world server; it catches on fire.	-	Virus Power	Mega Viruses	
 Backdoor	Coding	Cost	Create a Near door that leads to a fake room. The room’s walls count as your body.	-	Virus Power	Mega Viruses	
 Redecorate	Affinity	Roll	Modify your room’s contents. Complex objects have tells to hint at the room’s nature.	-	Virus Power	Mega Viruses	
 Domain	-	Passive	Within your room, you can roll Affinity to manipulate anyone’s summoned element.	-	Virus Power	Mega Viruses	
 Populate	Affinity	Cost	Add a fake creature to the room. It rolls with your stats and skills. It cannot speak.	-	Virus Power	Mega Viruses	
-							
-InhaleΩ	Coding	Roll	Suck in up to 3 Near objects or Viruses (Viruses unharmed). Every object/virus inside you adds 1 Stamina; max 9	-	Virus Power	Mega Viruses	InhaleOmega
-SupernovaΩ	-	Passive	After rolling Affinity, gain 2 Affinity, lose 2 HP, and significantly increase the server’s temperature.	-	Virus Power	Mega Viruses	SupernovaOmega
-BloodstoneΩ	-	Passive	Each time you’re attacked, your element fires out into everything Close.	-	Virus Power	Mega Viruses	BloodstoneOmega
-RecycleΩ	-	Passive	When anyone Near is deleted, add their stats and skills to yours.	-	Virus Power	Mega Viruses	RecycleOmega
-InfestΩ	-	Passive	Infest a Close object or Virus, taking control of it. You also heal 2 HP and grow in size.	-	Virus Power	Mega Viruses	InfestOmega
-AllAboardΩ	Speed	Roll	Load a Close ally/object into a carriage (max 5). Loaded things move with you.	-	Virus Power	Mega Viruses	AllAboardOmega
-IronMaidenΩ	Bravery	Cost	Trap a Near target inside you, blocking PET interaction. One at a time; escape is Hard.	-	Virus Power	Mega Viruses	IronMaidenOmega
-ThrillerNightΩ	Charm	Roll	Dance to resurrect a deleted Near Virus or Navi ally. HP = hits. Replace their element with yours.	-	Virus Power	Mega Viruses	ThrillerNightOmega
-PowerDrainΩ	Affinity	Cost	Vaporize a Near object or real-world object of power Near the server and get a Power token. Spend a token to live while 0 HP for 1 roll.	-	Virus Power	Mega Viruses	PowerDrainOmega
-ILoveYouΩ	-	Passive	When you roll, Far Viruses learn your location and gain +1 die to their next roll, stacking. Starts undetectable, gradually gets obvious.	-	Virus Power	Mega Viruses	ILoveYouOmega
-NarcissusΩ	-	Passive	Attack a Near target with stunning, cursed petals. They can divert this attack to all their Near allies. 	-	Virus Power	Mega Viruses	NarcissusOmega
-DreadΩ	Costind	Cost	Near lights and cameras fade, then go dark for a few seconds. Also briefly blocks PETS. Usable while immobile	-	Virus Power	Mega Viruses	DreadOmega
