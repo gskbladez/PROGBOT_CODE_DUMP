@@ -30,6 +30,7 @@ MAX_CHEER_JEER_VALUE = 100
 MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
 PROBABLY_INFINITE = 99
+MAX_RANDOM_VIRUSES = 6
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -90,7 +91,6 @@ virus_colors = {"Virus": 0x7c00ff,
 cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 
 # TODO: exclude npus from ncp query?
-# TODO: pull up a specific rulebook if you give it an argument
 # TODO: NaviChip creation rules?
 # TODO: indie rules?
 # TODO: Fix audience dict
@@ -2069,6 +2069,109 @@ async def audience(context, *args, **kwargs):
 
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
+async def virusr(context, *args, **kwargs):
+    mod_args = []
+    for arg in args:
+        test_match = re.match(r"^(?P<key1>[^0-9]*)\s*(?P<key2>[^0-9]*)\s*(?P<num>[\d]*)$", arg)
+        if test_match is None:
+            mod_args = args
+            break
+        if not test_match.group("key1"):
+            mod_args.append("any " + arg)
+        else:
+            mod_args.append(arg)
+    arg_string = " ".join(mod_args)
+
+    cleaned_args = clean_args([arg_string])
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        audience_help_msg = "I can roll 1-%d random Viruses!\n" % MAX_RANDOM_VIRUSES + \
+                            "You can also give me the **Categories** and **number of Viruses** you want to roll too! (i.e. `{cp}virusr support 1, artillery 2`)\n" + \
+                            "You can specify Mega or Omega Viruses too! (Otherwise, they will not be rolled.)\n\n" + \
+                            "**Available Virus Categories:** %s" % ", ".join(["Any"] + virus_category_list)
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+    virus_roll_list = []
+    virus_roll = ["any", 1, "normal"]
+    virus_category_lower = [i.lower() for i in virus_category_list] + ["any"]
+    total_v = 0
+    in_progress = False
+    for arg in cleaned_args:
+        try:
+            virus_roll[1] = int(arg)
+            virus_roll_list.append(virus_roll)
+            total_v += virus_roll[1]
+            virus_roll = ["any", 1, "normal"]
+            in_progress = False
+            continue
+        except ValueError:
+            pass
+        if arg in ['virus', 'any', 'random']:
+            continue
+        elif arg in ['mega', 'megavirus']:
+            virus_roll[2] = "mega"
+        elif arg in ['omega', 'omegavirus']:
+            virus_roll[2] = "omega"
+        elif arg in virus_category_lower:
+            if virus_roll[0] not in ["any", "random"]:
+                virus_roll_list.append(virus_roll)
+                total_v += virus_roll[1]
+                virus_roll = ["any", 1, "normal"]
+                in_progress = False
+            virus_roll[0] = arg
+            in_progress = True
+        else:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="I don't recognize %s!" % arg)
+
+    if in_progress:
+        virus_roll_list.append(virus_roll)
+        total_v += virus_roll[1]
+
+    if total_v > MAX_RANDOM_VIRUSES:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Rolling too many Viruses! (Only up to %d!)" % MAX_RANDOM_VIRUSES)
+    elif total_v == 0:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Rolling... no Viruses? Huh?")
+    elif total_v == 1:
+        virus_keyword = "Virus"
+    else:
+        virus_keyword = "Viruses"
+
+    virus_roll_titles = []
+    viruses_names = []
+    for virus_type, virus_num, virus_tier in virus_roll_list:
+        if virus_num == 0:
+            continue
+        if virus_tier == 'mega':
+            sub_df = virus_df[virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & ~virus_df["Name"].str.contains(r"Ω")]
+            virus_cat = "Mega "
+        elif virus_tier == 'omega':
+            sub_df = virus_df[virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & virus_df["Name"].str.contains(r"Ω")]
+            virus_cat = "Omega "
+        else:
+            sub_df = virus_df[~virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & virus_df["Name"]]
+            virus_cat = ""
+        if virus_type != "any":
+            sub_df = sub_df[sub_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
+            virus_cat += sub_df["Category"].iloc[0]
+        else:
+            virus_cat += "Random"
+        if sub_df.shape[0] < virus_num:
+            search_query = " ".join([virus_type, virus_tier])
+            await koduck.sendmessage(context["message"],
+                                     sendcontent="There's only %d `%s` Viruses! Limiting it to %d..." % (sub_df.shape[0], search_query, sub_df.shape[0]))
+            virus_num = sub_df.shape[0]
+        virus_roll_titles.append("%d %s" % (virus_num, virus_cat))
+        viruses_rolled = random.sample(range(sub_df.shape[0]), virus_num)
+        viruses_names += [sub_df.iloc[i]["Name"] for i in viruses_rolled]
+
+    virus_title = ", ".join(virus_roll_titles)
+    virus_list = ", ".join(viruses_names)
+    embed = discord.Embed(title="Rolling %s %s..." % (virus_title, virus_keyword),
+                          color=virus_colors["Virus"],
+                          description=virus_list)
+    return await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def break_test(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendcontent=str(0 / 0))
