@@ -10,7 +10,7 @@ power	powers	FALSE	powerruling	This command can display Navi and Virus powers (C
 virus		FALSE	virusruling	This command can pull up a basic Virus description.
 virusx		FALSE		This specific command pulls up full stats for viruses, like stats and drops. __This command is more for GMs rather than players in a session.__
 tag		FALSE		Viruses and Battlechips have __**Tags**__ and __**Categories**__ that determine how they behave or work in battle.\n\nThis command pulls up a tag or category's description.
-rulebook		FALSE		Pulls up links for the latest NetBattlers rulebooks.
+rulebook		FALSE		Pulls up links for the NetBattlers rulebooks.
 bond	bondpower, bondpowers	FALSE	bondruling	This command displays Bond Powers, along with points needed, and what they do!
 mysterydata		FALSE		This command rolls Mystery Data and gives you the result automatically! Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!
 mysteryreward		FALSE		This command rolls Mystery Data (BattleChips and NCPs only) and gives you the result automatically! Specify `{cp}mysteryreward common`, `{cp}mysteryreward uncommon`, or `{cp}mysteryreward rare`!

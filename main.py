@@ -92,8 +92,9 @@ cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 # TODO: exclude npus from ncp query?
 # TODO: pull up a specific rulebook if you give it an argument
 # TODO: NaviChip creation rules?
-# TODO: Indie refresh??
 # TODO: indie rules?
+# TODO: Fix audience dict
+# TODO: Random virus generator
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -140,7 +141,6 @@ mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
 networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
 crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
 audience_df = pd.read_csv(r"audiencedata.tsv", sep="\t").fillna('')
-rulebook_df = pd.read_csv(r"rulebookdata.tsv", sep="\t").fillna('')
 
 element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
 element_category_list = pd.unique(element_df["category"].dropna())
@@ -158,8 +158,14 @@ pmc_daemon_df = pd.read_csv(r"playermade_daemondata.tsv", sep="\t").fillna('')
 nyx_chip_df = pd.read_csv(r"nyx_chipdata.tsv", sep="\t").fillna('')
 nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
 
+rulebook_df = pd.read_csv(r"rulebookdata.tsv", sep="\t").fillna('')
+pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
+rulebook_df = rulebook_df[rulebook_df["Name"] != "Player-Made Repository"]
+
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
+
+audience_data = {}
 
 # reinitializes audience data on powerup
 with open(settings.audiencefile, 'w') as afp:
@@ -909,7 +915,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
 def clean_args(args):
     if len(args) == 1:
         args = re.split(r"(?:,|;|\s+)", args[0])
-    args = [i.lower().strip() for i in args if i]
+    args = [i.lower().strip() for i in args if i and not i.isspace()]
     return args
 
 
@@ -1622,19 +1628,98 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
-    if cleaned_args:
-        if cleaned_args[0] == "all":
-            ret_books = rulebook_df.loc[rulebook_df.groupby(["Type", "Name"])["Version"].idxmax()]
-            book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
-            book_names += ["", "For player-made content, check out the Player-Made Repository! <https://www.notion.so/dc469d3ae5f147cab389b6f61bce102e?v=085a409506684722a8ec91ae6f56640c>"]
-        else:
-            cleaned_args = []
-
-    if not cleaned_args:
+    modargs = [re.split("(\d)+", arg) for arg in args]
+    modargs = [item for sublist in modargs for item in sublist]
+    cleaned_args = clean_args(modargs)
+    errmsg = []
+    if not args:
         ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["Version"].idxmax()]
-        book_names = ["%s %s %s: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in ret_books.iterrows()]
+        book_names = ["%s %s %s: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
+                      ret_books.iterrows()]
+    elif cleaned_args[0] == "help":
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Links the rulebooks for NetBattlers! " +
+                                                    "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", settings.commandprefix) +
+                                                    "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", settings.commandprefix))
+    elif cleaned_args[0] in ["all", "latest", "new"]:
+        ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"].groupby(["Type", "Name"])["Version"].idxmax()]
+        book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
+        book_names += ["", "For player-made content, check out the Player-Made Repository! <%s>" % pmc_link]
 
+    elif cleaned_args[0] in ['pmc', 'player', 'pmr', 'playermade', 'playermaderepository', 'playermaderepo']:
+        book_names = ["Player-Made Repository: <%s>" % pmc_link]
+    else:
+        book_names = []
+
+    if not book_names:
+        errmsg = []
+        bookname = ""
+        booktype = ""
+        ret_book = pd.Series(False, index=rulebook_df.index)
+        for arg in cleaned_args:
+            try:
+                version_num = int(arg)
+                if not bookname:
+                    await koduck.sendmessage(context["message"],
+                                             sendcontent="Don't know which book you want for `%d`! Please specify either 'Beta' or 'Advance'!" % version_num)
+                    continue
+                elif bookname == 'Unknown':
+                    continue
+                subfilt = (rulebook_df["Name"] == bookname) & (rulebook_df["Version"] == version_num)
+                if booktype:
+                    subfilt = subfilt & (rulebook_df["Type"] == booktype)
+                if not any(subfilt):
+                    msg404 = "Couldn't find `%s` `%d`!" % (bookname, version_num)
+                    if booktype:
+                        msg404 += " (`%s`)" % booktype
+                    errmsg.append(msg404)
+
+                ret_book = ret_book | subfilt
+                bookname = ""
+                booktype = ""
+                continue
+            except ValueError:
+                pass
+
+            if arg in ['all', 'list']:
+                subfilt = rulebook_df["Name"] == bookname
+                if booktype:
+                    subfilt = subfilt & (rulebook_df["Type"] == booktype)
+                ret_book = ret_book | subfilt
+                booktype = ""
+            elif arg in ['beta', 'netbattlers', 'netbattler', 'nb', 'b']:
+                bookname = "NetBattlers"
+            elif arg in ['advance', 'advanced', 'nba', 'adv', 'a']:
+                bookname = "NetBattlers Advance"
+            elif arg in ['full', 'fullres']:
+                booktype = 'Full Res'
+            elif arg in ['mobile']:
+                booktype = 'Mobile'
+            else:
+                bookname = "Unknown"
+                await koduck.sendmessage(context["message"],
+                                         sendcontent="Don't recognize `%s`! Please specify either 'Beta' or 'Advance'!" % arg)
+
+        if not any(ret_book):
+            if bookname:
+                ret_book = ret_book | (rulebook_df["Name"] == bookname)
+            if booktype:
+                ret_book = ret_book | (rulebook_df["Type"] == booktype)
+
+            ret_books = rulebook_df.loc[rulebook_df[ret_book].groupby(["Name"])["Version"].idxmax()]
+            book_names = ["%s %s %s (%s): <%s>" %
+                          (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
+                          for _, book in ret_books.iterrows()]
+        else:
+            ret_books = rulebook_df.loc[ret_book]
+            book_names = [
+                "%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
+                for _, book in ret_books.iterrows()]
+
+    book_names += errmsg
+    if not book_names:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find any rulebooks for `%s`!" % " ".join(args))
     return await koduck.sendmessage(context["message"],  sendcontent="\n".join(book_names))
 
 
