@@ -904,6 +904,8 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
     return power_name, field_title, field_description, power_color, field_footer
 
 
+# lowercases all args and strips trailing/leading whitespaces
+# splits args with no commas into separate arguments
 def clean_args(args):
     if len(args) == 1:
         args = re.split(r"(?:,|;|\s+)", args[0])
@@ -1620,9 +1622,10 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    modargs = [re.split("(\d)+", arg) for arg in args]
-    modargs = [item for sublist in modargs for item in sublist]
-    cleaned_args = clean_args(modargs)
+    cleaned_args = clean_args(args)
+    modargs = [re.split("(\d)+", arg) for arg in cleaned_args]
+    modargs = [item.strip() for sublist in modargs for item in sublist if item]
+    cleaned_args = modargs
     errmsg = []
     if not args:
         ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["Version"].idxmax()]
@@ -1645,68 +1648,83 @@ async def rulebook(context, *args, **kwargs):
 
     if not book_names:
         errmsg = []
-        bookname = ""
-        booktype = ""
-        ret_book = pd.Series(False, index=rulebook_df.index)
+        book_query = {"Name": "", "Type": "All", "Version": -1}
+        book_queries = []
+        in_progress = False
         for arg in cleaned_args:
             try:
                 version_num = int(arg)
-                if not bookname:
-                    await koduck.sendmessage(context["message"],
-                                             sendcontent="Don't know which book you want for `%d`! Please specify either 'Beta' or 'Advance'!" % version_num)
-                    continue
-                elif bookname == 'Unknown':
-                    continue
-                subfilt = (rulebook_df["Name"] == bookname) & (rulebook_df["Version"] == version_num)
-                if booktype:
-                    subfilt = subfilt & (rulebook_df["Type"] == booktype)
-                if not any(subfilt):
-                    msg404 = "Couldn't find `%s` `%d`!" % (bookname, version_num)
-                    if booktype:
-                        msg404 += " (`%s`)" % booktype
-                    errmsg.append(msg404)
-
-                ret_book = ret_book | subfilt
-                bookname = ""
-                booktype = ""
+                if book_query["Version"] >= 0:
+                    await koduck.sendmessage(context["message"], sendcontent="Going with Version `%d`!" % version_num)
+                book_query["Version"] = version_num
                 continue
             except ValueError:
                 pass
 
+            if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b'] + ['advance', 'advanced', 'nba', 'adv', 'a']):
+                if in_progress:
+                    book_queries.append(book_query)
+                    book_query = {"Name": "", "Type": "All", "Version": -1}
+                if arg in ['beta', 'netbattlers', 'netbattler', 'nb', 'b']:
+                    book_query["Name"] = "NetBattlers"
+                else:
+                    book_query["Name"] = "NetBattlers Advance"
+                in_progress = True
+
             if arg in ['all', 'list']:
-                subfilt = rulebook_df["Name"] == bookname
-                if booktype:
-                    subfilt = subfilt & (rulebook_df["Type"] == booktype)
-                ret_book = ret_book | subfilt
-                booktype = ""
-            elif arg in ['beta', 'netbattlers', 'netbattler', 'nb', 'b']:
-                bookname = "NetBattlers"
-            elif arg in ['advance', 'advanced', 'nba', 'adv', 'a']:
-                bookname = "NetBattlers Advance"
-            elif arg in ['full', 'fullres']:
-                booktype = 'Full Res'
-            elif arg in ['mobile']:
-                booktype = 'Mobile'
-            else:
-                bookname = "Unknown"
+                if book_query["Version"] > 0:
+                    await koduck.sendmessage(context["message"],
+                                             sendcontent="Going with all versions!")
+                book_query["Version"] = 0
+                in_progress = True
+
+            if arg in (['full', 'fullres', 'full-res'] + ['mobile']):
+                if arg in ['full', 'fullres']:
+                    book_query["Type"] = "Full Res"
+                else:
+                    book_query["Type"] = "Mobile"
+                in_progress = True
+
+        if in_progress:
+            book_queries.append(book_query)
+
+        ret_book = pd.Series(False, index=rulebook_df.index)
+        for book_query in book_queries:
+            bookname = book_query["Name"]
+            booktype = book_query["Type"]
+            book_version = book_query["Version"]
+            if not bookname:
                 await koduck.sendmessage(context["message"],
-                                         sendcontent="Don't recognize `%s`! Please specify either 'Beta' or 'Advance'!" % arg)
+                                         sendcontent="Don't know which book you want! Please specify either 'Beta' or 'Advance'!")
+                continue
+            elif bookname == 'Unknown':
+                continue
 
-        if not any(ret_book):
-            if bookname:
-                ret_book = ret_book | (rulebook_df["Name"] == bookname)
-            if booktype:
-                ret_book = ret_book | (rulebook_df["Type"] == booktype)
+            subfilt = (rulebook_df["Name"] == bookname)
+            if booktype != "All":
+                subfilt = subfilt & (rulebook_df["Type"] == booktype)
+                book_type_str = " (`%s`)" % booktype
+            else:
+                book_type_str = ""
 
-            ret_books = rulebook_df.loc[rulebook_df[ret_book].groupby(["Name"])["Version"].idxmax()]
-            book_names = ["%s %s %s (%s): <%s>" %
-                          (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
-                          for _, book in ret_books.iterrows()]
-        else:
-            ret_books = rulebook_df.loc[ret_book]
-            book_names = [
-                "%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
-                for _, book in ret_books.iterrows()]
+            if book_version < 0:
+                subfilt = subfilt.index == rulebook_df[subfilt]["Version"].idxmax()
+            elif book_version > 0:
+                subfilt = subfilt & (rulebook_df["Version"] == book_version)
+                book_version_str = " `%d`" % book_version
+            else:
+                book_version_str = ""
+
+            if not any(subfilt):
+                msg404 = "Couldn't find `%s`%s!%s" % (bookname, book_version_str, book_type_str)
+                errmsg.append(msg404)
+
+            ret_book = ret_book | subfilt
+
+        ret_books = rulebook_df.loc[ret_book]
+        book_names = [
+            "%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
+            for _, book in ret_books.iterrows()]
 
     book_names += errmsg
     if not book_names:
