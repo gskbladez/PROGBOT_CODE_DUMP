@@ -15,7 +15,6 @@ import datetime
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
 
-
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
 MAX_CHIP_QUERY = 5
