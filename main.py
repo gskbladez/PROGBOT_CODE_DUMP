@@ -15,7 +15,6 @@ import datetime
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
 
-
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
 MAX_CHIP_QUERY = 5
@@ -30,6 +29,7 @@ MAX_CHEER_JEER_VALUE = 100
 MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
 PROBABLY_INFINITE = 99
+MAX_RANDOM_VIRUSES = 6
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -89,11 +89,6 @@ virus_colors = {"Virus": 0x7c00ff,
                 "OmegaVirus": 0xA8E8E8}
 cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 
-# TODO: exclude npus from ncp query?
-# TODO: pull up a specific rulebook if you give it an argument
-# TODO: NaviChip creation rules?
-# TODO: Indie refresh??
-# TODO: indie rules?
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -104,9 +99,6 @@ mysterydata_dict = {"common": {"color": 0x48C800,
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
 settings.backgroundtask = backgroundtask
-
-# Riject is a godsend: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
-# Other lists: https://docs.google.com/spreadsheets/d/1bnpvmU4KwmXzHUTuN3Al_W5ZKBuHAmy3Z-dEmCS6SqY/edit?usp=sharing
 
 chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
@@ -140,7 +132,6 @@ mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
 networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
 crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
 audience_df = pd.read_csv(r"audiencedata.tsv", sep="\t").fillna('')
-rulebook_df = pd.read_csv(r"rulebookdata.tsv", sep="\t").fillna('')
 
 element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
 element_category_list = pd.unique(element_df["category"].dropna())
@@ -158,8 +149,14 @@ pmc_daemon_df = pd.read_csv(r"playermade_daemondata.tsv", sep="\t").fillna('')
 nyx_chip_df = pd.read_csv(r"nyx_chipdata.tsv", sep="\t").fillna('')
 nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
 
+rulebook_df = pd.read_csv(r"rulebookdata.tsv", sep="\t").fillna('')
+pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
+rulebook_df = rulebook_df[rulebook_df["Name"] != "Player-Made Repository"]
+
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
+
+audience_data = {}
 
 # reinitializes audience data on powerup
 with open(settings.audiencefile, 'w') as afp:
@@ -906,10 +903,12 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
     return power_name, field_title, field_description, power_color, field_footer
 
 
+# lowercases all args and strips trailing/leading whitespaces
+# splits args with no commas into separate arguments
 def clean_args(args):
     if len(args) == 1:
         args = re.split(r"(?:,|;|\s+)", args[0])
-    args = [i.lower().strip() for i in args if i]
+    args = [i.lower().strip() for i in args if i and not i.isspace()]
     return args
 
 
@@ -1623,18 +1622,113 @@ async def element(context, *args, **kwargs):
 
 async def rulebook(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if cleaned_args:
-        if cleaned_args[0] == "all":
-            ret_books = rulebook_df.loc[rulebook_df.groupby(["Type", "Name"])["Version"].idxmax()]
-            book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
-            book_names += ["", "For player-made content, check out the Player-Made Repository! <https://www.notion.so/dc469d3ae5f147cab389b6f61bce102e?v=085a409506684722a8ec91ae6f56640c>"]
-        else:
-            cleaned_args = []
-
-    if not cleaned_args:
+    modargs = [re.split("(\d)+", arg) for arg in cleaned_args]
+    modargs = [item.strip() for sublist in modargs for item in sublist if item]
+    cleaned_args = modargs
+    errmsg = []
+    if not args:
         ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["Version"].idxmax()]
-        book_names = ["%s %s %s: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in ret_books.iterrows()]
+        book_names = ["%s %s %s: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
+                      ret_books.iterrows()]
+    elif cleaned_args[0] == "help":
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Links the rulebooks for NetBattlers! " +
+                                                    "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", settings.commandprefix) +
+                                                    "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", settings.commandprefix))
+    elif cleaned_args[0] in ["all", "latest", "new"]:
+        ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"].groupby(["Type", "Name"])["Version"].idxmax()]
+        book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
+        book_names += ["", "For player-made content, check out the Player-Made Repository! <%s>" % pmc_link]
 
+    elif cleaned_args[0] in ['pmc', 'player', 'pmr', 'playermade', 'playermaderepository', 'playermaderepo']:
+        book_names = ["Player-Made Repository: <%s>" % pmc_link]
+    else:
+        book_names = []
+
+    if not book_names:
+        errmsg = []
+        book_query = {"Name": "", "Type": "All", "Version": -1}
+        book_queries = []
+        in_progress = False
+        for arg in cleaned_args:
+            try:
+                version_num = int(arg)
+                if book_query["Version"] >= 0:
+                    await koduck.sendmessage(context["message"], sendcontent="Going with Version `%d`!" % version_num)
+                book_query["Version"] = version_num
+                continue
+            except ValueError:
+                pass
+
+            if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b'] + ['advance', 'advanced', 'nba', 'adv', 'a']):
+                if in_progress:
+                    book_queries.append(book_query)
+                    book_query = {"Name": "", "Type": "All", "Version": -1}
+                if arg in ['beta', 'netbattlers', 'netbattler', 'nb', 'b']:
+                    book_query["Name"] = "NetBattlers"
+                else:
+                    book_query["Name"] = "NetBattlers Advance"
+                in_progress = True
+
+            if arg in ['all', 'list']:
+                if book_query["Version"] > 0:
+                    await koduck.sendmessage(context["message"],
+                                             sendcontent="Going with all versions!")
+                book_query["Version"] = 0
+                in_progress = True
+
+            if arg in (['full', 'fullres', 'full-res'] + ['mobile']):
+                if arg in ['full', 'fullres']:
+                    book_query["Type"] = "Full Res"
+                else:
+                    book_query["Type"] = "Mobile"
+                in_progress = True
+
+        if in_progress:
+            book_queries.append(book_query)
+
+        ret_book = pd.Series(False, index=rulebook_df.index)
+        for book_query in book_queries:
+            bookname = book_query["Name"]
+            booktype = book_query["Type"]
+            book_version = book_query["Version"]
+            if not bookname:
+                await koduck.sendmessage(context["message"],
+                                         sendcontent="Don't know which book you want! Please specify either 'Beta' or 'Advance'!")
+                continue
+            elif bookname == 'Unknown':
+                continue
+
+            subfilt = (rulebook_df["Name"] == bookname)
+            if booktype != "All":
+                subfilt = subfilt & (rulebook_df["Type"] == booktype)
+                book_type_str = " (`%s`)" % booktype
+            else:
+                book_type_str = ""
+
+            if book_version < 0:
+                subfilt = subfilt.index == rulebook_df[subfilt]["Version"].idxmax()
+            elif book_version > 0:
+                subfilt = subfilt & (rulebook_df["Version"] == book_version)
+                book_version_str = " `%d`" % book_version
+            else:
+                book_version_str = ""
+
+            if not any(subfilt):
+                msg404 = "Couldn't find `%s`%s!%s" % (bookname, book_version_str, book_type_str)
+                errmsg.append(msg404)
+
+            ret_book = ret_book | subfilt
+
+        ret_books = rulebook_df.loc[ret_book]
+        book_names = [
+            "%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
+            for _, book in ret_books.iterrows()]
+
+    book_names += errmsg
+    if not book_names:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find any rulebooks for `%s`!" % " ".join(args))
     return await koduck.sendmessage(context["message"],  sendcontent="\n".join(book_names))
 
 
@@ -1984,6 +2078,109 @@ async def audience(context, *args, **kwargs):
 
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
+async def virusr(context, *args, **kwargs):
+    mod_args = []
+    for arg in args:
+        test_match = re.match(r"^(?P<key1>[^0-9]*)\s*(?P<key2>[^0-9]*)\s*(?P<num>[\d]*)$", arg)
+        if test_match is None:
+            mod_args = args
+            break
+        if not test_match.group("key1"):
+            mod_args.append("any " + arg)
+        else:
+            mod_args.append(arg)
+    arg_string = " ".join(mod_args)
+
+    cleaned_args = clean_args([arg_string])
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        audience_help_msg = "I can roll 1-%d random Viruses!\n" % MAX_RANDOM_VIRUSES + \
+                            "You can also give me the **Categories** and **number of Viruses** you want to roll too! (i.e. `{cp}virusr support 1, artillery 2`)\n" + \
+                            "You can specify Mega or Omega Viruses too! (Otherwise, they will not be rolled.)\n\n" + \
+                            "**Available Virus Categories:** %s" % ", ".join(["Any"] + virus_category_list)
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+    virus_roll_list = []
+    virus_roll = ["any", 1, "normal"]
+    virus_category_lower = [i.lower() for i in virus_category_list] + ["any"]
+    total_v = 0
+    in_progress = False
+    for arg in cleaned_args:
+        try:
+            virus_roll[1] = int(arg)
+            virus_roll_list.append(virus_roll)
+            total_v += virus_roll[1]
+            virus_roll = ["any", 1, "normal"]
+            in_progress = False
+            continue
+        except ValueError:
+            pass
+        if arg in ['virus', 'any', 'random']:
+            continue
+        elif arg in ['mega', 'megavirus']:
+            virus_roll[2] = "mega"
+        elif arg in ['omega', 'omegavirus']:
+            virus_roll[2] = "omega"
+        elif arg in virus_category_lower:
+            if virus_roll[0] not in ["any", "random"]:
+                virus_roll_list.append(virus_roll)
+                total_v += virus_roll[1]
+                virus_roll = ["any", 1, "normal"]
+                in_progress = False
+            virus_roll[0] = arg
+            in_progress = True
+        else:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="I don't recognize %s!" % arg)
+
+    if in_progress:
+        virus_roll_list.append(virus_roll)
+        total_v += virus_roll[1]
+
+    if total_v > MAX_RANDOM_VIRUSES:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Rolling too many Viruses! (Only up to %d!)" % MAX_RANDOM_VIRUSES)
+    elif total_v == 0:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Rolling... no Viruses? Huh?")
+    elif total_v == 1:
+        virus_keyword = "Virus"
+    else:
+        virus_keyword = "Viruses"
+
+    virus_roll_titles = []
+    viruses_names = []
+    for virus_type, virus_num, virus_tier in virus_roll_list:
+        if virus_num == 0:
+            continue
+        if virus_tier == 'mega':
+            sub_df = virus_df[virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & ~virus_df["Name"].str.contains(r"Ω")]
+            virus_cat = "Mega "
+        elif virus_tier == 'omega':
+            sub_df = virus_df[virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & virus_df["Name"].str.contains(r"Ω")]
+            virus_cat = "Omega "
+        else:
+            sub_df = virus_df[~virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & virus_df["Name"]]
+            virus_cat = ""
+        if virus_type != "any":
+            sub_df = sub_df[sub_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
+            virus_cat += sub_df["Category"].iloc[0]
+        else:
+            virus_cat += "Random"
+        if sub_df.shape[0] < virus_num:
+            search_query = " ".join([virus_type, virus_tier])
+            await koduck.sendmessage(context["message"],
+                                     sendcontent="There's only %d `%s` Viruses! Limiting it to %d..." % (sub_df.shape[0], search_query, sub_df.shape[0]))
+            virus_num = sub_df.shape[0]
+        virus_roll_titles.append("%d %s" % (virus_num, virus_cat))
+        viruses_rolled = random.sample(range(sub_df.shape[0]), virus_num)
+        viruses_names += [sub_df.iloc[i]["Name"] for i in viruses_rolled]
+
+    virus_title = ", ".join(virus_roll_titles)
+    virus_list = ", ".join(viruses_names)
+    embed = discord.Embed(title="Rolling %s %s..." % (virus_title, virus_keyword),
+                          color=virus_colors["Virus"],
+                          description=virus_list)
+    return await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def break_test(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendcontent=str(0 / 0))

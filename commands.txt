@@ -44,3 +44,5 @@ break	break_test	prefix	3
 audience	audience	prefix	1
 cheer	cheer	prefix	1
 jeer	jeer	prefix	1
+virusr	virusr	prefix	1
+virusrandom	virusr	prefix	1
