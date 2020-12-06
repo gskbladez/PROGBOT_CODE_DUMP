@@ -90,11 +90,6 @@ virus_colors = {"Virus": 0x7c00ff,
                 "OmegaVirus": 0xA8E8E8}
 cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 
-# TODO: exclude npus from ncp query?
-# TODO: NaviChip creation rules?
-# TODO: indie rules?
-# TODO: Fix audience dict
-# TODO: Random virus generator
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
                     "uncommon": {"color": 0x00E1DF,
@@ -105,9 +100,6 @@ mysterydata_dict = {"common": {"color": 0x48C800,
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
 settings.backgroundtask = backgroundtask
-
-# Riject is a godsend: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
-# Other lists: https://docs.google.com/spreadsheets/d/1bnpvmU4KwmXzHUTuN3Al_W5ZKBuHAmy3Z-dEmCS6SqY/edit?usp=sharing
 
 chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
