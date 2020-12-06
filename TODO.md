@@ -4,10 +4,12 @@
 
 ### Improvements
 `audience`
-- Improve audience data storage
+- Improve audience data storage (don't need text file)
 
 ### New Features
-- Random virus generator
+- Roll random adventures from the book
+- Shop/economy guidance
+- Shop ideas?
 
 ### Potential Ideas
 `ncp`
