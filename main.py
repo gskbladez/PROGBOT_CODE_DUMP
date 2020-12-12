@@ -2081,12 +2081,12 @@ async def audience(context, *args, **kwargs):
 async def virusr(context, *args, **kwargs):
     mod_args = []
     for arg in args:
-        test_match = re.match(r"^(?P<key1>[^0-9]*)\s*(?P<key2>[^0-9]*)\s*(?P<num>[\d]*)$", arg)
+        test_match = re.match(r"^(?P<word1>[^0-9]*)\s*(?P<word2>[^0-9]*)\s*(?P<num>[\d]*)$", arg)
         if test_match is None:
             mod_args = args
             break
-        if not test_match.group("key1"):
-            mod_args.append("any " + arg)
+        if not test_match.group("num"):
+            mod_args.append(arg + " 1")
         else:
             mod_args.append(arg)
     arg_string = " ".join(mod_args)
@@ -2118,8 +2118,10 @@ async def virusr(context, *args, **kwargs):
             continue
         elif arg in ['mega', 'megavirus']:
             virus_roll[2] = "mega"
+            in_progress = True
         elif arg in ['omega', 'omegavirus']:
             virus_roll[2] = "omega"
+            in_progress = True
         elif arg in virus_category_lower:
             if virus_roll[0] not in ["any", "random"]:
                 virus_roll_list.append(virus_roll)
@@ -2130,12 +2132,12 @@ async def virusr(context, *args, **kwargs):
             in_progress = True
         else:
             return await koduck.sendmessage(context["message"],
-                                        sendcontent="I don't recognize %s!" % arg)
+                                        sendcontent="I don't recognize `%s`!" % arg)
 
     if in_progress:
         virus_roll_list.append(virus_roll)
         total_v += virus_roll[1]
-
+        
     if total_v > MAX_RANDOM_VIRUSES:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Rolling too many Viruses! (Only up to %d!)" % MAX_RANDOM_VIRUSES)

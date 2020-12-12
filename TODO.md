@@ -11,7 +11,6 @@
 - Roll random adventures from the book
 - Shop/economy guidance
 - Secret Nyx link command (>nyx, >rulebook nyx)
-- Divergence help
 - Suggestion: sort all help topics alphabetically
 
 ### Potential Ideas
@@ -19,4 +18,3 @@
 - Add additional Indie rules
 - Add NaviChip creation rules
 - Shop ideas for new GMs?
-- Skill limits
