@@ -1,6 +1,8 @@
 # ProgBot
 A Python bot made to help with NetBattlers, a tabletop roleplaying game inspired by MegaMan Battle Network, made by Will Uhl.
 
+To add ProgBot to your server, click this link! https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0
+
 ### Dependencies
 - `discord.py` (1.2+)
 - `pandas` (1.1+)
