@@ -110,6 +110,9 @@ Rolls random viruses. Can specify the number and categories you want to roll.
 - Customized Mastersheet: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
     - Prepared by Riject, editable with the link.
     - Manages License lists and aliases for Chips, Powers, and Viruses.
+        - Chips
+        - Powers/NCPs
+        - Viruses
 - ProgBot Tables: https://drive.google.com/drive/folders/1EUvHkzAcbOD9QZdNgDxmtbtDe8nLVKmo?usp=sharing
     - Contains all the other tables ProgBot uses for information! (Export as `.tsv`)
         - Bond Powers
