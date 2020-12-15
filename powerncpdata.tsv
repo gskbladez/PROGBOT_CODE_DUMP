@@ -450,7 +450,7 @@ NightSign	Affinity	Cost	Mark a Near target. Removing a Mark requires a Hard Codi
 Stalker	-	Passive	Once per minute, you can teleport directly behind any Marked target.	-	Virus Power	Mystic Lilies	
 SmokeStep	-	Passive	You can move up to a range band immediately after being hit.	-	Virus Power	Mystic Lilies	
 Firestarter	-	Passive	When you damage a target or object for the first time, they’re covered with your element.	-	Virus Power	Mystic Lilies	
-CursedAsh	-	Passive	Everyone other than you sets their stamina to 0 while touching your element.	-	Virus Power	Mystic Lilies	
+CursedAsh	-	Passive	Everyone other than you sets their Stamina to 0 while touching your element.	-	Virus Power	Mystic Lilies
 Amplify	Affinity	Roll	Amplify and replay a Near sound, making it clearly audible up to Far range.	-	Virus Power	Mystic Lilies	
 Mute	Affinity	Cost	Mute a Close sound, making it completely inaudible.	-	Virus Power	Mystic Lilies	
 							

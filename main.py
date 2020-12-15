@@ -56,13 +56,21 @@ skill_list = ['Sense', 'Info', 'Coding',
 skill_color_dictionary = {"Mind": 0x81A7C6,
                           "Body": 0xDF8F8D,
                           "Soul": 0xF8E580}
-
 cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard Dog": "SkateboardDog",
            "Night Drifters": "NightDrifters", "Underground Broadcast": "UndergroundBroadcast",
            "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
            "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
            "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
            "Tarot": "", "Nyx": ""}
+
+help_categories = {"Lookups": ':mag: **Lookups**',
+                  "Rollers": ':game_die: **Rollers**',
+                  "Helpers": ':thumbsup: **Helpers**',
+                  "Reminders (Base)": ':information_source: **Reminders (Base)**',
+                  "Reminders (Advanced Content)": ':trophy: **Reminders (Advanced Content)**',
+                  "Reminders (Liberation)": ':map: **Reminders (Liberation)**',
+                  "Reminders (DarkChips)": ':smiling_imp: **Reminders (DarkChips)**'}
+
 cc_list = list(cc_dict.keys())
 cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 playermade_list = ["Genso Network"]
@@ -139,7 +147,10 @@ element_category_list = pd.unique(element_df["category"].dropna())
 help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
 help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
 help_cmd_list = [i for i in help_df["Command"] if i]
-hidden_help_cmd = ["help", "me", "you", "unknowncommand"]
+help_df["Type"] = help_df["Type"].astype("category")
+help_df["Type"].cat.rename_categories(help_categories, inplace=True)
+help_df["Type"].cat.reorder_categories(list(help_categories.values())+[""], inplace=True)
+
 
 pmc_chip_df = pd.read_csv(r"playermade_chipdata.tsv", sep="\t").fillna('')
 pmc_power_df = pd.read_csv(r"playermade_powerdata.tsv", sep="\t").fillna('')
@@ -435,13 +446,10 @@ async def help_cmd(context, *args, **kwargs):
 
     cleaned_args = clean_args(args)
     if cleaned_args[0] in ['list', 'all']:
-        return_title = "Pulling up all `help` responses..."
-        vis_cmd = help_df[help_df["Hidden?"] == False]
-        #for i in hidden_help_cmd:
-        #    if i in help_cmd_list:
-        #        help_cmd_list.remove(i)
-        return_msg = ", ".join(vis_cmd["Command"].values)
-        return await send_query_msg(context, return_title, return_msg)
+        sub_df = help_df[help_df["Hidden?"] == False]
+        help_groups = sub_df.groupby(["Type"])
+        return_msgs = ["%s\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in help_groups if name]
+        return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
 
     funkyarg = ''.join(cleaned_args)
     help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True)
@@ -1344,7 +1352,7 @@ async def query(context, *args, **kwargs):
     if is_power_query:
         return await send_query_msg(context, result_title, result_msg)
 
-    if arg == 'daemon':
+    if arg in ['daemon', 'daemons']:
         _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
 
@@ -1524,6 +1532,13 @@ async def daemon(context, *args, **kwargs):
     if arg_combined in ["all", "list"]:
         _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
 
     daemon_info = await find_value_in_table(context, daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
@@ -1751,9 +1766,16 @@ async def networkmod(context, *args, **kwargs):
     if cleaned_args[0] in ["list", "all"]:
         _, result_title, result_msg = query_network()
         return await send_query_msg(context, result_title, result_msg)
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "networkmodruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
 
     for arg in cleaned_args:
-        networkmod_info = await find_value_in_table(context, networkmod_df, "Name", arg, suppress_notfound=True)
+        networkmod_info = await find_value_in_table(context, networkmod_df, "Name", arg, suppress_notfound=False)
         if networkmod_info is None:
             continue
 
@@ -1858,6 +1880,7 @@ def end_audience(channel_id):
 
 async def cheer(context, *args, **kwargs):
     cleaned_args = clean_args(args)
+
     if len(cleaned_args) >= 1:
         if cleaned_args[0] == 'help':
             audience_help_msg = "Roll a random Cheer with `{cp}cheer!` (Up to %d at once!)\n " % MAX_CHEER_JEER_ROLL + \
@@ -1867,14 +1890,13 @@ async def cheer(context, *args, **kwargs):
                             "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`."
             return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
 
-    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "cheerruling", suppress_notfound=True)
-        if ruling_msg is None:
+        if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+            ruling_msg = await find_value_in_table(context, help_df, "Command", "cheerruling", suppress_notfound=True)
+            if ruling_msg is None:
+                return await koduck.sendmessage(context["message"],
+                                                sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
             return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
-
+                                            sendcontent=ruling_msg["Response"])
     modded_arg = list(args)
     if modded_arg:
         modded_arg[0] = modded_arg[0] + " cheer"
@@ -1895,13 +1917,13 @@ async def jeer(context, *args, **kwargs):
                             "For more details on Audience Participation rules, try `{cp}help jeer` or `{cp}help audience`."
             return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
 
-    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "jeerruling", suppress_notfound=True)
-        if ruling_msg is None:
+        if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+            ruling_msg = await find_value_in_table(context, help_df, "Command", "jeerruling", suppress_notfound=True)
+            if ruling_msg is None:
+                return await koduck.sendmessage(context["message"],
+                                                sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
             return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
+                                            sendcontent=ruling_msg["Response"])
 
     modded_arg = list(args)
     if modded_arg:
@@ -2081,12 +2103,12 @@ async def audience(context, *args, **kwargs):
 async def virusr(context, *args, **kwargs):
     mod_args = []
     for arg in args:
-        test_match = re.match(r"^(?P<key1>[^0-9]*)\s*(?P<key2>[^0-9]*)\s*(?P<num>[\d]*)$", arg)
+        test_match = re.match(r"^(?P<word1>[^0-9]*)\s*(?P<word2>[^0-9]*)\s*(?P<num>[\d]*)$", arg)
         if test_match is None:
             mod_args = args
             break
-        if not test_match.group("key1"):
-            mod_args.append("any " + arg)
+        if not test_match.group("num"):
+            mod_args.append(arg + " 1")
         else:
             mod_args.append(arg)
     arg_string = " ".join(mod_args)
@@ -2118,8 +2140,10 @@ async def virusr(context, *args, **kwargs):
             continue
         elif arg in ['mega', 'megavirus']:
             virus_roll[2] = "mega"
+            in_progress = True
         elif arg in ['omega', 'omegavirus']:
             virus_roll[2] = "omega"
+            in_progress = True
         elif arg in virus_category_lower:
             if virus_roll[0] not in ["any", "random"]:
                 virus_roll_list.append(virus_roll)
@@ -2130,7 +2154,7 @@ async def virusr(context, *args, **kwargs):
             in_progress = True
         else:
             return await koduck.sendmessage(context["message"],
-                                        sendcontent="I don't recognize %s!" % arg)
+                                        sendcontent="I don't recognize `%s`!" % arg)
 
     if in_progress:
         virus_roll_list.append(virus_roll)
