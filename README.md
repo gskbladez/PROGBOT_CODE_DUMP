@@ -74,7 +74,7 @@ Pulls up detailed Virus information, including statblocks and powers.
 Pulls up information on Categories and Tags for Viruses and Chips.
 
 `query`
-Queries for information. (Goes through Chip, Power, NCP, Virus, and NPUs.)
+Queries for information. (Goes through Chip, Power, NCP, Virus, NPUs, and Daemons.)
 
 `bond`/`bondpower`
 Pulls up information on Bond Powers. 
@@ -89,19 +89,19 @@ Shows the most recent rulebook links.
 Rolls on the Element Generation table.
 
 `daemon`
-Pulls up Daemon information. (NetBattlers Advance content.)
+(NetBattlers Advance content) Pulls up Daemon information.
 
 `upgrade`/`npu`
-Searches for a Navi Power's upgrades. (NetBattlers Advance content.)
+(NetBattlers Advance content) Searches for a Navi Power's upgrades.
 
 `crimsonnoise`
-Rolls CrimsonNoise. (Unofficial content from Genso Network.)
+(Unofficial content from Genso Network) Rolls CrimsonNoise. 
 
 `networkmod`/`mod`
-Pulls up information on a NetWork Mod. (NetBattlers Advance content.)
+(NetBattlers Advance content) Pulls up information on a NetWork Mod. 
 
 `audience`/`cheer`/`jeer`
-Rolls Cheers/Jeers. Can also track Cheer/Jeer Points for a text channel. (NetBattlers Advance content.)
+(NetBattlers Advance content) Rolls Cheers/Jeers. Can also track Cheer/Jeer Points for a text channel.
 
 `virusr`/`virusrandom`
 Rolls random viruses. Can specify the number and categories you want to roll.

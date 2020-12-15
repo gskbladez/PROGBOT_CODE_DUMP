@@ -1,17 +1,16 @@
 # TODO List
 
 ### Known Bugs
-- virusr omega broke, but virusr omega 1 works
 
 ### Improvements
 `audience`
 - Improve audience data storage (don't need text file)
+- Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
 
 ### New Features
 - Roll random adventures from the book
 - Shop/economy guidance
 - Secret Nyx link command (>nyx, >rulebook nyx)
-- Suggestion: sort all help topics alphabetically
 
 ### Potential Ideas
 - Exclude npus from ncp query
