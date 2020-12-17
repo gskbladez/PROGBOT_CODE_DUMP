@@ -164,8 +164,8 @@ KineticArmor	-	-	After you take damage, downshift your next roll to move a range
 ParallelPort	-	-	When a Cost Power boosts your next attack, you can give that effect to an ally instead.	3	NCP	Core	
 Press	-	-	You can shrink to 1/10th normal size. Your attacks are upshifted when shrunk.	3	NCP	Core	
 RedundantArray	-	-	You can have two copies of the same chip in your Folder.	3	NCP	Core	
-SoulUnion	-	-	When using CrossSoul, you can also use the other Navi’s Navi Powers.	3	NCP	Core	
-UnderShirt	-	-	A lethal hit leaves you at 1 HP if you have over 1 HP.	3	NCP	Core	
+SoulUnion	-	-	When using CrossSoul, you can also use the other Navi’s Navi Powers.	3	NCP	Core	SoulUnison
+UnderShirt	-	-	A lethal hit leaves you at 1 HP if you have over 1 HP.	3	NCP	Core
 VolatileMemory	-	-	For Cost Powers, you can reduce the stat instead of the skill. Stats can’t go below 1.	3	NCP	Core	
 							
 AddOn	-	-	When you deal 2+ dmg with a rolled attack, your element covers the target.	4	NCP	Core	
