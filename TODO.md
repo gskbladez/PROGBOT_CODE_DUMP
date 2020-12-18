@@ -15,6 +15,8 @@
 - Secret Nyx link command (>nyx, >rulebook nyx)
 - Secret >hug command?
 - `>help will`, `>help netbattlers`
+- Ability to DM ProgBot
+- Change command prefix
 
 ### Potential Ideas
 - Exclude npus from ncp query

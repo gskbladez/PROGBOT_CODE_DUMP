@@ -897,9 +897,9 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
         elif power_source == "Nyx":
             msg_time = context["message"].created_at
             if msg_time.month == 4 and msg_time.day == 1:
-                power_name += (" (%s Official!! Crossover NCP) " % power_source)
+                power_name += (" (%s Legal!! Crossover NCP) " % power_source)
             else:
-                power_name += (" (%s Unofficial Crossover NCP) " % power_source)
+                power_name += (" (%s Illegal Crossover NCP) " % power_source)
         elif power_source != "Core":
             power_name += " (%s Crossover NCP)" % power_source
 
