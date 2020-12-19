@@ -1935,9 +1935,15 @@ async def jeer(context, *args, **kwargs):
 
 
 async def audience(context, *args, **kwargs):
-    channel_id = context["message"].channel.id
-    channel_name = context["message"].channel.name
-    channel_server = context["message"].channel.guild
+    if context["message"].channel.type is discord.ChannelType.private:
+        channel_id = context["message"].channel.id
+        channel_name = context["message"].author.name
+        msg_location = "%s! (Direct messages)" % channel_name
+    else:
+        channel_id = context["message"].channel.id
+        channel_name = context["message"].channel.name
+        channel_server = context["message"].channel.guild
+        msg_location = "#%s! (%s)" % (channel_name, channel_server)
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         audience_help_msg = "Roll a random Cheer or Jeer with `{cp}audience cheer` or `{cp}audience jeer`! (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
@@ -1969,7 +1975,7 @@ async def audience(context, *args, **kwargs):
         elif retvalue[0] == -2:
             return await koduck.sendmessage(context["message"], sendcontent=retvalue[1])
         else:
-            embed_descript = "Starting up the audience for #%s! (%s)" % (channel_name, channel_server)
+            embed_descript = "Starting up the audience for %s" % msg_location
             embed_foot = "Cheer Points: 0, Jeer Points: 0"
         embed = discord.Embed(title="__Audience Participation__",
                               description=embed_descript,
@@ -1981,7 +1987,7 @@ async def audience(context, *args, **kwargs):
         if ret_val == -1:
             return await koduck.sendmessage(context["message"], sendcontent="An audience hasn't been started for this channel yet")
         embed = discord.Embed(title="__Audience Participation__",
-                              description="Ending the audience session for #%s! (%s)\nGoodnight!" % (channel_name, channel_server),
+                              description="Ending the audience session for %s\nGoodnight!" % msg_location,
                               color=cj_colors["jeer"])
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
@@ -2024,7 +2030,7 @@ async def audience(context, *args, **kwargs):
         else:
             embed_color = cj_colors["jeer"]
         embed = discord.Embed(title="__Audience Participation__",
-                              description="Pulling up the audience for #%s! (%s)" % (channel_name, channel_server),
+                              description="Pulling up the audience for %s" % msg_location,
                               color=embed_color)
         embed.set_footer(text="Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
         return await koduck.sendmessage(context["message"], sendembed=embed)
