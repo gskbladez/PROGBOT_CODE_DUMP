@@ -15,9 +15,6 @@
 - Roll random adventures from the book
 - Shop/economy guidance
 - Secret Nyx link command (>nyx, >rulebook nyx)
-- Secret >hug command?
-- `>help will`, `>help netbattlers`
-- Ability to DM ProgBot
 - Change command prefix
 
 ### Potential Ideas
