@@ -1,5 +1,5 @@
 Power/NCP	Skill	Type	Effect	EB	Sort	From?	Alias
-LockOn	Sense	Cost	Your next rolled attack is guaranteed Easy and ignores your skill reductions.	-	Power	Core	
+LockOn	Sense	Cost	Your next rolled attack is guaranteed Easy and ignores your skill reductions.	-	Power	Core	Lock-On
 Volley	Sense	Cost	Roll the next attack three times and take the best outcome.	-	Power	Core	
 BlindMode	Sense	Roll	Find a target with extrasensory means (e.g. thermal imaging, echolocation).	-	Power	Core	
 Splash	Sense	Roll	Roll once to attack a Near target. Damages everything Close to the target.	-	Power	Core	
@@ -165,7 +165,7 @@ ParallelPort	-	-	When a Cost Power boosts your next attack, you can give that ef
 Press	-	-	You can shrink to 1/10th normal size. Your attacks are upshifted when shrunk.	3	NCP	Core	
 RedundantArray	-	-	You can have two copies of the same chip in your Folder.	3	NCP	Core	
 SoulUnion	-	-	When using CrossSoul, you can also use the other Navi’s Navi Powers.	3	NCP	Core	SoulUnison
-UnderShirt	-	-	A lethal hit leaves you at 1 HP if you have over 1 HP.	3	NCP	Core
+UnderShirt	-	-	A lethal hit leaves you at 1 HP if you have over 1 HP.	3	NCP	Core	
 VolatileMemory	-	-	For Cost Powers, you can reduce the stat instead of the skill. Stats can’t go below 1.	3	NCP	Core	
 							
 AddOn	-	-	When you deal 2+ dmg with a rolled attack, your element covers the target.	4	NCP	Core	
@@ -450,7 +450,7 @@ NightSign	Affinity	Cost	Mark a Near target. Removing a Mark requires a Hard Codi
 Stalker	-	Passive	Once per minute, you can teleport directly behind any Marked target.	-	Virus Power	Mystic Lilies	
 SmokeStep	-	Passive	You can move up to a range band immediately after being hit.	-	Virus Power	Mystic Lilies	
 Firestarter	-	Passive	When you damage a target or object for the first time, they’re covered with your element.	-	Virus Power	Mystic Lilies	
-CursedAsh	-	Passive	Everyone other than you sets their Stamina to 0 while touching your element.	-	Virus Power	Mystic Lilies
+CursedAsh	-	Passive	Everyone other than you sets their Stamina to 0 while touching your element.	-	Virus Power	Mystic Lilies	
 Amplify	Affinity	Roll	Amplify and replay a Near sound, making it clearly audible up to Far range.	-	Virus Power	Mystic Lilies	
 Mute	Affinity	Cost	Mute a Close sound, making it completely inaudible.	-	Virus Power	Mystic Lilies	
 							
@@ -555,7 +555,7 @@ MixedBlessing	Charm	Cost	Pick a Near Virus ally — they get +3 dice to all roll
 ForbiddenArt	Strength	Roll	Parry any attack. Loser takes dmg = the total of the winner’s parry attacks. You can’t back out.	-	Virus Power	Mega Viruses	
 PowerDrain	Affinity	Cost	Vaporize a Near object and get a Death token. Spend a token to live while 0 HP for 1 roll.	-	Virus Power	Mega Viruses	
 PowerDrainΩ	Affinity	Cost	Vaporize a Near object or a real life object Near the server and get a Death token. Spend a token to live while 0 HP for 1 roll.	-	Virus Power	Mega Viruses	PowerDrainOmega
-Combine	-	Passive	ose allies can equip you, adding your skills, element, and other powers to theirs.	-	Virus Power	Mega Viruses	
+Combine	-	Passive	Close allies can equip you, adding your skills, element, and other powers to theirs.	-	Virus Power	Mega Viruses	
 Deathwish	-	Passive	Add +1 die per missing point of HP to every roll except for defense rolls.	-	Virus Power	Mega Viruses	
 							
 Vanish	Coding	Cost	Turn invisible and teleport up to a range band. Invisibility expires when you are hurt.	-	Virus Power	Mega Viruses	
