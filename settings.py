@@ -5,6 +5,7 @@ userlevelstablename = "userlevels"
 customresponsestablename = "customresponses"
 logfile = "log.txt"
 formattedlogfile = "formattedlog.txt"
+audiencefile = "audience.json"
 
 #BOT SETTINGS
 botname = "Koduck"
@@ -23,10 +24,10 @@ backgroundtaskinterval = 10
 
 #MESSAGES
 message_somethingbroke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
-message_unknowncommand = "Command not recognized"
-message_unhandlederror = "Unhandled error"
-message_resulttoolong = "Sorry, the result was too long to output ({}/2000 characters)"
-message_cooldownactive = "Cooldown active"
-message_restrictedaccess = "You do not have permission to use this command"
+message_unknowncommand = "Command not recognized."
+message_unhandlederror = "Unhandled error."
+message_resulttoolong = "Sorry, the result was too long to output. ({}/2000 characters)"
+message_cooldownactive = "Cooldown active."
+message_restrictedaccess = "You do not have permission to use this command."
 message_oops_failed = "Oops failed!"
 message_oops_success = "Oops success!"

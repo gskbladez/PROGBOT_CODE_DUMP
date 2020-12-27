@@ -1,29 +1,33 @@
-Tag	AltName	Description
-Accurate	Accu.	Defending against this with Speed is upshifted. 
-Awkward	Awkd.	Doing something else at the same time will be difficult or impossible.
-Dangerous	Dngr.	This chip tends to cause collateral damage. 
-Guard		Only one Guard chip can passively benefit the user at a time.
-Piercing	Prcn.	Defending against this with Stamina is upshifted.
-Simple	Simp.	The chip’s effects happen instantly, and can be used while performing other actions. These do **NOT** count towards liberation mission alarm counters.
-Slow		It takes extra time for this to activate. Using it at a moment’s notice is difficult or impossible.
-		
-Blade		These turn a part of the Navi into a sword! They hit hard, and some even have extra non-combat utility! Navis can **parry** with these chips.
-Hazard		These alter the environment, either by creating new terrain or destroying what’s already there.
-Impact		These are melee-focused chips that do less damage, but often have a wide range of effects! Navis can **parry** with these chips.
-Rush		These chips tend to move your Navi, typically into Close range of your target! Downshift defense rolls if used below listed range.
-Shot		These chips are powerful projectiles! They can be fired beyond the listed range, but the defense roll is downshifted.
-Summon		These create something to assist the Navi, whether it be a tool, a specialized Virus, or even cover!
-Support		These chips boost the Navi's abilities, and create debilitating effects!
-Thrown		These chips are similar to Shot chips, these are more difficult to use but carry powerful effects!
-Wave		These chips create explosive and/or wide attacks. All **Close** to the target get hit too, potentially including the user.
-		
-Artillery		These Viruses deal high amounts of damage at range, typically using Sense or Affinity.
-Disruption		These Viruses hinder Navis to make them vulnerable to other attackers.
-Striker		These Viruses are durable and melee-focused, needing to get up close to be a threat.
-Support		These Viruses aid other enemies, protecting them and boosting their abilities.
-Wrecker		These Viruses introduce environmental obstacles and threats.
-		
-Hovering		The Virus hovers a few inches off the ground, avoiding grounded attacks and some terrain.
-Flying		The Virus is able to freely fly through the air.
-Inanimate		The Virus acts according to simplistic programming. It can be hacked with Coding.
-Immobile		The Virus cannot move by itself. However, other things may be able to move it.
+Tag	Alias	AltName	Description
+Accurate	Accu	Accu.	Defending against this with Speed is upshifted. 
+Awkward	Awkd	Awkd.	Doing something else at the same time will be difficult or impossible.
+Dangerous	Dngr	Dngr.	This chip tends to cause collateral damage. 
+Guard			Only one Guard effect can passively benefit the user at a time.
+Piercing	Prcn	Prcn.	Defending against this with Stamina is upshifted.
+Simple	Simp	Simp.	The chip’s effects happen instantly, and can be used while performing other actions.
+Slow			It takes extra time for this to activate. Using it at a moment’s notice is difficult or impossible.
+			
+Blade	BladeChip, BladeC, BladeBattleChip, BladeChips, BladeBattleChips,  Blade(C), (C)Blade, Blade(BattleChip), Blade(Chip)		These turn a part of the Navi into a sword! They hit hard, and some even have extra non-combat utility! Navis can **parry** with these chips.
+Hazard	HazardChip, HazardC, HazardBattleChip, HazardChips, HazardBattleChips,  Hazard(C), (C)Hazard, Hazard(BattleChip), Hazard(Chip)		These alter the environment, either by creating new terrain or destroying what’s already there.
+Impact	ImpactChip, ImpactC, ImpactBattleChip, ImpactChips, ImpactBattleChips,  Impact(C), (C)Impact, Impact(BattleChip), Impact(Chip)		These are melee-focused chips that do less direct damage, but often have a wide range of effects! Navis can **parry** with these chips.
+Rush	RushChip, RushC, RushBattleChip, RushChips, RushBattleChips,  Rush(C), (C)Rush, Rush(BattleChip), Rush(Chip)		These chips tend to move your Navi, often into Close range! If the attacking Navi is closer than the listed range, the defense roll is downshifted.
+Shot	ShotChip, ShotC, ShotBattleChip, ShotChips, ShotBattleChips,  Shot(C), (C)Shot, Shot(BattleChip), Shot(Chip)		These chips are powerful projectiles! They can be fired beyond the listed range, but the defense roll is downshifted.
+Summon	SummonChip, SummonC, SummonBattleChip, SummonChips, SummonBattleChips,  Summon(C), (C)Summon, Summon(BattleChip), Summon(Chip)		These create something to assist the Navi, whether it be a tool, a specialized Virus, or even cover!
+Support (Chip)	SupportChip, SupportC, SupportBattleChip, SupportChips, SupportBattleChips,  Support(C), (C)Support, Support(BattleChip)		These chips boost the Navi's abilities and create debilitating effects!
+Thrown	ThrownChip, ThrownC, ThrownBattleChip, ThrownChips, ThrownBattleChips,  Thrown(C), (C)Thrown, Thrown(BattleChip), Thrown(Chip)		These chips are similar to Shot chips and are more difficult to use, but carry powerful and dangerous effects!
+Wave	WaveChip, WaveC, WaveBattleChip, WaveChips, WaveBattleChips,  Wave(C), (C)Wave, Wave(BattleChip), Wave(Chip)		These chips create explosive and/or wide attacks. All **Close** to the target get hit too, potentially including the user.
+NaviChip	Navi, NaviChips		NaviChips are **MegaChips** that store attack data from defeated Navis. Each NaviChip is unique, based off the Navi it was downloaded from. NaviChips are determined by the GM.
+MegaChip	Mega, MegaChips		**MegaChips** are impossibly rare, exceptionally powerful, one-of-a-kind BattleChips. Folders can only hold one MegaChip at a time. Navi Powers, NCPs, and BattleChips that affect chips ignore MegaChips unless stated otherwise.
+			
+Artillery	ArtilleryVirus, ArtilleryV,  ArtilleryViruses, Artillery(V), Artillery(Viruses), (V)Artillery		These Viruses deal high amounts of damage at range, typically using Sense or Affinity.
+Disruption	DisruptionVirus, DisruptionV,  DisruptionViruses, Disruption(V), Disruption(Viruses), (V)Disruption		These Viruses hinder Navis to make them vulnerable to other attackers.
+Striker	StrikerVirus, StrikerV,  StrikerViruses, Striker(V), Striker(Viruses), (V)Striker		These Viruses are durable and melee-focused, needing to get up close to be a threat.
+Support (Virus)	SupportVirus, SupportV,  SupportViruses, Support(V), Support(Viruses), (V)Support		These Viruses aid other enemies, protecting them and boosting their abilities.
+Wrecker	WreckerVirus, WreckerV,  WreckerViruses, Wrecker(V), Wrecker(Viruses), (V)Wrecker		These Viruses introduce environmental obstacles and threats.
+			
+Hovering			The Virus hovers a few inches off the ground, avoiding grounded attacks and some terrain.
+Flying			The Virus is able to freely fly through the air.
+Inanimate			The Virus acts according to simplistic programming. It can be hacked with Coding.
+Immobile			The Virus cannot move by itself. However, other things may be able to move it.
+			
+Support			There are both Support Chips and Support Viruses! Please specify the one you mean!

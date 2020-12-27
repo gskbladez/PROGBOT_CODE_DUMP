@@ -1,29 +1,31 @@
 botname	ProgBOT
 logformat	%t\t%s\t%c\t%U\t%m\t%r
-message_sendmessage_noparam	I need two args: channelid and message
-message_bugreport_noparam	You need to describe the error in full.
-message_updatesetting_noparam	I need a variable name and a value to update it to
-message_updatesetting_failed	That setting name doesn't seem to exist
-message_updatesetting_success	Updated {} from {} to {}
-message_addsetting_failed	That setting name already exists
-message_addsetting_success	Successfully added setting
+message_sendmessage_noparam	I need two args: channelid and message.
+message_updatesetting_noparam	I need a variable name and a value to update it to.
+message_updatesetting_failed	That setting name doesn't seem to exist.
+message_updatesetting_success	Updated {} from {} to {}.
+message_addsetting_failed	That setting name already exists.
+message_addsetting_success	Successfully added setting.
 message_nomentioneduser	I need exactly one mentioned user!
 message_nomentioneduser2	I need exactly zero or one mentioned user!
-message_addadmin_success	<@!{}> is now a {} admin!
-message_addadmin_failed	That user is already a {} admin
-message_removeadmin_success	<@!{}> is no longer a {} admin
-message_removeadmin_failed	That user is not a {} admin
-message_purge_invalidparam	Please give me an integer number of messages to search
-message_restrict_success	<@!{}> is now restricted from using {} commands
-message_restrict_failed	That user is already restricted
-message_restrict_failed2	{} admins cannot be restricted
-message_unrestrict_success	<@!{}> is now unrestricted from using {} commands
-message_unrestrict_failed	That user is not restricted
-message_oops_success	Deleted last output from this user
-message_oops_failed	No last output from this user to delete
+message_addadmin_success	<@!{}> is now a {} admin!.
+message_addadmin_failed	That user is already a {} admin.
+message_removeadmin_success	<@!{}> is no longer a {} admin.
+message_removeadmin_failed	That user is not a {} admin.
+message_purge_invalidparam	Please give me an integer number of messages to search.
+message_restrict_success	<@!{}> is now restricted from using {} commands.
+message_restrict_failed	That user is already restricted.
+message_restrict_failed2	{} admins cannot be restricted.
+message_unrestrict_success	<@!{}> is now unrestricted from using {} commands.
+message_unrestrict_failed	That user is not restricted.
+message_oops_success	Deleted last output from this user.
+message_oops_failed	No last output from this user to delete.
 message_addresponse_noparam	You need to include a call and response!
 message_addresponse_success	Added a custom response!
 message_addresponse_fail	Unable to add a custom response.
 rolldefaultmax	6
 purgesearchlimit	100
 commandprefix	>
+bugreport_channel_id	704684798584815636
+errorlog_channel_id	623686382237384707
+

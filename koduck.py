@@ -61,22 +61,35 @@ def log(message=None, logresult=""):
         server = message.guild
         if server is not None:
             servername = server.name
+            serverid = server.id
             nickname = message.author.nick or ""
         else:
             servername = "None"
+            serverid = 0
             nickname = ""
-        if message.channel.name is not None:
-            channelname = message.channel.name
+
+        if message.channel.type is discord.ChannelType.private:
+            channelname = 'Direct Message'
+        elif message.channel.name is not None:
+            channelname = "#" + message.channel.name
         else:
             channelname = "None"
+        channelid = message.channel.id
         
         #normal log file
-        logstring = "{}\t{}\t{}\t{}\t{}\t{}\n".format(timestamp, server.id, message.channel.id if server is not None else "", message.author.id, logmessage, logresult)
+        logstring = "{}\t{}\t{}\t{}\t{}\t{}\n".format(timestamp, serverid, channelid, message.author.id, logmessage, logresult)
         with open(settings.logfile, "a", encoding="utf8") as file:
             file.write(logstring)
         
         #formatted log file
-        logstring = settings.logformat.replace("%t", timestamp).replace("%s", servername).replace("%c", "#" + channelname).replace("%u", username).replace("%U", "{}#{}".format(username, discr)).replace("%n", nickname).replace("%m", logmessage).replace("%r", logresult) + "\n"
+        logstring = settings.logformat.replace("%t", timestamp)\
+                            .replace("%s", servername)\
+                            .replace("%c", channelname)\
+                            .replace("%u", username)\
+                            .replace("%U", "{}#{}".format(username, discr))\
+                            .replace("%n", nickname)\
+                            .replace("%m", logmessage)\
+                            .replace("%r", logresult) + "\n"
         with open(settings.formattedlogfile, "a", encoding="utf8") as file:
             file.write(logstring)
 
@@ -374,6 +387,12 @@ async def on_message(message):
             log(None, result)
     
     except Exception as e:
-        traceback.print_exc()
+        exc_inf = traceback.format_exc()
+        print(exc_inf)
+        error_log_channel = client.get_channel(int(settings.errorlog_channel_id))
         await sendmessage(message, sendcontent=settings.message_somethingbroke)
+        #SENDS ERROR LOG MESSAGE TO A SPECIFIC ERROR LOG CHANNEL
+        #await sendmessage(message, sendchannel=error_log_channel, sendcontent="%s\n" % settings.message_somethingbroke +
+        #                                                                      "**Command:** ```%s```" % message.content +
+        #                                                                      "**Error:** ```%s```" % exc_inf)
         log(message, logresult=settings.message_unhandlederror)
