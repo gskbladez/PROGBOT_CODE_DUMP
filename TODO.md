@@ -10,12 +10,13 @@
 - Add repeat command to ProgBot
 - Alphabetical ordering for help all!
 - `>rule` command
+- Let `>npu [upgrade]` pull up the NCP
 
 ### New Features
 - Roll random adventures from the book
 - Shop/economy guidance
 - Secret Nyx link command (>nyx, >rulebook nyx)
-- Change command prefix
+- Option to change command prefix for the server
 
 ### Potential Ideas
 - Exclude npus from ncp query
