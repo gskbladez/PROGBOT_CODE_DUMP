@@ -6,13 +6,10 @@
 `audience`
 - Improve audience data storage (don't need text file)
 
-`command`/`commands`
-- Add repeat command to ProgBot dice parser
-
 `upgrade`/`npu`
 - Let `>npu [upgrade]` pull up the NCP
 
-`commands`
+`roll`/`r`
 - Improve `>commands` to be pretty
 
 `Misc.`
@@ -29,3 +26,4 @@
 - Add additional Indie rules
 - Add NaviChip creation rules
 - Shop ideas for new GMs?
+- Add repeat command to ProgBot dice parser
