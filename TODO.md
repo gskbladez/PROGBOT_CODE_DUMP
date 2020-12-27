@@ -10,7 +10,8 @@
 - Let `>npu [upgrade]` pull up the NCP
 
 `roll`/`r`
-- Improve `>commands` to be pretty
+- Add repeat command to ProgBot dice parser
+- Improve the help with list of keyletters it recognizes
 
 `Misc.`
 - Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
@@ -26,4 +27,4 @@
 - Add additional Indie rules
 - Add NaviChip creation rules
 - Shop ideas for new GMs?
-- Add repeat command to ProgBot dice parser
+- Improve `>commands` to be pretty
