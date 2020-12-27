@@ -5,12 +5,18 @@
 ### Improvements
 `audience`
 - Improve audience data storage (don't need text file)
-- Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
-- Improve `>commands` to be pretty
-- Add repeat command to ProgBot
-- Alphabetical ordering for help all!
-- `>rule` command
+
+`command`/`commands`
+- Add repeat command to ProgBot dice parser
+
+`upgrade`/`npu`
 - Let `>npu [upgrade]` pull up the NCP
+
+`commands`
+- Improve `>commands` to be pretty
+
+`Misc.`
+- Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
 
 ### New Features
 - Roll random adventures from the book
