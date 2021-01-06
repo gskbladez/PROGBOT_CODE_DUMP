@@ -10,6 +10,8 @@
 - Add repeat command to ProgBot
 - Alphabetical ordering for help all!
 - `>rule` command
+- Add MegaCheer as query
+- Cap on number of audience sessions
 
 ### New Features
 - Roll random adventures from the book
