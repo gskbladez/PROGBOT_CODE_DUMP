@@ -520,13 +520,52 @@ def get_roll_from_macro(diff, dicenum):
     return "%dd6>%d" % (roll_dicenum, roll_difficulty)
 
 
-async def roll(context, *args, **kwargs):
+def roll_master(roll_line):
+    # subs out the macros
+    macro_regex = r"\$?(E|N|H)(\d+)"
+    roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
+                       flags=re.IGNORECASE)
+    # adds 1 in front of bare d6, d20 references
+    roll_line = re.sub("(?P<baredice>^|\s+)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
+    zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
+
+    roll_results = parser.parse(lexer.lex(zero_formatted_roll))
+    return roll_results
+
+
+def format_hits_roll(roll_result):
+    str_result = str(roll_result)
+    num_hits = roll_result.eval()
+    if 'hit' in str_result:
+        if num_hits == 1:
+            result_str = "{} = **__{} hit!__**".format(str_result, num_hits)
+        else:
+            result_str = "{} = **__{} hits!__**".format(str_result, num_hits)
+    else:
+        result_str = "{} = **__{}__**".format(str_result, roll_result.eval())
+    return result_str
+
+
+async def repeatroll(context, *args, **kwargs):
     if "paramline" not in context:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!".replace(
+                                        sendcontent="I can repeat a roll command for you! Try `{cp}repeatroll 3, 5d6>4` or `{cp}repeatroll 3, $N5`!".replace(
                                             "{cp}", settings.commandprefix))
+    if len(args) < 2:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Must be in the format of `{cp}repeatroll [repeats], [dice roll]` (i.e. `{cp}repeatroll 3, 5d6>4`)".replace(
+                                            "{cp}", settings.commandprefix))
+    try:
+        repeat_arg = int(args[0])
+    except ValueError:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="First argument needs to be the number of times you want to repeat the roll!")
+    if repeat_arg <= 0:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Can't repeat a roll a negative or zero number of times!")
 
-    roll_line = context["paramline"]
+    roll_line = args[1]
+
     if ROLL_COMMENT_CHAR in roll_line:
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
     else:
@@ -536,31 +575,9 @@ async def roll(context, *args, **kwargs):
     if not roll_line:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="No roll given!")
-    # subs out the macros
-    macro_regex = r"\$?(E|N|H)(\d+)"
-    roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
-                       flags=re.IGNORECASE)
-    # adds 1 in front of bare d6, d20 references
-    roll_line = re.sub("(?P<baredice>^|\s+)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
-    zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
 
     try:
-        roll_results = parser.parse(lexer.lex(zero_formatted_roll))
-        str_result = str(roll_results)
-        if 'hit' in str_result:
-            num_hits = roll_results.eval()
-            progroll_output = "{} *rolls...* {} = **__{} hits!__**".format(context["message"].author.mention,
-                                                                           str_result, num_hits)
-            if num_hits == 1:
-                progroll_output = progroll_output.replace("hits", "hit")
-        else:
-            progroll_output = "{} *rolls...* {} = **__{}__**".format(context["message"].author.mention,
-                                                                     str_result, roll_results.eval())
-        if roll_comment:
-            progroll_output += " #{}".format(roll_comment.rstrip())
-
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=progroll_output)
+        roll_results = [roll_master(roll_line) for i in range(0, repeat_arg)]
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
@@ -573,6 +590,52 @@ async def roll(context, *args, **kwargs):
     except dice_algebra.OutOfDiceBounds:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
+
+    roll_outputs = [format_hits_roll(result) for result in roll_results]
+    progroll_output = "{} *rolls...*".format(context["message"].author.mention)
+    if roll_comment:
+        progroll_output += " #{}".format(roll_comment.rstrip())
+    progroll_output = "{}\n>>> {}".format(progroll_output,"\n".join(roll_outputs))
+    return await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+
+
+async def roll(context, *args, **kwargs):
+    if "paramline" not in context:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!".replace(
+                                            "{cp}", settings.commandprefix))
+    roll_line = context["paramline"]
+    if ROLL_COMMENT_CHAR in roll_line:
+        roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
+    else:
+        roll_comment = ""
+
+    roll_line = re.sub("\s+", "", roll_line).lower()
+    if not roll_line:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="No roll given!")
+
+    try:
+        roll_results = roll_master(roll_line)
+    except rply.errors.LexingError:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Unexpected characters found! Did you type out the roll correctly?")
+    except AttributeError:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Sorry, I can't understand the roll. Try writing it out differently!")
+    except dice_algebra.DiceError:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="The dice algebra is incorrect! Did you type out the roll correctly?")
+    except dice_algebra.OutOfDiceBounds:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
+
+    progroll_output = "{} *rolls...* {}".format(context["message"].author.mention, format_hits_roll(roll_results))
+    if roll_comment:
+        progroll_output += " #{}".format(roll_comment.rstrip())
+
+    return await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+
 
 async def tag(context, *args, **kwargs):
     cleaned_args = clean_args(args)

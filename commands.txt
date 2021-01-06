@@ -18,6 +18,10 @@ help	help_cmd	prefix	1
 invite	invite	prefix	1
 roll	roll	prefix	1
 r	roll	prefix	1
+repeatroll	repeatroll	prefix	1
+repeatr	repeatroll	prefix	1
+rr	repeatroll	prefix	1
+repeat	repeatroll	prefix	1
 chip	chip	prefix	1
 chips	chip	prefix	1
 power	power	prefix	1
