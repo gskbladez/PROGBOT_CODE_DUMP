@@ -55,6 +55,9 @@ Generates an invite link for ProgBot.
 `roll`/`r`
 Rolls dice. Supports comments and basic NetBattlers macros.
 
+`repeatroll`/`repeatr`/`repeat`/`rr`
+Repeats a roll command. Supports comments and basic NetBattlers macros.
+
 `chip`/`chips`
 Pulls up chip information. Can also be used to query chips by Category, Tag, or Source (i.e. ChitChat).
 
