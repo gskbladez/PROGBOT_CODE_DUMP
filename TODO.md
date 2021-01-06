@@ -18,6 +18,7 @@
 - Shop/economy guidance
 - Secret Nyx link command (>nyx, >rulebook nyx)
 - Change command prefix
+- General `repeat` command? (Element, Mysterydata, roll)
 
 ### Potential Ideas
 - Exclude npus from ncp query
