@@ -209,7 +209,7 @@ async def bugreport(context, *args, **kwargs):
                                         sendcontent="Sends a bug report to the ProgBot Devs! " + \
                                                     "Please describe the error in full. " + \
                                                     "(i.e. `{cp}bugreport Sword is listed as 3 damage when it is 2 damage.`)".replace(
-                                                        "{cp}", settings.commandprefix))
+                                                        "{cp}", koduck.get_prefix(context["message"])))
 
     channelid = int(settings.bugreport_channel_id)
 
@@ -437,12 +437,12 @@ async def help_cmd(context, *args, **kwargs):
     # Default message if no parameter is given
     if len(args) == 0:
         message_help = "Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! " + \
-                       "My prefix for commands is `{cp}`. You can also DM me! \n" + \
+                       "My prefix for commands here is `{cp}`. You can also DM me using my default prefix `%s`! \n" % settings.commandprefix + \
                        "To see a list of all commands you can use, type `{cp}commands`. " + \
                        "You can type `{cp}help` and any other command for more info on that command!\n" + \
                        "I can also pull up info on some rules and descriptions! Check `{cp}help all` for the list of details I can help with!"
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=message_help.replace("{cp}", settings.commandprefix).replace("{pd}",
+                                        sendcontent=message_help.replace("{cp}", koduck.get_prefix(context["message"])).replace("{pd}",
                                                                                                                  settings.paramdelim))
 
     cleaned_args = clean_args(args)
@@ -457,7 +457,7 @@ async def help_cmd(context, *args, **kwargs):
     if help_msg is None:
         help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
-        help_response = help_msg["Response"].replace("{cp}", settings.commandprefix)
+        help_response = help_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"]))
         if help_msg["Ruling?"]:
             ruling_msg = await find_value_in_table(context, help_df, "Command", help_msg["Ruling?"], suppress_notfound=True)
             if ruling_msg is None:
@@ -551,11 +551,11 @@ async def repeatroll(context, *args, **kwargs):
     if "paramline" not in context:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can repeat a roll command for you! Try `{cp}repeatroll 3, 5d6>4` or `{cp}repeatroll 3, $N5`!".replace(
-                                            "{cp}", settings.commandprefix))
+                                            "{cp}", koduck.get_prefix(context["message"])))
     if len(args) < 2:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Must be in the format of `{cp}repeatroll [repeats], [dice roll]` (i.e. `{cp}repeatroll 3, 5d6>4`)".replace(
-                                            "{cp}", settings.commandprefix))
+                                            "{cp}", koduck.get_prefix(context["message"])))
     try:
         repeat_arg = int(args[0])
     except ValueError:
@@ -604,7 +604,7 @@ async def roll(context, *args, **kwargs):
     if "paramline" not in context:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!".replace(
-                                            "{cp}", settings.commandprefix))
+                                            "{cp}", koduck.get_prefix(context["message"])))
     roll_line = context["paramline"]
     if ROLL_COMMENT_CHAR in roll_line:
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
@@ -774,7 +774,7 @@ async def chip(context, *args, **kwargss):
                                         sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!\n" +
                                                     "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! \n" +
                                                     "I can also list all current chip categories with `{cp}chip category`, and all current chip tags with `{cp}chip tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace(
-                                                        "{cp}", settings.commandprefix))
+                                                        "{cp}", koduck.get_prefix(context["message"])))
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "chipruling", suppress_notfound=True)
         if ruling_msg is None:
@@ -793,7 +793,7 @@ async def chip(context, *args, **kwargss):
     elif cleaned_args[0] in ['navi', 'navichip']:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="NaviChips are **MegaChips** that store attack data from defeated Navis! Each NaviChip is unique, based off the Navi it was downloaded from. NaviChips are determined by the GM.".replace(
-                                                        "{cp}", settings.commandprefix))
+                                                        "{cp}", koduck.get_prefix(context["message"])))
     arg_combined = ' '.join(cleaned_args)
     is_query, return_title, return_msg = query_chip(arg_combined)
     if is_query:
@@ -1021,7 +1021,7 @@ async def power(context, *args, **kwargs):
                                         sendcontent="Give me the name of a Navi Power and I can pull up its info for you!\n" +
                                                     "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
                                                     "Try giving me multiple queries at once, i.e. `{cp}power sense cost` or `{cp}power virus passive`!".replace(
-                                                        "{cp}", settings.commandprefix))
+                                                        "{cp}", koduck.get_prefix(context["message"])))
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "powerruling", suppress_notfound=True)
         if ruling_msg is None:
@@ -1070,12 +1070,13 @@ def query_ncp(arg_lower):
     ncp_df = power_df[power_df["Sort"] != "Virus Power"]
     valid_cc_list = list(pd.unique(ncp_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core", "navi power upgrades"]]
-    eb_match = re.match(r"^(\d+)(?:\s*EB)$", arg_lower, flags=re.IGNORECASE)
+    eb_match = re.match(r"^(\d+)(?:\s*EB)?$", arg_lower, flags=re.IGNORECASE)
 
     if eb_match:
         eb_search = eb_match.group(1)
-        subdf = ncp_df[ncp_df["EB"] == eb_search]
-        results_title = "Finding all `%s EB` NCPs..." % eb_search
+        #Exclude npus from ncp query
+        subdf = ncp_df[(ncp_df["EB"] == eb_search) & (ncp_df["Type"] != "Upgrade")]
+        results_title = "Finding all `%s` EB NCPs (excluding NPUs)..." % eb_search
         results_msg = ", ".join(subdf["Power/NCP"])
         return True, results_title, results_msg
     elif arg_lower in ["nyx"]:
@@ -1179,11 +1180,14 @@ async def upgrade(context, *args, **kwargs):
         arg = arg.lower()
 
         is_upgrade, result_title, result_msg = query_npu(arg)
-        if not is_upgrade:
-            await koduck.sendmessage(context["message"],
-                                     sendcontent="Couldn't find any Navi Power Upgrades for `%s`!" % arg)
+        if is_upgrade:
+            await send_query_msg(context, result_title, result_msg)
             continue
-        await send_query_msg(context, result_title, result_msg)
+        if any((power_df["Type"] == "Upgrade") & power_df["Power/NCP"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)):
+            await power(context, arg, [])
+            continue
+        await koduck.sendmessage(context["message"],
+                                 sendcontent="Couldn't find any Navi Power Upgrades for `%s`!" % arg)
     return
 
 
@@ -1309,9 +1313,9 @@ async def virus(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of 1-%d Viruses and I can pull up their info for you!\n" % MAX_VIRUS_QUERY +
                                                     "I can query Viruses by **Category**, **Tag**, or **Crossover Content**, and pull up the list of Virus categories with `{cp}virus category`!\n".replace(
-                                                        "{cp}", settings.commandprefix) +
+                                                        "{cp}", koduck.get_prefix(context["message"])) +
                                                     "For a list of all Virus categories, use `{cp}virus category`, and all current Virus tags with `{cp}virus tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag artillery`)".replace(
-                                                        "{cp}", settings.commandprefix))
+                                                        "{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known Virus Categories..."
         result_text = ", ".join(virus_category_list)
@@ -1387,7 +1391,7 @@ async def query(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! " +
                                                     "Please type `{cp}help query` for more information.".replace("{cp}",
-                                                                                                                 settings.commandprefix))
+                                                                                                                 koduck.get_prefix(context["message"])))
     arg = cleaned_args[0]
     arg_combined = " ".join(cleaned_args)
 
@@ -1486,7 +1490,7 @@ async def mysterydata(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll Mystery Data for you! Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace(
-                                            "{cp}", settings.commandprefix))
+                                            "{cp}", koduck.get_prefix(context["message"])))
 
     await mysterydata_master(context, cleaned_args, force_reward=False)
 
@@ -1496,7 +1500,7 @@ async def crimsonnoise(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll CrimsonNoise for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace(
-                                            "{cp}", settings.commandprefix))
+                                            "{cp}", koduck.get_prefix(context["message"])))
 
     arg = cleaned_args[0]
     crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains("^%s$" % arg, flags=re.IGNORECASE)]
@@ -1534,7 +1538,7 @@ async def mysteryreward(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! " +
                                                     "Specify `{cp}mysteryreward common`, `{cp}mysteryreward uncommon`, or `{cp}mysteryreward rare`!".replace(
-                                                        "{cp}", settings.commandprefix))
+                                                        "{cp}", koduck.get_prefix(context["message"])))
 
     await mysterydata_master(context, cleaned_args, force_reward=True)
     return
@@ -1643,7 +1647,7 @@ async def element(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give you random elements from the Element Generation table. " +
                                                     "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n".replace(
-                                                        "{cp}", settings.commandprefix) +
+                                                        "{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(element_category_list))
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
@@ -1656,7 +1660,7 @@ async def element(context, *args, **kwargs):
     if len(cleaned_args) > 2:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace(
-                                            "{cp}", settings.commandprefix))
+                                            "{cp}", koduck.get_prefix(context["message"])))
 
     element_return_number = 1  # number of elements to return, 1 by default
     element_category = None
@@ -1711,8 +1715,8 @@ async def rulebook(context, *args, **kwargs):
     elif cleaned_args[0] == "help":
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Links the rulebooks for NetBattlers! " +
-                                                    "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", settings.commandprefix) +
-                                                    "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", settings.commandprefix))
+                                                    "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", koduck.get_prefix(context["message"])) +
+                                                    "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ["all", "latest", "new"]:
         ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"].groupby(["Type", "Name"])["Version"].idxmax()]
         book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
@@ -1951,7 +1955,7 @@ async def cheer(context, *args, **kwargs):
                             "You can add Cheer Points with `{cp}cheer add 2`, remove them with `{cp}cheer spend 2`, " + \
                             "and pull up the current Cheer points with `{cp}cheer now`.\n\n" + \
                             "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`."
-            return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+            return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
 
         if cleaned_args[0] in ['rule', 'ruling', 'rules']:
             ruling_msg = await find_value_in_table(context, help_df, "Command", "cheerruling", suppress_notfound=True)
@@ -1978,7 +1982,7 @@ async def jeer(context, *args, **kwargs):
                             "You can add Jeer Points with `{cp}jeer add 2`, remove them with `{cp}jeer spend 2`, " + \
                             "and pull up the current Jeer Points with `{cp}jeer now`.\n\n" + \
                             "For more details on Audience Participation rules, try `{cp}help jeer` or `{cp}help audience`."
-            return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+            return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
 
         if cleaned_args[0] in ['rule', 'ruling', 'rules']:
             ruling_msg = await find_value_in_table(context, help_df, "Command", "jeerruling", suppress_notfound=True)
@@ -2015,7 +2019,7 @@ async def audience(context, *args, **kwargs):
                             "You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
                             "and pull up the current Cheer/Jeer points with `{cp}audience now`.\n\n" + \
                             "Once you're done, make sure to dismiss the audience with `{cp}audience end`."
-        return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+        return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "audienceruling", suppress_notfound=True)
@@ -2169,6 +2173,7 @@ async def audience(context, *args, **kwargs):
 
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
+
 async def virusr(context, *args, **kwargs):
     mod_args = []
     for arg in args:
@@ -2189,7 +2194,7 @@ async def virusr(context, *args, **kwargs):
                             "You can specify Mega or Omega Viruses too! (Otherwise, they will not be rolled.)\n\n" + \
                             "**Available Virus Categories:** %s" % ", ".join(["Any"] + virus_category_list)
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=audience_help_msg.replace("{cp}", settings.commandprefix))
+                                        sendcontent=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
     virus_roll_list = []
     virus_roll = ["any", 1, "normal"]
     virus_category_lower = [i.lower() for i in virus_category_list] + ["any"]
@@ -2223,7 +2228,7 @@ async def virusr(context, *args, **kwargs):
             in_progress = True
         else:
             return await koduck.sendmessage(context["message"],
-                                        sendcontent="I don't recognize `%s`!" % arg)
+                                            sendcontent="I don't recognize `%s`!" % arg)
 
     if in_progress:
         virus_roll_list.append(virus_roll)
@@ -2284,10 +2289,16 @@ async def break_test(context, *args, **kwargs):
 # UGH permissions
 async def change_prefix(context, *args, **kwargs):
     if not args:
-        return await koduck.sendmessage("Changes the prefix that I use for this server! The default prefix is `%s`." % settings.commandprefix)
-
-
-    return await koduck.change_prefix(context["message"].guild.id, args[0])
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Changes the prefix that I use for this server! The default prefix is `%s`" % settings.commandprefix)
+    is_changed = koduck.change_prefix(context["message"].guild.id, args[0])
+    if is_changed:
+        await koduck.sendmessage(context["message"],
+                                 sendcontent="Command prefix successfully changed to `%s`" % args[0])
+    else:
+        await koduck.sendmessage(context["message"],
+                                 sendcontent="Error occurred!")
+    return
 
 
 def setup():
