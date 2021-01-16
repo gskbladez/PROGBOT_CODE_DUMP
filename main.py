@@ -123,6 +123,7 @@ chip_from_list = pd.unique(chip_df["From?"].str.lower())
 
 power_df = pd.read_csv(r"powerncpdata.tsv", sep="\t").fillna('')
 virus_df = pd.read_csv(r"virusdata.tsv", sep="\t").fillna('')
+virus_df = virus_df[virus_df["Name"] != ""]
 virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .stack() \
     .str.strip() \
@@ -133,8 +134,8 @@ virus_tag_list = [i for i in virus_tag_list if i]
 virus_category_list = pd.unique(virus_df["Category"].str.strip())
 virus_category_list = [i for i in virus_category_list if i]
 
-daemon_df = pd.read_csv(r"daemondata.tsv", sep="\t").fillna('')
-bond_df = pd.read_csv(r"bonddata.tsv", sep="\t").fillna('')
+daemon_df = pd.read_csv(r"daemondata.tsv", sep="\t").fillna('').dropna(subset=['Name'])
+bond_df = pd.read_csv(r"bonddata.tsv", sep="\t").fillna('').dropna(subset=['BondPower'])
 tag_df = pd.read_csv(r"tagdata.tsv", sep="\t").fillna('')
 mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
 networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
@@ -436,7 +437,7 @@ async def help_cmd(context, *args, **kwargs):
     # Default message if no parameter is given
     if len(args) == 0:
         message_help = "Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! " + \
-                       "My prefix for commands is `{cp}`.\n" + \
+                       "My prefix for commands is `{cp}`. You can also DM me! \n" + \
                        "To see a list of all commands you can use, type `{cp}commands`. " + \
                        "You can type `{cp}help` and any other command for more info on that command!\n" + \
                        "I can also pull up info on some rules and descriptions! Check `{cp}help all` for the list of details I can help with!"
@@ -663,7 +664,6 @@ async def tag(context, *args, **kwargs):
 
 async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False):
     if "Alias" in df:
-        #print("Alias!")
         alias_check = df[
             df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
         if alias_check.shape[0] > 1:
@@ -2252,7 +2252,7 @@ async def virusr(context, *args, **kwargs):
             sub_df = virus_df[virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & virus_df["Name"].str.contains(r"Ω")]
             virus_cat = "Omega "
         else:
-            sub_df = virus_df[~virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & virus_df["Name"]]
+            sub_df = virus_df[~virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE)]
             virus_cat = ""
         if virus_type != "any":
             sub_df = sub_df[sub_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
@@ -2264,6 +2264,7 @@ async def virusr(context, *args, **kwargs):
             await koduck.sendmessage(context["message"],
                                      sendcontent="There's only %d `%s` Viruses! Limiting it to %d..." % (sub_df.shape[0], search_query, sub_df.shape[0]))
             virus_num = sub_df.shape[0]
+
         virus_roll_titles.append("%d %s" % (virus_num, virus_cat))
         viruses_rolled = random.sample(range(sub_df.shape[0]), virus_num)
         viruses_names += [sub_df.iloc[i]["Name"] for i in viruses_rolled]
@@ -2275,8 +2276,18 @@ async def virusr(context, *args, **kwargs):
                           description=virus_list)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
+
 async def break_test(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendcontent=str(0 / 0))
+
+
+# UGH permissions
+async def change_prefix(context, *args, **kwargs):
+    if not args:
+        return await koduck.sendmessage("Changes the prefix that I use for this server! The default prefix is `%s`." % settings.commandprefix)
+
+
+    return await koduck.change_prefix(context["message"].guild.id, args[0])
 
 
 def setup():

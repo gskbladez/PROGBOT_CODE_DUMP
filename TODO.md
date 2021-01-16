@@ -10,6 +10,8 @@
 - Alphabetical ordering for help all!
 - `>rule` command
 - Add MegaCheer as query
+- Example for virusr categories
+- `>npu [npu]` will pull up the NCP dsecription
 
 ### New Features
 - Roll random adventures from the book

@@ -6,6 +6,7 @@ customresponsestablename = "customresponses"
 logfile = "log.txt"
 formattedlogfile = "formattedlog.txt"
 audiencefile = "audience.json"
+prefixfile = "prefixes.json"
 
 #BOT SETTINGS
 botname = "Koduck"

@@ -1,3 +1,6 @@
+import json
+from discord.ext import commands
+
 # -*- coding: utf_8 -*-
 #Koduck connects to Discord as a bot and sets up a system in which functions are triggered by messages it can see that meet a set of conditions
 #Yadon helps by using text files to keep track of data, like command details, settings, and user levels!
@@ -149,6 +152,34 @@ async def sendmessage(receivemessage, sendchannel=None, sendcontent="", sendembe
 async def delete_message(receivemessage):
     await receivemessage.delete()
     return
+
+
+#Returns the prefix for the guild
+# -message: the Discord message that triggered the message
+def get_prefix(message):
+    if message.channel.type and message.channel.type is not discord.ChannelType.private:
+        with open(settings.prefixfile, 'r') as f:
+            prefixes = json.load(f)
+        if str(message.guild.id) in prefixes:
+            return prefixes[str(message.guild.id)]
+        else:
+            prefixes[str(message.guild.id)] = settings.commandprefix
+    return settings.commandprefix
+
+
+#Updates the prefix noted for the guild. Returns true once successful
+# -guild_id: the Guild (aka Server) ID
+# -prefix: the new prefix
+def change_prefix(guild_id, prefix):
+    with open(settings.prefixfile, 'r') as f:
+        prefixes = json.load(f)
+
+    prefixes[str(guild_id)] = prefix
+
+    with open(settings.prefixfile, 'w') as f:
+        json.dump(prefixes, f, indent=4)
+
+    return True
 
 
 #Assciates a String to a Function.
@@ -396,3 +427,25 @@ async def on_message(message):
         #                                                                      "**Command:** ```%s```" % message.content +
         #                                                                      "**Error:** ```%s```" % exc_inf)
         log(message, logresult=settings.message_unhandlederror)
+
+
+@client.event
+async def on_guild_join(guild): #when the bot joins the guild
+    with open(settings.prefixfile, 'r') as f:
+        prefixes = json.load(f)
+
+    prefixes[str(guild.id)] = settings.commandprefix
+
+    with open(settings.prefixfile, 'w') as f:
+        json.dump(prefixes, f, indent=4)
+
+
+@client.event
+async def on_guild_remove(guild):
+    with open(settings.prefixfile, 'r') as f:
+        prefixes = json.load(f)
+
+    prefixes.pop(str(guild.id))
+
+    with open(settings.prefixfile, 'w') as f:
+        json.dump(prefixes, f, indent=4)
