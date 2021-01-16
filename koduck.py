@@ -1,3 +1,6 @@
+import json
+from discord.ext import commands
+
 # -*- coding: utf_8 -*-
 #Koduck connects to Discord as a bot and sets up a system in which functions are triggered by messages it can see that meet a set of conditions
 #Yadon helps by using text files to keep track of data, like command details, settings, and user levels!
@@ -14,13 +17,49 @@ import asyncio
 import sys, os, traceback
 import datetime
 import settings, yadon
+from discord.ext import commands
+
+
+USERLEVEL_USER = 1
+USERLEVEL_BOTADMIN = 2
+USERLEVEL_BOTOWNER = 3
+USERLEVEL_SERVERADMIN = 4
+
+
+#Returns the prefix for the guild
+# -message: the Discord message that triggered the message
+def get_prefix(message):
+    if message.channel.type and message.channel.type is not discord.ChannelType.private:
+        with open(settings.prefixfile, 'r') as f:
+            prefixes = json.load(f)
+        if str(message.guild.id) in prefixes:
+            return prefixes[str(message.guild.id)]
+        else:
+            prefixes[str(message.guild.id)] = settings.commandprefix
+    return settings.commandprefix
+
+
+#Updates the prefix noted for the guild. Returns true once successful
+# -guild_id: the Guild (aka Server) ID
+# -prefix: the new prefix
+def change_prefix(guild_id, prefix):
+    with open(settings.prefixfile, 'r') as f:
+        prefixes = json.load(f)
+
+    prefixes[str(guild_id)] = prefix
+
+    with open(settings.prefixfile, 'w') as f:
+        json.dump(prefixes, f, indent=4)
+
+    return True
+
 
 client = discord.Client()
 
 #command -> (function, type, tier)
 #command is a string which represents the command name
 #function is the function object to run when the command is triggered
-#type: a string that determines the trigger type of the command, should be one of (prefix, match, contain)
+#type: #a string that determines the trigger type of the command, should be one of (prefix, match, contain)
 #tier is an integer which represents the user authority level required to run the command
 commands = {}
 prefixcommands = []
@@ -332,8 +371,9 @@ async def on_message(message):
         context, args, kwargs = {"message": message, "command": ""}, [], {}
         
         #PREFIX COMMANDS
-        if message.content.startswith(settings.commandprefix):
-            context["commandline"] = message.content[len(settings.commandprefix):]
+        serv_prefix = get_prefix(message)
+        if message.content.startswith(serv_prefix):
+            context["commandline"] = message.content[len(serv_prefix):]
             try:
                 context["command"] = context["commandline"][0:context["commandline"].index(" ")].lower()
                 context["paramline"] = context["commandline"][context["commandline"].index(" ")+1:]
@@ -369,17 +409,28 @@ async def on_message(message):
         
         if not context["command"]:
             return
-        
+
+        log(message)
+
         #CHECK PERMISSIONS OF USER
         userlevel = getuserlevel(message.author.id)
-        if userlevel < commands[context["command"]][2]:
-            #notify user of restricted access only if it's a prefix command
-            if context["command"] in prefixcommands:
+        #USER_LEVELS
+        if commands[context["command"]][2] == USERLEVEL_USER:
+            pass
+        elif commands[context["command"]][2] == USERLEVEL_SERVERADMIN:
+            if context["message"].author.id != context["message"].guild.owner_id:
                 await sendmessage(message, sendcontent=settings.message_restrictedaccess)
-            log(None, settings.message_restrictedaccess)
-            return
-        
-        log(message)
+                #log(None, settings.message_restrictedaccess)
+                return
+            pass
+        else:
+            if userlevel < commands[context["command"]][2]:
+                #notify user of restricted access only if it's a prefix command
+                if context["command"] in prefixcommands:
+                    await sendmessage(message, sendcontent=settings.message_restrictedaccess)
+                #log(None, settings.message_restrictedaccess)
+                return
+
         #RUN THE COMMAND
         function = commands[context["command"]][0]
         result = await function(context, *args, **kwargs)
@@ -396,3 +447,27 @@ async def on_message(message):
         #                                                                      "**Command:** ```%s```" % message.content +
         #                                                                      "**Error:** ```%s```" % exc_inf)
         log(message, logresult=settings.message_unhandlederror)
+
+
+@client.event
+async def on_guild_join(guild): #when the bot joins the guild
+    print("Added to guild")
+    with open(settings.prefixfile, 'r') as f:
+        prefixes = json.load(f)
+
+    prefixes[str(guild.id)] = settings.commandprefix
+
+    with open(settings.prefixfile, 'w') as f:
+        json.dump(prefixes, f, indent=4)
+
+
+@client.event
+async def on_guild_remove(guild):
+    print("Removed from guild")
+    with open(settings.prefixfile, 'r') as f:
+        prefixes = json.load(f)
+
+    prefixes.pop(str(guild.id))
+
+    with open(settings.prefixfile, 'w') as f:
+        json.dump(prefixes, f, indent=4)

@@ -38,10 +38,13 @@ To add ProgBot to your server, click this link! https://discordapp.com/oauth2/au
 - The bot will now respond to commands in the server!
 
 ### Commands
-Command prefix is `>`.
+Default command prefix is `>`.
 
 `oops`
 Undoes the last bot output from the user.
+
+`changeprefix`
+Changes the prefix of the bot (server owner only)
 
 `command`/`commands`
 Displays all known commands.
@@ -54,6 +57,9 @@ Generates an invite link for ProgBot.
 
 `roll`/`r`
 Rolls dice. Supports comments and basic NetBattlers macros.
+
+`repeatroll`/`repeatr`/`repeat`/`rr`
+Repeats a roll command. Supports comments and basic NetBattlers macros.
 
 `chip`/`chips`
 Pulls up chip information. Can also be used to query chips by Category, Tag, or Source (i.e. ChitChat).
