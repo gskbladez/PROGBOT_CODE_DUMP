@@ -38,10 +38,13 @@ To add ProgBot to your server, click this link! https://discordapp.com/oauth2/au
 - The bot will now respond to commands in the server!
 
 ### Commands
-Command prefix is `>`.
+Default command prefix is `>`.
 
 `oops`
 Undoes the last bot output from the user.
+
+`changeprefix`
+Changes the prefix of the bot (server owner only)
 
 `command`/`commands`
 Displays all known commands.
