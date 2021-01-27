@@ -61,6 +61,7 @@ cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard D
            "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
            "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
            "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
+           "MUDSLURP": "Discord, MUD",
            "Tarot": "", "Nyx": ""}
 
 help_categories = {"Lookups": ':mag: **Lookups**',
@@ -86,6 +87,7 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "New Connections": 0xededed,
                        "Silicon Skin": 0xf012be,
                        "The Walls Will Swallow You": 0x734b38,
+                       "MUDSLURP": 0x7687c6,
                        "Tarot": 0xfcf4dc,
                        "Nyx": 0xa29e14,
                        "Genso Network": 0xff605d,
