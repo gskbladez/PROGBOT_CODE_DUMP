@@ -5,7 +5,8 @@
 ### Improvements
 - Improve audience data storage (don't need text file)
 - Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
-- Alphabetical ordering for help all!
+- Alphabetical ordering for `>commands`!
+- Include changeprefix command
 - `>rule` command
 - Add MegaCheer as query
 
