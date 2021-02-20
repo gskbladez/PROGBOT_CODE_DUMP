@@ -468,19 +468,42 @@ SwapDrop	-	Near	Swap the position of 2 targets. Targets can be allies or summone
 Team1	-	-	The next time a Bonded ally is hurt, your next roll gets +X dice. X = your Bond Level with them.	Support	Guard, Simple	 [Guard, Simple]	The next time a Bonded ally is hurt, your next roll gets +X dice. X = your Bond Level with them. [Guard, Simple]	Advanced Support Pack		TeamOne
 Team2	-	-	The next time you take damage, heal an ally equal to the damage you took.	Support	Guard, Simple	 [Guard, Simple]	The next time you take damage, heal an ally equal to the damage you took. [Guard, Simple]	Advanced Support Pack		TeamTwo
 Wood+2	-	-	Your next 2 rolls/chips each sprout a tree! They are (pick 1): tall; vine-covered; easy to fell.	Support	Simple	 [Simple]	Your next 2 rolls/chips each sprout a tree! They are (pick 1): tall; vine-covered; easy to fell. [Simple]	Advanced Support Pack		WoodUp, Wood+1, Wood+, Wood2, Wood+3
-
-AtEveryone	-	-	Must spend 1 Coding. Send a message of your choice to everyone connected to the server.	Summon	Awkward, Slow	 [Awkward, Slow]	Must spend 1 Coding. Send a message of your choice to everyone connected to the server.  [Awkward, Slow]	MUDSLURP
-Autoplay	-	Close	Put a shiny music note on a surface. On touch, a loud music video deafens & blinds all Close.	Hazard			Put a shiny music note on a surface. On touch, a loud music video deafens & blinds all Close.	MUDSLURP
-AwardCeremony	-	Near	On your next opposed roll, the loser has a huge 2-dmg silver trophy fall from the sky atop them.	Summon	Guard, Simple	 [Guard, Simple}	On your next opposed roll, the loser has a huge 2-dmg silver trophy fall from the sky atop them. [Guard, Simple}	MUDSLURP
-BookClub	-	Near	All allies get a book about their element! Books can downshift 1 Info roll if it's relevant.	Summon			All allies get a book about their element! Books can downshift 1 Info roll if it's relevant.	MUDSLURP
-DebateClub	-	-	Can parry a social Charm/Bravery roll with your own. Loser upshifts X Mind rolls; X = victor’s hits.	Support	Simple, Guard	 [Simple, Guard]	Can parry a social Charm/Bravery roll with your own. Loser upshifts X Mind rolls; X = victor’s hits. [Simple, Guard]	MUDSLURP
-DialogueBox	-	-	Popup blocks 2 dmg next defense! Can instead let you make 3 Charm rolls with Info instead.	Support	Guard	 [Guard]	Popup blocks 2 dmg next defense! Can instead let you make 3 Charm rolls with Info instead. [Guard]	MUDSLURP
-DirectMessage	2	Near	Rapid envelope attack! Jams the target's PET for 1 roll with a message of your choice.	Thrown	Accurate, Awkward	 [Accurate, Awkward]	Rapid envelope attack! Jams the target's PET for 1 roll with a message of your choice. [Accurate, Awkward]	MUDSLURP
-DoNotDisturb	3	Close	Ban hammer slammer! Spend 1 Bravery to mute the target & upshift their Charm rolls for 4 rolls.	Impact	Slow	 [Slow]	Ban hammer slammer! Spend 1 Bravery to mute the target & upshift their Charm rolls for 4 rolls. [Slow]	MUDSLURP
-FlameWar	1	Near	Spit hot fire! Can spend 1 Charm/Bravery to make targets roll Bravery to not focus on you.	Wave	Accurate, Dangerous	 [Accurate, Dangerous]	Spit hot fire! Can spend 1 Charm/Bravery to make targets roll Bravery to not focus on you. [Accurate, Dangerous]	MUDSLURP
-GamblingNight	2	Close	Huge poker chip! If you parry, winner takes 1500z. Loser takes +1 dmg if they can't pay up.	Impact			Huge poker chip! If you parry, winner takes 1500z. Loser takes +1 dmg if they can't pay up.	MUDSLURP
-KineticTypography	-	-	Turn into text! You’re 2D and can only move on surfaces. Expires after a minute or taking dmg.	Support	Awkward, Guard	 [Awkward, Guard]	Turn into text! You’re 2D and can only move on surfaces. Expires after a minute or taking dmg. [Awkward, Guard]	MUDSLURP
-LiveSupport	-	-	IM window! -2 dmg next defense. While up, you can text chat 3 NPCs. Disabled by PET jamming.	Support	Guard	 [Guard]	IM window! -2 dmg next defense. While up, you can text chat 3 NPCs. Disabled by PET jamming. [Guard]	MUDSLURP
-MovieNight	-	Near	Reel-to-reel lightshow! Targets rewind their past few seconds of movement, even defying physics.	Wave	Awkward	 [Awkward]	Reel-to-reel lightshow! Targets rewind their past few seconds of movement, even defying physics. [Awkward]	MUDSLURP
-Ping	-	Far	A loud beep comes from the target! Ignores Guards. On hit, this chip refreshes.	Shot	Accurate	 [Accurate]	A loud beep comes from the target! Ignores Guards. On hit, this chip refreshes. [Accurate]	MUDSLURP
-ScreenShot	3	Near	Camera beam! If this deals 3 dmg, send a photo of the target being hit to an email of your choice.	Shot	Slow	 [Slow]	Camera beam! If this deals 3 dmg, send a photo of the target being hit to an email of your choice. [Slow]	MUDSLURP
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+AtEveryone	-	-	Must spend 1 Coding. Send a message of your choice to everyone connected to the server.	Summon	Awkward, Slow	 [Awkward, Slow]	Must spend 1 Coding. Send a message of your choice to everyone connected to the server. [Awkward, Slow]	MUDSLURP		
+Autoplay	-	Close	Put a shiny music note on a surface. On touch, a loud music video deafens & blinds all Close.	Hazard			Put a shiny music note on a surface. On touch, a loud music video deafens & blinds all Close.	MUDSLURP		
+AwardCeremony	-	Near	On your next opposed roll, the loser has a huge 2-dmg silver trophy fall from the sky atop them.	Summon	Guard, Simple	 [Guard, Simple]	On your next opposed roll, the loser has a huge 2-dmg silver trophy fall from the sky atop them. [Guard, Simple]	MUDSLURP		
+BookClub	-	Near	All allies get a book about their element! Books can downshift 1 Info roll if it’s relevant.	Summon			All allies get a book about their element! Books can downshift 1 Info roll if it’s relevant.	MUDSLURP		
+DebateClub	-	-	Can parry a social Charm/Bravery roll with your own. Loser upshifts X Mind rolls; X = victor’s hits.	Support	Guard, Simple	 [Guard, Simple]	Can parry a social Charm/Bravery roll with your own. Loser upshifts X Mind rolls; X = victor’s hits. [Guard, Simple]	MUDSLURP		
+DialogueBox	-	-	Popup blocks 2 dmg next defense! Can instead let you make 3 Charm rolls with Info instead.	Support	Guard	 [Guard]	Popup blocks 2 dmg next defense! Can instead let you make 3 Charm rolls with Info instead. [Guard]	MUDSLURP		
+DirectMessage	2	Near	Rapid envelope attack! Jams the target’s PET for 1 roll with a message of your choice.	Thrown	Accurate, Awkward	 [Accurate, Awkward]	Rapid envelope attack! Jams the target’s PET for 1 roll with a message of your choice. [Accurate, Awkward]	MUDSLURP		DM
+DoNotDisturb	3	Close	Ban hammer slammer! Spend 1 Bravery to mute the target & upshift their Charm rolls for 4 rolls.	Impact	Slow	 [Slow]	Ban hammer slammer! Spend 1 Bravery to mute the target & upshift their Charm rolls for 4 rolls. [Slow]	MUDSLURP		DND
+FlameWar	1	Near	Spit hot fire! Can spend 1 Charm/Bravery to make targets roll Bravery to not focus on you.	Wave	Accurate, Dangerous	 [Accurate, Dangerous]	Spit hot fire! Can spend 1 Charm/Bravery to make targets roll Bravery to not focus on you. [Accurate, Dangerous]	MUDSLURP		
+GamblingNight	2	Close	Huge poker chip! If you parry, winner takes 1500z. Loser takes +1 dmg if they can’t pay up.	Impact			Huge poker chip! If you parry, winner takes 1500z. Loser takes +1 dmg if they can’t pay up.	MUDSLURP		
+KineticTypography	-	-	Turn into text! You’re 2D and can only move on surfaces. Expires after a minute or taking dmg.	Support	Guard, Awkward	 [Guard, Awkward]	Turn into text! You’re 2D and can only move on surfaces. Expires after a minute or taking dmg. [Guard, Awkward]	MUDSLURP		
+LiveSupport	-	-	IM window! -2 dmg next defense. While up, you can text chat 3 NPCs. Disabled by PET jamming.	Support	Guard	 [Guard]	IM window! -2 dmg next defense. While up, you can text chat 3 NPCs. Disabled by PET jamming. [Guard]	MUDSLURP		
+MovieNight	-	Near	Reel-to-reel lightshow! Targets rewind their past few seconds of movement, even defying physics.	Wave	Awkward	 [Awkward]	Reel-to-reel lightshow! Targets rewind their past few seconds of movement, even defying physics. [Awkward]	MUDSLURP		
+Ping	-	Far	A loud beep comes from the target! Ignores Guards. On hit, this chip refreshes.	Shot	Accurate	 [Accurate]	A loud beep comes from the target! Ignores Guards. On hit, this chip refreshes. [Accurate]	MUDSLURP		
+ScreenShot	3	Near	Camera beam! If this deals 3 dmg, send a photo of the target being hit to an email of your choice.	Shot	Slow	 [Slow]	Camera beam! If this deals 3 dmg, send a photo of the target being hit to an email of your choice. [Slow]	MUDSLURP		SS

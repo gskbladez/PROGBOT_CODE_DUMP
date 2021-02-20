@@ -1186,7 +1186,7 @@ async def upgrade(context, *args, **kwargs):
             await send_query_msg(context, result_title, result_msg)
             continue
         if any((power_df["Type"] == "Upgrade") & power_df["Power/NCP"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)):
-            await power(context, arg, [])
+            await ncp(context, arg, [])
             continue
         await koduck.sendmessage(context["message"],
                                  sendcontent="Couldn't find any Navi Power Upgrades for `%s`!" % arg)
@@ -1550,7 +1550,8 @@ async def bond(context, *args, **kwargs):
     cleaned_args = [arg.lower() for arg in args]
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me a Bond Power and I can pull up its info for you!")
+                                        sendcontent="Give me a Bond Power and I can pull up its info for you!\nFor a list of all Bond Powers, use `{cp}bond all`!".replace(
+                                                        "{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "bondruling", suppress_notfound=True)
         if ruling_msg is None:

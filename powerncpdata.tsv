@@ -574,11 +574,11 @@ StarCrossed	Affinity	Roll	(Requires 20+ Affinity.) Pick an object Near the real-
 Backdoor	Coding	Cost	Create a Near door that leads to a fake room. The room’s walls count as your body.	-	Virus Power	Mega Viruses	
 Redecorate	Affinity	Roll	Modify your room’s contents. Complex objects have tells to hint at the room’s nature.	-	Virus Power	Mega Viruses	
 Domain	-	Passive	Within your room, you can roll Affinity to manipulate anyone’s summoned element.	-	Virus Power	Mega Viruses	
-Populate	Affinity	Cost	Add a fake creature to the room. It rolls with your stats and skills. It cannot speak.	-	Virus Power	Mega Viruses
-
-SOSMail	-	-	Once per jack-in, can send an SOS w/ your location to all chat rooms on the server.	1	NCP	MUDSLURP
-FamilyFilter	-	-	Your body beeps loudly to censor any Near audible insults or rude language.	1	NCP	MUDSLURP
-FriendsList	-	-	A heads-up display shows the status of your bonded allies in very limited detail.	1	NCP	MUDSLURP
-EmotiConlang	-	-	You can roll Charm instead of Coding to hack into Close inanimate Viruses.	2	NCP	MUDSLURP
-Necropost	-	-	Shortly after targets are deleted, you can speak with them. Viruses will be friendly.	2	NCP	MUDSLURP
-MysteryChannel	-	-	Secret comms channel! Contains strange signals, odd secrets, and... Virus chatter?	3	NCP	MUDSLURP
+Populate	Affinity	Cost	Add a fake creature to the room. It rolls with your stats and skills. It cannot speak.	-	Virus Power	Mega Viruses	
+							
+SOSMail	-	-	Once per jack-in, can send an SOS w/ your location to all chat rooms on the server.	1	NCP	MUDSLURP	
+FamilyFilter	-	-	Your body beeps loudly to censor any Near audible insults or rude language.	1	NCP	MUDSLURP	
+FriendsList	-	-	A heads-up display shows the status of your bonded allies in very limited detail.	1	NCP	MUDSLURP	
+EmotiConlang	-	-	You can roll Charm instead of Coding to hack into Close inanimate Viruses.	2	NCP	MUDSLURP	
+Necropost	-	-	Shortly after targets are deleted, you can speak with them. Viruses will be friendly.	2	NCP	MUDSLURP	
+MysteryChannel	-	-	Secret comms channel! Contains strange signals, odd secrets, and... Virus chatter?	2	NCP	MUDSLURP	
