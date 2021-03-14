@@ -1,9 +1,7 @@
 # TODO List
 
 ### Known Bugs
-- bugreport does not work in private messages
 - query and similar commands really should have some simple stuff like boolean joins.
-- Tinker is not blue
 - BlackBlossom's art is in TaskManager
 
 ### Improvements
@@ -15,13 +13,11 @@
 - Exclude MegaVirus powers
 - query and similar commands really should have some simple stuff like boolean joins.
 - Chip or queries: simple+guard, support+guard
-- Unknown command error?
 
 ### New Features
 - Roll random adventures from the book
 - Shop/economy guidance
 - Secret Nyx link command (>nyx, >rulebook nyx)
-- `>npu 3EB`
 
 ### Potential Ideas
 - Add NaviChip creation rules
