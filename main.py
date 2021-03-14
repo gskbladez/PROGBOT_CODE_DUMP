@@ -165,6 +165,7 @@ nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
 
 rulebook_df = pd.read_csv(r"rulebookdata.tsv", sep="\t").fillna('')
 pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
+nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 rulebook_df = rulebook_df[rulebook_df["Name"] != "Player-Made Repository"]
 
 parser = dice_algebra.parser
@@ -1721,12 +1722,15 @@ async def rulebook(context, *args, **kwargs):
                                                     "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", koduck.get_prefix(context["message"])) +
                                                     "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ["all", "latest", "new"]:
-        ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"].groupby(["Type", "Name"])["Version"].idxmax()]
+        ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"][rulebook_df["Name"] != "Nyx"].groupby(["Type", "Name"])["Version"].idxmax()]
         book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
         book_names += ["", "For player-made content, check out the Player-Made Repository! <%s>" % pmc_link]
 
     elif cleaned_args[0] in ['pmc', 'player', 'pmr', 'playermade', 'playermaderepository', 'playermaderepo']:
         book_names = ["Player-Made Repository: <%s>" % pmc_link]
+
+    elif cleaned_args[0] in ['nyx', 'cc', 'crossover']:
+        book_names = ["Nyx CC (Crossover Content): <%s>" % nyx_link]
     else:
         book_names = []
 
