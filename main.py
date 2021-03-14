@@ -168,6 +168,7 @@ pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (rulebook_df["Name"] != "Nyx")]
 
+
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
 

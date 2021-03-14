@@ -2,6 +2,7 @@
 
 ### Known Bugs
 - query and similar commands really should have some simple stuff like boolean joins.
+
 - BlackBlossom's art is in TaskManager
 
 ### Improvements
@@ -17,7 +18,8 @@
 ### New Features
 - Roll random adventures from the book
 - Shop/economy guidance
-- Secret Nyx link command (>nyx, >rulebook nyx)
+- Secret Nyx link command (>nyx) [wartorn: will add `>nyx` alias later]
+
 
 ### Potential Ideas
 - Add NaviChip creation rules
