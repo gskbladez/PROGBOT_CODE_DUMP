@@ -230,8 +230,8 @@ Backtrace	Firewall	Upgrade	If the door is destroyed, it turns into a Normal haza
 Portal	Firewall	Upgrade	After a couple minutes, doors allow travel directly between each other.	3	NPU	Navi Power Upgrades	
 AntiCollider	NoClip	Upgrade	You can apply NoClip to a Close target.	2	NPU	Navi Power Upgrades	
 Fizzle	NoClip	Upgrade	You can use NoClip to dodge attacks that would pass through you.	3	NPU	Navi Power Upgrades	
-Reroute	HotSwap	Upgrade	You can reduce your Max HP for +EB, 1 HP for 1EB. Can be undone.	3	NPU	Navi Power Upgrades	
-Tinker	HotSwap	Upgrade	If you spend a minute of uninterrupted concentration, HotSwap has no cost.	2	NPU	Navi Power Upgrades	
+Reroute	HotSwap	Upgrade	You can reduce your Max HP for +EB, 1 HP for 1EB. Can be undone.	3	NPU	Navi Power Upgrades
+Tinker	HotSwap	Upgrade	If you spend a minute of uninterrupted concentration, HotSwap has no cost.	2	NPU	Navi Power Upgrades
 Motorize	MapEdit	Upgrade	Structures can move independently; Easy Coding roll to change the speed.	2	NPU	Navi Power Upgrades	
 TexturePack	MapEdit	Upgrade	Structures can be bouncy, sticky, floating, slippery, magnetic, or gelatinous.	2	NPU	Navi Power Upgrades	
 							
