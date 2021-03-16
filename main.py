@@ -437,6 +437,7 @@ async def commands(context, *args, **kwargs):
         command = koduck.commands[commandname]
         if command[2] <= currentlevel and command[1] == "prefix":
             availablecommands.append(commandname)
+    availablecommands.sort()
     return await koduck.sendmessage(context["message"], sendcontent=", ".join(availablecommands))
 
 
@@ -1015,8 +1016,8 @@ def query_power(args):
         sub_df = sub_df[sub_df["Sort"] == "Power"]
         search_tag_list.append('Navi')
     else:
-        sub_df = sub_df[sub_df["Sort"] == "Virus Power"]
-        search_tag_list.append('Virus')
+        sub_df = sub_df[(sub_df["Sort"] == "Virus Power") & (sub_df["From?"] != "Mega Viruses") & (sub_df["From?"] != "The Walls Will Swallow You")]
+        search_tag_list.append('Virus (excluding Mega)')
     results_title = "Searching for `%s` Powers..." % "` `".join(search_tag_list)
     results_msg = ", ".join(sub_df["Power/NCP"])
 
