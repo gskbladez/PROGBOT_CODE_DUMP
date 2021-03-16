@@ -48,6 +48,9 @@ def get_prefix(message):
             return prefixes[str(message.guild.id)]
         else:
             prefixes[str(message.guild.id)] = settings.commandprefix
+            with open(settings.prefixfile, 'w') as f:
+                json.dump(prefixes, f, indent=4)
+
     return settings.commandprefix
 
 
