@@ -924,6 +924,12 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
                 return None, None, None, None, None
 
     power_name = power_info["Power/NCP"]
+
+    if ncp_only and any(power_df["Power/NCP"].str.contains("%sncp" % power_name, flags=re.IGNORECASE)):
+        power_info = await find_value_in_table(context, local_power_df, "Power/NCP", power_name+"ncp",
+                                               suppress_notfound=True, alias_message=False)
+        power_name = power_info["Power/NCP"]
+
     power_skill = power_info["Skill"]
     power_type = power_info["Type"]
     power_description = power_info["Effect"]
@@ -1143,8 +1149,7 @@ async def ncp(context, *args, **kwargs):
     for arg in cleaned_args:
         if not arg:
             continue
-        if any(power_df["Power/NCP"].str.contains("%sncp" % arg, flags=re.IGNORECASE)):
-            arg += "ncp"
+
         power_name, field_title, field_description, power_color, _ = await power_ncp(context, arg, force_power=False,
                                                                                      ncp_only=True)
         if power_name is None:

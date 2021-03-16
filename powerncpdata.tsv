@@ -9,7 +9,7 @@ Refresh	Info	Cost	Pick a used BattleChip in your Folder. It is now usable again 
 Analyze	Info	Roll	Learn 1 per hit: the target’s stats+skills, Folder, Powers, NCPs, and element.	-	Power	Core	
 Foresight	Info	Roll	You can dodge an attack with Info if you’ve seen this enemy use it before.	-	Power	Core	
 MemoryScan	Info	Roll	Scan a Close Virus/object to reveal the target’s recent memories/interactions.	-	Power	Core	
-HotSwap	Coding	Cost	Change your NaviCust setup without jacking out.	-	Power	Core
+Hotswap	Coding	Cost	Change your NaviCust setup without jacking out.	-	Power	Core	
 MapEdit	Coding	Cost	Generate a Near simple structure that is either hard, large, or hidden.	-	Power	Core	
 Disruption	Coding	Roll	Pick a Near target; disables their last used power/NCP until they roll 3 times.	-	Power	Core	
 Firewall	Coding	Roll	Put a temporary door on a Near entrance that blocks known enemies.	-	Power	Core	
@@ -47,8 +47,8 @@ Alt	Affinity	Roll	Consume all of your element to create a minion with one purpos
 Control	Affinity	Roll	Make a ranged attack with your element if it is present.	-	Power	Core	
 Shift	Affinity	Roll	Swap places with an abundance of your element in line of sight.	-	Power	Core	
 							
-RefreshIndie	Info	Cost	Increase your Folder size by 2 until rest.	-	Power	Core	Refresh(i), (i)Refresh, (Indie)Refresh
-ReconfigIndie	Info	Cost	Instantly trade BattleChips with a Near ally.	-	Power	Core	Reconfig(i), (i)Reconfig, (Indie)Reconfig
+RefreshIndie	Info	Cost	Increase your Folder size by 2 until rest.	-	Power	Core	Refresh(i), (i)Refresh, (Indie)Refresh, RefreshI
+ReconfigIndie	Info	Cost	Instantly trade BattleChips with a Near ally.	-	Power	Core	Reconfig(i), (i)Reconfig, (Indie)Reconfig, ReconfigI
 							
 Mind+1	-	-	Increase your Mind by 1.	5	BoostNCP	Core	
 Body+1	-	-	Increase your Body by 1.	5	BoostNCP	Core	
@@ -73,7 +73,7 @@ RefreshNCP	Info	Cost	Pick a used BattleChip in your Folder. It is now usable aga
 AnalyzeNCP	Info	Roll	Learn 1 per hit: the target’s stats+skills, Folder, Powers, NCPs, and element.	3	PowerNCP	Core	
 ForesightNCP	Info	Roll	You can dodge an attack with Info if you’ve seen this enemy use it before.	3	PowerNCP	Core	
 MemoryScanNCP	Info	Roll	Scan a Close Virus/object to reveal the target’s recent memories/interactions.	3	PowerNCP	Core	
-HotSwapNCP	Coding	Cost	Change your NaviCust setup without jacking out.	3	PowerNCP	Core
+HotswapNCP	Coding	Cost	Change your NaviCust setup without jacking out.	3	PowerNCP	Core	
 MapEditNCP	Coding	Cost	Generate a Near simple structure that is either hard, large, or hidden.	3	PowerNCP	Core	
 DisruptionNCP	Coding	Roll	Pick a Near target; disables their last used power/NCP until they roll 3 times.	3	PowerNCP	Core	
 FirewallNCP	Coding	Roll	Put a temporary door on a Near entrance that blocks known enemies.	3	PowerNCP	Core	
@@ -111,8 +111,8 @@ AltNCP	Affinity	Roll	Consume all of your element to create a minion with one pur
 ControlNCP	Affinity	Roll	Make a ranged attack with your element if it is present.	3	PowerNCP	Core	
 ShiftNCP	Affinity	Roll	Swap places with an abundance of your element in line of sight.	3	PowerNCP	Core	
 							
-RefreshIndieNCP	Info	Cost	Increase your Folder size by 2 until rest.	3	PowerNCP	Core	
-ReconfigIndieNCP	Info	Cost	Instantly trade BattleChips with a Near ally.	3	PowerNCP	Core	
+RefreshIndieNCP	Info	Cost	Increase your Folder size by 2 until rest.	3	PowerNCP	Core	RefreshNCP(i), (i)RefreshNCP, (Indie)RefreshNCP, RefreshNCPI
+ReconfigIndieNCP	Info	Cost	Instantly trade BattleChips with a Near ally.	3	PowerNCP	Core	ReconfigNCP(i), (i)ReconfigNCP, (Indie)ReconfigNCP, ReconfigNCPI
 							
 BaRecycle	-	-	You can turn Guard chips into your element after slot-in.	1	NCP	Core	
 Brand	-	-	You can mark anything with your symbol. This mark acts like a hand-sized sticker.	1	NCP	Core	
@@ -230,8 +230,8 @@ Backtrace	Firewall	Upgrade	If the door is destroyed, it turns into a Normal haza
 Portal	Firewall	Upgrade	After a couple minutes, doors allow travel directly between each other.	3	NPU	Navi Power Upgrades	
 AntiCollider	NoClip	Upgrade	You can apply NoClip to a Close target.	2	NPU	Navi Power Upgrades	
 Fizzle	NoClip	Upgrade	You can use NoClip to dodge attacks that would pass through you.	3	NPU	Navi Power Upgrades	
-Reroute	HotSwap	Upgrade	You can reduce your Max HP for +EB, 1 HP for 1EB. Can be undone.	3	NPU	Navi Power Upgrades
-Tinker	HotSwap	Upgrade	If you spend a minute of uninterrupted concentration, HotSwap has no cost.	2	NPU	Navi Power Upgrades
+Reroute	HotSwap	Upgrade	You can reduce your Max HP for +EB, 1 HP for 1EB. Can be undone.	3	NPU	Navi Power Upgrades	
+Tinker	HotSwap	Upgrade	If you spend a minute of uninterrupted concentration, HotSwap has no cost.	2	NPU	Navi Power Upgrades	
 Motorize	MapEdit	Upgrade	Structures can move independently; Easy Coding roll to change the speed.	2	NPU	Navi Power Upgrades	
 TexturePack	MapEdit	Upgrade	Structures can be bouncy, sticky, floating, slippery, magnetic, or gelatinous.	2	NPU	Navi Power Upgrades	
 							
