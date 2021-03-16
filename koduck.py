@@ -30,8 +30,20 @@ USERLEVEL_SERVERADMIN = 4
 # -message: the Discord message that triggered the message
 def get_prefix(message):
     if message.channel.type and message.channel.type is not discord.ChannelType.private:
-        with open(settings.prefixfile, 'r') as f:
-            prefixes = json.load(f)
+        prefixes = {}
+        try:
+            with open(settings.prefixfile, 'r') as f:
+                prefixes = json.load(f)
+        # regenerates the JSON file if it's missing
+        except FileNotFoundError:
+            if not os.path.isfile(settings.prefixfile):
+                with open(settings.prefixfile, 'w') as pfp:
+                    json.dump({}, pfp, sort_keys=True, indent=4)
+        # regenerates the JSON file if it's bad (i.e. empty)
+        except json.decoder.JSONDecodeError:
+            with open(settings.prefixfile, 'w') as pfp:
+                json.dump({}, pfp, sort_keys=True, indent=4)
+
         if str(message.guild.id) in prefixes:
             return prefixes[str(message.guild.id)]
         else:

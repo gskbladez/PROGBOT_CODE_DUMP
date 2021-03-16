@@ -178,10 +178,6 @@ audience_data = {}
 with open(settings.audiencefile, 'w') as afp:
     json.dump({}, afp, sort_keys=True, indent=4)
 
-if not os.path.isfile(settings.prefixfile):
-    with open(settings.prefixfile, 'w') as pfp:
-        json.dump({}, pfp, sort_keys=True, indent=4)
-
 if not os.path.isfile(settings.logfile):
     with open(settings.prefixfile, 'w') as lfp:
         pass
@@ -192,7 +188,7 @@ if not os.path.isfile(settings.formattedlogfile):
 
 required_files = [settings.commandstablename, settings.settingstablename, settings.userlevelstablename, settings.customresponsestablename]
 
-bad_files = [f for f in required_files if not os.path.isfile(f)]
+bad_files = [f for f in required_files if not os.path.isfile(f+".txt")]
 if bad_files:
     raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
 
