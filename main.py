@@ -1246,7 +1246,10 @@ async def virus_master(context, arg, simplified=True):
     elif virus_source in cc_list:
         virus_footer += " (%s Crossover %s)" % (virus_source, virus_footer_bit)
     if virus_artist:
-        virus_footer += "\n(Artwork by %s)" % virus_artist
+        if " (Provided)" in virus_artist:
+            virus_footer += "\n(Artwork provided by %s)" % virus_artist.replace(" (Provided)", "")
+        else:
+            virus_footer += "\n(Artwork by %s)" % virus_artist
 
     if virus_source in cc_color_dictionary:
         virus_color = cc_color_dictionary[virus_source]
