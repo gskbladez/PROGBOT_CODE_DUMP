@@ -5,4 +5,6 @@ log
 formattedlog
 channel_id_notes
 venv
-virusart
+prefixes.json
+formattedlog.txt
+log.txt

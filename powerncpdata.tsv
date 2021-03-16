@@ -47,8 +47,8 @@ Alt	Affinity	Roll	Consume all of your element to create a minion with one purpos
 Control	Affinity	Roll	Make a ranged attack with your element if it is present.	-	Power	Core	
 Shift	Affinity	Roll	Swap places with an abundance of your element in line of sight.	-	Power	Core	
 							
-RefreshIndie	Info	Cost	Increase your Folder size by 2 until rest.	-	Power	Core	Refresh(i), (i)Refresh, (Indie)Refresh
-ReconfigIndie	Info	Cost	Instantly trade BattleChips with a Near ally.	-	Power	Core	Reconfig(i), (i)Reconfig, (Indie)Reconfig
+RefreshIndie	Info	Cost	Increase your Folder size by 2 until rest.	-	Power	Core	Refresh(i), (i)Refresh, (Indie)Refresh, RefreshI
+ReconfigIndie	Info	Cost	Instantly trade BattleChips with a Near ally.	-	Power	Core	Reconfig(i), (i)Reconfig, (Indie)Reconfig, ReconfigI
 							
 Mind+1	-	-	Increase your Mind by 1.	5	BoostNCP	Core	
 Body+1	-	-	Increase your Body by 1.	5	BoostNCP	Core	
@@ -111,8 +111,8 @@ AltNCP	Affinity	Roll	Consume all of your element to create a minion with one pur
 ControlNCP	Affinity	Roll	Make a ranged attack with your element if it is present.	3	PowerNCP	Core	
 ShiftNCP	Affinity	Roll	Swap places with an abundance of your element in line of sight.	3	PowerNCP	Core	
 							
-RefreshIndieNCP	Info	Cost	Increase your Folder size by 2 until rest.	3	PowerNCP	Core	
-ReconfigIndieNCP	Info	Cost	Instantly trade BattleChips with a Near ally.	3	PowerNCP	Core	
+RefreshIndieNCP	Info	Cost	Increase your Folder size by 2 until rest.	3	PowerNCP	Core	RefreshNCP(i), (i)RefreshNCP, (Indie)RefreshNCP, RefreshNCPI
+ReconfigIndieNCP	Info	Cost	Instantly trade BattleChips with a Near ally.	3	PowerNCP	Core	ReconfigNCP(i), (i)ReconfigNCP, (Indie)ReconfigNCP, ReconfigNCPI
 							
 BaRecycle	-	-	You can turn Guard chips into your element after slot-in.	1	NCP	Core	
 Brand	-	-	You can mark anything with your symbol. This mark acts like a hand-sized sticker.	1	NCP	Core	
@@ -576,9 +576,9 @@ Redecorate	Affinity	Roll	Modify your room’s contents. Complex objects have tel
 Domain	-	Passive	Within your room, you can roll Affinity to manipulate anyone’s summoned element.	-	Virus Power	Mega Viruses	
 Populate	Affinity	Cost	Add a fake creature to the room. It rolls with your stats and skills. It cannot speak.	-	Virus Power	Mega Viruses	
 							
-SOSMail	-	-	Once per jack-in, can send an SOS w/ your location to all chat rooms on the server.	1	NCP	MUDSLURP	
-FamilyFilter	-	-	Your body beeps loudly to censor any Near audible insults or rude language.	1	NCP	MUDSLURP	
-FriendsList	-	-	A heads-up display shows the status of your bonded allies in very limited detail.	1	NCP	MUDSLURP	
-EmotiConlang	-	-	You can roll Charm instead of Coding to hack into Close inanimate Viruses.	2	NCP	MUDSLURP	
-Necropost	-	-	Shortly after targets are deleted, you can speak with them. Viruses will be friendly.	2	NCP	MUDSLURP	
-MysteryChannel	-	-	Secret comms channel! Contains strange signals, odd secrets, and... Virus chatter?	2	NCP	MUDSLURP	
+SOSMail	-	-	Once per jack-in, can send an SOS w/ your location to all chat rooms on the server.	1	NCP	Mudslurp	
+FamilyFilter	-	-	Your body beeps loudly to censor any Near audible insults or rude language.	1	NCP	Mudslurp	
+FriendsList	-	-	A heads-up display shows the status of your bonded allies in very limited detail.	1	NCP	Mudslurp	FriendList
+EmotiConlang	-	-	You can roll Charm instead of Coding to hack into Close inanimate Viruses.	2	NCP	Mudslurp	
+Necropost	-	-	Shortly after targets are deleted, you can speak with them. Viruses will be friendly.	2	NCP	Mudslurp	
+MysteryChannel	-	-	Secret comms channel! Contains strange signals, odd secrets, and... Virus chatter?	2	NCP	Mudslurp	

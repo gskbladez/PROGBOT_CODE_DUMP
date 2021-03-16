@@ -165,7 +165,9 @@ nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
 
 rulebook_df = pd.read_csv(r"rulebookdata.tsv", sep="\t").fillna('')
 pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
-rulebook_df = rulebook_df[rulebook_df["Name"] != "Player-Made Repository"]
+nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
+rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (rulebook_df["Name"] != "Nyx")]
+
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -218,7 +220,10 @@ async def bugreport(context, *args, **kwargs):
     progbot_bugreport_channel = koduck.client.get_channel(channelid)
     message_content = context["paramline"]
     message_author = context["message"].author
-    message_guild = context["message"].guild.name
+    if context["message"].channel.type is discord.ChannelType.private:
+        message_guild = "Direct message"
+    else:
+        message_guild = context["message"].guild.name
     # originchannel = "<#{}>".format(context["message"].channel.id) if isinstance(context["message"].channel,
     #                                                                            discord.TextChannel) else ""
     embed = discord.Embed(title="**__New Bug Report!__**", description="_{}_".format(message_content),
@@ -432,6 +437,7 @@ async def commands(context, *args, **kwargs):
         command = koduck.commands[commandname]
         if command[2] <= currentlevel and command[1] == "prefix":
             availablecommands.append(commandname)
+    availablecommands.sort()
     return await koduck.sendmessage(context["message"], sendcontent=", ".join(availablecommands))
 
 
@@ -695,7 +701,9 @@ async def send_query_msg(context, return_title, return_msg):
     return await koduck.sendmessage(context["message"], sendcontent="**%s**\n*%s*" % (return_title, return_msg))
 
 
-def query_chip(arg_lower):
+def query_chip(args):
+    arg_lower = ' '.join(args)
+
     alias_check = cc_df[
         cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
     if alias_check.shape[0] > 0:
@@ -797,7 +805,7 @@ async def chip(context, *args, **kwargss):
                                         sendcontent="NaviChips are **MegaChips** that store attack data from defeated Navis! Each NaviChip is unique, based off the Navi it was downloaded from. NaviChips are determined by the GM.".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])))
     arg_combined = ' '.join(cleaned_args)
-    is_query, return_title, return_msg = query_chip(arg_combined)
+    is_query, return_title, return_msg = query_chip(cleaned_args)
     if is_query:
         return await send_query_msg(context, return_title, return_msg)
 
@@ -916,6 +924,12 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
                 return None, None, None, None, None
 
     power_name = power_info["Power/NCP"]
+
+    if ncp_only and any(power_df["Power/NCP"].str.contains("%sncp" % power_name, flags=re.IGNORECASE)):
+        power_info = await find_value_in_table(context, local_power_df, "Power/NCP", power_name+"ncp",
+                                               suppress_notfound=True, alias_message=False)
+        power_name = power_info["Power/NCP"]
+
     power_skill = power_info["Skill"]
     power_type = power_info["Type"]
     power_description = power_info["Effect"]
@@ -927,7 +941,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
     if power_color < 0:
         if power_source in cc_color_dictionary:
             power_color = cc_color_dictionary[power_source]
-        elif (power_color < 0) and power_skill in local_power_df["Power/NCP"].values:
+        elif (power_color < 0) and any(local_power_df["Power/NCP"].str.contains("^%s$" % re.escape(power_skill), flags=re.IGNORECASE)):
             power_true_info = await find_value_in_table(context, local_power_df, "Power/NCP", power_skill)
             power_color = find_skill_color(power_true_info["Skill"])
         else:
@@ -1008,8 +1022,8 @@ def query_power(args):
         sub_df = sub_df[sub_df["Sort"] == "Power"]
         search_tag_list.append('Navi')
     else:
-        sub_df = sub_df[sub_df["Sort"] == "Virus Power"]
-        search_tag_list.append('Virus')
+        sub_df = sub_df[(sub_df["Sort"] == "Virus Power") & (sub_df["From?"] != "Mega Viruses") & (sub_df["From?"] != "The Walls Will Swallow You")]
+        search_tag_list.append('Virus (excluding Mega)')
     results_title = "Searching for `%s` Powers..." % "` `".join(search_tag_list)
     results_msg = ", ".join(sub_df["Power/NCP"])
 
@@ -1135,8 +1149,7 @@ async def ncp(context, *args, **kwargs):
     for arg in cleaned_args:
         if not arg:
             continue
-        if any(power_df["Power/NCP"].str.contains("%sncp" % arg, flags=re.IGNORECASE)):
-            arg += "ncp"
+
         power_name, field_title, field_description, power_color, _ = await power_ncp(context, arg, force_power=False,
                                                                                      ncp_only=True)
         if power_name is None:
@@ -1153,6 +1166,17 @@ async def ncp(context, *args, **kwargs):
 def query_npu(arg):
     if arg.capitalize() in skill_list:
         return False, "", ""
+
+    eb_match = re.match(r"^(\d+)(?:\s*EB)?$", arg, flags=re.IGNORECASE)
+    if eb_match:
+        eb_search = eb_match.group(1)
+        result_ncps = power_df[(power_df["Type"] == "Upgrade") & (power_df["EB"] == eb_search)]
+        if result_ncps.shape[0] == 0:
+            return False, "", ""
+        result_msg = ", ".join(result_ncps["Power/NCP"])
+        result_title = "Finding all `%sEB` Navi Power Upgrades..." % eb_search
+        return True, result_title, result_msg
+
     result_npu = power_df[power_df["Skill"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
     if result_npu.shape[0] == 0:
         return False, "", ""
@@ -1228,7 +1252,10 @@ async def virus_master(context, arg, simplified=True):
     elif virus_source in cc_list:
         virus_footer += " (%s Crossover %s)" % (virus_source, virus_footer_bit)
     if virus_artist:
-        virus_footer += "\n(Artwork by %s)" % virus_artist
+        if " (Provided)" in virus_artist:
+            virus_footer += "\n(Artwork provided by %s)" % virus_artist.replace(" (Provided)", "")
+        else:
+            virus_footer += "\n(Artwork by %s)" % virus_artist
 
     if virus_source in cc_color_dictionary:
         virus_color = cc_color_dictionary[virus_source]
@@ -1721,18 +1748,21 @@ async def rulebook(context, *args, **kwargs):
                                                     "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", koduck.get_prefix(context["message"])) +
                                                     "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ["all", "latest", "new"]:
-        ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"].groupby(["Type", "Name"])["Version"].idxmax()]
+        ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"][rulebook_df["Name"] != "Nyx"].groupby(["Type", "Name"])["Version"].idxmax()]
         book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
         book_names += ["", "For player-made content, check out the Player-Made Repository! <%s>" % pmc_link]
 
     elif cleaned_args[0] in ['pmc', 'player', 'pmr', 'playermade', 'playermaderepository', 'playermaderepo']:
         book_names = ["Player-Made Repository: <%s>" % pmc_link]
+
+    elif cleaned_args[0] in ['nyx', 'cc', 'crossover']:
+        book_names = ["Nyx CC (Crossover Content): <%s>" % nyx_link]
     else:
         book_names = []
 
     if not book_names:
         errmsg = []
-        book_query = {"Name": "", "Type": "All", "Version": -1}
+        book_query = {"Name": "", "Type": "All", "Version": -1, "Release": ""}
         book_queries = []
         in_progress = False
         for arg in cleaned_args:
@@ -1745,12 +1775,16 @@ async def rulebook(context, *args, **kwargs):
             except ValueError:
                 pass
 
-            if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b'] + ['advance', 'advanced', 'nba', 'adv', 'a']):
+            if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b'] + ['advance', 'advanced', 'nba', 'adv', 'a'] + ['alpha']):
                 if in_progress:
                     book_queries.append(book_query)
                     book_query = {"Name": "", "Type": "All", "Version": -1}
-                if arg in ['beta', 'netbattlers', 'netbattler', 'nb', 'b']:
+                if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b']+['alpha']):
                     book_query["Name"] = "NetBattlers"
+                    if arg in ['alpha']:
+                        book_query["Release"] = "Alpha"
+                    else:
+                        book_query["Release"] = "Beta"
                 else:
                     book_query["Name"] = "NetBattlers Advance"
                 in_progress = True
@@ -1777,9 +1811,11 @@ async def rulebook(context, *args, **kwargs):
             bookname = book_query["Name"]
             booktype = book_query["Type"]
             book_version = book_query["Version"]
+            book_release = book_query["Release"]
+
             if not bookname:
                 await koduck.sendmessage(context["message"],
-                                         sendcontent="Don't know which book you want! Please specify either 'Beta' or 'Advance'!")
+                                         sendcontent="Don't know which book you want! Please specify either 'Beta', 'Advance', or 'Alpha'! You can also search for 'PMR!'")
                 continue
             elif bookname == 'Unknown':
                 continue
@@ -1791,8 +1827,12 @@ async def rulebook(context, *args, **kwargs):
             else:
                 book_type_str = ""
 
+            if book_release:
+                subfilt = subfilt & (rulebook_df["Release"] == book_release)
+
             if book_version < 0:
                 subfilt = subfilt.index == rulebook_df[subfilt]["Version"].idxmax()
+                book_version_str = " (Most recent)"
             elif book_version > 0:
                 subfilt = subfilt & (rulebook_df["Version"] == book_version)
                 book_version_str = " `%d`" % book_version
