@@ -1,13 +1,14 @@
 # TODO List
 
 ### Known Bugs
-- REQUIRED DOCUMENTS CHECK
+
 
 ### Improvements
 - Improve audience data storage (don't need text file)
 - Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
 - `>rule` command
 - Add MegaCheer as query
+ -Required documents check: should add '.txt' to settings.py
 
 ### New Features
 - Roll random adventures from the book

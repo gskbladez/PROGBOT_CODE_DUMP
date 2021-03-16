@@ -182,11 +182,15 @@ if not os.path.isfile(settings.logfile):
     with open(settings.prefixfile, 'w') as lfp:
         pass
 
-if not os.path.isfile(settings.formattedlogfile):
-    with open(settings.prefixfile, 'w') as ffp:
+if not os.path.isfile(settings.logfile):
+    with open(settings.prefixfile, 'w') as lfp:
         pass
 
-required_files = [settings.commandstablename, settings.settingstablename, settings.userlevelstablename, settings.customresponsestablename]
+if not os.path.isfile(settings.customresponsestablename):
+    with open(settings.customresponsestablename, 'w') as ffp:
+        pass
+
+required_files = [settings.commandstablename, settings.settingstablename, settings.userlevelstablename]
 
 bad_files = [f for f in required_files if not os.path.isfile(f+".txt")]
 if bad_files:
