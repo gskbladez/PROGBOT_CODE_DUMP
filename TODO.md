@@ -1,6 +1,7 @@
 # TODO List
 
 ### Known Bugs
+- REQUIRED DOCUMENTS CHECK
 
 ### Improvements
 - Improve audience data storage (don't need text file)

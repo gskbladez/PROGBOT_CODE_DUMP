@@ -43,6 +43,7 @@ def get_prefix(message):
 # -guild_id: the Guild (aka Server) ID
 # -prefix: the new prefix
 def change_prefix(guild_id, prefix):
+
     with open(settings.prefixfile, 'r') as f:
         prefixes = json.load(f)
 
