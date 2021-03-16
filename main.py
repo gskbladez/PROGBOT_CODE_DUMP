@@ -186,8 +186,8 @@ if not os.path.isfile(settings.logfile):
     with open(settings.prefixfile, 'w') as lfp:
         pass
 
-if not os.path.isfile(settings.customresponsestablename):
-    with open(settings.customresponsestablename, 'w') as ffp:
+if not os.path.isfile(settings.customresponsestablename+".txt"):
+    with open(settings.customresponsestablename+".txt", 'w') as ffp:
         pass
 
 required_files = [settings.commandstablename, settings.settingstablename, settings.userlevelstablename]
