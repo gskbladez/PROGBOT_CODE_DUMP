@@ -479,7 +479,7 @@ async def help_cmd(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
 
     funkyarg = ''.join(cleaned_args)
-    help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True)
+    help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)
     if help_msg is None:
         help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
@@ -688,7 +688,7 @@ async def tag(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
-async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False):
+async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
     if "Alias" in df:
         alias_check = df[
             df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
@@ -709,11 +709,13 @@ async def find_value_in_table(context, df, search_col, search_arg, suppress_notf
                                      sendcontent="I can't find `%s`!" % search_arg)
         return None
     elif search_results.shape[0] > 1:
-        await koduck.sendmessage(context["message"],
-                                 sendcontent="Found more than one match for %s! You should probably let the devs know..." % search_arg)
+        if allow_duplicate:
+            return search_results.iloc[random.randint(0, search_results.shape[0] - 1)]
+        else:
+            await koduck.sendmessage(context["message"],
+                                     sendcontent="Found more than one match for %s! You should probably let the devs know..." % search_arg)
         return None
     return search_results.iloc[0]
-
 
 async def send_query_msg(context, return_title, return_msg):
     return await koduck.sendmessage(context["message"], sendcontent="**%s**\n*%s*" % (return_title, return_msg))
