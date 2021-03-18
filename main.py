@@ -33,6 +33,7 @@ MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
+MAX_REPO_QUERY = 5
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -207,10 +208,6 @@ else:
     notion_support = True
     print("Notion support enabled!")
     client = NotionClient(token_v2=not_token)
-
-#if notion_support:
-#    page = client.get_block("https://www.notion.so/Getting-Started-on-Mobile-e8e03b1280ac43b8826cfa9fe06a042e")
-#    print("notion page title is", page.title)
 
 ##################
 # BASIC COMMANDS #
@@ -2380,19 +2377,26 @@ async def change_prefix(context, *args, **kwargs):
 
 async def pmr(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        message_help = "Give me the name of player-made content and I can look them up on the official repository for you! " + \
-                       "You can access the full Player-Made Repository here! \n<{}>"
-        return await koduck.sendmessage(context["message"],
+    if notion_support:
+        if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+            message_help =  "Give me the name of custom game content and I can look them up on the official repository for you! " + \
+                            "Want to submit something? You can access the full Player-Made Repository here! \n<{}>"
+            return await koduck.sendmessage(context["message"],
                                         sendcontent=message_help.format(pmc_link))
-    else:
         cv = client.get_collection_view("https://www.notion.so/2039bbb48f044867bc802c4b62c45c95?v=e764af0e779640178a24240d3776f50b")
-        q = CollectionQuery(cv.collection, cv, cleaned_args)
-        for row in cv.collection.get_rows(search="Virus"):
-            print("NAME:'{}' LINK: {}".format(row.name, row.link))
-
-#        for row in result:
-#            print(row)
+        for row in cv.collection.get_rows(search=args[0]):
+            print("NAME:'{}' LINK: {} AUTHOR: '{}'".format(row.name, row.link, row.author))
+            if cv.collection.get_rows(search=args[0]) > MAX_REPO_QUERY:
+                 await koduck.sendmessage(context["message"],
+                                          sendcontent="Search query too broad! Please narrow your search results!")
+            generated_message = "{}"
+        if not cv.collection.get_rows(search=args[0]):
+                 await koduck.sendmessage(context["message"],
+                                          sendcontent="I can't find anything with that query, sorry..")
+    else:
+        message_notion_offline = "Want to submit custom game content? You can access the full Player-Made Repository here! \n<{}>"
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=message_notion_offline.format(pmc_link))
 
 
 def setup():
