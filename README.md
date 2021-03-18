@@ -8,6 +8,7 @@ To add ProgBot to your server, click this link! https://discordapp.com/oauth2/au
 - `pandas` (1.1+)
 - `rply` (0.7+)
 - `python-dotenv` (0.10+)
+- `notion`
 
 ### How to Setup a Local Instance
 - Clone or fork ProgBot, downloading the files.

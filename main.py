@@ -1,4 +1,6 @@
 import discord
+from notion.client import NotionClient
+from notion.collection import *
 import asyncio
 import sys, os, random
 import koduck, yadon
@@ -14,6 +16,7 @@ import datetime
 
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
+not_token = os.getenv('NOTION_TOKEN')
 
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
@@ -195,6 +198,19 @@ required_files = [settings.commandstablename, settings.settingstablename, settin
 bad_files = [f for f in required_files if not os.path.isfile(f+".txt")]
 if bad_files:
     raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
+
+notion_support = False
+if not not_token:
+    print("Notion token not found! Please retrieve a token from a logged-in Notion account!")
+    print("You can get this by inspecting your Notion cookies for the value of token_v2.")
+else:
+    notion_support = True
+    print("Notion support enabled!")
+    client = NotionClient(token_v2=not_token)
+
+#if notion_support:
+#    page = client.get_block("https://www.notion.so/Getting-Started-on-Mobile-e8e03b1280ac43b8826cfa9fe06a042e")
+#    print("notion page title is", page.title)
 
 ##################
 # BASIC COMMANDS #
@@ -2348,7 +2364,6 @@ async def virusr(context, *args, **kwargs):
 async def break_test(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendcontent=str(0 / 0))
 
-
 # UGH permissions
 async def change_prefix(context, *args, **kwargs):
     if not args:
@@ -2362,6 +2377,22 @@ async def change_prefix(context, *args, **kwargs):
         await koduck.sendmessage(context["message"],
                                  sendcontent="Error occurred!")
     return
+
+async def pmr(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        message_help = "Give me the name of player-made content and I can look them up on the official repository for you! " + \
+                       "You can access the full Player-Made Repository here! \n<{}>"
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=message_help.format(pmc_link))
+    else:
+        cv = client.get_collection_view("https://www.notion.so/2039bbb48f044867bc802c4b62c45c95?v=e764af0e779640178a24240d3776f50b")
+        q = CollectionQuery(cv.collection, cv, cleaned_args)
+        for row in cv.collection.get_rows(search="Virus"):
+            print("NAME:'{}' LINK: {}".format(row.name, row.link))
+
+#        for row in result:
+#            print(row)
 
 
 def setup():

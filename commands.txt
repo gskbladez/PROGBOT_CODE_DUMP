@@ -51,3 +51,4 @@ jeer	jeer	prefix	1
 virusr	virusr	prefix	1
 virusrandom	virusr	prefix	1
 changeprefix	change_prefix	prefix	4
+pmr	pmr	prefix	1

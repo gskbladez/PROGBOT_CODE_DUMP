@@ -21,3 +21,5 @@
 - Add NaviChip creation rules
 - Shop ideas for new GMs?
 - General `repeat` command? (Element, Mysterydata, roll)
+- Notion support
+- Training GPT-2 on how to add a man with a gun to any scene
