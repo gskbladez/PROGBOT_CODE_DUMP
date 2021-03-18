@@ -2380,21 +2380,23 @@ async def pmr(context, *args, **kwargs):
     if notion_support:
         if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
             message_help =  "Give me the name of custom game content and I can look them up on the official repository for you! " + \
-                            "Want to submit something? You can access the full Player-Made Repository here! \n<{}>"
+                            "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
             return await koduck.sendmessage(context["message"],
                                         sendcontent=message_help.format(pmc_link))
         cv = client.get_collection_view("https://www.notion.so/2039bbb48f044867bc802c4b62c45c95?v=e764af0e779640178a24240d3776f50b")
         for row in cv.collection.get_rows(search=args[0]):
             print("NAME:'{}' LINK: {} AUTHOR: '{}'".format(row.name, row.link, row.author))
-            if cv.collection.get_rows(search=args[0]) > MAX_REPO_QUERY:
-                 await koduck.sendmessage(context["message"],
-                                          sendcontent="Search query too broad! Please narrow your search results!")
-            generated_message = "{}"
+            # if cv.collection.get_rows(search=args[0]) > MAX_REPO_QUERY:
+            #      await koduck.sendmessage(context["message"],
+            #                               sendcontent="Search query too broad! Please narrow your search results!")
+            generated_msg = "**_`{}`_** by __*{}*__:\n __<{}>__"
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent=generated_msg.format(row.name, row.author, row.link))
         if not cv.collection.get_rows(search=args[0]):
                  await koduck.sendmessage(context["message"],
                                           sendcontent="I can't find anything with that query, sorry..")
     else:
-        message_notion_offline = "Want to submit custom game content? You can access the full Player-Made Repository here! \n<{}>"
+        message_notion_offline = "Want to submit custom game content? You can access the full Player-Made Repository here! \n__<{}>__"
         return await koduck.sendmessage(context["message"],
                                         sendcontent=message_notion_offline.format(pmc_link))
 
