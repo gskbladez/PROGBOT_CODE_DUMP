@@ -33,7 +33,7 @@ MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
-MAX_REPO_QUERY = 5
+MAX_REPO_QUERY = 2
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -2375,7 +2375,7 @@ async def change_prefix(context, *args, **kwargs):
                                  sendcontent="Error occurred!")
     return
 
-async def pmr(context, *args, **kwargs):
+async def repo(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if notion_support:
         if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
@@ -2385,10 +2385,30 @@ async def pmr(context, *args, **kwargs):
                                         sendcontent=message_help.format(pmc_link))
         cv = client.get_collection_view("https://www.notion.so/2039bbb48f044867bc802c4b62c45c95?v=e764af0e779640178a24240d3776f50b")
         for row in cv.collection.get_rows(search=args[0]):
+            # rows_found = ", ".join(row.name)
+            size = len(cv.collection.get_rows(search=args[0]))
+            user_query = args[0]
+            if (len(cv.collection.get_rows(search=args[0])) == 1):
+                generated_msg = "**Found {} entries for _'{}'_..** \n" + \
+                                "**_`{}`_** by __*{}*__:\n __<{}>__"
+                return await koduck.sendmessage(context["message"],
+                                                sendcontent=generated_msg.format(size, user_query, row.name, row.author, row.link))
+            print(size)
             print("NAME:'{}' LINK: {} AUTHOR: '{}'".format(row.name, row.link, row.author))
-            # if cv.collection.get_rows(search=args[0]) > MAX_REPO_QUERY:
-            #      await koduck.sendmessage(context["message"],
-            #                               sendcontent="Search query too broad! Please narrow your search results!")
+            if (len(cv.collection.get_rows(search=args[0])) > 1):
+                generated_msg = "**Found {} entries for _'{}'_..** \n" + \
+                                "%s, %s, %s, %s" % (*row.name,)
+                                # *row.name, sep = ", "
+                                # "_`{}`_, _`{}`_, _`{}`_, _`{}`_, _`{}`_"
+                                # (*row.name, sep = ", ")
+                return await koduck.sendmessage(context["message"],
+                                                sendcontent=generated_msg.format(size, user_query))
+
+
+                 # return await koduck.sendmessage(context["message"],
+                 #                          sendcontent="Search query too broad! Please narrow your search results!")
+
+
             generated_msg = "**_`{}`_** by __*{}*__:\n __<{}>__"
             return await koduck.sendmessage(context["message"],
                                             sendcontent=generated_msg.format(row.name, row.author, row.link))
