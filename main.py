@@ -692,7 +692,7 @@ async def find_value_in_table(context, df, search_col, search_arg, suppress_notf
     if "Alias" in df:
         alias_check = df[
             df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
-        if alias_check.shape[0] > 1:
+        if (alias_check.shape[0] > 1) and (not allow_duplicate):
             await koduck.sendmessage(context["message"],
                                      sendcontent="Found more than one match for %s! You should probably let the devs know...")
             return None
@@ -937,9 +937,11 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
                                            alias_message=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(context, pmc_power_df, "Power/NCP", arg, suppress_notfound=True)
+        power_info = await find_value_in_table(context, pmc_power_df, "Power/NCP", arg, suppress_notfound=True,
+                                               alias_message=True)
         if power_info is None:
-            power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=False)
+            power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=False,
+                                                   alias_message=True)
             if power_info is None:
                 return None, None, None, None, None
 
@@ -1444,7 +1446,7 @@ async def query(context, *args, **kwargs):
     arg = cleaned_args[0]
     arg_combined = " ".join(cleaned_args)
 
-    is_chip_query, chip_title, chip_msg = query_chip(arg_combined)
+    is_chip_query, chip_title, chip_msg = query_chip(cleaned_args)
     is_ncp_query, ncp_title, ncp_msg = query_ncp(arg_combined)
     if is_chip_query and is_ncp_query:
         result_title = "Pulling up all BattleChips and NCPs from %s..." % re.match(r".*(`.+`).*", chip_title).group(1)
