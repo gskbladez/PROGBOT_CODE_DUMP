@@ -208,6 +208,8 @@ else:
     notion_support = True
     print("Notion support enabled!")
     client = NotionClient(token_v2=not_token)
+    notion_pmr_database = os.getenv('DATABASE_PLAYER')
+
 
 ##################
 # BASIC COMMANDS #
@@ -2384,7 +2386,7 @@ async def repo(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                         sendcontent=message_help.format(pmc_link))
         # We need Will's API token in order for this to work. This is the production database.
-        cv = client.get_collection_view("https://www.notion.so/dc469d3ae5f147cab389b6f61bce102e?v=085a409506684722a8ec91ae6f56640c")
+        cv = client.get_collection_view(notion_pmr_database)
         size = len(cv.collection.get_rows(search=args[0]))
         user_query = args[0]
         if (len(cv.collection.get_rows(search=args[0])) == 1):
