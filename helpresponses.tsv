@@ -98,6 +98,8 @@ daemonruling		Reminders (DarkChips)	TRUE		__**Daemons**__ are the entities respo
 					
 crimsonnoise		Rollers	FALSE		This commands rolls CrimsonNoise (unofficial content) and gives you the result automatically! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!
 					
+repo		Lookups	FALSE		This command can pull up and search for player-made content on the official Notion Player-Made Repository. Type `{cp}repo` to learn more!
+
 commands		Helpers	FALSE		Provides the list of commands available for the user to run.
 unknowncommand		Helpers	TRUE		I don't know this command, or there is no help message for this command.
 query		Lookups	FALSE		The Query command can be used to filter through **Chips**, **NCPs **, **Powers**, and **Viruses** by *Tag*, *Category*, or *Crossover Content*! It can also list **Daemons** and **Network Modifiers**, as well as look up **Navi Power Upgrades**! 

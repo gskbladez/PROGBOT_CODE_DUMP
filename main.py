@@ -2383,43 +2383,29 @@ async def repo(context, *args, **kwargs):
                             "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
             return await koduck.sendmessage(context["message"],
                                         sendcontent=message_help.format(pmc_link))
-        cv = client.get_collection_view("https://www.notion.so/2039bbb48f044867bc802c4b62c45c95?v=e764af0e779640178a24240d3776f50b")
-        for row in cv.collection.get_rows(search=args[0]):
-            # rows_found = ", ".join(row.name)
-            size = len(cv.collection.get_rows(search=args[0]))
-            user_query = args[0]
-            if (len(cv.collection.get_rows(search=args[0])) == 1):
-                generated_msg = "**Found {} entries for _'{}'_..** \n" + \
+        # We need Will's API token in order for this to work. This is the production database.
+        cv = client.get_collection_view("https://www.notion.so/dc469d3ae5f147cab389b6f61bce102e?v=085a409506684722a8ec91ae6f56640c")
+        size = len(cv.collection.get_rows(search=args[0]))
+        user_query = args[0]
+        if (len(cv.collection.get_rows(search=args[0])) == 1):
+            for row in cv.collection.get_rows(search=args[0]):
+                generated_msg = "**Found {} entry for _'{}'_..** \n" + \
                                 "**_`{}`_** by __*{}*__:\n __<{}>__"
                 return await koduck.sendmessage(context["message"],
-                                                sendcontent=generated_msg.format(size, user_query, row.name, row.author, row.link))
-            print(size)
-            print("NAME:'{}' LINK: {} AUTHOR: '{}'".format(row.name, row.link, row.author))
-            if (len(cv.collection.get_rows(search=args[0])) > 1):
-                generated_msg = "**Found {} entries for _'{}'_..** \n" + \
-                                "%s, %s, %s, %s" % (*row.name,)
-                                # *row.name, sep = ", "
-                                # "_`{}`_, _`{}`_, _`{}`_, _`{}`_, _`{}`_"
-                                # (*row.name, sep = ", ")
-                return await koduck.sendmessage(context["message"],
-                                                sendcontent=generated_msg.format(size, user_query))
-
-
-                 # return await koduck.sendmessage(context["message"],
-                 #                          sendcontent="Search query too broad! Please narrow your search results!")
-
-
-            generated_msg = "**_`{}`_** by __*{}*__:\n __<{}>__"
+                                            sendcontent=generated_msg.format(size, user_query, row.name, row.author, row.link))
+        if (len(cv.collection.get_rows(search=args[0])) > 1):
+            repo_results = "', '".join(row.name for row in cv.collection.get_rows(search=args[0]))
+            generated_msg = "**Found {} entries for _'{}'_..** \n" + \
+                            "*'%s'*" % repo_results
             return await koduck.sendmessage(context["message"],
-                                            sendcontent=generated_msg.format(row.name, row.author, row.link))
+                                            sendcontent=generated_msg.format(size, user_query))
         if not cv.collection.get_rows(search=args[0]):
                  await koduck.sendmessage(context["message"],
-                                          sendcontent="I can't find anything with that query, sorry..")
+                                          sendcontent="I can't find anything with that query, sorry!")
     else:
         message_notion_offline = "Want to submit custom game content? You can access the full Player-Made Repository here! \n__<{}>__"
         return await koduck.sendmessage(context["message"],
                                         sendcontent=message_notion_offline.format(pmc_link))
-
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
