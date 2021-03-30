@@ -2385,23 +2385,24 @@ async def repo(context, *args, **kwargs):
                             "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
             return await koduck.sendmessage(context["message"],
                                         sendcontent=message_help.format(pmc_link))
-        # We need Will's API token in order for this to work. This is the production database.
-        cv = client.get_collection_view(notion_pmr_database)
-        size = len(cv.collection.get_rows(search=args[0]))
-        user_query = args[0]
-        if (len(cv.collection.get_rows(search=args[0])) == 1):
-            for row in cv.collection.get_rows(search=args[0]):
+        # client stuff
+        cv = client.get_collection_view(notion_pmr_database) # env token: DATABASE_PLAYER
+        user_query = context["paramline"]
+        size = len(cv.collection.get_rows(search=user_query))
+
+        if size == 1:
+            for row in cv.collection.get_rows(search=user_query):
                 generated_msg = "**Found {} entry for _'{}'_..** \n" + \
                                 "**_`{}`_** by __*{}*__:\n __<{}>__"
                 return await koduck.sendmessage(context["message"],
                                             sendcontent=generated_msg.format(size, user_query, row.name, row.author, row.link))
-        if (len(cv.collection.get_rows(search=args[0])) > 1):
-            repo_results = "', '".join(row.name for row in cv.collection.get_rows(search=args[0]))
+        if size > 1:
+            repo_results = "', '".join(row.name for row in cv.collection.get_rows(search=user_query))
             generated_msg = "**Found {} entries for _'{}'_..** \n" + \
                             "*'%s'*" % repo_results
             return await koduck.sendmessage(context["message"],
                                             sendcontent=generated_msg.format(size, user_query))
-        if not cv.collection.get_rows(search=args[0]):
+        if not cv.collection.get_rows(search=user_query):
                  await koduck.sendmessage(context["message"],
                                           sendcontent="I can't find anything with that query, sorry!")
     else:
