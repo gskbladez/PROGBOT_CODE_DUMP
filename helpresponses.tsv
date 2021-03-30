@@ -2,7 +2,8 @@ Command	Alias	Type	Hidden?	Ruling?	Response
 roll	r	Rollers	FALSE		Rolls a number of X-sided dice, including success/fail thresholds or additional hits.
 repeatroll	rr, repeatr	Rollers	FALSE		Repeats a roll X times. Uses the same dice algebra as `{cp}roll`.
 rulebook		Lookups	FALSE		Pulls up links for the NetBattlers rulebooks.
-					
+repo	pmr, pmc, playermade	Lookups	FALSE		This command can pull up and search for player-made content on the official Notion Player-Made Repository. Type `{cp}repo` to learn more!
+
 stats	skills, stat, skill	Reminders (Base)	FALSE		All characters, ranging from Navis to Viruses, have **three stats** and **nine skills**, with each stat having three related skills.\n> **Mind:** Sense, Info, Coding\n> **Body:** Strength, Speed, Stamina\n> **Soul:** Charm, Bravery, Affinity\nWhen rolling skills, the player adds the skill and the related stat, then rolls that many dice. For more information on each skill, try using `{cp}help!` (i.e. `{cp}help speed`)\n\nSkills cannot be reduced below 0. Stats cannot be reduced below 1.\n**NetOps:** Skills cannot exceed 5. Stats cannot exceed 3.\n**Navis:** Skills cannot exceed 5. Stats cannot exceed 4.
 sense		Reminders (Base)	TRUE		Study your surroundings, find jack-in ports, and take aim!
 info		Reminders (Base)	TRUE		Possess knowledge and expertly wield Battle Chips!
@@ -97,8 +98,6 @@ networkmodruling		Reminders (Advanced Content)	TRUE		__**Network Modifiers**__ (
 daemonruling		Reminders (DarkChips)	TRUE		__**Daemons**__ are the entities responsible for **DarkChips**. Mysterious beings with inestimatable powers, they prey on insecurities to forge dark bonds with Navis.\n\nDaemons have four aspects: their **Domain**, **Tribute**, **ChaosUnison**, and **Signature DarkChip**. Within their Domain, their powers are myriad and far-reaching: spawning Viruses, corrupting Mystery Data, and haunting NPCs are just some of the ways they can exert their influence. And while they are responsible for DarkChips, they can tempt Navis in other, crueller ways so long as it aligns with their Domain, all in exchange for a Bond Point or Tribute.
 					
 crimsonnoise		Rollers	FALSE		This commands rolls CrimsonNoise (unofficial content) and gives you the result automatically! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!
-					
-repo		Lookups	FALSE		This command can pull up and search for player-made content on the official Notion Player-Made Repository. Type `{cp}repo` to learn more!
 
 commands		Helpers	FALSE		Provides the list of commands available for the user to run.
 unknowncommand		Helpers	TRUE		I don't know this command, or there is no help message for this command.
