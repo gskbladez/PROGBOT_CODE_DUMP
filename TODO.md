@@ -1,7 +1,7 @@
 # TODO List
 
 ### Known Bugs
-- There's a Notion entry in the production database that contains Markdown in it's name field.
+- `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas) - blame notion for my laziness
 
 ### Improvements
 - Improve audience data storage (don't need text file)
