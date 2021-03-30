@@ -725,7 +725,7 @@ async def find_value_in_table(context, df, search_col, search_arg, suppress_notf
         return None
     elif search_results.shape[0] > 1:
         if allow_duplicate:
-            return search_results.iloc[random.randint(0, search_results.shape[0] - 1)]
+            return search_results.iloc[random.randrange(0, search_results.shape[0])]
         else:
             await koduck.sendmessage(context["message"],
                                      sendcontent="Found more than one match for %s! You should probably let the devs know..." % search_arg)
