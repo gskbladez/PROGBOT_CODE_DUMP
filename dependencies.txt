@@ -2,4 +2,3 @@ discord.py>=1.2
 pandas
 rply
 python-dotenv
-notion
