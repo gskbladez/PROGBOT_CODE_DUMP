@@ -1,6 +1,5 @@
 import discord
-from notion.client import NotionClient
-from notion.collection import *
+import requests
 import asyncio
 import sys, os, random
 import koduck, yadon
@@ -16,7 +15,6 @@ import datetime
 
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
-not_token = os.getenv('NOTION_TOKEN')
 
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
@@ -33,7 +31,6 @@ MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
-MAX_REPO_QUERY = 2
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -199,17 +196,6 @@ required_files = [settings.commandstablename, settings.settingstablename, settin
 bad_files = [f for f in required_files if not os.path.isfile(f+".txt")]
 if bad_files:
     raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
-
-notion_support = False
-if not not_token:
-    print("Notion token not found! Please retrieve a token from a logged-in Notion account!")
-    print("You can get this by inspecting your Notion cookies for the value of token_v2.")
-else:
-    notion_support = True
-    print("Notion support enabled!")
-    client = NotionClient(token_v2=not_token)
-    notion_pmr_database = os.getenv('DATABASE_PLAYER')
-
 
 ##################
 # BASIC COMMANDS #
@@ -2381,36 +2367,65 @@ async def change_prefix(context, *args, **kwargs):
 
 async def repo(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if notion_support:
-        if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-            message_help =  "Give me the name of custom game content and I can look them up on the official repository for you! " + \
-                            "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
-            return await koduck.sendmessage(context["message"],
-                                        sendcontent=message_help.format(pmc_link))
-        # client stuff
-        cv = client.get_collection_view(notion_pmr_database) # env token: DATABASE_PLAYER
-        user_query = context["paramline"]
-        size = len(cv.collection.get_rows(search=user_query))
-
-        if size == 1:
-            for row in cv.collection.get_rows(search=user_query):
-                generated_msg = "**Found {} entry for _'{}'_..** \n" + \
-                                "**_`{}`_** by __*{}*__:\n __<{}>__"
-                return await koduck.sendmessage(context["message"],
-                                            sendcontent=generated_msg.format(size, user_query, row.name, row.author, row.link))
-        if size > 1:
-            repo_results = "', '".join(row.name for row in cv.collection.get_rows(search=user_query))
-            generated_msg = "**Found {} entries for _'{}'_..** \n" + \
-                            "*'%s'*" % repo_results
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent=generated_msg.format(size, user_query))
-        if not cv.collection.get_rows(search=user_query):
-                 await koduck.sendmessage(context["message"],
-                                          sendcontent="I can't find anything with that query, sorry!")
-    else:
-        message_notion_offline = "Want to submit custom game content? You can access the full Player-Made Repository here! \n__<{}>__"
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        message_help =  "Give me the name of custom game content and I can look them up on the official repository for you! " + \
+                        "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=message_notion_offline.format(pmc_link))
+                                    sendcontent=message_help.format(pmc_link))
+    user_query = context["paramline"]
+
+    # locale/tz are optional fields
+    data = {
+        "collectionId": "97e4a870-4673-4fc7-a2c7-3fb876e4d837",
+        "collectionViewId": "085a4095-0668-4722-a8ec-91ae6f56640c",
+        "loader": {
+            "limit": 50,
+            "loadContentCover": True,
+            "searchQuery": user_query,
+            "type": "table",
+        },
+        "query": {
+            "aggregations": [{"property":"title", "aggregator":"count"}],
+            "sort": [{"property":"g=]<","direction":"ascending"}, {"property":"title","direction":"ascending"}, {"property":"UjPS","direction":"descending"}],
+        },
+    }
+    r = requests.post("https://www.notion.so/api/v3/queryCollection", json=data)
+
+    # iza helped me rewrite the overwhelming bulk of this.
+    # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.
+    repo_results_dict = {}
+    blockmap = r.json()["recordMap"]["block"]
+    for k in blockmap:
+        if "properties" in blockmap[k]["value"]:
+            repo_results_dict[k] = blockmap[k]["value"]["properties"]
+
+    df_column_names = {}
+    header_blk = r.json()["recordMap"]["collection"][data["collectionId"]]["value"]["schema"]
+    for k in header_blk:
+        df_column_names[k] = header_blk[k]["name"]
+
+    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names)
+    repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game'] else x)
+
+    size = repo_results_df.shape[0]
+    if not size:
+        await koduck.sendmessage(context["message"],
+                                 sendcontent="I can't find anything with that query, sorry!")
+    else:
+        repo_results_df['Link'] = repo_results_df['Link'].explode().apply(lambda x: x[0])
+        repo_result_row = repo_results_df.iloc[0]
+    if size == 1:
+        generated_msg = "**Found {} entry for _'{}'_..** \n" + \
+                        "**_`{}`_** by __*{}*__:\n __<{}>__"
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=generated_msg.format(size, user_query, repo_result_row["Name"], repo_result_row["Author"], repo_result_row["Link"]))
+    if size > 1:
+        repo_results = "', '".join(repo_results_df["Name"])
+        generated_msg = "**Found {} entries for _'{}'_..** \n" + \
+                        "*'%s'*" % repo_results
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=generated_msg.format(size, user_query))
+
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)

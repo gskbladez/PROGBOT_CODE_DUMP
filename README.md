@@ -8,7 +8,6 @@ To add ProgBot to your server, click this link! https://discordapp.com/oauth2/au
 - `pandas` (1.1+)
 - `rply` (0.7+)
 - `python-dotenv` (0.10+)
-- `notion`
 
 ### How to Setup a Local Instance
 - Clone or fork ProgBot, downloading the files.
@@ -39,29 +38,8 @@ To add ProgBot to your server, click this link! https://discordapp.com/oauth2/au
 - The bot will now respond to commands in the server!
 
 ### Configuring local Notion support
-- Sign into Notion.
-- In order to use the `>repo` command in ProgBot and potentially other Notion additions in the future, you need a copy of the official databases MMG uses. You can use the Duplicate function at the top-right of the page to do this with a signed-in account.
-  - [Player-Made Repository Database](https://www.notion.so/dc469d3ae5f147cab389b6f61bce102e?v=085a409506684722a8ec91ae6f56640c)
-- Open up the Browser Inspector with `CTRL-SHIFT-I` (Windows) / `CMD-OPT-I` (Mac).
-    - (Firefox) Navigate to the Storage tab, and copy the contents of `token_v2` into a new `.env` variable named `NOTION_TOKEN`.
-    - (Chrome) Navigate to the Application tab, then under `Cookies`, look for `token_v2` under `notion.so` and copy the property in the `Value` tab.
-- Go to the duplicate Notion database, and paste the link from your URL bar into an environment variable named `DATABASE_PLAYER`.
-- If you've done everything correctly, your `.env` file should look like this:
-    ``` bash
-    # env
-    DISCORD_TOKEN=...
-    NOTION_TOKEN=[THE CONTENTS OF token_v2 HERE]
-    DATABASE_PLAYER=[LINK TO YOUR DUPLICATE DATABASE ON notion.so]
-    ```
-- Now ProgBot should output like this if successful.
-    ```
-    Notion support enabled!
-    Jacking In!
-    Name: [Bot Name]
-    ID: [Bot ID]
-    ```
+#### EDIT: NEVERMIND LOL
 
-Please note: There may be more environment variables to add later, and your Notion account _needs_ to be able to edit the database you're copying to read from it.
 
 ### Commands
 Default command prefix is `>`.
