@@ -35,10 +35,14 @@ def ReadRowFromTable(tablename, key):
     
     if dict is None:
         return None
-    elif key not in dict.keys():
-        return None
-    else:
+    if key in dict.keys():
         return dict[key]
+
+    if not isinstance(key, str):
+        if str(key) in dict.keys():
+            return dict[str(key)]
+
+    return None
 
 #Writes a new table, or replaces a table if it exists already (use with caution!)
 #Use OrderedDict instead of a normal dict if ordering is important
@@ -74,7 +78,7 @@ def AppendRowToTable(tablename, key, values):
         return -1
     else:
         file = open("{}.txt".format(tablename), "a", encoding="utf8")
-        file.write("\t".join([key] + values) + "\n")
+        file.write("\t".join([str(key)] + values) + "\n")
         file.close()
         return 0
 
@@ -83,16 +87,20 @@ def AppendRowToTable(tablename, key, values):
 #Replaces the row's values if the key already exists in the table
 def WriteRowToTable(tablename, key, values):
     dict = ReadTable(tablename)
-    
+    str_values = [str(v) for v in values]
+
     #if table doesn't exist yet
     if dict is None:
-        WriteTable(tablename, {key:values})
+        WriteTable(tablename, {key:str_values})
     #if row doesn't exist in table yet
-    elif key not in dict.keys():
-        AppendRowToTable(tablename, key, values)
-    else:
-        dict[key] = values
+    elif key in dict.keys():
+        dict[key] = str_values
         WriteTable(tablename, dict)
+    elif str(key) in dict.keys():
+        dict[str(key)] = str_values
+        WriteTable(tablename, dict)
+    else:
+        AppendRowToTable(tablename, key, str_values)
 
 #Appends a value to a row in a table
 #Creates a new table if it doesn't exist yet
