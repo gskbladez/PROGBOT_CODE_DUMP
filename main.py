@@ -2390,6 +2390,9 @@ async def repo(context, *args, **kwargs):
         },
     }
     r = requests.post("https://www.notion.so/api/v3/queryCollection", json=data)
+    if r.status_code != 200:
+        return await koduck.sendmessage(context["message"],
+                                 sendcontent="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
 
     # iza helped me rewrite the overwhelming bulk of this.
     # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.
