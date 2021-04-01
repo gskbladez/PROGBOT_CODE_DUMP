@@ -1,4 +1,5 @@
 import discord
+import requests
 import asyncio
 import sys, os, random
 import koduck, yadon
@@ -479,7 +480,7 @@ async def help_cmd(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
 
     funkyarg = ''.join(cleaned_args)
-    help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True)
+    help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)
     if help_msg is None:
         help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
     else:
@@ -688,11 +689,11 @@ async def tag(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
-async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False):
+async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
     if "Alias" in df:
         alias_check = df[
             df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
-        if alias_check.shape[0] > 1:
+        if (alias_check.shape[0] > 1) and (not allow_duplicate):
             await koduck.sendmessage(context["message"],
                                      sendcontent="Found more than one match for %s! You should probably let the devs know...")
             return None
@@ -709,11 +710,13 @@ async def find_value_in_table(context, df, search_col, search_arg, suppress_notf
                                      sendcontent="I can't find `%s`!" % search_arg)
         return None
     elif search_results.shape[0] > 1:
-        await koduck.sendmessage(context["message"],
-                                 sendcontent="Found more than one match for %s! You should probably let the devs know..." % search_arg)
+        if allow_duplicate:
+            return search_results.iloc[random.randrange(0, search_results.shape[0])]
+        else:
+            await koduck.sendmessage(context["message"],
+                                     sendcontent="Found more than one match for %s! You should probably let the devs know..." % search_arg)
         return None
     return search_results.iloc[0]
-
 
 async def send_query_msg(context, return_title, return_msg):
     return await koduck.sendmessage(context["message"], sendcontent="**%s**\n*%s*" % (return_title, return_msg))
@@ -935,9 +938,11 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
                                            alias_message=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(context, pmc_power_df, "Power/NCP", arg, suppress_notfound=True)
+        power_info = await find_value_in_table(context, pmc_power_df, "Power/NCP", arg, suppress_notfound=True,
+                                               alias_message=True)
         if power_info is None:
-            power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=False)
+            power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=False,
+                                                   alias_message=True)
             if power_info is None:
                 return None, None, None, None, None
 
@@ -1442,7 +1447,7 @@ async def query(context, *args, **kwargs):
     arg = cleaned_args[0]
     arg_combined = " ".join(cleaned_args)
 
-    is_chip_query, chip_title, chip_msg = query_chip(arg_combined)
+    is_chip_query, chip_title, chip_msg = query_chip(cleaned_args)
     is_ncp_query, ncp_title, ncp_msg = query_ncp(arg_combined)
     if is_chip_query and is_ncp_query:
         result_title = "Pulling up all BattleChips and NCPs from %s..." % re.match(r".*(`.+`).*", chip_title).group(1)
@@ -2346,7 +2351,6 @@ async def virusr(context, *args, **kwargs):
 async def break_test(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendcontent=str(0 / 0))
 
-
 # UGH permissions
 async def change_prefix(context, *args, **kwargs):
     if not args:
@@ -2360,6 +2364,70 @@ async def change_prefix(context, *args, **kwargs):
         await koduck.sendmessage(context["message"],
                                  sendcontent="Error occurred!")
     return
+
+async def repo(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        message_help =  "Give me the name of custom game content and I can look them up on the official repository for you! " + \
+                        "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=message_help.format(pmc_link))
+    user_query = context["paramline"]
+
+    # locale/tz are optional fields
+    data = {
+        "collectionId": "97e4a870-4673-4fc7-a2c7-3fb876e4d837",
+        "collectionViewId": "085a4095-0668-4722-a8ec-91ae6f56640c",
+        "loader": {
+            "limit": 50,
+            "loadContentCover": True,
+            "searchQuery": user_query,
+            "type": "table",
+        },
+        "query": {
+            "aggregations": [{"property":"title", "aggregator":"count"}],
+            "sort": [{"property":"g=]<","direction":"ascending"}, {"property":"title","direction":"ascending"}, {"property":"UjPS","direction":"descending"}],
+        },
+    }
+    r = requests.post("https://www.notion.so/api/v3/queryCollection", json=data)
+    if r.status_code != 200:
+        return await koduck.sendmessage(context["message"],
+                                 sendcontent="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
+
+    # iza helped me rewrite the overwhelming bulk of this.
+    # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.
+    repo_results_dict = {}
+    blockmap = r.json()["recordMap"]["block"]
+    for k in blockmap:
+        if "properties" in blockmap[k]["value"]:
+            repo_results_dict[k] = blockmap[k]["value"]["properties"]
+
+    df_column_names = {}
+    header_blk = r.json()["recordMap"]["collection"][data["collectionId"]]["value"]["schema"]
+    for k in header_blk:
+        df_column_names[k] = header_blk[k]["name"]
+
+    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names)
+    repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game'] else x)
+
+    size = repo_results_df.shape[0]
+    if not size:
+        await koduck.sendmessage(context["message"],
+                                 sendcontent="I can't find anything with that query, sorry!")
+    else:
+        repo_results_df['Link'] = repo_results_df['Link'].explode().apply(lambda x: x[0])
+        repo_result_row = repo_results_df.iloc[0]
+    if size == 1:
+        generated_msg = "**Found {} entry for _'{}'_..** \n" + \
+                        "**_`{}`_** by __*{}*__:\n __<{}>__"
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=generated_msg.format(size, user_query, repo_result_row["Name"], repo_result_row["Author"], repo_result_row["Link"]))
+    if size > 1:
+        repo_results = "', '".join(repo_results_df["Name"])
+        generated_msg = "**Found {} entries for _'{}'_..** \n" + \
+                        "*'%s'*" % repo_results
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=generated_msg.format(size, user_query))
 
 
 def setup():

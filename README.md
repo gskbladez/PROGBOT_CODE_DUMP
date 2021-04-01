@@ -37,6 +37,10 @@ To add ProgBot to your server, click this link! https://discordapp.com/oauth2/au
 - Go to that link and invite bot to a server (probably a test one)
 - The bot will now respond to commands in the server!
 
+### Configuring local Notion support
+#### EDIT: NEVERMIND LOL
+
+
 ### Commands
 Default command prefix is `>`.
 
@@ -111,6 +115,9 @@ Rolls on the Element Generation table.
 
 `virusr`/`virusrandom`
 Rolls random viruses. Can specify the number and categories you want to roll.
+
+`repo`
+Searches and pulls up download links from the player-made content on Notion.
 
 ### Additional Databases
 - Customized Mastersheet: https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing
