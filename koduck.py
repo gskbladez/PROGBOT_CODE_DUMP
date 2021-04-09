@@ -1,4 +1,6 @@
 import json
+
+import pandas as pd
 from discord.ext import commands
 
 # -*- coding: utf_8 -*-
@@ -332,7 +334,7 @@ def updateuserlevel(userid, level):
     except ValueError:
         return -1
     
-    yadon.WriteRowToTable(settings.userlevelstablename, userid, [str(level)])
+    yadon.WriteRowToTable(settings.userlevelstablename, userid, [level])
     return 0
 
 def getuserlevel(userid):
@@ -439,13 +441,12 @@ async def on_message(message):
                 #log(None, settings.message_restrictedaccess)
                 return
             pass
-        else:
-            if userlevel < commands[context["command"]][2]:
-                #notify user of restricted access only if it's a prefix command
-                if context["command"] in prefixcommands:
-                    await sendmessage(message, sendcontent=settings.message_restrictedaccess)
-                #log(None, settings.message_restrictedaccess)
-                return
+        elif userlevel < commands[context["command"]][2]:
+            #notify user of restricted access only if it's a prefix command
+            if context["command"] in prefixcommands:
+                await sendmessage(message, sendcontent=settings.message_restrictedaccess)
+            #log(None, settings.message_restrictedaccess)
+            return
 
         #RUN THE COMMAND
         function = commands[context["command"]][0]

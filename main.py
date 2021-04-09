@@ -220,7 +220,7 @@ async def sendmessage(context, *args, **kwargs):
     if len(args) < 2:
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_sendmessage_noparam)
     channelid = args[0]
-    THEchannel = koduck.client.get_channel(channelid)
+    THEchannel = koduck.client.get_channel(int(channelid))
     THEmessagecontent = context["paramline"][context["paramline"].index(settings.paramdelim) + 1:].strip()
     return await koduck.sendmessage(context["message"], sendchannel=THEchannel, sendcontent=THEmessagecontent,
                                     ignorecd=True)
@@ -256,9 +256,9 @@ async def bugreport(context, *args, **kwargs):
 
 async def changestatus(context, *args, **kwargs):
     if len(args) < 1:
-        return await koduck.client.change_presence(game=discord.Game(name=""))
+        return await koduck.client.change_presence(activity=discord.Game(name=""))
     else:
-        return await koduck.client.change_presence(game=discord.Game(name=context["paramline"]))
+        return await koduck.client.change_presence(activity=discord.Game(name=context["paramline"]))
 
 
 async def updatesettings(context, *args, **kwargs):
@@ -349,11 +349,11 @@ async def purge(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_purge_invalidparam)
 
     counter = 0
-    async for message in koduck.client.logs_from(context["message"].channel, limit=settings.purgesearchlimit):
+    async for message in context["message"].channel.history(limit=settings.purgesearchlimit):
         if counter >= limit:
             break
         if message.author.id == koduck.client.user.id:
-            await koduck.client.delete_message(message)
+            await message.delete()
             counter += 1
 
 

@@ -9,6 +9,7 @@
 - `>rule` command
 - Add MegaCheer as query
  -Required documents check: should add '.txt' to settings.py
+ - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
 
 ### New Features
 - Roll random adventures from the book
