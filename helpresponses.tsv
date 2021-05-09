@@ -1,6 +1,6 @@
 Command	Alias	Type	Hidden?	Ruling?	Response
-roll	r	Rollers	FALSE		Rolls a number of X-sided dice, including success/fail thresholds or additional hits.
-repeatroll	rr, repeatr	Rollers	FALSE		Repeats a roll X times. Uses the same dice algebra as `{cp}roll`.
+roll	r	Rollers	FALSE	rollhelp	Rolls a number of X-sided dice, including success/fail thresholds or additional hits.
+repeatroll	rr, repeatr	Rollers	FALSE	rollhelp	Repeats a roll X times. Uses the same dice algebra as `{cp}roll`.
 rulebook		Lookups	FALSE		Pulls up links for the NetBattlers rulebooks.
 repo	pmr, pmc, playermade	Lookups	FALSE		This command can pull up and search for player-made content on the official Notion Player-Made Repository. Type `{cp}repo` to learn more!
 					
@@ -97,6 +97,8 @@ cheerruling		Reminders (Advanced Content)	TRUE		When a session has **__Audience 
 jeerruling		Reminders (Advanced Content)	TRUE		When a session has **__Audience Participation__**, the audience is given **Jeer Points**, which they can use to boost enemies and trip up players! The GM can give Jeer Points as the downside to a player's partial success or failure (2 points for partial, 4 points for failure). \n\nAudience members can spend Jeer points at any time. If the effect can't manifest now, it will appear at the next opportunity. For larger audiences, consider limiting who can spend Cheer/Jeer points and how often! \n> **1 Point:** Roll a random effect on the Jeer table.\n > **2 Points:** Pick a specific effect from the Jeer table.\n > **5 Points:** Pick a specific effect from the MegaJeer table! 
 networkmodruling		Reminders (Advanced Content)	TRUE		__**Network Modifiers**__ (Network Mods) are overarching rules applied to an entire network. Network Mods are often installed somewhere onto the server, either housed digitally as a huge structure or physically inserted into the server itself. 
 daemonruling		Reminders (DarkChips)	TRUE		__**Daemons**__ are the entities responsible for **DarkChips**. Mysterious beings with inestimatable powers, they prey on insecurities to forge dark bonds with Navis.\n\nDaemons have four aspects: their **Domain**, **Tribute**, **ChaosUnison**, and **Signature DarkChip**. Within their Domain, their powers are myriad and far-reaching: spawning Viruses, corrupting Mystery Data, and haunting NPCs are just some of the ways they can exert their influence. And while they are responsible for DarkChips, they can tempt Navis in other, crueller ways so long as it aligns with their Domain, all in exchange for a Bond Point or Tribute.
+					
+rollhelp		Rollers	TRUE		Syntax Examples:\n>>> `{cp}r 5d6>4`: Rolls five six-sided dice (5d6), counting results greater than 4 as hits.\n`{cp}r $N5`: Roll five six-sided dice at Normal difficulty.\n`#`: Comment character. (i.e. `{cp}r $N6 # jumpjets` adds the comment `# jumpjets` after the results.)\n`+1`: Adds 1 to the results.\n`k1`: Keep highest 1. (i.e. `{cp}r 2d6k1`: rolls two six-sided dice and keeps the higher)\n`l1`: Keep lowest 1. (i.e. `{cp}r 2d6l1`: rolls two six-sided dice and keeps the lower)\n`!6`: Explode on values equal to or greater than 6. (i.e. `{cp}r 5d6!6>4`: rolls five six-sided dice that explode on 6, counting results above 4 as successes) *When a dice explodes, you roll another dice and add the result to the pool. Additional dice can also explode.*
 					
 crimsonnoise		Rollers	FALSE		This commands rolls CrimsonNoise (unofficial content) and gives you the result automatically! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!
 					

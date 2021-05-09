@@ -490,7 +490,7 @@ async def help_cmd(context, *args, **kwargs):
             if ruling_msg is None:
                 return await koduck.sendmessage(context["message"],
                                     sendcontent="Couldn't pull up additional ruling information for %s! You should probably let the devs know..." % help_msg["Ruling?"])
-            help_response = ruling_msg["Response"] + "\n\n" + help_response
+            help_response = help_response + "\n\n" + ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"]))
 
     return await koduck.sendmessage(context["message"],
                                     sendcontent=help_response)
@@ -576,8 +576,13 @@ def format_hits_roll(roll_result):
 
 async def repeatroll(context, *args, **kwargs):
     if "paramline" not in context:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "rollhelp", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can repeat a roll command for you! Try `{cp}repeatroll 3, 5d6>4` or `{cp}repeatroll 3, $N5`!".replace(
+                                        sendcontent=("I can repeat a roll command for you! Try `{cp}repeatroll 3, 5d6>4` or `{cp}repeatroll 3, $N5`!\n\n" + ruling_msg["Response"]).replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
     if len(args) < 2:
         return await koduck.sendmessage(context["message"],
@@ -629,8 +634,12 @@ async def repeatroll(context, *args, **kwargs):
 
 async def roll(context, *args, **kwargs):
     if "paramline" not in context:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "rollhelp", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!".replace(
+                                        sendcontent=("I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!\n\n" + ruling_msg["Response"]).replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
     roll_line = context["paramline"]
     if ROLL_COMMENT_CHAR in roll_line:
