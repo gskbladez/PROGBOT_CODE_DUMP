@@ -2429,6 +2429,199 @@ async def repo(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent=generated_msg.format(size, user_query))
 
+async def adventure(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+    if (len(cleaned_args) < 1):
+        cleaned_args.append("core")
+    if (cleaned_args[0] == 'help'):
+        adventure_help_msg = "I can generate an adventure for you! Specify `{cp}adventure` with the type of story you'd like!\n" + \
+                             "*Core, Chaos*"
+        return await koduck.sendmessage(context["message"], sendcontent=adventure_help_msg.replace("{cp}", settings.commandprefix))
+    if (len(cleaned_args) > 1):
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="I can only generate one adventure at a time!")
+    await adventure_master(context, cleaned_args)
+
+async def adventure_master(context, args):
+    arg = args[0]
+# -----------------------------------------------------------------------
+# ADVENTURE HEADERS
+    # The "Sort" column controls how the data is sorted between the option presets.
+    # The "Definition" column controls the filtering rules for grammar correction.
+    # All of the randomization is done initially for the Chaos preset.
+
+    # The following sorting mechanisms have been removed until more options have been created for them.
+    # Atmosphere, NPC last names, vulnerability header
+# -----------------------------------------------------------------------
+# Classification headers (for the type of adventure the generator sorts from)
+
+# These three work together (Except core rulebook doesn't really care about ClassHeader, for now.)
+
+    classdf_sub = adventure_df[adventure_df["Type"] == "ClassHeader"]
+    row_num = random.randint(1, classdf_sub.shape[0]) - 1
+    sort_class = [classdf_sub.iloc[row_num]["Sort"]]
+    class_header = [classdf_sub.iloc[row_num]["Result"]]
+
+# Adventure headers
+# Corresponds to the header table in the book. Extended for customization.
+
+    advheaddf_sub = adventure_df[adventure_df["Type"] == "AdvHeader"]
+    row_num = random.randint(1, advheaddf_sub.shape[0]) - 1
+    sort_advheader = [advheaddf_sub.iloc[row_num]["Sort"]]
+    define_advheader = [advheaddf_sub.iloc[row_num]["Definition"]]
+    adv_header = [advheaddf_sub.iloc[row_num]["Result"]]
+
+# Header results
+# Corresponds to the results table in the book.
+
+    headresultdf_sub = adventure_df[adventure_df["Type"] == "HeaderResult"]
+    row_num = random.randint(1, headresultdf_sub.shape[0]) - 1
+    sort_headresult = [headresultdf_sub.iloc[row_num]["Sort"]]
+    define_headresult = [headresultdf_sub.iloc[row_num]["Definition"]]
+    header_result = [headresultdf_sub.iloc[row_num]["Result"]]
+
+# -----------------------------------------------------------------------
+# Element generation. Just borrowed the element picker code for this.
+
+    navi_element = 1
+    navi_element = random.sample(range(element_df.shape[0]), navi_element)
+    navi_element = [element_df.iloc[i]["element"] for i in navi_element]
+
+# -----------------------------------------------------------------------
+# Conflict generators. Headers for conflicts and vulnerabilities primarily exist for homebrew tables.
+
+    conflictheaddf_sub = adventure_df[adventure_df["Type"] == "ConflictHeader"]
+    row_num = random.randint(1, conflictheaddf_sub.shape[0]) - 1
+    sort_conflicthead = [conflictheaddf_sub.iloc[row_num]["Sort"]]
+    define_conflicthead = [conflictheaddf_sub.iloc[row_num]["Definition"]]
+    conflict_header = [conflictheaddf_sub.iloc[row_num]["Result"]]
+
+    conflictresultdf_sub = adventure_df[adventure_df["Type"] == "ConflictResult"]
+    row_num = random.randint(1, conflictresultdf_sub.shape[0]) - 1
+    sort_conflictresult = [conflictresultdf_sub.iloc[row_num]["Sort"]]
+    define_conflictresult = [conflictresultdf_sub.iloc[row_num]["Definition"]]
+    conflict_result = [conflictresultdf_sub.iloc[row_num]["Result"]]
+
+    vulnresdf_sub = adventure_df[adventure_df["Type"] == "VulnResult"]
+    row_num = random.randint(1, vulnresdf_sub.shape[0]) - 1
+    sort_vulnres = [vulnresdf_sub.iloc[row_num]["Sort"]]
+    define_vulnres = [vulnresdf_sub.iloc[row_num]["Definition"]]
+    vuln_result = [vulnresdf_sub.iloc[row_num]["Result"]]
+
+# -----------------------------------------------------------------------
+# Extended generator tables.
+
+    conflicttypedf_sub = adventure_df[adventure_df["Type"] == "ConflictType"]
+    row_num = random.randint(1, conflicttypedf_sub.shape[0]) - 1
+    conflict_type = [conflicttypedf_sub.iloc[row_num]["Result"]]
+
+# -----------------------------------------------------------------------
+# Generators for human beings.
+# Although with the NBC you never know, it might be for ghosts instead.
+# First name generator corresponds to the first names in the Core book. Last names are homebrew.
+# Maybe to-do navi names too?
+
+    npcfirstdf_sub = adventure_df[adventure_df["Type"] == "NPCFirstName"]
+    row_num = random.randint(1, npcfirstdf_sub.shape[0]) - 1
+    sort_npcfirst = [npcfirstdf_sub.iloc[row_num]["Sort"]]
+    npc_firstname = [npcfirstdf_sub.iloc[row_num]["Result"]]
+
+# -----------------------------------------------------------------------
+# these use the same tables, just need individual results
+    npcpersonalitydf_sub = adventure_df[adventure_df["Type"] == "Personality"]
+    row_num = random.randint(1, npcpersonalitydf_sub.shape[0]) - 1
+    sort_npcpersonality = [npcpersonalitydf_sub.iloc[row_num]["Sort"]]
+    npc_personality = [npcpersonalitydf_sub.iloc[row_num]["Result"]]
+
+    navipersonalitydf_sub = adventure_df[adventure_df["Type"] == "Personality"]
+    row_num = random.randint(1, navipersonalitydf_sub.shape[0]) - 1
+    navi_personality = [navipersonalitydf_sub.iloc[row_num]["Result"]]
+# -----------------------------------------------------------------------
+
+    npcoccupationdf_sub = adventure_df[adventure_df["Type"] == "Occupation"]
+    row_num = random.randint(1, npcoccupationdf_sub.shape[0]) - 1
+    sort_npcoccupation = [npcoccupationdf_sub.iloc[row_num]["Sort"]]
+    npc_occupation = [npcoccupationdf_sub.iloc[row_num]["Result"]]
+
+    npcfeaturedf_sub = adventure_df[adventure_df["Type"] == "Feature"]
+    row_num = random.randint(1, npcfeaturedf_sub.shape[0]) - 1
+    sort_npcfeature = [npcfeaturedf_sub.iloc[row_num]["Sort"]]
+    npc_feature = [npcfeaturedf_sub.iloc[row_num]["Result"]]
+
+    navihostilitydf_sub = adventure_df[adventure_df["Type"] == "NaviHostility"]
+    row_num = random.randint(1, navihostilitydf_sub.shape[0]) - 1
+    navi_hostility = [navihostilitydf_sub.iloc[row_num]["Result"]]
+
+    if (args[0] == 'core'):
+        while sort_advheader[0].lower() != 'core':
+            row_num = random.randint(1, advheaddf_sub.shape[0]) - 1
+            sort_advheader = [advheaddf_sub.iloc[row_num]["Sort"]]
+            define_advheader = [advheaddf_sub.iloc[row_num]["Definition"]]
+            adv_header = [advheaddf_sub.iloc[row_num]["Result"]]
+
+        while sort_headresult[0].lower() != 'core' or define_headresult[0] != define_advheader[0]:
+            row_num = random.randint(1, headresultdf_sub.shape[0]) - 1
+            sort_headresult = [headresultdf_sub.iloc[row_num]["Sort"]]
+            define_headresult = [headresultdf_sub.iloc[row_num]["Definition"]]
+            header_result = [headresultdf_sub.iloc[row_num]["Result"]]
+
+        while sort_conflictresult[0].lower() != 'core':
+            row_num = random.randint(1, conflictresultdf_sub.shape[0]) - 1
+            sort_conflictresult = [conflictresultdf_sub.iloc[row_num]["Sort"]]
+            define_conflictresult = [conflictresultdf_sub.iloc[row_num]["Definition"]]
+            conflict_result = [conflictresultdf_sub.iloc[row_num]["Result"]]
+
+        while sort_npcfirst[0].lower() != 'core':
+            row_num = random.randint(1, npcfirstdf_sub.shape[0]) - 1
+            sort_npcfirst = [npcfirstdf_sub.iloc[row_num]["Sort"]]
+            npc_firstname = [npcfirstdf_sub.iloc[row_num]["Result"]]
+
+        while sort_npcpersonality[0].lower() != 'core':
+            row_num = random.randint(1, npcpersonalitydf_sub.shape[0]) - 1
+            sort_npcpersonality = [npcpersonalitydf_sub.iloc[row_num]["Sort"]]
+            npc_personality = [npcpersonalitydf_sub.iloc[row_num]["Result"]]
+
+        while sort_npcoccupation[0].lower() != 'core':
+            row_num = random.randint(1, npcoccupationdf_sub.shape[0]) - 1
+            sort_npcoccupation = [npcoccupationdf_sub.iloc[row_num]["Sort"]]
+            npc_occupation = [npcoccupationdf_sub.iloc[row_num]["Result"]]
+
+        while sort_npcfeature[0].lower() != 'core':
+            row_num = random.randint(1, npcfeaturedf_sub.shape[0]) - 1
+            sort_npcfeature = [npcfeaturedf_sub.iloc[row_num]["Sort"]]
+            npc_feature = [npcfeaturedf_sub.iloc[row_num]["Result"]]
+
+        while sort_vulnres[0].lower() != 'core':
+            row_num = random.randint(1, vulnresdf_sub.shape[0]) - 1
+            sort_vulnres = [vulnresdf_sub.iloc[row_num]["Sort"]]
+            define_vulnres = [vulnresdf_sub.iloc[row_num]["Definition"]]
+            vuln_result = [vulnresdf_sub.iloc[row_num]["Result"]]
+
+        generated_msg = "The adventure starts with the kids {} {} " + \
+                        "But an evildoer is there to {} Their name is **{}**, and they are {} {}, notable for {}. Their vulnerability is {}\n"
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=generated_msg.format(*adv_header, *header_result,
+                                                                         *conflict_result, *npc_firstname,
+                                                                         *npc_personality, *npc_occupation,
+                                                                         *npc_feature, *vuln_result))
+#   TODO:
+#    if (args[0] == 'extended'):
+    if (args[0] == 'chaos'):
+        generated_msg = "The adventure starts with {} {} {} " + \
+                        "But {} {} Their vulnerability is {}\n" + \
+                        "**{}** is {} {}, notable for {}.\n" + \
+                        "Next, {} meet {} navi with the element of {} that greets them with {}.\n" + \
+                        "The primary conflict is {}"
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=generated_msg.format(*class_header, *adv_header, *header_result,
+                                                                         *conflict_header, *conflict_result,
+                                                                         *vuln_result,
+                                                                         *npc_firstname, *npc_personality,
+                                                                         *npc_occupation, *npc_feature, *class_header,
+                                                                         *navi_personality, *navi_element, *navi_hostility, *conflict_type))
+    else:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Please specify either Core or Chaos.")
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
