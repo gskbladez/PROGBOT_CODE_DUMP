@@ -1740,7 +1740,7 @@ async def element(context, *args, **kwargs):
         except ValueError:
             element_category = arg.lower().capitalize()
 
-            sub_element_df = element_df[element_df["category"].str.contains(arg, flags=re.IGNORECASE)]
+            sub_element_df = element_df[element_df["category"].str.contains(re.escape(arg), flags=re.IGNORECASE)]
             if sub_element_df.shape[0] == 0:
                 return await koduck.sendmessage(context["message"],
                                                 sendcontent="Not a valid category!\n" +
