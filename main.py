@@ -2622,6 +2622,12 @@ async def adventure_master(context, args):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Core or Chaos.")
 
+
+async def sheet(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent="*NetBattlers Blank Character Sheet:* __<https://docs.google.com/spreadsheets/d/158iI4LCpfS4AGjV5EshHkbKUD4GxogJCiwZCV6QzJ5s>__")
+
+
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
 

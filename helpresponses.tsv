@@ -2,6 +2,7 @@ Command	Alias	Type	Hidden?	Ruling?	Response
 roll	r	Rollers	FALSE		Rolls a number of X-sided dice, including success/fail thresholds or additional hits.
 repeatroll	rr, repeatr	Rollers	FALSE		Repeats a roll X times. Uses the same dice algebra as `{cp}roll`.
 rulebook		Lookups	FALSE		Pulls up links for the NetBattlers rulebooks.
+sheet		Lookups	FALSE		Pulls up a link to the NetBattlers blank character sheet.
 repo	pmr, pmc, playermade	Lookups	FALSE		This command can pull up and search for player-made content on the official Notion Player-Made Repository. Type `{cp}repo` to learn more!
 					
 stats	skills, stat, skill	Reminders (Base)	FALSE		All characters, ranging from Navis to Viruses, have **three stats** and **nine skills**, with each stat having three related skills.\n> **Mind:** Sense, Info, Coding\n> **Body:** Strength, Speed, Stamina\n> **Soul:** Charm, Bravery, Affinity\nWhen rolling skills, the player adds the skill and the related stat, then rolls that many dice. For more information on each skill, try using `{cp}help!` (i.e. `{cp}help speed`)\n\nSkills cannot be reduced below 0. Stats cannot be reduced below 1.\n**NetOps:** Skills cannot exceed 5. Stats cannot exceed 3.\n**Navis:** Skills cannot exceed 5. Stats cannot exceed 4.
