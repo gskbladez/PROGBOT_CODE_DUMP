@@ -609,6 +609,7 @@ async def repeatroll(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="No roll given!")
 
+
     try:
         roll_results = [roll_master(roll_line) for i in range(0, repeat_arg)]
     except rply.errors.LexingError:
@@ -623,6 +624,9 @@ async def repeatroll(context, *args, **kwargs):
     except dice_algebra.OutOfDiceBounds:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
+    except dice_algebra.BadArgument as e:
+        return await koduck.sendmessage(context["message"], sendcontent="Bad argument! " + str(e))
+
 
     roll_outputs = [format_hits_roll(result) for result in roll_results]
     progroll_output = "{} *rolls...*".format(context["message"].author.mention)
@@ -666,6 +670,8 @@ async def roll(context, *args, **kwargs):
     except dice_algebra.OutOfDiceBounds:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
+    except dice_algebra.BadArgument as e:
+        return await koduck.sendmessage(context["message"], sendcontent="Bad argument! " + str(e))
 
     progroll_output = "{} *rolls...* {}".format(context["message"].author.mention, format_hits_roll(roll_results))
     if roll_comment:
