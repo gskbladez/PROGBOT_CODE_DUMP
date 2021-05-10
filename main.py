@@ -2451,14 +2451,14 @@ async def adventure_master(context, args):
     # All of the randomization is done initially for the Chaos preset.
 
     # The following sorting mechanisms have been removed until more options have been created for them.
-    # Atmosphere, NPC last names, vulnerability header
+    # Atmosphere, NPC last names, vulnerability header, some sort/definition rules that are needed in later iterations
 # -----------------------------------------------------------------------
 # Classification headers (for the type of adventure the generator sorts from)
 # These three work together (Except core rulebook doesn't really care about ClassHeader, for now.)
 
     classdf_sub = adventure_df[adventure_df["Type"] == "ClassHeader"]
     row_num = random.randint(1, classdf_sub.shape[0]) - 1
-    sort_class = [classdf_sub.iloc[row_num]["Sort"]]
+    # sort_class = [classdf_sub.iloc[row_num]["Sort"]]
     class_header = [classdf_sub.iloc[row_num]["Result"]]
 
 # Adventure headers
@@ -2491,20 +2491,20 @@ async def adventure_master(context, args):
 
     conflictheaddf_sub = adventure_df[adventure_df["Type"] == "ConflictHeader"]
     row_num = random.randint(1, conflictheaddf_sub.shape[0]) - 1
-    sort_conflicthead = [conflictheaddf_sub.iloc[row_num]["Sort"]]
-    define_conflicthead = [conflictheaddf_sub.iloc[row_num]["Definition"]]
+    # sort_conflicthead = [conflictheaddf_sub.iloc[row_num]["Sort"]]
+    # define_conflicthead = [conflictheaddf_sub.iloc[row_num]["Definition"]]
     conflict_header = [conflictheaddf_sub.iloc[row_num]["Result"]]
 
     conflictresultdf_sub = adventure_df[adventure_df["Type"] == "ConflictResult"]
     row_num = random.randint(1, conflictresultdf_sub.shape[0]) - 1
     sort_conflictresult = [conflictresultdf_sub.iloc[row_num]["Sort"]]
-    define_conflictresult = [conflictresultdf_sub.iloc[row_num]["Definition"]]
+    # define_conflictresult = [conflictresultdf_sub.iloc[row_num]["Definition"]]
     conflict_result = [conflictresultdf_sub.iloc[row_num]["Result"]]
 
     vulnresdf_sub = adventure_df[adventure_df["Type"] == "VulnResult"]
     row_num = random.randint(1, vulnresdf_sub.shape[0]) - 1
     sort_vulnres = [vulnresdf_sub.iloc[row_num]["Sort"]]
-    define_vulnres = [vulnresdf_sub.iloc[row_num]["Definition"]]
+    # define_vulnres = [vulnresdf_sub.iloc[row_num]["Definition"]]
     vuln_result = [vulnresdf_sub.iloc[row_num]["Result"]]
 
 # -----------------------------------------------------------------------
@@ -2567,7 +2567,7 @@ async def adventure_master(context, args):
         while sort_conflictresult[0].lower() != 'core':
             row_num = random.randint(1, conflictresultdf_sub.shape[0]) - 1
             sort_conflictresult = [conflictresultdf_sub.iloc[row_num]["Sort"]]
-            define_conflictresult = [conflictresultdf_sub.iloc[row_num]["Definition"]]
+            # define_conflictresult = [conflictresultdf_sub.iloc[row_num]["Definition"]]
             conflict_result = [conflictresultdf_sub.iloc[row_num]["Result"]]
 
         while sort_npcfirst[0].lower() != 'core':
@@ -2593,7 +2593,7 @@ async def adventure_master(context, args):
         while sort_vulnres[0].lower() != 'core':
             row_num = random.randint(1, vulnresdf_sub.shape[0]) - 1
             sort_vulnres = [vulnresdf_sub.iloc[row_num]["Sort"]]
-            define_vulnres = [vulnresdf_sub.iloc[row_num]["Definition"]]
+            # define_vulnres = [vulnresdf_sub.iloc[row_num]["Definition"]]
             vuln_result = [vulnresdf_sub.iloc[row_num]["Result"]]
 
         generated_msg = "The adventure starts with the kids {} {} " + \
