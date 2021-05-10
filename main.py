@@ -169,6 +169,7 @@ pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (rulebook_df["Name"] != "Nyx")]
 
+adventure_df = pd.read_csv(r"adventuredata.tsv", sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -2431,19 +2432,18 @@ async def repo(context, *args, **kwargs):
 
 async def adventure(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    if (len(cleaned_args) < 1):
+    if len(cleaned_args) < 1:
         cleaned_args.append("core")
-    if (cleaned_args[0] == 'help'):
+    if cleaned_args[0] == 'help':
         adventure_help_msg = "I can generate an adventure for you! Specify `{cp}adventure` with the type of story you'd like!\n" + \
                              "*Core, Chaos*"
         return await koduck.sendmessage(context["message"], sendcontent=adventure_help_msg.replace("{cp}", settings.commandprefix))
-    if (len(cleaned_args) > 1):
+    if len(cleaned_args) > 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can only generate one adventure at a time!")
     await adventure_master(context, cleaned_args)
 
 async def adventure_master(context, args):
-    arg = args[0]
 # -----------------------------------------------------------------------
 # ADVENTURE HEADERS
     # The "Sort" column controls how the data is sorted between the option presets.
@@ -2454,7 +2454,6 @@ async def adventure_master(context, args):
     # Atmosphere, NPC last names, vulnerability header
 # -----------------------------------------------------------------------
 # Classification headers (for the type of adventure the generator sorts from)
-
 # These three work together (Except core rulebook doesn't really care about ClassHeader, for now.)
 
     classdf_sub = adventure_df[adventure_df["Type"] == "ClassHeader"]
@@ -2552,7 +2551,7 @@ async def adventure_master(context, args):
     row_num = random.randint(1, navihostilitydf_sub.shape[0]) - 1
     navi_hostility = [navihostilitydf_sub.iloc[row_num]["Result"]]
 
-    if (args[0] == 'core'):
+    if args[0] == 'core':
         while sort_advheader[0].lower() != 'core':
             row_num = random.randint(1, advheaddf_sub.shape[0]) - 1
             sort_advheader = [advheaddf_sub.iloc[row_num]["Sort"]]
@@ -2606,7 +2605,7 @@ async def adventure_master(context, args):
                                                                          *npc_feature, *vuln_result))
 #   TODO:
 #    if (args[0] == 'extended'):
-    if (args[0] == 'chaos'):
+    if args[0] == 'chaos':
         generated_msg = "The adventure starts with {} {} {} " + \
                         "But {} {} Their vulnerability is {}\n" + \
                         "**{}** is {} {}, notable for {}.\n" + \
