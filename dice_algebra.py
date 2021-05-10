@@ -113,6 +113,8 @@ class DiceOp(BaseBox):
         if self.number_of_dice > DICE_NUM_LIMIT:
             raise OutOfDiceBounds("Too many dice! No more than %d!" % DICE_NUM_LIMIT)
         self.size_of_dice = right.eval()
+        if self.size_of_dice <= 0:
+            raise BadArgument("Can't roll a 0 or negative-sided dice!")
         self.results = [random.randint(1,self.size_of_dice) for i in range(self.number_of_dice)]
         initial_roll = "{}d{}".format(self.left, self.right)
         initial_mod = ", ".join(map(str,self.results))
