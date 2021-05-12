@@ -6,6 +6,15 @@
 
 ### Improvements
 - Improve audience data storage (don't need text file)
+
+`upgrade`/`npu`
+- Let `>npu [upgrade]` pull up the NCP
+
+`roll`/`r`
+- Add repeat command to ProgBot dice parser
+- Improve the help with list of keyletters it recognizes
+
+`Misc.`
 - Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
 - `>rule` command
 - Add MegaCheer as query
@@ -23,7 +32,6 @@
 ### Potential Ideas
 - Add NaviChip creation rules
 - Shop ideas for new GMs?
-- General `repeat` command? (Element, Mysterydata, roll)
 - Training GPT-2 on how to add a man with a gun to any scene
 
 ### Notes
