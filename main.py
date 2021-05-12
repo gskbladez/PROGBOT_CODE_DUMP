@@ -490,7 +490,7 @@ async def help_cmd(context, *args, **kwargs):
             if ruling_msg is None:
                 return await koduck.sendmessage(context["message"],
                                     sendcontent="Couldn't pull up additional ruling information for %s! You should probably let the devs know..." % help_msg["Ruling?"])
-            help_response = ruling_msg["Response"] + "\n\n" + help_response
+            help_response = help_response + "\n\n" + ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"]))
 
     return await koduck.sendmessage(context["message"],
                                     sendcontent=help_response)
@@ -576,8 +576,13 @@ def format_hits_roll(roll_result):
 
 async def repeatroll(context, *args, **kwargs):
     if "paramline" not in context:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "rollhelp", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can repeat a roll command for you! Try `{cp}repeatroll 3, 5d6>4` or `{cp}repeatroll 3, $N5`!".replace(
+                                        sendcontent=("I can repeat a roll command for you! Try `{cp}repeatroll 3, 5d6>4` or `{cp}repeatroll 3, $N5`!\n\n" + ruling_msg["Response"]).replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
     if len(args) < 2:
         return await koduck.sendmessage(context["message"],
@@ -604,6 +609,7 @@ async def repeatroll(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="No roll given!")
 
+
     try:
         roll_results = [roll_master(roll_line) for i in range(0, repeat_arg)]
     except rply.errors.LexingError:
@@ -618,6 +624,9 @@ async def repeatroll(context, *args, **kwargs):
     except dice_algebra.OutOfDiceBounds:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
+    except dice_algebra.BadArgument as e:
+        return await koduck.sendmessage(context["message"], sendcontent="Bad argument! " + str(e))
+
 
     roll_outputs = [format_hits_roll(result) for result in roll_results]
     progroll_output = "{} *rolls...*".format(context["message"].author.mention)
@@ -629,8 +638,12 @@ async def repeatroll(context, *args, **kwargs):
 
 async def roll(context, *args, **kwargs):
     if "paramline" not in context:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "rollhelp", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!".replace(
+                                        sendcontent=("I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!\n\n" + ruling_msg["Response"]).replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
     roll_line = context["paramline"]
     if ROLL_COMMENT_CHAR in roll_line:
@@ -657,6 +670,8 @@ async def roll(context, *args, **kwargs):
     except dice_algebra.OutOfDiceBounds:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
+    except dice_algebra.BadArgument as e:
+        return await koduck.sendmessage(context["message"], sendcontent="Bad argument! " + str(e))
 
     progroll_output = "{} *rolls...* {}".format(context["message"].author.mention, format_hits_roll(roll_results))
     if roll_comment:
@@ -1725,7 +1740,7 @@ async def element(context, *args, **kwargs):
         except ValueError:
             element_category = arg.lower().capitalize()
 
-            sub_element_df = element_df[element_df["category"].str.contains(arg, flags=re.IGNORECASE)]
+            sub_element_df = element_df[element_df["category"].str.contains(re.escape(arg), flags=re.IGNORECASE)]
             if sub_element_df.shape[0] == 0:
                 return await koduck.sendmessage(context["message"],
                                                 sendcontent="Not a valid category!\n" +

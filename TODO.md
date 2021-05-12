@@ -2,6 +2,7 @@
 
 ### Known Bugs
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
+- Add multiplication/division to dice parser (Nyx CombatResolution)
 
 ### Improvements
 - Improve audience data storage (don't need text file)

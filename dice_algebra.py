@@ -1,11 +1,13 @@
 import random
 import copy
+import re
 
 from rply import LexerGenerator
 from rply import ParserGenerator
 from rply.token import BaseBox
 
 DICE_NUM_LIMIT = 1000
+EXPLODE_CAP = 100
 lg = LexerGenerator()
 
 EXPLODE_TOKEN = r"\!"
@@ -63,6 +65,9 @@ class DiceError(Exception):
 class OutOfDiceBounds(Exception):
     pass
 
+class BadArgument(Exception):
+    pass
+
 class Number(BaseBox):
     def __init__(self, value):
         self.value = value
@@ -108,6 +113,8 @@ class DiceOp(BaseBox):
         if self.number_of_dice > DICE_NUM_LIMIT:
             raise OutOfDiceBounds("Too many dice! No more than %d!" % DICE_NUM_LIMIT)
         self.size_of_dice = right.eval()
+        if self.size_of_dice <= 0:
+            raise BadArgument("Can't roll a 0 or negative-sided dice!")
         self.results = [random.randint(1,self.size_of_dice) for i in range(self.number_of_dice)]
         initial_roll = "{}d{}".format(self.left, self.right)
         initial_mod = ", ".join(map(str,self.results))
@@ -150,15 +157,20 @@ class DiceOp(BaseBox):
         self.modifications.append(['{}{}'.format(REROLL_TOKEN, limit),repr_result])
 
     def explode(self,limit):
-        #prevent dangerous looping
         if limit < 2:
-            limit = 2
+            raise BadArgument("Cannot explode on 1 or higher! (For bot safety)")
         repr_result = self.results[:]
         for i in range(0,len(self.results)):
             if self.results[i] >= limit:
                  new_roll = random.randint(1,self.size_of_dice)
+                 repr_result.append(bold(new_roll))
                  self.results.append(new_roll)
+                 explosions = 1
                  while new_roll >= limit:
+                     #prevent dangerous looping
+                     if explosions > EXPLODE_CAP:
+                         break
+                     explosions += 1
                      new_roll = random.randint(1,self.size_of_dice)
                      self.results.append(new_roll)
                      repr_result.append(bold(new_roll))
@@ -166,9 +178,9 @@ class DiceOp(BaseBox):
         self.modifications.append(['{}{}'.format(EXPLODE_TOKEN, limit),repr_result])
 
     def success(self, limit):
-        keep = [x for x in self.results if x > limit]
-        repr_result = [str(i) if i in keep else cross_out(str(i)) for i in self.results]
-        self.results = [1] * len(keep)
+        prev_cmd, prev_repr_result = self.modifications[-1]
+        repr_result = [i if int(re.search('\d+', i).group()) > limit else cross_out(i) for i in prev_repr_result.split(", ")]
+        self.results = [1 for x in self.results if x > limit]
         repr_result = ", ".join(map(str,repr_result))
         self.modifications.append(['{}{}'.format(SUCCESS_TOKEN, limit),repr_result])
 
