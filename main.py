@@ -2390,7 +2390,6 @@ async def repo(context, *args, **kwargs):
                                     sendcontent=message_help.format(pmc_link))
     user_query = context["paramline"]
 
-    # locale/tz are optional fields
     data = {
         "collectionId": "97e4a870-4673-4fc7-a2c7-3fb876e4d837",
         "collectionViewId": "085a4095-0668-4722-a8ec-91ae6f56640c",
@@ -2399,10 +2398,14 @@ async def repo(context, *args, **kwargs):
             "loadContentCover": True,
             "searchQuery": user_query,
             "type": "table",
+            "userTimeZone": "America/Chicago",  # oh NOW you want this field. >_>
         },
         "query": {
-            "aggregations": [{"property":"title", "aggregator":"count"}],
-            "sort": [{"property":"g=]<","direction":"ascending"}, {"property":"title","direction":"ascending"}, {"property":"UjPS","direction":"descending"}],
+            "aggregations": [{"property":"title",
+                              "aggregator":"count"}],
+            "sort": [{"property":"g=]<","direction":"ascending"},
+                     {"property":"title","direction":"ascending"},
+                     {"property":"UjPS","direction":"descending"}],
         },
     }
     r = requests.post("https://www.notion.so/api/v3/queryCollection", json=data)
