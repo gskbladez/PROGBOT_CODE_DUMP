@@ -143,7 +143,7 @@ tag_df = pd.read_csv(settings.tagfile, sep="\t").fillna('')
 mysterydata_df = pd.read_csv(settings.mysterydatafile, sep="\t").fillna('')
 networkmod_df = pd.read_csv(settings.networkmodfile, sep="\t").fillna('')
 crimsonnoise_df = pd.read_csv(settings.crimsonnoisefile, sep="\t").fillna('')
-audience_df = pd.read_csv(settings.audiencefile, sep="\t").fillna('')
+audience_df = pd.read_csv(settings.audienceparticipationfile, sep="\t").fillna('')
 
 element_df = pd.read_csv(settings.elementfile, sep="\t").fillna('')
 element_category_list = pd.unique(element_df["category"].dropna())
@@ -2217,7 +2217,8 @@ async def audience(context, *args, **kwargs):
     else:
         if query_details[1] > MAX_CHEER_JEER_ROLL:
             return await koduck.sendmessage(context["message"], sendcontent="Rolling too many Cheers or Jeers! Up to %d!" % MAX_CHEER_JEER_ROLL)
-
+        if not query_details[0]:
+            return await koduck.sendmessage(context["message"], sendcontent="Please specify either Cheer or Jeer!")
         if query_details[1] <= 0:
             embed_descript = "%s rolled ... %d %ss! Huh?!\n\n" % (context["message"].author.mention, query_details[1], query_details[0].capitalize())
         else:
