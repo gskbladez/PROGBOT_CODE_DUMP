@@ -2397,6 +2397,7 @@ async def repo(context, *args, **kwargs):
             "loadContentCover": True,
             "searchQuery": user_query,
             "type": "table",
+            "userTimeZone": "America/Chicago",  # oh NOW you want this field. >_>
         },
         "query": {
             "aggregations": [{"property":"title", "aggregator":"count"}],
