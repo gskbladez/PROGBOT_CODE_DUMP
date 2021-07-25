@@ -2405,6 +2405,11 @@ async def repo(context, *args, **kwargs):
         },
     }
     r = requests.post(settings.notion_query_link, json=data)
+
+    # R:200 - all good
+    # R:3xx - what the fuck notion?
+    # R:4xx - bad request, wrong api endpoint, notion changed the api again, scrape the new fields (i.e.: our problem)
+    # R:5xx - notion's down (i.e.: not our problem)
     if r.status_code != 200:
         print(r.status_code, r.reason)
         return await koduck.sendmessage(context["message"],
