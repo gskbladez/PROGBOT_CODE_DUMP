@@ -2,6 +2,7 @@ Command	Alias	Type	Hidden?	Ruling?	Response
 roll	r	Rollers	FALSE	rollhelp	Rolls a number of X-sided dice, including success/fail thresholds or additional hits.
 repeatroll	rr, repeatr	Rollers	FALSE	rollhelp	Repeats a roll X times. Uses the same dice algebra as `{cp}roll`.
 rulebook		Lookups	FALSE		Pulls up links for the NetBattlers rulebooks.
+sheet		Lookups	FALSE		Pulls up a link to the NetBattlers blank character sheet.
 repo	pmr, pmc, playermade	Lookups	FALSE		This command can pull up and search for player-made content on the official Notion Player-Made Repository. Type `{cp}repo` to learn more!
 sheet		Helpers	FALSE		Pulls up a link to the NetBattlers blank character sheet.
 					

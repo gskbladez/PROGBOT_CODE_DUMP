@@ -54,4 +54,5 @@ repo	repo	prefix	1
 pmr	repo	prefix	1
 playermade	repo	prefix	1
 pmc	repo	prefix	1
+adventure	adventure	prefix	1
 sheet	sheet	prefix	1

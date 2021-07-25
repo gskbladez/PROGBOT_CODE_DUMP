@@ -1,0 +1,189 @@
+Type	Result	Sort	Definition
+ClassHeader	the kids	Core	
+ClassHeader	the NetBattlers	Extended	
+ClassHeader	the NetAgents	NetAgents	
+ClassHeader	the NetNavis	Navis	
+			
+			
+AdvHeader	at school	Core	Event
+AdvHeader	on a field trip to	Core	Location
+AdvHeader	on a weekend trip to	Core	Location
+AdvHeader	travelling by	Core	Transport
+			
+			
+HeaderResult	on exam day.	Core	Event
+HeaderResult	for the talent show.	Core	Event
+HeaderResult	in an afterschool club.	Core	Event
+HeaderResult	with a new teacher.	Core	Event
+HeaderResult	studying Viruses.	Core	Event
+HeaderResult	with a new student.	Core	Event
+			
+			
+HeaderResult	a museum.	Core	Location
+HeaderResult	a factory.	Core	Location
+HeaderResult	the aquarium.	Core	Location
+HeaderResult	the zoo.	Core	Location
+HeaderResult	the observatory.	Core	Location
+HeaderResult	a farm.	Core	Location
+HeaderResult	the woods.	Core	Location
+HeaderResult	a radio station.	Core	Location
+HeaderResult	a laboratory.	Core	Location
+HeaderResult	the power plant.	Core	Location
+HeaderResult	a canyon.	Core	Location
+HeaderResult	a mountain.	Core	Location
+HeaderResult	the beach.	Core	Location
+HeaderResult	the big city.	Core	Location
+HeaderResult	the theater.	Core	Location
+HeaderResult	a haunted house.	Core	Location
+HeaderResult	the circus.	Core	Location
+HeaderResult	a theme park.	Core	Location
+HeaderResult	a ski resort.	Core	Location
+HeaderResult	an ice rink.	Core	Location
+HeaderResult	a sports arena.	Core	Location
+HeaderResult	a cinema.	Core	Location
+HeaderResult	an arcade.	Core	Location
+HeaderResult	a music concert.	Core	Location
+			
+HeaderResult	bus.	Core	Transport
+HeaderResult	boat.	Core	Transport
+HeaderResult	plane.	Core	Transport
+HeaderResult	subway.	Core	Transport
+HeaderResult	taxi.	Core	Transport
+HeaderResult	monorail.	Core	Transport
+			
+			
+ConflictType	communication.	Extended	Social
+ConflictType	a battle.	Extended	Battle
+ConflictType	a puzzle.	Extended	Puzzle
+ConflictType	a dungeon.	Extended	Dungeon
+ConflictType	a race.	Extended	Race
+ConflictType	a spectated competition.	Extended	Audience
+ConflictType	between the party.	Extended	PvP
+ConflictType	taking sides.	Extended	PvP
+			
+			
+ConflictHeader	an evildoer is there to	Core	Evil
+ConflictHeader	a computer is there to	Extended	Neutral
+ConflictHeader	a ghost is there to	Extended	Neutral
+ConflictHeader	a monster is there to	Extended	Neutral
+ConflictHeader	a vampire is there to	Extended	Neutral
+ConflictHeader	a robot is there to	Extended	Neutral
+			
+			
+ConflictResult	steal something secret.	Core	Evil
+ConflictResult	destroy something valuable.	Core	Evil
+ConflictResult	get revenge on someone.	Core	Evil
+ConflictResult	take people hostage.	Core	Evil
+ConflictResult	steal something famous.	Core	Evil
+ConflictResult	destroy something beloved.	Core	Evil
+			
+			
+VulnResult	their overconfidence.	Core	Evil
+VulnResult	their incompetent henchmen.	Core	Evil
+VulnResult	something they left behind.	Core	Evil
+VulnResult	something the kids overhear.	Core	Evil
+VulnResult	their paranoia.	Core	Evil
+VulnResult	something they underestimated.	Core	Evil
+			
+			
+NPCFirstName	Vi	Core	
+NPCFirstName	Alma	Core	
+NPCFirstName	Bit	Core	
+NPCFirstName	Byte	Core	
+NPCFirstName	Sofia	Core	
+NPCFirstName	Ada	Core	
+NPCFirstName	Olive	Core	
+NPCFirstName	Vim	Core	
+NPCFirstName	Raj	Core	
+NPCFirstName	Haskell	Core	
+NPCFirstName	Dorothy	Core	
+NPCFirstName	Penny	Core	
+NPCFirstName	Miki	Core	
+NPCFirstName	Lou	Core	
+NPCFirstName	Anne	Core	
+NPCFirstName	Ramesh	Core	
+NPCFirstName	Tux	Core	
+NPCFirstName	Rico	Core	
+NPCFirstName	Akari	Core	
+NPCFirstName	Dev	Core	
+NPCFirstName	Winnie	Core	
+NPCFirstName	Alice	Core	
+NPCFirstName	Afua	Core	
+NPCFirstName	Katherine	Core	
+NPCFirstName	Rosa	Core	
+NPCFirstName	Pepper	Core	
+NPCFirstName	Sparky	Core	
+NPCFirstName	Masa	Core	
+NPCFirstName	Darwin	Core	
+NPCFirstName	Amma	Core	
+NPCFirstName	Dev	Core	
+NPCFirstName	Archie	Core	
+NPCFirstName	Bee	Core	
+NPCFirstName	Kim	Core	
+NPCFirstName	Lisa	Core	
+NPCFirstName	George	Core	
+			
+			
+Personality	an enthusiastic	Core	
+Personality	a dopey	Core	
+Personality	a skeptic	Core	
+Personality	a daydreamy	Core	
+Personality	a nervous	Core	
+Personality	a know-it-all	Core	
+			
+			
+Occupation	student	Core	
+Occupation	Official	Core	
+Occupation	teacher	Core	
+Occupation	businessperson	Core	
+Occupation	stay-at-home	Core	
+Occupation	artist	Core	
+			
+			
+Feature	their hair	Core	
+Feature	their face	Core	
+Feature	their clothes	Core	
+Feature	their voice	Core	
+Feature	their physical mannerisms	Core	
+Feature	an item they have	Core	
+			
+			
+NaviHostility	friendliness	Extended	
+NaviHostility	hostility	Extended	
+NaviHostility	deception	Extended	
+NaviHostility	antagonism	Extended	
+NaviHostility	bitterness	Extended	
+NaviHostility	joyfulness	Extended	
+NaviHostility	approval	Extended	
+NaviHostility	malice	Extended	
+NaviHostility	a killing intent	Extended	
+NaviHostility	pride	Extended	
+NaviHostility	disgust	Extended	
+NaviHostility	elation	Extended	
+NaviHostility	great interest	Extended	
+NaviHostility	fear	Extended	
+NaviHostility	silliness	Extended	
+NaviHostility	relief	Extended	
+NaviHostility	bravery	Extended	
+NaviHostility	dishonesty	Extended	
+NaviHostility	curiosity	Extended	
+NaviHostility	confusion	Extended	
+NaviHostility	envy	Extended	
+NaviHostility	mercy	Extended	
+NaviHostility	confidence	Extended	
+NaviHostility	elegance	Extended	
+NaviHostility	love	Extended	
+NaviHostility	compassion	Extended	
+NaviHostility	coldness	Extended	
+NaviHostility	anticipation	Extended	
+NaviHostility	chaos	Extended	
+NaviHostility	anxiety	Extended	
+NaviHostility	annoyance	Extended	
+NaviHostility	amazement	Extended	
+NaviHostility	narcissism	Extended	
+NaviHostility	determination	Extended	
+NaviHostility	despair	Extended	
+NaviHostility	riches	Extended	
+NaviHostility	brutality	Extended	
+NaviHostility	hope	Extended	
+NaviHostility	unreality	Extended	
