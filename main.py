@@ -2432,7 +2432,7 @@ async def repo(context, *args, **kwargs):
     for k in header_blk:
         df_column_names[k] = header_blk[k]["name"]
 
-    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names)
+    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='index',how='any')
     repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game'] else x)
 
     size = repo_results_df.shape[0]
