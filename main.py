@@ -101,17 +101,17 @@ virus_colors = {"Virus": 0x7c00ff,
 cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 
 mysterydata_dict = {"common": {"color": 0x48C800,
-                               "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"},
+                               "image": settings.common_md_image},
                     "uncommon": {"color": 0x00E1DF,
-                                 "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/uncommonmysterydata.png"},
+                                 "image": settings.uncommon_md_image},
                     "rare": {"color": 0xD8E100,
-                             "image": "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/raremysterydata.png"}}
+                             "image": settings.rare_md_image}}
 
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
 settings.backgroundtask = backgroundtask
 
-chip_df = pd.read_csv(r"chipdata.tsv", sep="\t").fillna('')
+chip_df = pd.read_csv(settings.chipfile, sep="\t").fillna('')
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
 chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
     .stack() \
@@ -124,8 +124,8 @@ chip_category_list = [i for i in chip_category_list if i]
 chip_license_list = pd.unique(chip_df["License"].str.lower())
 chip_from_list = pd.unique(chip_df["From?"].str.lower())
 
-power_df = pd.read_csv(r"powerncpdata.tsv", sep="\t").fillna('')
-virus_df = pd.read_csv(r"virusdata.tsv", sep="\t").fillna('')
+power_df = pd.read_csv(settings.powerfile, sep="\t").fillna('')
+virus_df = pd.read_csv(settings.virusfile, sep="\t").fillna('')
 virus_df = virus_df[virus_df["Name"] != ""]
 virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .stack() \
@@ -137,39 +137,38 @@ virus_tag_list = [i for i in virus_tag_list if i]
 virus_category_list = pd.unique(virus_df["Category"].str.strip())
 virus_category_list = [i for i in virus_category_list if i]
 
-daemon_df = pd.read_csv(r"daemondata.tsv", sep="\t").fillna('').dropna(subset=['Name'])
-bond_df = pd.read_csv(r"bonddata.tsv", sep="\t").fillna('').dropna(subset=['BondPower'])
-tag_df = pd.read_csv(r"tagdata.tsv", sep="\t").fillna('')
-mysterydata_df = pd.read_csv(r"mysterydata.tsv", sep="\t").fillna('')
-networkmod_df = pd.read_csv(r"networkmoddata.tsv", sep="\t").fillna('')
-crimsonnoise_df = pd.read_csv(r"crimsonnoisedata.tsv", sep="\t").fillna('')
-audience_df = pd.read_csv(r"audiencedata.tsv", sep="\t").fillna('')
+daemon_df = pd.read_csv(settings.daemonfile, sep="\t").fillna('').dropna(subset=['Name'])
+bond_df = pd.read_csv(settings.bondfile, sep="\t").fillna('').dropna(subset=['BondPower'])
+tag_df = pd.read_csv(settings.tagfile, sep="\t").fillna('')
+mysterydata_df = pd.read_csv(settings.mysterydatafile, sep="\t").fillna('')
+networkmod_df = pd.read_csv(settings.networkmodfile, sep="\t").fillna('')
+crimsonnoise_df = pd.read_csv(settings.crimsonnoisefile, sep="\t").fillna('')
+audience_df = pd.read_csv(settings.audienceparticipationfile, sep="\t").fillna('')
 
-element_df = pd.read_csv(r"elementdata.tsv", sep="\t").fillna('')
+element_df = pd.read_csv(settings.elementfile, sep="\t").fillna('')
 element_category_list = pd.unique(element_df["category"].dropna())
 
-help_df = pd.read_csv(r"helpresponses.tsv", sep="\t").fillna('')
+help_df = pd.read_csv(settings.helpfile, sep="\t").fillna('')
 help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
 help_cmd_list = [i for i in help_df["Command"] if i]
 help_df["Type"] = help_df["Type"].astype("category")
 help_df["Type"].cat.rename_categories(help_categories, inplace=True)
 help_df["Type"].cat.reorder_categories(list(help_categories.values())+[""], inplace=True)
 
+pmc_chip_df = pd.read_csv(settings.pmc_chipfile, sep="\t").fillna('')
+pmc_power_df = pd.read_csv(settings.pmc_powerfile, sep="\t").fillna('')
+pmc_virus_df = pd.read_csv(settings.pmc_virusfile, sep="\t").fillna('')
+pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
-pmc_chip_df = pd.read_csv(r"playermade_chipdata.tsv", sep="\t").fillna('')
-pmc_power_df = pd.read_csv(r"playermade_powerdata.tsv", sep="\t").fillna('')
-pmc_virus_df = pd.read_csv(r"playermade_virusdata.tsv", sep="\t").fillna('')
-pmc_daemon_df = pd.read_csv(r"playermade_daemondata.tsv", sep="\t").fillna('')
+nyx_chip_df = pd.read_csv(settings.nyx_chipfile, sep="\t").fillna('')
+nyx_power_df = pd.read_csv(settings.nyx_ncpfile, sep="\t").fillna('')
 
-nyx_chip_df = pd.read_csv(r"nyx_chipdata.tsv", sep="\t").fillna('')
-nyx_power_df = pd.read_csv(r"nyx_powerdata.tsv", sep="\t").fillna('')
-
-rulebook_df = pd.read_csv(r"rulebookdata.tsv", sep="\t").fillna('')
+rulebook_df = pd.read_csv(settings.rulebookfile, sep="\t").fillna('')
 pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (rulebook_df["Name"] != "Nyx")]
 
-adventure_df = pd.read_csv(r"adventuredata.tsv", sep="\t").fillna('')
+adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -189,12 +188,12 @@ if not os.path.isfile(settings.logfile):
         pass
 
 if not os.path.isfile(settings.customresponsestablename+".txt"):
-    with open(settings.customresponsestablename+".txt", 'w') as ffp:
+    with open(settings.customresponsestablename, 'w') as ffp:
         pass
 
 required_files = [settings.commandstablename, settings.settingstablename, settings.userlevelstablename]
 
-bad_files = [f for f in required_files if not os.path.isfile(f+".txt")]
+bad_files = [f for f in required_files if not os.path.isfile(f)]
 if bad_files:
     raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
 
@@ -1944,7 +1943,7 @@ async def networkmod(context, *args, **kwargs):
 
 
 async def invite(context, *args, **kwargs):
-    invite_link = "https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0"
+    invite_link = settings.invite_link
     color = 0x71c142
     embed = discord.Embed(title="Just click here to invite me!",
                           color=color,
@@ -2220,7 +2219,8 @@ async def audience(context, *args, **kwargs):
     else:
         if query_details[1] > MAX_CHEER_JEER_ROLL:
             return await koduck.sendmessage(context["message"], sendcontent="Rolling too many Cheers or Jeers! Up to %d!" % MAX_CHEER_JEER_ROLL)
-
+        if not query_details[0]:
+            return await koduck.sendmessage(context["message"], sendcontent="Please specify either Cheer or Jeer!")
         if query_details[1] <= 0:
             embed_descript = "%s rolled ... %d %ss! Huh?!\n\n" % (context["message"].author.mention, query_details[1], query_details[0].capitalize())
         else:
@@ -2391,8 +2391,8 @@ async def repo(context, *args, **kwargs):
     user_query = context["paramline"]
 
     data = {
-        "collectionId": "97e4a870-4673-4fc7-a2c7-3fb876e4d837",
-        "collectionViewId": "085a4095-0668-4722-a8ec-91ae6f56640c",
+        "collectionId": settings.notion_collection_id,
+        "collectionViewId": settings.notion_collection_view_id,
         "loader": {
             "limit": 50,
             "loadContentCover": True,
@@ -2408,8 +2408,14 @@ async def repo(context, *args, **kwargs):
                      {"property":"UjPS","direction":"descending"}],
         },
     }
-    r = requests.post("https://www.notion.so/api/v3/queryCollection", json=data)
+    r = requests.post(settings.notion_query_link, json=data)
+
+    # R:200 - all good
+    # R:3xx - what the fuck notion?
+    # R:4xx - bad request, wrong api endpoint, notion changed the api again, scrape the new fields (i.e.: our problem)
+    # R:5xx - notion's down (i.e.: not our problem)
     if r.status_code != 200:
+        print(r.status_code, r.reason)
         return await koduck.sendmessage(context["message"],
                                  sendcontent="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
 
@@ -2426,7 +2432,7 @@ async def repo(context, *args, **kwargs):
     for k in header_blk:
         df_column_names[k] = header_blk[k]["name"]
 
-    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names)
+    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='index',how='any')
     repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game'] else x)
 
     size = repo_results_df.shape[0]
@@ -2644,6 +2650,12 @@ async def adventure_master(context, args):
 async def sheet(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"],
                                     sendcontent="*NetBattlers Blank Character Sheet:* __<https://docs.google.com/spreadsheets/d/158iI4LCpfS4AGjV5EshHkbKUD4GxogJCiwZCV6QzJ5s>__")
+
+
+async def sheet(context, *args, **kwargs):
+    msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `{cp}repo sheets`!" % settings.character_sheet).replace(
+                                                        "{cp}", koduck.get_prefix(context["message"]))
+    return await koduck.sendmessage(context["message"], sendcontent=msg_txt)
 
 
 def setup():
