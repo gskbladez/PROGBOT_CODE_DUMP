@@ -228,7 +228,7 @@ async def sendmessage(context, *args, **kwargs):
 
 
 async def bugreport(context, *args, **kwargs):
-    if len(args) < 1:
+    if not context['params']:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Sends a bug report to the ProgBot Devs! " + \
                                                     "Please describe the error in full. " + \
