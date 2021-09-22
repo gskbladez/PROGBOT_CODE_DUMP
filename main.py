@@ -106,7 +106,13 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                     "uncommon": {"color": 0x00E1DF,
                                  "image": settings.uncommon_md_image},
                     "rare": {"color": 0xD8E100,
-                             "image": settings.rare_md_image}}
+                             "image": settings.rare_md_image},
+                    "gold": {"color": 0xFFD541,
+                             "image": ""},
+                    "violet": {"color": 0x895EFF,
+                             "image": ""},
+                    "sapphire": {"color": 0x3659FE,
+                             "image": ""}}
 
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
@@ -1511,29 +1517,26 @@ async def mysterydata_master(context, args, force_reward=False):
     if mysterydata_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
+
+    roll_probabilities = mysterydata_type[mysterydata_type["Type"] == "Info"]
     if force_reward:
-        firstroll = random.randint(3, 5)
+        roll_probabilities = roll_probabilities[roll_probabilities["Value"].str.contains("^BattleChip|NCP|NPU$", flags=re.IGNORECASE)]
+    firstroll = random.randint(1, roll_probabilities.shape[0])-1
+    roll_category = roll_probabilities.iloc[firstroll]["Value"]
+
+    df_sub = mysterydata_type[mysterydata_type["Type"] == roll_category]
+    row_num = random.randint(1, df_sub.shape[0]) - 1
+    result_chip = df_sub.iloc[row_num]["Value"]
+    if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
+        result_text = " %s!" % roll_category
     else:
-        firstroll = random.randint(1, 6)
-    if firstroll <= 2:
-        zenny_val = mysterydata_type[mysterydata_type["Type"] == "Zenny"].iloc[0]["Value"]
-        result_chip = "%d" % (int(zenny_val) * (random.randint(1, 6) + random.randint(1, 6)))
-        result_text = " Zenny!"
-    else:
-        if firstroll <= 4:
-            reward_type = "Chip"
-            result_text = " BattleChip!"
-        elif firstroll == 5:
-            reward_type = "NCP"
-            result_text = " NCP!"
-        else:
-            reward_type = "Misc Table"
-            result_text = ""
-        df_sub = mysterydata_type[mysterydata_type["Type"] == reward_type]
-        row_num = random.randint(1, df_sub.shape[0]) - 1
-        result_chip = df_sub.iloc[row_num]["Value"]
-    result_text = "%s%s" % (
-    re.sub(r"\.$", '!', result_chip), result_text)  # replaces any periods with exclamation marks!
+        result_chip = re.sub(r"\.$", '!', result_chip)  # replaces any periods with exclamation marks!
+        result_text = ""
+
+    if roll_category == "Zenny":
+        result_chip = "%d" % (int(result_chip) * (random.randint(1, 6) + random.randint(1, 6)))
+
+    result_text = result_chip + result_text
 
     if arg in mysterydata_dict:
         md_color = mysterydata_dict[arg]["color"]
