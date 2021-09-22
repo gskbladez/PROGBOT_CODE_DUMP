@@ -20,6 +20,7 @@
 - Secret Nyx link command (>nyx) [wartorn: will add `>nyx` alias later]
 - query and similar commands really should have some simple stuff like boolean joins.
 - Chip or queries: simple+guard, support+guard
+- Random Navi rolling
 
 ### Potential Ideas
 - Add NaviChip creation rules

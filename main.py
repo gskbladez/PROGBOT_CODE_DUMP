@@ -89,6 +89,7 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Silicon Skin": 0xf012be,
                        "The Walls Will Swallow You": 0x734b38,
                        "MUDSLURP": 0x7687c6,
+                       "Mudslurp": 0x7687c6,
                        "Tarot": 0xfcf4dc,
                        "Nyx": 0xa29e14,
                        "Genso Network": 0xff605d,
@@ -227,7 +228,7 @@ async def sendmessage(context, *args, **kwargs):
 
 
 async def bugreport(context, *args, **kwargs):
-    if len(args) < 1:
+    if not context['params']:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Sends a bug report to the ProgBot Devs! " + \
                                                     "Please describe the error in full. " + \
