@@ -866,9 +866,9 @@ async def chip(context, *args, **kwargss):
 
         chip_info = await find_value_in_table(context, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
         if chip_info is None:
-            chip_info = await find_value_in_table(context, pmc_chip_df, "Chip", arg, suppress_notfound=True)
+            chip_info = await find_value_in_table(context, pmc_chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
             if chip_info is None:
-                chip_info = await find_value_in_table(context, nyx_chip_df, "Chip", arg, suppress_notfound=False)
+                chip_info = await find_value_in_table(context, nyx_chip_df, "Chip", arg, suppress_notfound=False, alias_message=True)
                 if chip_info is None:
                     continue
 
@@ -954,13 +954,16 @@ def find_skill_color(skill_key):
 async def power_ncp(context, arg, force_power=False, ncp_only=False):
     if ncp_only:
         local_power_df = power_df[power_df["Sort"] != "Virus Power"]
+        local_pmc_df = pmc_power_df[pmc_power_df["Sort"] != "Virus Power"]
     else:
         local_power_df = power_df
+        local_pmc_df = pmc_power_df
+
     power_info = await find_value_in_table(context, local_power_df, "Power/NCP", arg, suppress_notfound=True,
                                            alias_message=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(context, pmc_power_df, "Power/NCP", arg, suppress_notfound=True,
+        power_info = await find_value_in_table(context, local_pmc_df, "Power/NCP", arg, suppress_notfound=True,
                                                alias_message=True)
         if power_info is None:
             power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=False,
