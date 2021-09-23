@@ -29,27 +29,42 @@ MAX_CHEER_JEER_ROLL = 5
 MAX_CHEER_JEER_VALUE = 100
 MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
+SPOTLIGHT_TIMEOUT  = datetime.timedelta(days=0, hours=1, seconds=10)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
 
+# Runtime database; expires on shutdown
+audience_data = {}
+spotlight_db = {}
+
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
-    clean_audience()
-    pass
+    await clean()
+    return
 
-async def clean(context, *args, **kwargs):
-    clean_audience() # cleans up audience.json once per hour
+async def clean():
+    clean_audience() # cleans up audience_data if it hasn't been used in AUDIENCE_TIMEOUT
+    clean_spotlight() # cleans up spotlight_db if it hasn't been used in SPOTLIGHT_TIMEOUT
     return
 
 def clean_audience():
-    with open(settings.audiencefile, "r") as afp:
-        audience_data = json.load(afp)
-        del_keys = [key for key in audience_data if
-                    (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key]["last_modified"], '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT]
-        for key in del_keys: del audience_data[key]
-    with open(settings.audiencefile, 'w') as afp:
-        json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+    #with open(settings.audiencefile, "r") as afp:
+    #    audience_data = json.load(afp)
+    del_keys = [key for key in audience_data if
+                (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key]["last_modified"], '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT]
+    for key in del_keys: del audience_data[key]
+    #with open(settings.audiencefile, 'w') as afp:
+    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
     return
+
+def clean_spotlight():
+    del_keys = [key for key in spotlight_db if
+                (datetime.datetime.now() - datetime.datetime.strptime(spotlight_db[key]["Last Modified"], '%Y-%m-%d %H:%M:%S')) > SPOTLIGHT_TIMEOUT]
+    for key in del_keys: del spotlight_db[key]
+    #with open(settings.audiencefile, 'w') as afp:
+    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+    return
+
 
 skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
@@ -180,8 +195,6 @@ adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
-
-audience_data = {}
 
 # reinitializes audience data on powerup
 with open(settings.audiencefile, 'w') as afp:
@@ -1060,10 +1073,14 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
 
 # lowercases all args and strips trailing/leading whitespaces
 # splits args with no commas into separate arguments
-def clean_args(args):
+def clean_args(args, lowercase=True):
     if len(args) == 1:
         args = re.split(r"(?:,|;|\s+)", args[0])
-    args = [i.lower().strip() for i in args if i and not i.isspace()]
+
+    if lowercase:
+        args = [i.lower().strip() for i in args if i and not i.isspace()]
+    else:
+        args = [i.strip() for i in args if i and not i.isspace()]
     return args
 
 
@@ -2008,77 +2025,77 @@ async def invite(context, *args, **kwargs):
 
 def change_audience(channel_id, cj_type, amount):
     id = str(channel_id)
-    with open(settings.audiencefile, "r") as afp:
-        audience_data = json.load(afp)
-        if id not in audience_data:
-            return (-1, "Audience Participation hasn't been started in this channel!")
-        currentval = audience_data[id][cj_type]
-        tempval = currentval + amount
-        if tempval < 0:
-            return (-1, "There's not enough %ss for that! (Current %ss: %d)" % (*[cj_type.capitalize()]*2, currentval), "")
-        if tempval > MAX_CHEER_JEER_VALUE:
-            return (-1, "That adds too many %ss! (Current %ss: %d, Max: %d)" % (*[cj_type.capitalize()]*2, currentval, MAX_CHEER_JEER_VALUE), "")
+    #with open(settings.audiencefile, "r") as afp:
+    #audience_data = json.load(afp)
+    if id not in audience_data:
+        return (-1, "Audience Participation hasn't been started in this channel!")
+    currentval = audience_data[id][cj_type]
+    tempval = currentval + amount
+    if tempval < 0:
+        return (-1, "There's not enough %ss for that! (Current %ss: %d)" % (*[cj_type.capitalize()]*2, currentval), "")
+    if tempval > MAX_CHEER_JEER_VALUE:
+        return (-1, "That adds too many %ss! (Current %ss: %d, Max: %d)" % (*[cj_type.capitalize()]*2, currentval, MAX_CHEER_JEER_VALUE), "")
 
-        audience_data[id][cj_type] = tempval
-        audience_data[id]["last_modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    audience_data[id][cj_type] = tempval
+    audience_data[id]["last_modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        if amount > 0:
-            word_term = "Added %d %s!" % (amount, cj_type.capitalize())
-        elif amount < 0:
-            word_term = "Spent %d %s!" % (-1*amount, cj_type.capitalize())
-        else:
-            word_term = "Added... 0 %s! Huh?" % (cj_type.capitalize())
-        c_val = audience_data[id]["cheer"]
-        j_val = audience_data[id]["jeer"]
+    if amount > 0:
+        word_term = "Added %d %s!" % (amount, cj_type.capitalize())
+    elif amount < 0:
+        word_term = "Spent %d %s!" % (-1*amount, cj_type.capitalize())
+    else:
+        word_term = "Added... 0 %s! Huh?" % (cj_type.capitalize())
+    c_val = audience_data[id]["cheer"]
+    j_val = audience_data[id]["jeer"]
 
-    with open(settings.audiencefile, 'w') as afp:
-        json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+    #with open(settings.audiencefile, 'w') as afp:
+    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
 
     return (0, word_term, "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
 
 
 def get_audience(channel_id):
     id = str(channel_id)
-    with open(settings.audiencefile, "r") as afp:
-        audience_data = json.load(afp)
-        if id not in audience_data:
-            return (-1, "Audience Participation hasn't been started in this channel!")
-        c_val = audience_data[id]["cheer"]
-        j_val = audience_data[id]["jeer"]
+    #with open(settings.audiencefile, "r") as afp:
+        #audience_data = json.load(afp)
+    if id not in audience_data:
+        return (-1, "Audience Participation hasn't been started in this channel!")
+    c_val = audience_data[id]["cheer"]
+    j_val = audience_data[id]["jeer"]
     return (0, (c_val, j_val))
 
 
 def start_audience(channel_id):
     id = str(channel_id)
-    with open(settings.audiencefile, "r") as afp:
-        audience_data = json.load(afp)
-        if len(audience_data) > MAX_AUDIENCES:
-            return (-2, "ProgBot's hosting too many audiences right now! Try again later!", "")
-        if id in audience_data:
-            c_val = audience_data[id]["cheer"]
-            j_val = audience_data[id]["jeer"]
-            return (-1,
-                    "Audience Participation was already started in this channel!",
-                    "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
-        audience_data[id] = {"cheer": 0, "jeer": 0, "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    #with open(settings.audiencefile, "r") as afp:
+        #audience_data = json.load(afp)
+    if len(audience_data) > MAX_AUDIENCES:
+        return (-2, "ProgBot's hosting too many audiences right now! Try again later!", "")
+    if id in audience_data:
+        c_val = audience_data[id]["cheer"]
+        j_val = audience_data[id]["jeer"]
+        return (-1,
+                "Audience Participation was already started in this channel!",
+                "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
+    audience_data[id] = {"cheer": 0, "jeer": 0, "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
-    with open(settings.audiencefile, 'w') as afp:
-        json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+    #with open(settings.audiencefile, 'w') as afp:
+    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
 
     return (0, "", "")
 
 
 def end_audience(channel_id):
     id = str(channel_id)
-    with open(settings.audiencefile, "r") as afp:
-        audience_data = json.load(afp)
-        try:
-            del audience_data[id]
-            with open(settings.audiencefile, 'w') as afp:
-                json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
-            return 0
-        except KeyError:
-            return -1
+    #with open(settings.audiencefile, "r") as afp:
+    #    audience_data = json.load(afp)
+    try:
+        del audience_data[id]
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        return 0
+    except KeyError:
+        return -1
 
 
 async def cheer(context, *args, **kwargs):
@@ -2701,17 +2718,174 @@ async def adventure_master(context, args):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Core or Chaos.")
 
-
-async def sheet(context, *args, **kwargs):
-    return await koduck.sendmessage(context["message"],
-                                    sendcontent="*NetBattlers Blank Character Sheet:* __<https://docs.google.com/spreadsheets/d/158iI4LCpfS4AGjV5EshHkbKUD4GxogJCiwZCV6QzJ5s>__")
-
-
 async def sheet(context, *args, **kwargs):
     msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `{cp}repo sheets`!" % settings.character_sheet).replace(
                                                         "{cp}", koduck.get_prefix(context["message"]))
     return await koduck.sendmessage(context["message"], sendcontent=msg_txt)
 
+async def spotlight(context, *args, **kwargs):
+    if context["message"].channel.type is discord.ChannelType.private:
+        channel_id = context["message"].channel.id
+        channel_name = context["message"].author.name
+        msg_location = "%s (Direct messages)" % channel_name
+    else:
+        channel_id = context["message"].channel.id
+        channel_name = context["message"].channel.name
+        channel_server = context["message"].channel.guild
+        msg_location = "#%s (%s)" % (channel_name, channel_server)
+
+    cleaned_args = clean_args([" ".join(args)], lowercase=False) # begone, you hecking commas
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        help_msg = "Start up a Spotlight Checklist for this text channel with `{cp}spotlight start`! Add people right away with `{cp}spotlight start Lan/MegaMan Mayl/Roll Dex/GutsMan`.\n" + \
+                   "Mark off people who've acted with `{cp}spotlight Lan`! The checklist will automatically refresh when everyone has acted!\n\n" + \
+                   "**List of Commands:**\n" + \
+                   "> `{cp}spotlight start`, `{cp}spotlight start Lan/MegaMan Mayl/Roll`: Start the checklist in this text channel. You can include names too, separated by spaces or commas!\n" + \
+                   "> `{cp}spotlight Lan`: Mark off Lan/MegaMan off the checklist. Case insensitive. You don't need to type the full name!\n" + \
+                   "> `{cp}spotlight add Yai/Glyde Chaud/ProtoMan`: Add a new person to the checklist. You can add multiple people at once!\n" + \
+                   "> `{cp}spotlight remove Chaud`: Remove a person from the checklist. You can remove multiple people at once!\n" + \
+                   "> `{cp}spotlight edit Yai Yai/Glide`: Update a person's name in the checklist. One at a time!\n" + \
+                   "> `{cp}spotlight show`: Shows the current Spotlight Checklist.\n" + \
+                   "> `{cp}spotlight reset`, `{cp}spotlight reset Lan`: Unmark the entire checklist, or unmark a specific player\n" + \
+                   "> `{cp}spotlight end`: Ends the checklist. Will also automatically close after %d hours.\n" % (SPOTLIGHT_TIMEOUT.seconds/3600)
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
+    if cleaned_args[0].lower() in ['rules', 'rule', 'book', 'rulebook']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "flow", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+
+
+    if cleaned_args[0].lower() in ['start', 'begin', 'on']:
+        if channel_id in spotlight_db:
+            spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            return await koduck.sendmessage(context["message"],
+                                            sendembed=embed_spotlight_message("Spotlight Tracker already started in this channel!",
+                                                                              msg_location, error=True))
+        if len(cleaned_args) > 1:
+            participants = dict.fromkeys(cleaned_args[1:], False)
+        else:
+            participants = {}
+        spotlight_db[channel_id] = participants
+        spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location)
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+
+    if channel_id not in spotlight_db:
+            return await koduck.sendmessage(context["message"],
+                                            sendembed=embed_spotlight_message("Spotlight Tracker not yet started in this channel!",
+                                                                              msg_location, error=True))
+
+    spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    if cleaned_args[0].lower() in ['close', 'shutdown', 'end']:
+        del spotlight_db[channel_id]
+        return await koduck.sendmessage(context["message"],
+                                        sendembed=embed_spotlight_message("Shutting down this Spotlight Tracker! Goodnight!",
+                                                                          msg_location))
+    if cleaned_args[0].lower() == 'add':
+        if len(cleaned_args) == 1:
+            return await koduck.sendmessage(context["message"],
+                                            sendembed=embed_spotlight_message("Please list who you want to add!",
+                                                                              msg_location, error=True))
+            return
+        for arg in cleaned_args[1:]:
+            spotlight_db[channel_id][arg] = False
+    elif cleaned_args[0].lower() in ['reset', 'clear']:
+        if len(cleaned_args) == 1 or cleaned_args[1] == "all":
+            spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
+        for arg in cleaned_args[1:]:
+            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+            if match_name is None:
+                return
+            spotlight_db[channel_id][match_name] = False
+            continue
+    elif cleaned_args[0].lower() in ['remove', 'delete', 'kick']:
+        if len(cleaned_args) == 1:
+            return await koduck.sendmessage(context["message"],
+                                            sendembed=embed_spotlight_message("Please specify who you want to remove!",
+                                                                              msg_location, error=True))
+        for arg in cleaned_args[1:]:
+            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+            if match_name is None:
+                continue
+            del spotlight_db[channel_id][match_name]
+            continue
+    elif cleaned_args[0].lower() in ['edit', 'change', 'update', 'rename']:
+        if len(cleaned_args) != 3:
+            return await koduck.sendmessage(context["message"],
+                                            sendembed=embed_spotlight_message("Need just the original name and the new name to change it too!",
+                                                                              msg_location, error=True))
+
+        match_name = await find_spotlight_participant(cleaned_args[1], spotlight_db[channel_id], context, msg_location)
+        if match_name is not None:
+            spotlight_db[channel_id][cleaned_args[2]] = spotlight_db[channel_id].pop(match_name)
+    elif cleaned_args[0].lower() not in ['show', "now", "display", "what"]:
+        already_went_list = []
+        for arg in cleaned_args:
+            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+            if match_name is None:
+                continue
+            if spotlight_db[channel_id][match_name]:
+                already_went_list.append(match_name)
+            else:
+                spotlight_db[channel_id][match_name] = True
+
+        if all(spotlight_db[channel_id].values()):
+            await koduck.sendmessage(context["message"],
+                                     sendembed=embed_spotlight_message("Spotlight Reset!", msg_location))
+            spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
+
+        if already_went_list:
+            await koduck.sendmessage(context["message"],
+                                     sendembed=embed_spotlight_message(
+                                         "%s already went!" % ", ".join(already_went_list), msg_location, error=True))
+
+    embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location)
+    return await koduck.sendmessage(context["message"], sendembed=embed)
+
+async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_location):
+    participant_list = pd.Series(participant_dict.keys())
+    match_candidates = participant_list[participant_list.str.contains(arg, flags=re.IGNORECASE)]
+    if match_candidates.shape[0] == 0:
+        await koduck.sendmessage(msg_cnt["message"],
+                                 sendembed=embed_spotlight_message("Unable to find `%s` as a participant!" % arg,
+                                                                   message_location, error=True))
+        return None
+    if match_candidates.shape[0] > 1:
+        await koduck.sendmessage(msg_cnt["message"],
+                                 sendembed=embed_spotlight_message("For `%s`, did you mean: %s?" % (arg, ", ".join(match_candidates.to_list())),
+                                                                   message_location, error=True))
+        return None
+    return match_candidates.iloc[0]
+
+def embed_spotlight_message(err_msg, location, error=False):
+    if error:
+        embed = discord.Embed(description=err_msg,
+                              color=cj_colors["jeer"])
+    else:
+        embed = discord.Embed(description=err_msg,
+                              color=cj_colors["cheer"])
+    embed.set_footer(text=location)
+    return embed
+
+def embed_spotlight_tracker(dict_line, location):
+    participants = dict_line.copy()
+    del participants["Last Modified"]
+    if not participants:
+        embed_descript = "*No participants in this channel yet!*"
+    else:
+        unused_emoji = ":black_large_square:"
+        used_emoji = ":ballot_box_with_check:"
+        embed_descript = "\n".join(["%s %s" % (used_emoji, participant) if pstatus else "%s %s" % (unused_emoji, participant) for
+                          participant, pstatus in participants.items()])
+    embed = discord.Embed(title="__Spotlight Checklist__",
+                          description=embed_descript,
+                          color=cj_colors["cheer"])
+    embed.set_footer(text=location)
+    return embed
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
