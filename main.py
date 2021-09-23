@@ -846,7 +846,7 @@ async def chip(context, *args, **kwargss):
             color=cc_color_dictionary["Item"])
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
-    if '?' in cleaned_args[0]:
+    if '??' in cleaned_args[0]:
         embed = discord.Embed(
             title="__?????__",
             color=cc_color_dictionary["Mystery"])
@@ -1696,6 +1696,34 @@ async def daemon(context, *args, **kwargs):
         return await send_query_msg(context, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+    elif cleaned_args[0] in ['darkchip', 'dark', 'darkchips', 'chip', 'chips']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "darkchip", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+    elif cleaned_args[0] in ['tribute', 'tributes']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "tribute", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+    elif cleaned_args[0] in ['chaosunison', 'chaos', 'chaosunion']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "domain", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+    elif cleaned_args[0] in ['daemonbond', 'bond']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonbond", suppress_notfound=True)
         if ruling_msg is None:
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
