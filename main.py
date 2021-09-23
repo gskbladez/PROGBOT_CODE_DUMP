@@ -95,7 +95,8 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
                        "Item": 0xffffff,
-                       "Chip": 0xbfbfbf}
+                       "Chip": 0xbfbfbf,
+                       "Mystery": 0x000000}
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xA8E8E8,
                 "OmegaVirus": 0xA8E8E8}
@@ -106,7 +107,13 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                     "uncommon": {"color": 0x00E1DF,
                                  "image": settings.uncommon_md_image},
                     "rare": {"color": 0xD8E100,
-                             "image": settings.rare_md_image}}
+                             "image": settings.rare_md_image},
+                    "gold": {"color": 0xFFD541,
+                             "image": ""},
+                    "violet": {"color": 0x895EFF,
+                             "image": ""},
+                    "sapphire": {"color": 0x3659FE,
+                             "image": ""}}
 
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
@@ -829,6 +836,25 @@ async def chip(context, *args, **kwargss):
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
                                     sendcontent=ruling_msg["Response"])
+
+    if 'blank' in cleaned_args[0]:
+        embed = discord.Embed(
+            title="__Blank BattleChip__",
+            description="*Slot into your PET to download the attack data of defeated Viruses or other entities mid-battle." +
+                        "\nBlank chips do not need to be in a Folder to use." +
+                        "\nUnless the GM says otherwise, NetOps always have plenty of blank chips available.*",
+            color=cc_color_dictionary["Item"])
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+
+    if '??' in cleaned_args[0]:
+        embed = discord.Embed(
+            title="__?????__",
+            color=cc_color_dictionary["Mystery"])
+
+        embed.add_field(name="[???/???/???]",
+            value="*An unknown chip was slotted in!*")
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+
     if cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known BattleChip Categories..."
         result_text = ", ".join(chip_category_list)
@@ -860,9 +886,9 @@ async def chip(context, *args, **kwargss):
 
         chip_info = await find_value_in_table(context, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
         if chip_info is None:
-            chip_info = await find_value_in_table(context, pmc_chip_df, "Chip", arg, suppress_notfound=True)
+            chip_info = await find_value_in_table(context, pmc_chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
             if chip_info is None:
-                chip_info = await find_value_in_table(context, nyx_chip_df, "Chip", arg, suppress_notfound=False)
+                chip_info = await find_value_in_table(context, nyx_chip_df, "Chip", arg, suppress_notfound=False, alias_message=True)
                 if chip_info is None:
                     continue
 
@@ -948,13 +974,16 @@ def find_skill_color(skill_key):
 async def power_ncp(context, arg, force_power=False, ncp_only=False):
     if ncp_only:
         local_power_df = power_df[power_df["Sort"] != "Virus Power"]
+        local_pmc_df = pmc_power_df[pmc_power_df["Sort"] != "Virus Power"]
     else:
         local_power_df = power_df
+        local_pmc_df = pmc_power_df
+
     power_info = await find_value_in_table(context, local_power_df, "Power/NCP", arg, suppress_notfound=True,
                                            alias_message=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(context, pmc_power_df, "Power/NCP", arg, suppress_notfound=True,
+        power_info = await find_value_in_table(context, local_pmc_df, "Power/NCP", arg, suppress_notfound=True,
                                                alias_message=True)
         if power_info is None:
             power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=False,
@@ -1511,29 +1540,26 @@ async def mysterydata_master(context, args, force_reward=False):
     if mysterydata_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
+
+    roll_probabilities = mysterydata_type[mysterydata_type["Type"] == "Info"]
     if force_reward:
-        firstroll = random.randint(3, 5)
+        roll_probabilities = roll_probabilities[roll_probabilities["Value"].str.contains("^BattleChip|NCP|NPU$", flags=re.IGNORECASE)]
+    firstroll = random.randint(1, roll_probabilities.shape[0])-1
+    roll_category = roll_probabilities.iloc[firstroll]["Value"]
+
+    df_sub = mysterydata_type[mysterydata_type["Type"] == roll_category]
+    row_num = random.randint(1, df_sub.shape[0]) - 1
+    result_chip = df_sub.iloc[row_num]["Value"]
+    if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
+        result_text = " %s!" % roll_category
     else:
-        firstroll = random.randint(1, 6)
-    if firstroll <= 2:
-        zenny_val = mysterydata_type[mysterydata_type["Type"] == "Zenny"].iloc[0]["Value"]
-        result_chip = "%d" % (int(zenny_val) * (random.randint(1, 6) + random.randint(1, 6)))
-        result_text = " Zenny!"
-    else:
-        if firstroll <= 4:
-            reward_type = "Chip"
-            result_text = " BattleChip!"
-        elif firstroll == 5:
-            reward_type = "NCP"
-            result_text = " NCP!"
-        else:
-            reward_type = "Misc Table"
-            result_text = ""
-        df_sub = mysterydata_type[mysterydata_type["Type"] == reward_type]
-        row_num = random.randint(1, df_sub.shape[0]) - 1
-        result_chip = df_sub.iloc[row_num]["Value"]
-    result_text = "%s%s" % (
-    re.sub(r"\.$", '!', result_chip), result_text)  # replaces any periods with exclamation marks!
+        result_chip = re.sub(r"\.$", '!', result_chip)  # replaces any periods with exclamation marks!
+        result_text = ""
+
+    if roll_category == "Zenny":
+        result_chip = "%d" % (int(result_chip) * (random.randint(1, 6) + random.randint(1, 6)))
+
+    result_text = result_chip + result_text
 
     if arg in mysterydata_dict:
         md_color = mysterydata_dict[arg]["color"]
@@ -1670,6 +1696,34 @@ async def daemon(context, *args, **kwargs):
         return await send_query_msg(context, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+    elif cleaned_args[0] in ['darkchip', 'dark', 'darkchips', 'chip', 'chips']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "darkchip", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+    elif cleaned_args[0] in ['tribute', 'tributes']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "tribute", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+    elif cleaned_args[0] in ['chaosunison', 'chaos', 'chaosunion']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "domain", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+    elif cleaned_args[0] in ['daemonbond', 'bond']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonbond", suppress_notfound=True)
         if ruling_msg is None:
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
