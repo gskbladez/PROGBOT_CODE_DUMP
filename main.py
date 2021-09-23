@@ -95,7 +95,8 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
                        "Item": 0xffffff,
-                       "Chip": 0xbfbfbf}
+                       "Chip": 0xbfbfbf,
+                       "Mystery": 0x000000}
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xA8E8E8,
                 "OmegaVirus": 0xA8E8E8}
@@ -839,10 +840,19 @@ async def chip(context, *args, **kwargss):
     if 'blank' in cleaned_args[0]:
         embed = discord.Embed(
             title="__Blank BattleChip__",
-            description="Slot into your PET to download the attack data of defeated Viruses or other entities mid-battle." +
+            description="*Slot into your PET to download the attack data of defeated Viruses or other entities mid-battle." +
                         "\nBlank chips do not need to be in a Folder to use." +
-                        "\nUnless the GM says otherwise, NetOps always have plenty of blank chips available.",
-            color=cc_color_dictionary["Chip"])
+                        "\nUnless the GM says otherwise, NetOps always have plenty of blank chips available.*",
+            color=cc_color_dictionary["Item"])
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+
+    if '?' in cleaned_args[0]:
+        embed = discord.Embed(
+            title="__?????__",
+            color=cc_color_dictionary["Mystery"])
+
+        embed.add_field(name="[???/???/???]",
+            value="*An unknown chip was slotted in!*")
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
     if cleaned_args[0] in ['category', 'categories']:
