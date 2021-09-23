@@ -57,3 +57,5 @@ pmc	repo	prefix	1
 adventure	adventure	prefix	1
 sheet	sheet	prefix	1
 spotlight	spotlight	prefix	1
+spotlightchecklist	spotlight	prefix	1
+checklist	spotlight	prefix	1
