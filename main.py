@@ -835,6 +835,16 @@ async def chip(context, *args, **kwargss):
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
                                     sendcontent=ruling_msg["Response"])
+
+    if 'blank' in cleaned_args[0]:
+        embed = discord.Embed(
+            title="__Blank BattleChip__",
+            description="Slot into your PET to download the attack data of defeated Viruses or other entities mid-battle." +
+                        "\nBlank chips do not need to be in a Folder to use." +
+                        "\nUnless the GM says otherwise, NetOps always have plenty of blank chips available.",
+            color=cc_color_dictionary["Chip"])
+        return await koduck.sendmessage(context["message"], sendembed=embed)
+
     if cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known BattleChip Categories..."
         result_text = ", ".join(chip_category_list)
