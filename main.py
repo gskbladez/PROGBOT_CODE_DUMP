@@ -2033,7 +2033,7 @@ async def networkmod(context, *args, **kwargs):
 async def invite(context, *args, **kwargs):
     invite_link = settings.invite_link
     color = 0x71c142
-    embed = discord.Embed(title="Just click here to invite me!",
+    embed = discord.Embed(title="Just click here to invite me to one of your servers!",
                           color=color,
                           url=invite_link)
     return await koduck.sendmessage(context["message"], sendembed=embed)
