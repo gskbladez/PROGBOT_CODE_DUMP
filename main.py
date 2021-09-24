@@ -721,6 +721,7 @@ async def tag(context, *args, **kwargs):
     tag_title = tag_info["Tag"]
     tag_description = tag_info["Description"]
     tag_alt = tag_info["AltName"]
+    tag_description = tag_description.replace("\\n", "\n")
 
     if tag_alt:
         tag_title += " (%s)" % tag_alt
