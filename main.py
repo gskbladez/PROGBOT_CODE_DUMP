@@ -76,6 +76,7 @@ skill_color_dictionary = {"Mind": 0x81A7C6,
 weather_color_dictionary = {"Blue": 0x8ae2ff,
                             "Yellow": 0xffff5e,
                             "Red": 0xff524d}
+achievement_color_dictionary = {"Gold": 0xffe852}
 cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard Dog": "SkateboardDog",
            "Night Drifters": "NightDrifters", "Underground Broadcast": "UndergroundBroadcast",
            "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
@@ -2965,14 +2966,14 @@ async def achievement(context, *args, **kwargs):
     if match_candidates.shape[0] < 1:
         return await koduck.sendmessage(context["message"], sendcontent="Didn't find any matches for `%s`!" % arg)
     if match_candidates.shape[0] > 1:
-        return await koduck.sendmessage(context["message"], sendcontent="Found multiple matches for `%s`:\n%s" %
+        return await koduck.sendmessage(context["message"], sendcontent="Found multiple matches for `%s`:\n*%s*" %
                                                                         (arg,
                                                                          ", ".join(match_candidates["Name"].to_list())))
     achievement_info = match_candidates.iloc[0]
     achievement_name = achievement_info["Name"]
     achievement_description = achievement_info["Description"]
     achievement_type = achievement_info["Category"]
-    achievement_color = 0xffe852
+    achievement_color = achievement_color_dictionary["Gold"]
 
     embed = discord.Embed(title="__{}__".format(achievement_name),
                           color=achievement_color)
