@@ -35,6 +35,7 @@ bond	bond	prefix	1
 bondpower	bond	prefix	1
 bondpowers	bond	prefix	1
 mysterydata	mysterydata	prefix	1
+md	mysterydata	prefix	1
 mysteryreward	mysteryreward	prefix	1
 rulebook	rulebook	prefix	1
 element	element	prefix	1
