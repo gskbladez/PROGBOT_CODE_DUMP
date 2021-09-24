@@ -1,0 +1,81 @@
+Type	Result	Sort	Definition
+Skill	Sense		
+Skill	Info		
+Skill	Coding		
+Skill	Strength		
+Skill	Speed		
+Skill	Stamina		
+Skill	Charm		
+Skill	Bravery		
+Skill	Affinity		
+Skill	Any Mind		
+Skill	Any Body		
+Skill	Any Soul		
+			
+SecretWeapon	They have tough Viruses to back them up		
+SecretWeapon	They've rigged the arena		
+SecretWeapon	They have rare and powerful BattleChips		
+SecretWeapon	They have a powerful custom NCP		
+SecretWeapon	They have a powerful custom BattleChip		
+SecretWeapon	They have a powerful custom Navi Power		
+SecretWeapon	They keep their identity a secret		
+SecretWeapon	They have a secret assistant		
+SecretWeapon	They interfere with the NetOps		
+SecretWeapon	They trick one of the players into helping them		
+SecretWeapon	Their NetOp engages the players physically		
+SecretWeapon	They go FullSynchro with their operator		
+			
+Weakness	They're wildly overconfident		
+Weakness	They always loudly announce their attacks		
+Weakness	They have no operator		
+Weakness	They squabble with their operator		
+Weakness	They always attack the toughest Navi		
+Weakness	They are very easily scared		
+Weakness	Their confidence is easily shaken		
+Weakness	Their element hurts them too		
+Weakness	Their operator is easily distracted		
+Weakness	Their operator abandons them midfight		
+Weakness	They have another secret weapon which backfires		
+Weakness	They have an enemy that shows up		
+			
+Arena	Naturalistic		
+Arena	Floating Objects		
+Arena	Digitized		
+Arena	Urban		
+Arena	Cartoony		
+Arena	Miniaturized		
+			
+ElementManifest	A hazard that everyone must avoid		
+ElementManifest	An abundant object the enemy uses		
+ElementManifest	An object the players must use to survive		
+ElementManifest	A hazard that starts out small and grows		
+ElementManifest	Something that affects NetOps too		
+ElementManifest	A threat that emerges partway through		
+			
+NaviStart	hidden from sight, lining up a shot		
+NaviStart	firing on all players with a volley of attacks		
+NaviStart	preparing its defenses in secret		
+NaviStart	firing on one player with a disabling blow		
+NaviStart	toggling something destructive in the arena		
+NaviStart	distracting the players from an environmental threat		
+			
+TroubleType	Thematic Viruses attack the players		
+TroubleType	Thematic Viruses power up the boss		
+TroubleType	The environment starts to break apart		
+TroubleType	The boss has a hench-Navi to assist		
+TroubleType	The boss's element keeps appearing		
+TroubleType	Innocent, confused progs bother them		
+			
+FightObjective	escape an enclosed space		
+FightObjective	sneak around to evade detection		
+FightObjective	find where the enemy NetOp is hiding		
+FightObjective	rescue somebody trapped		
+FightObjective	stop the enemy NetOp from escaping		
+FightObjective	figure who the real enemy NetOp is		
+			
+RealWorldAssist	A thermostat to heat/chill cyberspace		
+RealWorldAssist	A lightswitch that darkens cyberspace		
+RealWorldAssist	Fan/vent controls for digital wind		
+RealWorldAssist	A radio to broadcast distracting audio		
+RealWorldAssist	A dishwasher that floods cyberspace		
+RealWorldAssist	A TV that can show cyberspace info		
