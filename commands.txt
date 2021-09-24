@@ -66,3 +66,4 @@ cyberweather	weather	prefix	1
 achievement	achievement	prefix	1
 achievements	achievement	prefix	1
 achieve	achievement	prefix	1
+glossary	glossary	prefix	1

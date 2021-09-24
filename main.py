@@ -199,6 +199,7 @@ rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (r
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
 achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
+glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -2737,10 +2738,12 @@ async def adventure_master(context, args):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Core or Chaos.")
 
+
 async def sheet(context, *args, **kwargs):
     msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `{cp}repo sheets`!" % settings.character_sheet).replace(
                                                         "{cp}", koduck.get_prefix(context["message"]))
     return await koduck.sendmessage(context["message"], sendcontent=msg_txt)
+
 
 async def spotlight(context, *args, **kwargs):
     if context["message"].channel.type is discord.ChannelType.private:
@@ -2879,7 +2882,6 @@ async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_loc
                                                                    message_location, error=True))
         return None
     return match_candidates.iloc[0]
-
 def embed_spotlight_message(err_msg, location, error=False):
     if error:
         embed = discord.Embed(description=err_msg,
@@ -2889,7 +2891,6 @@ def embed_spotlight_message(err_msg, location, error=False):
                               color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
-
 def embed_spotlight_tracker(dict_line, location):
     participants = dict_line.copy()
     del participants["Last Modified"]
@@ -2905,6 +2906,7 @@ def embed_spotlight_tracker(dict_line, location):
                           color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
+
 
 async def weather(context, *args, **kwargs):
     cleaned_args = clean_args(args)
@@ -2951,6 +2953,7 @@ async def weather(context, *args, **kwargs):
 
     return
 
+
 async def achievement(context, *args, **kwargs):
     if not context["params"]:
         return await koduck.sendmessage(context["message"],
@@ -2984,6 +2987,38 @@ async def achievement(context, *args, **kwargs):
                     value="_{}_".format(achievement_description))
 
     return await koduck.sendmessage(context["message"], sendembed=embed)
+
+
+async def glossary(context, *args, **kwargs):
+    if not context["params"]:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Use me to pull up a Glossary term in ProgBot! I can also try to search for a term if you know the first few letters!")
+    arg = context["paramline"].strip()
+    cleaned_arg = arg.lower()
+
+    glossary_info = await find_value_in_table(context, glossary_df, "Name", cleaned_arg, suppress_notfound=True) # exact match
+
+    if glossary_info is None: # fuzzier match
+        match_candidates = glossary_df[glossary_df["Name"].str.contains("^" + cleaned_arg, flags=re.IGNORECASE)]
+
+        if match_candidates.shape[0] < 1:
+            return await koduck.sendmessage(context["message"], sendcontent="Didn't find any matches for `%s` in the glossary!" % arg)
+        if match_candidates.shape[0] > 1:
+            progbot_list = ["> **%s**: `{cp}%s`".replace("{cp}", koduck.get_prefix(context["message"])) % (nam, cmd)
+                            for nam, cmd in zip(match_candidates['Name'], match_candidates['ProgBot Command'])]
+            return await koduck.sendmessage(context["message"], sendcontent="Found multiple matches under `%s` in the glossary!\n%s" %
+                                                                            (arg, "\n".join(progbot_list)))
+        glossary_info = match_candidates.iloc[0]
+
+
+    if glossary_info["ProgBot Function"] not in globals():
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Don't recognize the function `%s`! (You should probably let the devs know...)" % glossary_info["ProgBot Function"])
+
+    await koduck.sendmessage(context["message"], sendcontent="Pulling up `%s%s`!" % (koduck.get_prefix(context["message"]), glossary_info['ProgBot Command']))
+    progbot_func = globals()[glossary_info["ProgBot Function"]]
+    return await progbot_func(context, glossary_info["ProgBot Argument"], "")
+
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)

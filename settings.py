@@ -30,9 +30,10 @@ rulebookfile = "rulebookdata.tsv"
 adventurefile = "adventuredata.tsv"
 weatherfile = "weatherdata.tsv"
 achievementfile = "achievementdata.tsv"
+glossaryfile = "glossarydata.tsv"
 
 #BOT SETTINGS
-botname = "Koduck"
+botname = "ProgBot"
 token = ""
 commandprefix = "/"
 paramdelim = ","
