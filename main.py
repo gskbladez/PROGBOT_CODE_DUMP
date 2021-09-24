@@ -197,6 +197,7 @@ rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (r
 
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
+achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -2945,6 +2946,40 @@ async def weather(context, *args, **kwargs):
         await koduck.sendmessage(context["message"], sendembed=embed)
 
     return
+
+async def achievement(context, *args, **kwargs):
+    if not context["params"]:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Pulls up info for a NetBattlers Advance **Achievement**! I can also list all the Achievements if you tell me `list` or `all`!")
+
+    arg = context["paramline"]
+    cleaned_args = arg.lower()
+
+    if cleaned_args in ["list", "all"]:
+        achieve_groups = achievement_df.groupby(["Category"])
+        return_msgs = ["**%s:**\n*%s*" % (name, ", ".join(achieve_group["Name"].values)) for name, achieve_group in achieve_groups
+                       if name]
+        return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
+
+    match_candidates = achievement_df[achievement_df["Name"].str.contains(cleaned_args, flags=re.IGNORECASE)]
+    if match_candidates.shape[0] < 1:
+        return await koduck.sendmessage(context["message"], sendcontent="Didn't find any matches for `%s`!" % arg)
+    if match_candidates.shape[0] > 1:
+        return await koduck.sendmessage(context["message"], sendcontent="Found multiple matches for `%s`:\n%s" %
+                                                                        (arg,
+                                                                         ", ".join(match_candidates["Name"].to_list())))
+    achievement_info = match_candidates.iloc[0]
+    achievement_name = achievement_info["Name"]
+    achievement_description = achievement_info["Description"]
+    achievement_type = achievement_info["Category"]
+    achievement_color = 0xffe852
+
+    embed = discord.Embed(title="__{}__".format(achievement_name),
+                          color=achievement_color)
+    embed.add_field(name="**[{} Achievement]**".format(achievement_type),
+                    value="_{}_".format(achievement_description))
+
+    return await koduck.sendmessage(context["message"], sendembed=embed)
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)

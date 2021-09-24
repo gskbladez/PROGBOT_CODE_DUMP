@@ -61,3 +61,6 @@ spotlightchecklist	spotlight	prefix	1
 checklist	spotlight	prefix	1
 weather	weather	prefix	1
 cyberweather	weather	prefix	1
+achievement	achievement	prefix	1
+achievements	achievement	prefix	1
+achieve	achievement	prefix	1

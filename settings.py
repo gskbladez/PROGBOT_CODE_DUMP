@@ -29,6 +29,7 @@ nyx_ncpfile = "nyx_powerdata.tsv"
 rulebookfile = "rulebookdata.tsv"
 adventurefile = "adventuredata.tsv"
 weatherfile = "weatherdata.tsv"
+achievementfile = "achievementdata.tsv"
 
 #BOT SETTINGS
 botname = "Koduck"
