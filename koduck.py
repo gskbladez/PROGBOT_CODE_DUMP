@@ -359,9 +359,9 @@ updatesettings()
 #background task is run every set interval while bot is running
 async def backgroundtask():
     await client.wait_until_ready()
-    while not client.is_closed:
+    while not client.is_closed():
         if client.user.bot and client.user.name != settings.botname:
-            await client.edit_profile(username=settings.botname)
+            await client.user.edit(username=settings.botname)
         if callable(settings.backgroundtask):
             client.loop.create_task(settings.backgroundtask())
         await asyncio.sleep(settings.backgroundtaskinterval)
