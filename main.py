@@ -191,10 +191,11 @@ pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 nyx_chip_df = pd.read_csv(settings.nyx_chipfile, sep="\t").fillna('')
 nyx_power_df = pd.read_csv(settings.nyx_ncpfile, sep="\t").fillna('')
 
-rulebook_df = pd.read_csv(settings.rulebookfile, sep="\t").fillna('')
+rulebook_df = pd.read_csv(settings.rulebookfile, sep="\t",  converters = {'Version': str}).fillna('')
 pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
-rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (rulebook_df["Name"] != "Nyx")]
+grid_link = rulebook_df[rulebook_df["Name"] == "Grid-Based Combat"]["Link"].iloc[0]
+rulebook_df = rulebook_df[(rulebook_df["Name"] == "NetBattlers") | (rulebook_df["Name"] == "NetBattlers Advance")]
 
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
@@ -1859,12 +1860,13 @@ async def element(context, *args, **kwargs):
 
 async def rulebook(context, *args, **kwargs):
     cleaned_args = clean_args(args)
-    modargs = [re.split("(\d)+", arg) for arg in cleaned_args]
-    modargs = [item.strip() for sublist in modargs for item in sublist if item]
-    cleaned_args = modargs
+    #modargs = [re.split("(\d|\.)+", arg) for arg in cleaned_args] # i dont remember why this was here
+    #modargs = [item.strip() for sublist in modargs for item in sublist if item]
+    #cleaned_args = modargs
     errmsg = []
     if not args:
-        ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["Version"].idxmax()]
+        rulebook_df["BiggNumber"] = pd.to_numeric(rulebook_df["Version"])
+        ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["BiggNumber"].idxmax()]
         book_names = ["%s %s %s: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
                       ret_books.iterrows()]
     elif cleaned_args[0] == "help":
@@ -1873,7 +1875,7 @@ async def rulebook(context, *args, **kwargs):
                                                     "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", koduck.get_prefix(context["message"])) +
                                                     "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ["all", "latest", "new"]:
-        ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"][rulebook_df["Name"] != "Nyx"].groupby(["Type", "Name"])["Version"].idxmax()]
+        ret_books = rulebook_df.loc[pd.to_numeric(rulebook_df[rulebook_df["Name"] != "Player-Made Repository"][rulebook_df["Name"] != "Nyx"].groupby(["Type", "Name"])["Version"]).idxmax()]
         book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
         book_names += ["", "For player-made content, check out the Player-Made Repository! <%s>" % pmc_link]
 
@@ -1881,33 +1883,39 @@ async def rulebook(context, *args, **kwargs):
         book_names = ["Player-Made Repository: <%s>" % pmc_link]
 
     elif cleaned_args[0] in ['nyx', 'cc', 'crossover']:
-        book_names = ["Nyx CC (Crossover Content): <%s>" % nyx_link]
+        book_names = ["Nyx Content(?): <%s>" % nyx_link]
+    elif cleaned_args[0] in ['grid', 'gridbased', 'grid-based', 'gridbasedcombat', 'grid-basedcombat']:
+        book_names = ["Grid-Based Combat Rules(?): <%s>" % grid_link]
     else:
         book_names = []
 
     if not book_names:
         errmsg = []
-        book_query = {"Name": "", "Type": "All", "Version": -1, "Release": ""}
+        book_query = {"Name": "", "Type": "All", "Version": None, "Release": ""}
         book_queries = []
         in_progress = False
         for arg in cleaned_args:
             try:
-                version_num = int(arg)
-                if book_query["Version"] >= 0:
-                    await koduck.sendmessage(context["message"], sendcontent="Going with Version `%d`!" % version_num)
-                book_query["Version"] = version_num
+                # if arg.isdigit():
+                float(arg)
+                version_str = arg
+                if book_query["Version"] is not None:
+                    await koduck.sendmessage(context["message"], sendcontent="Going with Version `%s`!" % version_str)
+                book_query["Version"] = version_str
                 continue
             except ValueError:
                 pass
 
-            if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b'] + ['advance', 'advanced', 'nba', 'adv', 'a'] + ['alpha']):
+            if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b'] + ['advance', 'advanced', 'nba', 'adv', 'a'] + ['alpha']+['pre-alpha', 'prealpha']):
                 if in_progress:
                     book_queries.append(book_query)
-                    book_query = {"Name": "", "Type": "All", "Version": -1}
-                if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b']+['alpha']):
+                    book_query = {"Name": "", "Type": "All", "Version": None, "Release": ""}
+                if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b']+['alpha']+['pre-alpha', 'prealpha']):
                     book_query["Name"] = "NetBattlers"
                     if arg in ['alpha']:
                         book_query["Release"] = "Alpha"
+                    elif arg in ['pre-alpha', 'prealpha']:
+                        book_query["Release"] = "Pre-Alpha"
                     else:
                         book_query["Release"] = "Beta"
                 else:
@@ -1918,7 +1926,7 @@ async def rulebook(context, *args, **kwargs):
                 if book_query["Version"] > 0:
                     await koduck.sendmessage(context["message"],
                                              sendcontent="Going with all versions!")
-                book_query["Version"] = 0
+                book_query["Version"] = "All"
                 in_progress = True
 
             if arg in (['full', 'fullres', 'full-res'] + ['mobile']):
@@ -1953,16 +1961,16 @@ async def rulebook(context, *args, **kwargs):
                 book_type_str = ""
 
             if book_release:
-                subfilt = subfilt & (rulebook_df["Release"] == book_release)
+                subfilt = subfilt & (rulebook_df["Release"]==book_release)
 
-            if book_version < 0:
-                subfilt = subfilt.index == rulebook_df[subfilt]["Version"].idxmax()
+            if book_version is None:
+                subfilt = subfilt.index == pd.to_numeric(rulebook_df[subfilt]["Version"]).idxmax()
                 book_version_str = " (Most recent)"
-            elif book_version > 0:
-                subfilt = subfilt & (rulebook_df["Version"] == book_version)
-                book_version_str = " `%d`" % book_version
-            else:
+            elif book_version == "All":
                 book_version_str = ""
+            else:
+                subfilt = subfilt & (rulebook_df["Version"].str.contains("^" + book_version))
+                book_version_str = " `%s`" % book_version
 
             if not any(subfilt):
                 msg404 = "Couldn't find `%s`%s!%s" % (bookname, book_version_str, book_type_str)
