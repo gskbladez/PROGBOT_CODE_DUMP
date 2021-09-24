@@ -783,7 +783,7 @@ def query_chip(args):
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in ['incident', 'incident chip', 'incident chips']:
         return_title = "Pulling up all `Incident` Chips..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Incident|incident")]
+        subdf = chip_df[chip_df["Tags"].str.contains("Incident", flags=re.IGNORECASE)]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in arg_lower in chip_tag_list:
         subdf = chip_df[chip_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE) &
@@ -856,7 +856,13 @@ async def chip(context, *args, **kwargss):
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
                                     sendcontent=ruling_msg["Response"])
-
+    if cleaned_args[0] in ['folder', 'folders']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "folder", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=ruling_msg["Response"])
     if 'blank' in cleaned_args[0]:
         embed = discord.Embed(
             title="__Blank BattleChip__",
@@ -1611,9 +1617,17 @@ async def mysterydata(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll Mystery Data for you! Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace(
+                                        sendcontent="I can roll Mystery Data for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance.\n" + \
+                                                    "You can also ask for advice using `{cp}mysterydata advice`".replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
 
+    if cleaned_args[0] in ['advice', 'rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "mysterydataruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
     await mysterydata_master(context, cleaned_args, force_reward=False)
 
 
@@ -1659,7 +1673,7 @@ async def mysteryreward(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! " +
-                                                    "Specify `{cp}mysteryreward common`, `{cp}mysteryreward uncommon`, or `{cp}mysteryreward rare`!".replace(
+                                                    "Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance!".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])))
 
     await mysterydata_master(context, cleaned_args, force_reward=True)
@@ -1718,40 +1732,28 @@ async def daemon(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Lists the complete information of a Daemon for DarkChip rules.")
-
+    is_ruling = False
+    ruling_msg = None
     if arg_combined in ["all", "list"]:
         _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
-    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonruling", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
     elif cleaned_args[0] in ['darkchip', 'dark', 'darkchips', 'chip', 'chips']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "darkchip", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
     elif cleaned_args[0] in ['tribute', 'tributes']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "tribute", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
     elif cleaned_args[0] in ['chaosunison', 'chaos', 'chaosunion']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "domain", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
     elif cleaned_args[0] in ['daemonbond', 'bond']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonbond", suppress_notfound=True)
+
+    if is_ruling:
         if ruling_msg is None:
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
@@ -1801,7 +1803,7 @@ async def element(context, *args, **kwargs):
                                                         "{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(element_category_list))
 
-    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+    if cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "elementruling", suppress_notfound=True)
         if ruling_msg is None:
             return await koduck.sendmessage(context["message"],
