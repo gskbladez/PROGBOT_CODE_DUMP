@@ -59,3 +59,5 @@ sheet	sheet	prefix	1
 spotlight	spotlight	prefix	1
 spotlightchecklist	spotlight	prefix	1
 checklist	spotlight	prefix	1
+weather	weather	prefix	1
+cyberweather	weather	prefix	1

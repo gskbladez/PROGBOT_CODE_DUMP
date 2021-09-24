@@ -32,6 +32,7 @@ AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
 SPOTLIGHT_TIMEOUT  = datetime.timedelta(days=0, hours=1, seconds=10)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
+MAX_WEATHER_QUERY = 5
 
 # Runtime database; expires on shutdown
 audience_data = {}
@@ -72,6 +73,9 @@ skill_list = ['Sense', 'Info', 'Coding',
 skill_color_dictionary = {"Mind": 0x81A7C6,
                           "Body": 0xDF8F8D,
                           "Soul": 0xF8E580}
+weather_color_dictionary = {"Blue": 0x8ae2ff,
+                            "Yellow": 0xffff5e,
+                            "Red": 0xff524d}
 cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard Dog": "SkateboardDog",
            "Night Drifters": "NightDrifters", "Underground Broadcast": "UndergroundBroadcast",
            "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
@@ -192,6 +196,7 @@ nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (rulebook_df["Name"] != "Nyx")]
 
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
+weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -1541,6 +1546,10 @@ async def query(context, *args, **kwargs):
         _, result_title, result_msg = query_network()
         return await send_query_msg(context, result_title, result_msg)
 
+    if arg_combined in ['weather', 'cyberweather']:
+        _, result_title, result_msg = query_weather()
+        return await send_query_msg(context, result_title, result_msg)
+
     would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
         return await koduck.sendmessage(context["message"],
@@ -1972,6 +1981,11 @@ def query_network():
     result_msg = ", ".join(networkmod_df["Name"])
     return True, result_title, result_msg
 
+
+def query_weather():
+    result_title = "Listing all types of CyberWeather from NetBattlers Advance..."
+    result_msg = ", ".join(weather_df["Name"])
+    return True, result_title, result_msg
 
 async def networkmod(context, *args, **kwargs):
     cleaned_args = clean_args(args)
@@ -2886,6 +2900,51 @@ def embed_spotlight_tracker(dict_line, location):
                           color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
+
+async def weather(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Pulls up info for 1-%d types of CyberWeather! I can also list all types of CyberWeather if you tell me `list` or `all`!" % MAX_WEATHER_QUERY)
+
+    if len(cleaned_args) > MAX_WEATHER_QUERY:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Can't pull up more than %d types of CyberWeather!" % MAX_WEATHER_QUERY)
+
+    if cleaned_args[0] in ["list", "all"]:
+        _, result_title, result_msg = query_weather()
+        return await send_query_msg(context, result_title, result_msg)
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "weather",
+                                               suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
+
+    for arg in cleaned_args:
+        weather_info = await find_value_in_table(context, weather_df, "Name", arg, suppress_notfound=False)
+        if weather_info is None:
+            continue
+
+        weather_name = weather_info["Name"]
+        weather_description = weather_info["Description"]
+        weather_type = weather_info["Category"]
+        if weather_type == "Basic":
+            weather_color = weather_color_dictionary["Blue"]
+        elif weather_type == "Glitched":
+            weather_color = weather_color_dictionary["Yellow"]
+        else:
+            weather_color = weather_color_dictionary["Red"]
+
+        embed = discord.Embed(title="__{}__".format(weather_name),
+                              color=weather_color)
+        embed.add_field(name="**[{} CyberWeather]**".format(weather_type),
+                        value="_{}_".format(weather_description))
+        await koduck.sendmessage(context["message"], sendembed=embed)
+
+    return
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
