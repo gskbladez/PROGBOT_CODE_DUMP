@@ -1859,33 +1859,29 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+    cleaned_args = clean_args(" ".join(args))
     #modargs = [re.split("(\d|\.)+", arg) for arg in cleaned_args] # i dont remember why this was here
     #modargs = [item.strip() for sublist in modargs for item in sublist if item]
     #cleaned_args = modargs
     errmsg = []
-    if not args:
+    if args:
+        is_get_latest = cleaned_args[0] in ["all", "latest", "new"]
+    else:
+        is_get_latest = True
+    if is_get_latest:
         rulebook_df["BiggNumber"] = pd.to_numeric(rulebook_df["Version"])
         ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["BiggNumber"].idxmax()]
-        book_names = ["%s %s %s: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
+        book_names = ["**%s %s %s**: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
                       ret_books.iterrows()]
     elif cleaned_args[0] == "help":
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Links the rulebooks for NetBattlers! " +
-                                                    "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", koduck.get_prefix(context["message"])) +
-                                                    "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", koduck.get_prefix(context["message"])))
-    elif cleaned_args[0] in ["all", "latest", "new"]:
-        ret_books = rulebook_df.loc[pd.to_numeric(rulebook_df[rulebook_df["Name"] != "Player-Made Repository"][rulebook_df["Name"] != "Nyx"].groupby(["Type", "Name"])["Version"]).idxmax()]
-        book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
-        book_names += ["", "For player-made content, check out the Player-Made Repository! <%s>" % pmc_link]
-
-    elif cleaned_args[0] in ['pmc', 'player', 'pmr', 'playermade', 'playermaderepository', 'playermaderepo']:
-        book_names = ["Player-Made Repository: <%s>" % pmc_link]
-
+                                                    "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7 adv 6`) \n"
+                                                    .replace("{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ['nyx', 'cc', 'crossover']:
-        book_names = ["Nyx Content(?): <%s>" % nyx_link]
+        book_names = ["**Nyx Crossover Content**(?): <%s>" % nyx_link]
     elif cleaned_args[0] in ['grid', 'gridbased', 'grid-based', 'gridbasedcombat', 'grid-basedcombat']:
-        book_names = ["Grid-Based Combat Rules(?): <%s>" % grid_link]
+        book_names = ["**Grid-Based Combat Rules**(?): <%s>" % grid_link]
     else:
         book_names = []
 
@@ -1980,7 +1976,7 @@ async def rulebook(context, *args, **kwargs):
 
         ret_books = rulebook_df.loc[ret_book]
         book_names = [
-            "%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
+            "**%s %s %s** (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
             for _, book in ret_books.iterrows()]
 
     book_names += errmsg
