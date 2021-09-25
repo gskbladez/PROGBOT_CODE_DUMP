@@ -8,9 +8,9 @@ Skill	Stamina
 Skill	Charm		
 Skill	Bravery		
 Skill	Affinity		
-Skill	Any Mind		
-Skill	Any Body		
-Skill	Any Soul		
+Skill	a mysterious Mind skill		
+Skill	a mysterious Body skill		
+Skill	a mysterious Soul skill		
 			
 SecretWeapon	They have tough Viruses to back them up		
 SecretWeapon	They've rigged the arena		
@@ -25,32 +25,32 @@ SecretWeapon	They trick one of the players into helping them
 SecretWeapon	Their NetOp engages the players physically		
 SecretWeapon	They go FullSynchro with their operator		
 			
-Weakness	They're wildly overconfident		
-Weakness	They always loudly announce their attacks		
-Weakness	They have no operator		
-Weakness	They squabble with their operator		
-Weakness	They always attack the toughest Navi		
-Weakness	They are very easily scared		
-Weakness	Their confidence is easily shaken		
-Weakness	Their element hurts them too		
-Weakness	Their operator is easily distracted		
-Weakness	Their operator abandons them midfight		
-Weakness	They have another secret weapon which backfires		
-Weakness	They have an enemy that shows up		
+Weakness	they're wildly overconfident		
+Weakness	they always loudly announce their attacks		
+Weakness	they have no operator		
+Weakness	they squabble with their operator		
+Weakness	they always attack the toughest Navi		
+Weakness	they are very easily scared		
+Weakness	their confidence is easily shaken		
+Weakness	their element hurts them too		
+Weakness	their operator is easily distracted		
+Weakness	their operator abandons them midfight		
+Weakness	they have another secret weapon which backfires		
+Weakness	they have an enemy that shows up		
 			
-Arena	Naturalistic		
-Arena	Floating Objects		
-Arena	Digitized		
-Arena	Urban		
-Arena	Cartoony		
-Arena	Miniaturized		
+Arena	naturalistic		
+Arena	a series of floating objects		
+Arena	digitized		
+Arena	urban		
+Arena	cartoony		
+Arena	miniaturized		
 			
-ElementManifest	A hazard that everyone must avoid		
-ElementManifest	An abundant object the enemy uses		
-ElementManifest	An object the players must use to survive		
-ElementManifest	A hazard that starts out small and grows		
-ElementManifest	Something that affects NetOps too		
-ElementManifest	A threat that emerges partway through		
+ElementManifest	a hazard that everyone must avoid		
+ElementManifest	an abundant object the enemy uses		
+ElementManifest	an object the players must use to survive		
+ElementManifest	a hazard that starts out small and grows		
+ElementManifest	something that affects NetOps too		
+ElementManifest	a threat that emerges partway through		
 			
 NaviStart	hidden from sight, lining up a shot		
 NaviStart	firing on all players with a volley of attacks		
@@ -73,9 +73,9 @@ FightObjective	rescue somebody trapped
 FightObjective	stop the enemy NetOp from escaping		
 FightObjective	figure who the real enemy NetOp is		
 			
-RealWorldAssist	A thermostat to heat/chill cyberspace		
-RealWorldAssist	A lightswitch that darkens cyberspace		
-RealWorldAssist	Fan/vent controls for digital wind		
-RealWorldAssist	A radio to broadcast distracting audio		
-RealWorldAssist	A dishwasher that floods cyberspace		
-RealWorldAssist	A TV that can show cyberspace info		
+RealWorldAssist	a thermostat to heat/chill cyberspace		
+RealWorldAssist	a lightswitch that darkens cyberspace		
+RealWorldAssist	fan/vent controls for digital wind		
+RealWorldAssist	a radio to broadcast distracting audio		
+RealWorldAssist	a dishwasher that floods cyberspace		
+RealWorldAssist	a TV that can show cyberspace info		

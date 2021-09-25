@@ -197,6 +197,7 @@ nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (rulebook_df["Name"] != "Nyx")]
 
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
+fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
 weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
 achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
 
@@ -2733,6 +2734,67 @@ async def adventure_master(context, args):
     else:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Core or Chaos.")
+
+async def fight(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+
+    skilldf_sub = fight_df[fight_df["Type"] == "Skill"]
+    weapondf_sub = fight_df[fight_df["Type"] == "SecretWeapon"]
+    weaknessdf_sub = fight_df[fight_df["Type"] == "Weakness"]
+    arenadf_sub = fight_df[fight_df["Type"] == "Arena"]
+    manifestdf_sub = fight_df[fight_df["Type"] == "ElementManifest"]
+    navistartdf_sub = fight_df[fight_df["Type"] == "NaviStart"]
+    troubledf_sub = fight_df[fight_df["Type"] == "TroubleType"]
+    objectivedf_sub = fight_df[fight_df["Type"] == "FightObjective"]
+    realassistdf_sub = fight_df[fight_df["Type"] == "RealWorldAssist"]
+
+    # element
+    navi_element = 1
+    navi_element = random.sample(range(element_df.shape[0]), navi_element)
+    navi_element = [element_df.iloc[i]["element"] for i in navi_element]
+    # skills
+    row_num = random.randint(1, skilldf_sub.shape[0]) - 1
+    bestskill = [skilldf_sub.iloc[row_num]["Result"]]
+    row_num = random.randint(1, skilldf_sub.shape[0]) - 1
+    trainedskill = [skilldf_sub.iloc[row_num]["Result"]]
+    # secret weapon
+    row_num = random.randint(1, weapondf_sub.shape[0]) - 1
+    secret_weapon = [weapondf_sub.iloc[row_num]["Result"]]
+    # weakness
+    row_num = random.randint(1, weaknessdf_sub.shape[0]) - 1
+    weakness = [weaknessdf_sub.iloc[row_num]["Result"]]
+    # arena
+    row_num = random.randint(1, arenadf_sub.shape[0]) - 1
+    arena = [arenadf_sub.iloc[row_num]["Result"]]
+    # element manifest
+    row_num = random.randint(1, manifestdf_sub.shape[0]) - 1
+    element_manifest = [manifestdf_sub.iloc[row_num]["Result"]]
+    # navi start
+    row_num = random.randint(1, navistartdf_sub.shape[0]) - 1
+    navi_start = [navistartdf_sub.iloc[row_num]["Result"]]
+    # trouble type
+    row_num = random.randint(1, troubledf_sub.shape[0]) - 1
+    trouble_type = [troubledf_sub.iloc[row_num]["Result"]]
+    # fight objective
+    row_num = random.randint(1, objectivedf_sub.shape[0]) - 1
+    fight_objective = [objectivedf_sub.iloc[row_num]["Result"]]
+    # real world assist
+    row_num = random.randint(1, realassistdf_sub.shape[0]) - 1
+    real_world_assist = [realassistdf_sub.iloc[row_num]["Result"]]
+    if (len(cleaned_args) < 1):
+        generated_msg = "For this fight, this Navi has the element **{}**, and is proficient in **{}**. They are also trained in **{}**. " + \
+                        "**{}**, but their weakness is **{}**.\n" + \
+                        "The arena is **{}**, and the Navi's element manifests as **{}**. The Navi is **{}**!\n" + \
+                        "{}, and the NetOps need to **{}**! However, in the real world, **{}** is there to help the Navis!"
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=generated_msg.format(*navi_element, *bestskill, *trainedskill,
+                                                                         *secret_weapon, *weakness,
+                                                                         *arena,
+                                                                         *element_manifest, *navi_start,
+                                                                         *trouble_type, *fight_objective, *real_world_assist))
+    if cleaned_args[0] == 'help':
+        fight_help_msg = "I can generate a Navi boss fight for you! Specify `{cp}fight` to generate one!"
+        return await koduck.sendmessage(context["message"], sendcontent=fight_help_msg.replace("{cp}", settings.commandprefix))
 
 async def sheet(context, *args, **kwargs):
     msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `{cp}repo sheets`!" % settings.character_sheet).replace(
