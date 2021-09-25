@@ -2785,7 +2785,7 @@ async def fight(context, *args, **kwargs):
         generated_msg = "For this fight, this Navi has the element **{}**, and is proficient in **{}**. They are also trained in **{}**. " + \
                         "**{}**, but their weakness is **{}**.\n" + \
                         "The arena is **{}**, and the Navi's element manifests as **{}**. The Navi is **{}**!\n" + \
-                        "{}, and the NetOps need to **{}**! However, in the real world, **{}** is there to help the Navis!"
+                        "{}, and the NetOps need to **{}**! However, in the real world, **{}** is there to help!"
         return await koduck.sendmessage(context["message"],
                                         sendcontent=generated_msg.format(*navi_element, *bestskill, *trainedskill,
                                                                          *secret_weapon, *weakness,
