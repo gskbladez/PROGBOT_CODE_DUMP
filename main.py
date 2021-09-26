@@ -1569,7 +1569,7 @@ async def mysterydata_master(context, args, force_reward=False):
 
     if mysterydata_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Please specify either Common, Uncommon, or Rare MysteryData.")
+                                        sendcontent="Please specify either Common, Uncommon, or Rare MysteryData. Also accepts Gold, Violet, or Sapphire.")
 
     roll_probabilities = mysterydata_type[mysterydata_type["Type"] == "Info"]
     if force_reward:
