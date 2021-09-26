@@ -1861,7 +1861,7 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    cleaned_args = clean_args(" ".join(args))
+    cleaned_args = clean_args([" ".join(args)])
     #modargs = [re.split("(\d|\.)+", arg) for arg in cleaned_args] # i dont remember why this was here
     #modargs = [item.strip() for sublist in modargs for item in sublist if item]
     #cleaned_args = modargs
@@ -1870,6 +1870,7 @@ async def rulebook(context, *args, **kwargs):
         is_get_latest = cleaned_args[0] in ["all", "latest", "new"]
     else:
         is_get_latest = True
+
     if is_get_latest:
         rulebook_df["BiggNumber"] = pd.to_numeric(rulebook_df["Version"])
         ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["BiggNumber"].idxmax()]
