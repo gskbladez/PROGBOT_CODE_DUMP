@@ -1861,10 +1861,9 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    cleaned_args = clean_args([" ".join(args)])
-    #modargs = [re.split("(\d|\.)+", arg) for arg in cleaned_args] # i dont remember why this was here
-    #modargs = [item.strip() for sublist in modargs for item in sublist if item]
-    #cleaned_args = modargs
+    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, re.IGNORECASE) for arg in args]
+    cleaned_args = clean_args([" ".join(split_args)])
+
     errmsg = []
     if args:
         is_get_latest = cleaned_args[0] in ["all", "latest", "new"]
@@ -1922,7 +1921,7 @@ async def rulebook(context, *args, **kwargs):
                 in_progress = True
 
             if arg in ['all', 'list']:
-                if book_query["Version"] > 0:
+                if book_query["Version"] is None:
                     await koduck.sendmessage(context["message"],
                                              sendcontent="Going with all versions!")
                 book_query["Version"] = "All"
@@ -1947,7 +1946,7 @@ async def rulebook(context, *args, **kwargs):
 
             if not bookname:
                 await koduck.sendmessage(context["message"],
-                                         sendcontent="Don't know which book you want! Please specify either 'Beta', 'Advance', or 'Alpha'! You can also search for 'PMR!'")
+                                         sendcontent="Don't know which book you want! Please specify either 'Beta', 'Advance', or 'Alpha'!'")
                 continue
             elif bookname == 'Unknown':
                 continue
