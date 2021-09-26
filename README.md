@@ -107,6 +107,9 @@ Searches and pulls up download links from the player-made content on Notion.
 `adventure`
 Creates a randomized adventure starter.
 
+`fight`
+Creates a randomized enemy Navi fight.
+
 `sheet`
 Pulls up the link to the blank, official character sheet.
 
@@ -117,16 +120,16 @@ Starts a Spotlight Tracker in the current text channel.
 Searches and pulls up the ProgBot output for a Glossary term.
 
 `daemon`
-(NetBattlers Advance content) Pulls up Daemon information.
+(NetBattlers Advance) Pulls up Daemon information.
 
 `upgrade`/`npu`
-(NetBattlers Advance content) Searches for a Navi Power's upgrades.
+(NetBattlers Advance) Searches for a Navi Power's upgrades.
 
 `networkmod`/`mod`
-(NetBattlers Advance content) Pulls up information on a NetWork Mod. 
+(NetBattlers Advance) Pulls up information on a NetWork Mod. 
 
 `audience`/`cheer`/`jeer`
-(NetBattlers Advance content) Rolls Cheers/Jeers. Can also track Cheer/Jeer Points for a text channel.
+(NetBattlers Advance) Rolls Cheers/Jeers. Can also track Cheer/Jeer Points for a text channel.
 
 `weather`/`cyberweather`
 (NetBattlers Advance content) Pulls up information for CyberWeather.
@@ -136,6 +139,21 @@ Searches and pulls up the ProgBot output for a Glossary term.
 
 `crimsonnoise`
 (Unofficial content from Genso Network) Rolls CrimsonNoise. 
+
+`xcard`/`x`/`ocard`/`o`/`ncard`/`n`
+Use the X, N, or O card. (TTRPG Safety Tools)
+
+`rewind`/`fastforward`/`ffwd`/`fwd`/`pause`/`break`/`fbf`/`slow`
+Use one of the Script Change tools: Rewind, Fast Forward, Pause, Frame-by-Frame. (TTRPG Safety Tools)
+
+`line`/`veil`
+Notify that a Line or Veil has been crossed. (TTRPG Safety Tools)
+
+`luxton`
+Request a Luxton Technique discussion. (TTRPG Safety Tools)
+
+`opendoor`
+Notify that you are utilizing the Open Door Policy. (TTRPG Safety Tools)
 
 ### Additional Databases
 - [Customized Mastersheet](https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing)
