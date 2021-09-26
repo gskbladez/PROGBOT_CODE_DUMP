@@ -91,7 +91,8 @@ help_categories = {"Lookups": ':mag: **Lookups**',
                   "Reminders (Base)": ':information_source: **Reminders (Base)**',
                   "Reminders (Advanced Content)": ':trophy: **Reminders (Advanced Content)**',
                   "Reminders (Liberation)": ':map: **Reminders (Liberation)**',
-                  "Reminders (DarkChips)": ':smiling_imp: **Reminders (DarkChips)**'}
+                  "Reminders (DarkChips)": ':smiling_imp: **Reminders (DarkChips)**',
+                  "Safety Tools": ':shield: **Safety Tools**'}
 
 cc_list = list(cc_dict.keys())
 cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
@@ -198,6 +199,7 @@ grid_link = rulebook_df[rulebook_df["Name"] == "Grid-Based Combat"]["Link"].iloc
 rulebook_df = rulebook_df[(rulebook_df["Name"] == "NetBattlers") | (rulebook_df["Name"] == "NetBattlers Advance")]
 
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
+fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
 weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
 achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
 glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
@@ -2742,6 +2744,67 @@ async def adventure_master(context, args):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Core or Chaos.")
 
+async def fight(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+
+    skilldf_sub = fight_df[fight_df["Type"] == "Skill"]
+    weapondf_sub = fight_df[fight_df["Type"] == "SecretWeapon"]
+    weaknessdf_sub = fight_df[fight_df["Type"] == "Weakness"]
+    arenadf_sub = fight_df[fight_df["Type"] == "Arena"]
+    manifestdf_sub = fight_df[fight_df["Type"] == "ElementManifest"]
+    navistartdf_sub = fight_df[fight_df["Type"] == "NaviStart"]
+    troubledf_sub = fight_df[fight_df["Type"] == "TroubleType"]
+    objectivedf_sub = fight_df[fight_df["Type"] == "FightObjective"]
+    realassistdf_sub = fight_df[fight_df["Type"] == "RealWorldAssist"]
+
+    # element
+    navi_element = 1
+    navi_element = random.sample(range(element_df.shape[0]), navi_element)
+    navi_element = [element_df.iloc[i]["element"] for i in navi_element]
+    # skills
+    row_num = random.randint(1, skilldf_sub.shape[0]) - 1
+    bestskill = [skilldf_sub.iloc[row_num]["Result"]]
+    row_num = random.randint(1, skilldf_sub.shape[0]) - 1
+    trainedskill = [skilldf_sub.iloc[row_num]["Result"]]
+    # secret weapon
+    row_num = random.randint(1, weapondf_sub.shape[0]) - 1
+    secret_weapon = [weapondf_sub.iloc[row_num]["Result"]]
+    # weakness
+    row_num = random.randint(1, weaknessdf_sub.shape[0]) - 1
+    weakness = [weaknessdf_sub.iloc[row_num]["Result"]]
+    # arena
+    row_num = random.randint(1, arenadf_sub.shape[0]) - 1
+    arena = [arenadf_sub.iloc[row_num]["Result"]]
+    # element manifest
+    row_num = random.randint(1, manifestdf_sub.shape[0]) - 1
+    element_manifest = [manifestdf_sub.iloc[row_num]["Result"]]
+    # navi start
+    row_num = random.randint(1, navistartdf_sub.shape[0]) - 1
+    navi_start = [navistartdf_sub.iloc[row_num]["Result"]]
+    # trouble type
+    row_num = random.randint(1, troubledf_sub.shape[0]) - 1
+    trouble_type = [troubledf_sub.iloc[row_num]["Result"]]
+    # fight objective
+    row_num = random.randint(1, objectivedf_sub.shape[0]) - 1
+    fight_objective = [objectivedf_sub.iloc[row_num]["Result"]]
+    # real world assist
+    row_num = random.randint(1, realassistdf_sub.shape[0]) - 1
+    real_world_assist = [realassistdf_sub.iloc[row_num]["Result"]]
+    if (len(cleaned_args) < 1):
+        generated_msg = "For this fight, this Navi has the element **{}**, and is proficient in **{}**. They are also trained in **{}**. " + \
+                        "**{}**, but their weakness is **{}**.\n" + \
+                        "The arena is **{}**, and the Navi's element manifests as **{}**. The Navi is **{}**!\n" + \
+                        "{}, and the NetOps need to **{}**! However, in the real world, **{}** is there to help!"
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=generated_msg.format(*navi_element, *bestskill, *trainedskill,
+                                                                         *secret_weapon, *weakness,
+                                                                         *arena,
+                                                                         *element_manifest, *navi_start,
+                                                                         *trouble_type, *fight_objective, *real_world_assist))
+    if cleaned_args[0] == 'help':
+        fight_help_msg = "I can generate a Navi boss fight for you! Specify `{cp}fight` to generate one!"
+        return await koduck.sendmessage(context["message"], sendcontent=fight_help_msg.replace("{cp}", settings.commandprefix))
+
 
 async def sheet(context, *args, **kwargs):
     msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `{cp}repo sheets`!" % settings.character_sheet).replace(
@@ -2992,7 +3055,6 @@ async def achievement(context, *args, **kwargs):
 
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
-
 async def glossary(context, *args, **kwargs):
     if not context["params"]:
         return await koduck.sendmessage(context["message"],
@@ -3023,6 +3085,49 @@ async def glossary(context, *args, **kwargs):
     progbot_func = globals()[glossary_info["ProgBot Function"]]
     return await progbot_func(context, glossary_info["ProgBot Argument"], "")
 
+async def xcard(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":x: **A participant has used an X-card.** Stop the scene and talk it out.")
+
+async def ncard(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":warning: **A participant has used an N-card.** Consider pausing to talk to your table about the direction of the scene to discuss adjustments.")
+
+async def ocard(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":white_check_mark: A participant has used an O-card. Keep going!")
+
+async def luxton(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":exclamation:**A participant would like to discuss a problem with the current content with the table.** Listen to their needs and wants, and consider giving them control over said content, then continue to play accomodating their requests.")
+
+async def line(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":octagonal_sign: **A participant has discovered a new Line.** You should pause to talk about it, and adjust things as necessary.")
+
+async def veil(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":cloud: **A participant has discovered a new Veil.** Consider toning down the detail in the current scene, and pause to talk to your table about it.")
+
+async def opendoor(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":door: **A participant needs to take a break, stop listening, or leave the game for safety reasons.**")
+
+async def ffwd(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":fast_forward: A participant would like to advance past the current scene.")
+
+async def rewind(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":rewind: A participant would like to rewind certain details of a scene.")
+
+async def pause(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":pause_button: A participant would like to take a break.")
+
+async def fbf(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":warning: A participant would like to take it slow during the oncoming scene. Continue as planned with caution.")
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
