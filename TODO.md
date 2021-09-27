@@ -10,6 +10,7 @@
 - Add MegaCheer as query
  - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
  - Update OmegaVirus vs MegaVirus color
+ - Add art for the following viruses: flashy, cactikil, flamey, mettauromega, puffball
 
 ### New Features
 - Secret Nyx link command (>nyx) [wartorn: will add `>nyx` alias later]
