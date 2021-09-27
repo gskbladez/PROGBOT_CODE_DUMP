@@ -155,6 +155,21 @@ Request a Luxton Technique discussion. (TTRPG Safety Tools)
 `opendoor`
 Notify that you are utilizing the Open Door Policy. (TTRPG Safety Tools)
 
+### Custom Emoji Support
+Some commands (mostly `ncp` and `power`, maybe more in the future?) have support for custom emoji displays. To set this up, there's a couple of emojis included in the `/emoji` directory that you can use and upload to your own Discord server. You only need to set them up in one place, afterwards ProgBot can use them in any server it's invited to in addition to the storage server.
+
+Setting this up isn't necessary for functionality, and if you're forking for your own purposes, you can even change them to something else.
+
+- Figure out where you'd like to set up your emojis. This can be an existing server or a new storage server.
+- Get the server ID by first enabling `Developer Mode` in Advanced settings in your Discord client.
+- Right click on the server's icon and click `Copy ID` in the menu.
+- Go to `settings.py`, and under `source_guild_id`, change the ID to your server's ID.
+- Upload the emojis to the server, then send a message in the server with the emojis you want to set up, and a backslash (\\) just before it
+    - Example: `\:emoji:`
+- This should give you an output like `<:emoji:891893856516317244>` when sending the message. This is the emoji's global ID.
+- Back in `settings.py`, there's a list of hardcoded emojis just underneath `source_guild_id`. You'll want to paste the emoji ID exactly within the `r" "` lines. E.g. `r"<:emoji:891893856516317244>"`
+- If everything works as it should and ProgBot is invited to the storage server, you should get a `Custom emojis enabled!` message when starting ProgBot.
+
 ### Additional Databases
 - [Customized Mastersheet](https://docs.google.com/spreadsheets/d/1aB6bOOo4E1zGhQmw2muOVdzNpu5ZBk58XZYforc8Eqw/edit?usp=sharing)
     - Prepared by Riject, editable with the link.
