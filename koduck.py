@@ -372,6 +372,10 @@ async def on_ready():
     print("Jacking In!")
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
+    if client.get_guild(id=settings.source_guild_id):
+        print("Custom emojis enabled!")
+    else:
+        print("Warning: ProgBot can't see the source emoji guild. Did you set source_guild_id correctly?")
     await runcommand("updatecommands")
     await client.change_presence(status=discord.Status.online, activity=discord.Game(name='NetBattlers RPG'))
 

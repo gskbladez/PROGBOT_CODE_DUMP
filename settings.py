@@ -68,3 +68,9 @@ invite_link = r"https://discordapp.com/oauth2/authorize?client_id=57287820039762
 notion_collection_id = "97e4a870-4673-4fc7-a2c7-3fb876e4d837"
 notion_collection_view_id = "085a4095-0668-4722-a8ec-91ae6f56640c"
 notion_query_link = r"https://www.notion.so/api/v3/queryCollection"
+
+#CUSTOM EMOJI SUPPORT
+source_guild_id = 612895615147442196
+custom_emoji_instant = r"<:instant:891893856516317244>"
+custom_emoji_cost = r"<:costpower:891890760981569586>"
+custom_emoji_roll = r"<:rollpower:891889147252453408>"

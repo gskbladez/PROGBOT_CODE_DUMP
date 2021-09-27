@@ -1048,9 +1048,25 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
             power_color = 0xffffff
     field_footer = ""
 
+    # determines custom emojis
+    if koduck.client.get_guild(id=settings.source_guild_id):
+        emojis_available = 1
+        if power_tag in ['Instant']:
+            emoji_tag = settings.custom_emoji_instant
+        if power_type in ['Cost']:
+            emoji_type = settings.custom_emoji_cost
+        elif power_type in ['Roll']:
+            emoji_type = settings.custom_emoji_roll
+    else:
+        emojis_available = 0
+
     if power_eb == '-' or force_power:  # display as power, rather than ncp
         if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
             field_title = 'Passive Power'
+        elif emojis_available:
+            field_title = "%s Power/%s%s" % (power_skill, emoji_type, power_type)
+            if power_tag:
+                field_title += "/%s%s" % (emoji_tag, power_tag)
         else:
             field_title = "%s Power/%s" % (power_skill, power_type)
             if power_tag:
@@ -1083,10 +1099,15 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
                 power_name += (" (%s Illegal Crossover NCP) " % power_source)
         elif power_source != "Core":
             power_name += " (%s Crossover NCP)" % power_source
+
         if power_type in ['Passive', '-', 'Upgrade', 'Minus']:
             field_description = power_description
+        elif power_tag and emojis_available:
+            field_description = "(%s/%s%s/%s%s) %s" % (power_skill, emoji_type, power_type, emoji_tag, power_tag, power_description)
         elif power_tag:
             field_description = "(%s/%s/%s) %s" % (power_skill, power_type, power_tag, power_description)
+        elif emojis_available:
+            field_description = "(%s/%s%s) %s" % (power_skill, emoji_type, power_type, power_description)
         else:
             field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
 
