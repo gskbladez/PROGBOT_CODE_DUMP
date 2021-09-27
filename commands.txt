@@ -75,13 +75,17 @@ o	ocard	prefix	1
 ncard	ncard	prefix	1
 n	ncard	prefix	1
 rewind	rewind	prefix	1
+rwd	rewind	prefix	1
+rw	rewind	prefix	1
 ffwd	ffwd	prefix	1
 fastforward	ffwd	prefix	1
 fwd	ffwd	prefix	1
+ff	ffwd	prefix	1
 pause	pause	prefix	1
 break	pause	prefix	1
 fbf	fbf	prefix	1
 slow	fbf	prefix	1
+framebyframe	fbf	prefix	1
 opendoor	opendoor	prefix	1
 luxton	luxton	prefix	1
 line	line	prefix	1
