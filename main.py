@@ -1034,7 +1034,10 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
     power_description = power_info["Effect"]
     power_eb = power_info["EB"]
     power_source = power_info["From?"]
-    power_tag = power_info["Tags"]
+    power_tag = ""
+    if "[Instant]" in power_description:
+        power_description = re.sub(r"\s*%s\s*" % re.escape("[Instant]"), "", power_description, flags=re.IGNORECASE)
+        power_tag += "Instant"
 
     # this determines embed colors
     power_color = find_skill_color(power_skill)
