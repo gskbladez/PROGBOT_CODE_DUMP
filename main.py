@@ -192,15 +192,17 @@ pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 nyx_chip_df = pd.read_csv(settings.nyx_chipfile, sep="\t").fillna('')
 nyx_power_df = pd.read_csv(settings.nyx_ncpfile, sep="\t").fillna('')
 
-rulebook_df = pd.read_csv(settings.rulebookfile, sep="\t").fillna('')
+rulebook_df = pd.read_csv(settings.rulebookfile, sep="\t",  converters = {'Version': str}).fillna('')
 pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
-rulebook_df = rulebook_df[(rulebook_df["Name"] != "Player-Made Repository") & (rulebook_df["Name"] != "Nyx")]
+grid_link = rulebook_df[rulebook_df["Name"] == "Grid-Based Combat"]["Link"].iloc[0]
+rulebook_df = rulebook_df[(rulebook_df["Name"] == "NetBattlers") | (rulebook_df["Name"] == "NetBattlers Advance")]
 
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
 weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
 achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
+glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
@@ -493,7 +495,7 @@ async def commands(context, *args, **kwargs):
 async def help_cmd(context, *args, **kwargs):
     # Default message if no parameter is given
     if len(args) == 0:
-        message_help = "Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! " + \
+        message_help = "Hi, I'm **ProgBot**, a bot made for *NetBattlers*, the Unofficial MMBN RPG! \n" + \
                        "My prefix for commands here is `{cp}`. You can also DM me using my default prefix `%s`! \n" % settings.commandprefix + \
                        "To see a list of all commands you can use, type `{cp}commands`. " + \
                        "You can type `{cp}help` and any other command for more info on that command!\n" + \
@@ -723,6 +725,7 @@ async def tag(context, *args, **kwargs):
     tag_title = tag_info["Tag"]
     tag_description = tag_info["Description"]
     tag_alt = tag_info["AltName"]
+    tag_description = tag_description.replace("\\n", "\n")
 
     if tag_alt:
         tag_title += " (%s)" % tag_alt
@@ -785,7 +788,7 @@ def query_chip(args):
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in ['incident', 'incident chip', 'incident chips']:
         return_title = "Pulling up all `Incident` Chips..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Incident|incident")]
+        subdf = chip_df[chip_df["Tags"].str.contains("Incident", flags=re.IGNORECASE)]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in arg_lower in chip_tag_list:
         subdf = chip_df[chip_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE) &
@@ -858,7 +861,13 @@ async def chip(context, *args, **kwargss):
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
                                     sendcontent=ruling_msg["Response"])
-
+    if cleaned_args[0] in ['folder', 'folders']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "folder", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                        sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                    sendcontent=ruling_msg["Response"])
     if 'blank' in cleaned_args[0]:
         embed = discord.Embed(
             title="__Blank BattleChip__",
@@ -1025,6 +1034,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
     power_description = power_info["Effect"]
     power_eb = power_info["EB"]
     power_source = power_info["From?"]
+    power_tag = power_info["Tags"]
 
     # this determines embed colors
     power_color = find_skill_color(power_skill)
@@ -1043,6 +1053,8 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
             field_title = 'Passive Power'
         else:
             field_title = "%s Power/%s" % (power_skill, power_type)
+            if power_tag:
+                field_title += "/%s" % power_tag
 
         field_description = power_description
 
@@ -1071,9 +1083,10 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
                 power_name += (" (%s Illegal Crossover NCP) " % power_source)
         elif power_source != "Core":
             power_name += " (%s Crossover NCP)" % power_source
-
         if power_type in ['Passive', '-', 'Upgrade', 'Minus']:
             field_description = power_description
+        elif power_tag:
+            field_description = "(%s/%s/%s) %s" % (power_skill, power_type, power_tag, power_description)
         else:
             field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
 
@@ -1613,9 +1626,17 @@ async def mysterydata(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll Mystery Data for you! Specify `{cp}mysterydata common`, `{cp}mysterydata uncommon`, or `{cp}mysterydata rare`!".replace(
+                                        sendcontent="I can roll Mystery Data for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance.\n" + \
+                                                    "You can also ask for advice using `{cp}mysterydata advice`".replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
 
+    if cleaned_args[0] in ['advice', 'rule', 'ruling', 'rules']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "mysterydataruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent=ruling_msg["Response"])
     await mysterydata_master(context, cleaned_args, force_reward=False)
 
 
@@ -1661,7 +1682,7 @@ async def mysteryreward(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! " +
-                                                    "Specify `{cp}mysteryreward common`, `{cp}mysteryreward uncommon`, or `{cp}mysteryreward rare`!".replace(
+                                                    "Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance!".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])))
 
     await mysterydata_master(context, cleaned_args, force_reward=True)
@@ -1720,40 +1741,28 @@ async def daemon(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Lists the complete information of a Daemon for DarkChip rules.")
-
+    is_ruling = False
+    ruling_msg = None
     if arg_combined in ["all", "list"]:
         _, result_title, result_msg = query_daemon()
         return await send_query_msg(context, result_title, result_msg)
-    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonruling", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
     elif cleaned_args[0] in ['darkchip', 'dark', 'darkchips', 'chip', 'chips']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "darkchip", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
     elif cleaned_args[0] in ['tribute', 'tributes']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "tribute", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
     elif cleaned_args[0] in ['chaosunison', 'chaos', 'chaosunion']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "domain", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
     elif cleaned_args[0] in ['daemonbond', 'bond']:
+        is_ruling = True
         ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonbond", suppress_notfound=True)
+
+    if is_ruling:
         if ruling_msg is None:
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
@@ -1803,7 +1812,7 @@ async def element(context, *args, **kwargs):
                                                         "{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(element_category_list))
 
-    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
+    if cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "elementruling", suppress_notfound=True)
         if ruling_msg is None:
             return await koduck.sendmessage(context["message"],
@@ -1856,56 +1865,59 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
-    modargs = [re.split("(\d)+", arg) for arg in cleaned_args]
-    modargs = [item.strip() for sublist in modargs for item in sublist if item]
-    cleaned_args = modargs
+    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, re.IGNORECASE) for arg in args]
+    cleaned_args = clean_args([" ".join(split_args)])
+
     errmsg = []
-    if not args:
-        ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["Version"].idxmax()]
-        book_names = ["%s %s %s: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
+    if args:
+        is_get_latest = cleaned_args[0] in ["all", "latest", "new"]
+    else:
+        is_get_latest = True
+
+    if is_get_latest:
+        rulebook_df["BiggNumber"] = pd.to_numeric(rulebook_df["Version"])
+        ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["BiggNumber"].idxmax()]
+        book_names = ["**%s %s %s**: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
                       ret_books.iterrows()]
     elif cleaned_args[0] == "help":
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Links the rulebooks for NetBattlers! " +
-                                                    "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7` or `{cp}rulebook adv 6`) \n".replace("{cp}", koduck.get_prefix(context["message"])) +
-                                                    "You can also pull up the current link to the Player-Made Repository with `{cp}rulebook playermade repository` or `{cp}rulebook pmr`.".replace("{cp}", koduck.get_prefix(context["message"])))
-    elif cleaned_args[0] in ["all", "latest", "new"]:
-        ret_books = rulebook_df.loc[rulebook_df[rulebook_df["Name"] != "Player-Made Repository"][rulebook_df["Name"] != "Nyx"].groupby(["Type", "Name"])["Version"].idxmax()]
-        book_names = ["%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"]) for _, book in ret_books.iterrows()]
-        book_names += ["", "For player-made content, check out the Player-Made Repository! <%s>" % pmc_link]
-
-    elif cleaned_args[0] in ['pmc', 'player', 'pmr', 'playermade', 'playermaderepository', 'playermaderepo']:
-        book_names = ["Player-Made Repository: <%s>" % pmc_link]
-
+                                                    "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7 adv 6`) \n"
+                                                    .replace("{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ['nyx', 'cc', 'crossover']:
-        book_names = ["Nyx CC (Crossover Content): <%s>" % nyx_link]
+        book_names = ["**Nyx Crossover Content**(?): <%s>" % nyx_link]
+    elif cleaned_args[0] in ['grid', 'gridbased', 'grid-based', 'gridbasedcombat', 'grid-basedcombat']:
+        book_names = ["**Grid-Based Combat Rules**(?): <%s>" % grid_link]
     else:
         book_names = []
 
     if not book_names:
         errmsg = []
-        book_query = {"Name": "", "Type": "All", "Version": -1, "Release": ""}
+        book_query = {"Name": "", "Type": "All", "Version": None, "Release": ""}
         book_queries = []
         in_progress = False
         for arg in cleaned_args:
             try:
-                version_num = int(arg)
-                if book_query["Version"] >= 0:
-                    await koduck.sendmessage(context["message"], sendcontent="Going with Version `%d`!" % version_num)
-                book_query["Version"] = version_num
+                # if arg.isdigit():
+                float(arg)
+                version_str = arg
+                if book_query["Version"] is not None:
+                    await koduck.sendmessage(context["message"], sendcontent="Going with Version `%s`!" % version_str)
+                book_query["Version"] = version_str
                 continue
             except ValueError:
                 pass
 
-            if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b'] + ['advance', 'advanced', 'nba', 'adv', 'a'] + ['alpha']):
+            if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b'] + ['advance', 'advanced', 'nba', 'adv', 'a'] + ['alpha']+['pre-alpha', 'prealpha']):
                 if in_progress:
                     book_queries.append(book_query)
-                    book_query = {"Name": "", "Type": "All", "Version": -1}
-                if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b']+['alpha']):
+                    book_query = {"Name": "", "Type": "All", "Version": None, "Release": ""}
+                if arg in (['beta', 'netbattlers', 'netbattler', 'nb', 'b']+['alpha']+['pre-alpha', 'prealpha']):
                     book_query["Name"] = "NetBattlers"
                     if arg in ['alpha']:
                         book_query["Release"] = "Alpha"
+                    elif arg in ['pre-alpha', 'prealpha']:
+                        book_query["Release"] = "Pre-Alpha"
                     else:
                         book_query["Release"] = "Beta"
                 else:
@@ -1913,10 +1925,10 @@ async def rulebook(context, *args, **kwargs):
                 in_progress = True
 
             if arg in ['all', 'list']:
-                if book_query["Version"] > 0:
+                if book_query["Version"] is None:
                     await koduck.sendmessage(context["message"],
                                              sendcontent="Going with all versions!")
-                book_query["Version"] = 0
+                book_query["Version"] = "All"
                 in_progress = True
 
             if arg in (['full', 'fullres', 'full-res'] + ['mobile']):
@@ -1938,7 +1950,7 @@ async def rulebook(context, *args, **kwargs):
 
             if not bookname:
                 await koduck.sendmessage(context["message"],
-                                         sendcontent="Don't know which book you want! Please specify either 'Beta', 'Advance', or 'Alpha'! You can also search for 'PMR!'")
+                                         sendcontent="Don't know which book you want! Please specify either 'Beta', 'Advance', or 'Alpha'!'")
                 continue
             elif bookname == 'Unknown':
                 continue
@@ -1951,16 +1963,16 @@ async def rulebook(context, *args, **kwargs):
                 book_type_str = ""
 
             if book_release:
-                subfilt = subfilt & (rulebook_df["Release"] == book_release)
+                subfilt = subfilt & (rulebook_df["Release"]==book_release)
 
-            if book_version < 0:
-                subfilt = subfilt.index == rulebook_df[subfilt]["Version"].idxmax()
+            if book_version is None:
+                subfilt = subfilt.index == pd.to_numeric(rulebook_df[subfilt]["Version"]).idxmax()
                 book_version_str = " (Most recent)"
-            elif book_version > 0:
-                subfilt = subfilt & (rulebook_df["Version"] == book_version)
-                book_version_str = " `%d`" % book_version
-            else:
+            elif book_version == "All":
                 book_version_str = ""
+            else:
+                subfilt = subfilt & (rulebook_df["Version"].str.contains("^" + book_version))
+                book_version_str = " `%s`" % book_version
 
             if not any(subfilt):
                 msg404 = "Couldn't find `%s`%s!%s" % (bookname, book_version_str, book_type_str)
@@ -1970,7 +1982,7 @@ async def rulebook(context, *args, **kwargs):
 
         ret_books = rulebook_df.loc[ret_book]
         book_names = [
-            "%s %s %s (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
+            "**%s %s %s** (%s): <%s>" % (book["Name"], book["Release"], book["Version"], book["Type"], book["Link"])
             for _, book in ret_books.iterrows()]
 
     book_names += errmsg
@@ -2035,7 +2047,7 @@ async def networkmod(context, *args, **kwargs):
 async def invite(context, *args, **kwargs):
     invite_link = settings.invite_link
     color = 0x71c142
-    embed = discord.Embed(title="Just click here to invite me!",
+    embed = discord.Embed(title="Just click here to invite me to one of your servers!",
                           color=color,
                           url=invite_link)
     return await koduck.sendmessage(context["message"], sendembed=embed)
@@ -2797,10 +2809,12 @@ async def fight(context, *args, **kwargs):
         fight_help_msg = "I can generate a Navi boss fight for you! Specify `{cp}fight` to generate one!"
         return await koduck.sendmessage(context["message"], sendcontent=fight_help_msg.replace("{cp}", settings.commandprefix))
 
+
 async def sheet(context, *args, **kwargs):
     msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `{cp}repo sheets`!" % settings.character_sheet).replace(
                                                         "{cp}", koduck.get_prefix(context["message"]))
     return await koduck.sendmessage(context["message"], sendcontent=msg_txt)
+
 
 async def spotlight(context, *args, **kwargs):
     if context["message"].channel.type is discord.ChannelType.private:
@@ -2939,7 +2953,6 @@ async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_loc
                                                                    message_location, error=True))
         return None
     return match_candidates.iloc[0]
-
 def embed_spotlight_message(err_msg, location, error=False):
     if error:
         embed = discord.Embed(description=err_msg,
@@ -2949,7 +2962,6 @@ def embed_spotlight_message(err_msg, location, error=False):
                               color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
-
 def embed_spotlight_tracker(dict_line, location):
     participants = dict_line.copy()
     del participants["Last Modified"]
@@ -2965,6 +2977,7 @@ def embed_spotlight_tracker(dict_line, location):
                           color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
+
 
 async def weather(context, *args, **kwargs):
     cleaned_args = clean_args(args)
@@ -3011,6 +3024,7 @@ async def weather(context, *args, **kwargs):
 
     return
 
+
 async def achievement(context, *args, **kwargs):
     if not context["params"]:
         return await koduck.sendmessage(context["message"],
@@ -3044,6 +3058,36 @@ async def achievement(context, *args, **kwargs):
                     value="_{}_".format(achievement_description))
 
     return await koduck.sendmessage(context["message"], sendembed=embed)
+
+async def glossary(context, *args, **kwargs):
+    if not context["params"]:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Use me to pull up a Glossary term in ProgBot! I can also try to search for a term if you know the first few letters!")
+    arg = context["paramline"].strip()
+    cleaned_arg = arg.lower()
+
+    glossary_info = await find_value_in_table(context, glossary_df, "Name", cleaned_arg, suppress_notfound=True) # exact match
+
+    if glossary_info is None: # fuzzier match
+        match_candidates = glossary_df[glossary_df["Name"].str.contains("^" + cleaned_arg, flags=re.IGNORECASE)]
+
+        if match_candidates.shape[0] < 1:
+            return await koduck.sendmessage(context["message"], sendcontent="Didn't find any matches for `%s` in the glossary!" % arg)
+        if match_candidates.shape[0] > 1:
+            progbot_list = ["> **%s**: `{cp}%s`".replace("{cp}", koduck.get_prefix(context["message"])) % (nam, cmd)
+                            for nam, cmd in zip(match_candidates['Name'], match_candidates['ProgBot Command'])]
+            return await koduck.sendmessage(context["message"], sendcontent="Found multiple matches under `%s` in the glossary!\n%s" %
+                                                                            (arg, "\n".join(progbot_list)))
+        glossary_info = match_candidates.iloc[0]
+
+
+    if glossary_info["ProgBot Function"] not in globals():
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Don't recognize the function `%s`! (You should probably let the devs know...)" % glossary_info["ProgBot Function"])
+
+    await koduck.sendmessage(context["message"], sendcontent="Pulling up `%s%s`!" % (koduck.get_prefix(context["message"]), glossary_info['ProgBot Command']))
+    progbot_func = globals()[glossary_info["ProgBot Function"]]
+    return await progbot_func(context, glossary_info["ProgBot Argument"], "")
 
 async def xcard(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"],

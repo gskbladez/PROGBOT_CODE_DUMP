@@ -30,6 +30,7 @@ ncp	ncp	prefix	1
 virus	virus	prefix	1
 virusx	virusx	prefix	1
 tag	tag	prefix	1
+category	tag	prefix	1
 query	query	prefix	1
 bond	bond	prefix	1
 bondpower	bond	prefix	1
@@ -58,14 +59,15 @@ pmc	repo	prefix	1
 adventure	adventure	prefix	1
 fight	fight	prefix	1
 sheet	sheet	prefix	1
+spot	spotlight	prefix	1
 spotlight	spotlight	prefix	1
-spotlightchecklist	spotlight	prefix	1
 checklist	spotlight	prefix	1
 weather	weather	prefix	1
 cyberweather	weather	prefix	1
 achievement	achievement	prefix	1
 achievements	achievement	prefix	1
 achieve	achievement	prefix	1
+glossary	glossary	prefix	1
 xcard	xcard	prefix	1
 x	xcard	prefix	1
 ocard	ocard	prefix	1

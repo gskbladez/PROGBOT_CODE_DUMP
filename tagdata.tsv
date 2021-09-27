@@ -1,33 +1,35 @@
 Tag	Alias	AltName	Description
-Accurate	Accu	Accu.	Defending against this with Speed is upshifted. 
-Awkward	Awkd	Awkd.	Doing something else at the same time is difficult or impossible.\n*Example: These chips aren’t usable while moving or multitasking.)*
+Accurate	Accu	Accu.	Defending against this with **Speed** is upshifted. 
+Awkward	Awkd	Awkd.	Doing something else at the same time is difficult or impossible.\n*Example: These chips aren’t usable while moving or multitasking.*
 Dangerous	Dngr	Dngr.	This chip tends to cause collateral damage.\n*Example: This can break objects and injure or impede those nearby, including allies. Be careful when using them to avoid more trouble.*
-Guard			Only one Guard can passively benefit the user at a time.
-Piercing	Prcn	Prcn.	Defending against this with Stamina is upshifted.
+Guard			Only **one Guard** can passively benefit the user at a time.\nWhen a Navi has a Guard active and tries to gain a new one, **they pick which to keep**. The Guard not kept loses all its effects.
+Piercing	Prcn	Prcn.	Defending against this with **Stamina** is upshifted.
 Simple	Simp	Simp.	The chip’s effects happen instantly, and can be used while performing other actions.
-Slow			It takes extra time for this to activate. Using it at a moment’s notice is difficult or impossible.\n*Example: These chips can’t be used as a reaction to someone’s attack without preparing it ahead of time.*
+Slow			It takes extra time for this to activate. Using it at a moment’s notice is difficult or impossible.\n*Example: This can’t be used as a reaction to someone’s attack without preparing it ahead of time, or without sufficient time to prepare. (I.e. An attacker failing a Speed to get close may give enough time to prepare and use a Slow chip against them.)*
 			
-Blade	BladeChip, BladeC, BladeBattleChip, BladeChips, BladeBattleChips,  Blade(C), (C)Blade, Blade(BattleChip), Blade(Chip)		Razor-sharp, hard-hitting attacks with a focus on melee weapons. **Navis can parry with these chips.**
+Blade	BladeChip, BladeC, BladeBattleChip, BladeChips, BladeBattleChips,  Blade(C), (C)Blade, Blade(BattleChip), Blade(Chip)		Razor-sharp, hard-hitting attacks with a focus on melee weapons.\n**Navis can parry with these chips.**
 Hazard	HazardChip, HazardC, HazardBattleChip, HazardChips, HazardBattleChips,  Hazard(C), (C)Hazard, Hazard(BattleChip), Hazard(Chip)		These chips alter the environment, either by creating new terrain or destroying what’s already there.
-Impact	ImpactChip, ImpactC, ImpactBattleChip, ImpactChips, ImpactBattleChips,  Impact(C), (C)Impact, Impact(BattleChip), Impact(Chip)		Melee-focused chips that often carry debilitating effects or alternate uses. **Navis can parry with these chips.**
-Rush	RushChip, RushC, RushBattleChip, RushChips, RushBattleChips,  Rush(C), (C)Rush, Rush(BattleChip), Rush(Chip)		Chips that let Navis move extra fast. **Downshift the defense roll if used closer than maximum range.**
-Shot	ShotChip, ShotC, ShotBattleChip, ShotChips, ShotBattleChips,  Shot(C), (C)Shot, Shot(BattleChip), Shot(Chip)		Powerful projectile attacks. **Shot chips can be fired beyond their listed range, though the defense roll is downshifted.**
+Impact	ImpactChip, ImpactC, ImpactBattleChip, ImpactChips, ImpactBattleChips,  Impact(C), (C)Impact, Impact(BattleChip), Impact(Chip)		Melee-focused chips that often carry debilitating effects or alternate uses.\n**Navis can parry with these chips.**
+Rush	RushChip, RushC, RushBattleChip, RushChips, RushBattleChips,  Rush(C), (C)Rush, Rush(BattleChip), Rush(Chip)		Chips that let Navis move extra fast. **Downshift the defense roll** if used **closer than maximum range.**\n*By default, Rush chips do not let the user launch into the air. The exception is if it explicitly describes the user flying. (Synonymous terms, like “rocket,” also count.)*
+Shot	ShotChip, ShotC, ShotBattleChip, ShotChips, ShotBattleChips,  Shot(C), (C)Shot, Shot(BattleChip), Shot(Chip)		Powerful projectile attacks.\nThey can be **fired beyond their listed range**, though the **defense roll is downshifted.**
 Summon	SummonChip, SummonC, SummonBattleChip, SummonChips, SummonBattleChips,  Summon(C), (C)Summon, Summon(BattleChip), Summon(Chip)		These create something to assist the Navi, whether it be a tool, a specialized program, or a piece of cover.
 Support (Chip)	SupportChip, SupportC, SupportBattleChip, SupportChips, SupportBattleChips,  Support(C), (C)Support, Support(BattleChip)		Support chips boost the Navi’s abilities and create debilitating effects.
 Thrown	ThrownChip, ThrownC, ThrownBattleChip, ThrownChips, ThrownBattleChips,  Thrown(C), (C)Thrown, Thrown(BattleChip), Thrown(Chip)		Projectile weapons that carry situational and dangerous but devastating effects.
 Wave	WaveChip, WaveC, WaveBattleChip, WaveChips, WaveBattleChips,  Wave(C), (C)Wave, Wave(BattleChip), Wave(Chip)		Broad attacks that **hit everything Close to the main target**, potentially including the user.
-NaviChip	Navi, NaviChips		NaviChips are **MegaChips** that store attack data from defeated Navis. Each NaviChip is unique, based off the Navi it was downloaded from. NaviChips are determined by the GM.
-MegaChip	Mega, MegaChips		**MegaChips** are impossibly rare, exceptionally powerful, one-of-a-kind BattleChips. Folders can only hold one MegaChip at a time. MegaChips do not count as BattleChips for the purposes of Navi Powers, NCPs, or other BattleChips, and any ongoing effects from them can’t be dispelled by such abilities.
+NaviChip	Navi, NaviChips		**NaviChips** are **MegaChips** that store attack data from Navis, containing a small fragment of their core data. Each NaviChip is unique, based off the Navi it was downloaded from. Its Category is considered [Navi].
+MegaChip	Mega, MegaChips		**MegaChips** are impossibly rare, exceptionally powerful, one-of-a-kind BattleChips. Folders can only hold one MegaChip at a time.\nMegaChips **do not count as BattleChips** for the purposes of Navi Powers, NCPs, or other BattleChips, and any ongoing effects from them can’t be dispelled by such abilities.
+Incident Chip	Incident, IncidentChips, IncidentChip		**Incident Chips** are MegaChips tainted with sinister power, capable of immense, showstopping repercussions. They have all of the same restrictions of normal **MegaChips.** In addition, there is only one sure-fire way to stop their effects: delete the Navi that used it. (If using DarkChips, feel free to treat Incident Chips as DarkChips.)
+DarkChip	Dark, DarkChips		**DarkChips** are destructive BattleChips linked to a Daemon. Stronger than MegaChips, they cause devastating damage, manipulate servers, and control minds and bodies. DarkChips have the same restrictions as **MegaChips**. Each DarkChip disappears after a single use. 
 			
-Artillery	ArtilleryVirus, ArtilleryV,  ArtilleryViruses, Artillery(V), Artillery(Viruses), (V)Artillery		Ranged damage-dealers, typically using Sense or Affinity.
+Artillery	ArtilleryVirus, ArtilleryV,  ArtilleryViruses, Artillery(V), Artillery(Viruses), (V)Artillery		Viruses that are ranged damage-dealers, typically using Sense or Affinity.
 Disruption	DisruptionVirus, DisruptionV,  DisruptionViruses, Disruption(V), Disruption(Viruses), (V)Disruption		Viruses that hinder Navis, making them vulnerable.
-Striker	StrikerVirus, StrikerV,  StrikerViruses, Striker(V), Striker(Viruses), (V)Striker		Hardy brawlers that deal heavy damage up close.
-Support (Virus)	SupportVirus, SupportV,  SupportViruses, Support(V), Support(Viruses), (V)Support		Viruses focused on protecting and boosting other enemies.
+Strike	StrikerVirus, StrikerV,  StrikerViruses, Striker(V), Striker(Viruses), (V)Striker		Viruses that are hardy brawlers, and deal heavy damage up close.
+Support	SupportVirus, SupportV,  SupportViruses, Support(V), Support(Viruses), (V)Support		Viruses focused on protecting and boosting other enemies.
 Wrecker	WreckerVirus, WreckerV,  WreckerViruses, Wrecker(V), Wrecker(Viruses), (V)Wrecker		Viruses that create environmental obstacles and threats.
 			
-Hovering			It floats a bit off the ground, avoiding grounded attacks and some terrain.
-Flying			It can freely fly through the air.
-Inanimate			It follows simplistic programming, and can be hacked with Coding. (They still count as “living” targets.)
-Immobile			It can’t move on its own. (Others may be able to move it.)
+Hovering			Floats a bit off the ground, avoiding grounded attacks and some terrain.
+Flying			Can freely fly through the air.
+Inanimate			Follows simplistic programming, and can be hacked with Coding. (They still count as “living” targets.)
+Immobile			Can’t move on its own. (Others may be able to move it.)
 			
 Support			There are both Support Chips and Support Viruses! Please specify the one you mean!
