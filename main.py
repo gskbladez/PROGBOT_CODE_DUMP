@@ -1034,6 +1034,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
     power_description = power_info["Effect"]
     power_eb = power_info["EB"]
     power_source = power_info["From?"]
+    power_tag = power_info["Tags"]
 
     # this determines embed colors
     power_color = find_skill_color(power_skill)
@@ -1052,6 +1053,8 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
             field_title = 'Passive Power'
         else:
             field_title = "%s Power/%s" % (power_skill, power_type)
+            if power_tag:
+                field_title += "/%s" % power_tag
 
         field_description = power_description
 
@@ -1080,9 +1083,10 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
                 power_name += (" (%s Illegal Crossover NCP) " % power_source)
         elif power_source != "Core":
             power_name += " (%s Crossover NCP)" % power_source
-
         if power_type in ['Passive', '-', 'Upgrade', 'Minus']:
             field_description = power_description
+        elif power_tag:
+            field_description = "(%s/%s/%s) %s" % (power_skill, power_type, power_tag, power_description)
         else:
             field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
 
