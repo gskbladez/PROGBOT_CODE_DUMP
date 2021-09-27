@@ -495,7 +495,7 @@ async def commands(context, *args, **kwargs):
 async def help_cmd(context, *args, **kwargs):
     # Default message if no parameter is given
     if len(args) == 0:
-        message_help = "Hi, I'm Mr.Prog, a bot made for NetBattlers, the Unofficial MMBN RPG! " + \
+        message_help = "Hi, I'm **ProgBot**, a bot made for *NetBattlers*, the Unofficial MMBN RPG! \n" + \
                        "My prefix for commands here is `{cp}`. You can also DM me using my default prefix `%s`! \n" % settings.commandprefix + \
                        "To see a list of all commands you can use, type `{cp}commands`. " + \
                        "You can type `{cp}help` and any other command for more info on that command!\n" + \
