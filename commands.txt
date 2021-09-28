@@ -90,3 +90,5 @@ opendoor	opendoor	prefix	1
 luxton	luxton	prefix	1
 line	line	prefix	1
 veil	veil	prefix	1
+find	find_chip_ncp_power	prefix	1
+

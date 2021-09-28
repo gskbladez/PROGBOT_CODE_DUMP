@@ -914,81 +914,88 @@ async def chip(context, *args, **kwargss):
     for arg in cleaned_args:
         if not arg:
             continue
-
-        chip_info = await find_value_in_table(context, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
-        if chip_info is None:
-            chip_info = await find_value_in_table(context, pmc_chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
-            if chip_info is None:
-                chip_info = await find_value_in_table(context, nyx_chip_df, "Chip", arg, suppress_notfound=False, alias_message=True)
-                if chip_info is None:
-                    continue
-
-        chip_name = chip_info["Chip"]
-
-        chip_damage = chip_info["Dmg"]
-        if chip_damage:
-            chip_damage += " Damage"
-        else:
-            chip_damage = "-"
-        chip_range = chip_info["Range"]
-        chip_description = chip_info["Effect"]
-        chip_category = chip_info["Category"]
-        chip_tags = chip_info["Tags"]
-        chip_crossover = chip_info["From?"]
-        chip_license = chip_info["License"]
-
-        chip_tags_list = [i.strip() for i in chip_tags.split(",")]
-
-        chip_title = chip_name
-        if chip_crossover in playermade_list:
-            chip_title_sub = "%s Unofficial " % chip_crossover
-        elif chip_crossover != "Core" and chip_crossover != "DarkChips":
-            chip_title_sub = "%s " % chip_crossover
-        elif chip_license:
-            chip_title_sub = chip_license + " "
-        else:
-            chip_title_sub = chip_license
-
-        if chip_crossover == "Nyx":
-            msg_time = context["message"].created_at
-            if msg_time.month == 4 and msg_time.day == 1:
-                chip_title_sub = "%s Legal!! Crossover " % chip_crossover
-            else:
-                chip_title_sub = "%s Illegal Crossover " % chip_crossover
-
-        # this determines embed colors
-        color = cc_color_dictionary["Chip"]
-        if chip_tags_list:
-            if 'Dark' in chip_tags:
-                color = cc_color_dictionary['Dark']
-                chip_tags_list.remove("Dark")
-                chip_title_sub += "Dark"
-            elif 'Mega' in chip_tags:
-                color = cc_color_dictionary['MegaChip']
-                chip_tags_list.remove("Mega")
-                chip_title_sub += "Mega"
-            elif 'Incident' in chip_tags:
-                color = cc_color_dictionary['Mystic Lilies']
-                chip_tags_list.remove("Incident")
-                chip_title_sub += "Incident "
-        if chip_title_sub:
-            chip_title += " (%sChip)" % chip_title_sub
-
-        if chip_category == 'Item':
-            color = cc_color_dictionary["Item"]
-        if chip_crossover in cc_color_dictionary:
-            color = cc_color_dictionary[chip_crossover]
-
-        subtitle = [chip_damage, chip_range, chip_category, ", ".join(chip_tags_list)]
-        subtitle_trimmed = [i for i in subtitle if i and i[0] != '-']
-
+        chip_title, subtitle_trimmed, chip_description, color, _ = await chipfinder(context, arg)
+        if chip_title is None:
+            continue
         embed = discord.Embed(
             title="__%s__" % chip_title,
             color=color)
-        embed.add_field(name="[%s]" % "/".join(subtitle_trimmed),
+        embed.add_field(name="[%s]" % subtitle_trimmed,
                         value="_%s_" % chip_description)
         await koduck.sendmessage(context["message"], sendembed=embed)
 
+
+async def chipfinder(context, arg, suppress_err_msg=False):
+    chip_info = await find_value_in_table(context, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
+    if chip_info is None:
+        chip_info = await find_value_in_table(context, pmc_chip_df, "Chip", arg, suppress_notfound=True,
+                                              alias_message=True)
+        if chip_info is None:
+            chip_info = await find_value_in_table(context, nyx_chip_df, "Chip", arg, suppress_notfound=suppress_err_msg,
+                                                  alias_message=True)
+            if chip_info is None:
+                return None, None, None, None, None
+
+    chip_name = chip_info["Chip"]
+
+    chip_damage = chip_info["Dmg"]
+    if chip_damage:
+        chip_damage += " Damage"
+    else:
+        chip_damage = "-"
+    chip_range = chip_info["Range"]
+    chip_description = chip_info["Effect"]
+    chip_category = chip_info["Category"]
+    chip_tags = chip_info["Tags"]
+    chip_crossover = chip_info["From?"]
+    chip_license = chip_info["License"]
+
+    chip_tags_list = [i.strip() for i in chip_tags.split(",")]
+
+    chip_title = chip_name
+    if chip_crossover in playermade_list:
+        chip_title_sub = "%s Unofficial " % chip_crossover
+    elif chip_crossover != "Core" and chip_crossover != "DarkChips":
+        chip_title_sub = "%s " % chip_crossover
+    elif chip_license:
+        chip_title_sub = chip_license + " "
+    else:
+        chip_title_sub = chip_license
+
+    if chip_crossover == "Nyx":
+        msg_time = context["message"].created_at
+        if msg_time.month == 4 and msg_time.day == 1:
+            chip_title_sub = "%s Legal!! Crossover " % chip_crossover
+        else:
+            chip_title_sub = "%s Illegal Crossover " % chip_crossover
+
+    # this determines embed colors
+    color = cc_color_dictionary["Chip"]
+    if chip_tags_list:
+        if 'Dark' in chip_tags:
+            color = cc_color_dictionary['Dark']
+            chip_tags_list.remove("Dark")
+            chip_title_sub += "Dark"
+        elif 'Mega' in chip_tags:
+            color = cc_color_dictionary['MegaChip']
+            chip_tags_list.remove("Mega")
+            chip_title_sub += "Mega"
+        elif 'Incident' in chip_tags:
+            color = cc_color_dictionary['Mystic Lilies']
+            chip_tags_list.remove("Incident")
+            chip_title_sub += "Incident "
+    if chip_title_sub:
+        chip_title += " (%sChip)" % chip_title_sub
+
+    if chip_category == 'Item':
+        color = cc_color_dictionary["Item"]
+    if chip_crossover in cc_color_dictionary:
+        color = cc_color_dictionary[chip_crossover]
+
+    subtitle = [chip_damage, chip_range, chip_category, ", ".join(chip_tags_list)]
+    subtitle_trimmed = [i for i in subtitle if i and i[0] != '-']
+
+    return chip_title, "/".join(subtitle_trimmed), chip_description, color, ""
 
 def find_skill_color(skill_key):
     if skill_key in ["Sense", "Info", "Coding"]:
@@ -1002,7 +1009,7 @@ def find_skill_color(skill_key):
     return color
 
 
-async def power_ncp(context, arg, force_power=False, ncp_only=False):
+async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_err_msg=False):
     if ncp_only:
         local_power_df = power_df[power_df["Sort"] != "Virus Power"]
         local_pmc_df = pmc_power_df[pmc_power_df["Sort"] != "Virus Power"]
@@ -1017,7 +1024,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False):
         power_info = await find_value_in_table(context, local_pmc_df, "Power/NCP", arg, suppress_notfound=True,
                                                alias_message=True)
         if power_info is None:
-            power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=False,
+            power_info = await find_value_in_table(context, nyx_power_df, "Power/NCP", arg, suppress_notfound=suppress_err_msg,
                                                    alias_message=True)
             if power_info is None:
                 return None, None, None, None, None
@@ -1128,6 +1135,7 @@ def clean_args(args, lowercase=True):
     else:
         args = [i.strip() for i in args if i and not i.isspace()]
     return args
+
 
 
 def query_power(args):
@@ -3156,6 +3164,38 @@ async def pause(context, *args, **kwargs):
 async def fbf(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"],
                                     sendcontent=":warning: A participant would like to take it slow during the oncoming scene. Continue as planned with caution.")
+
+async def find_chip_ncp_power(context, *args, **kwargs):
+    if not context["params"]:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="I can search through **Chips**, **Powers**, and **NCPs**! Give me 1-%d terms and I'll try to find them!" % MAX_CHIP_QUERY)
+
+    cleaned_args = clean_args([" ".join(args)])
+
+    if len(cleaned_args) > MAX_CHIP_QUERY:
+        return await koduck.sendmessage(context["message"], sendcontent="Too many items, no more than 5!")
+
+    for arg in cleaned_args:
+        item_title, item_trimmed, item_description, item_color, item_footer = await chipfinder(context, arg, suppress_err_msg=True)
+
+        if item_title is None:
+            item_title, item_trimmed, item_description, item_color, item_footer = await power_ncp(context, arg, force_power=False,
+                                                                                      ncp_only=False, suppress_err_msg=True)
+            if item_title is None:
+                item_title, item_trimmed, item_description, item_color, item_footer = await power_ncp(context, arg, force_power=False,
+                                                                                         ncp_only=True, suppress_err_msg=True)
+                if item_title is None:
+                    await koduck.sendmessage(context["message"], sendcontent="Unable to find `%s`!" % arg)
+                    continue
+        embed = discord.Embed(
+            title="__%s__" % item_title,
+            color=item_color)
+        embed.add_field(name="[%s]" % item_trimmed,
+                        value="_%s_" % item_description)
+        await koduck.sendmessage(context["message"], sendembed=embed)
+
+    return
+
 
 def setup():
     koduck.addcommand("updatecommands", updatecommands, "prefix", 3)
