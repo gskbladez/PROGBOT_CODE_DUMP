@@ -70,7 +70,7 @@ notion_collection_view_id = "085a4095-0668-4722-a8ec-91ae6f56640c"
 notion_query_link = r"https://www.notion.so/api/v3/queryCollection"
 
 #CUSTOM EMOJI SUPPORT
-source_guild_id = 612895615147442196
-custom_emoji_instant = r"<:instant:891893856516317244>"
-custom_emoji_cost = r"<:costpower:891890760981569586>"
-custom_emoji_roll = r"<:rollpower:891889147252453408>"
+source_guild_id = 556291542206382080
+custom_emoji_instant = r"<:instant:892170110465363969>"
+custom_emoji_cost = r"<:cost:892170110364680202>"
+custom_emoji_roll = r"<:roll:892170110377295934>"
