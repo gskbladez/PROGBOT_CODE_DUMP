@@ -36,7 +36,7 @@ Overwrite	Charm	Cost	Trick a hostile Virus into helping you. The bigger the ask,
 Harmless	Charm	Roll	Avert hostile attention from yourself.	-	Power	Core	
 Hypnotize	Charm	Roll	Gradually lull a Close target to sleep.	-	Power	Core	
 Playback	Charm	Roll	Imitate someone else’s voice.	-	Power	Core	
-Bodyguard	Bravery	Cost	The next time an ally of your choice is attacked, you are attacked instead. [Instant]	-	Power	Core	
+Bodyguard	Bravery	Cost	Pick an ally. Next time they’re attacked & Near, step in to take the attack instead. [Instant]	-	Power	Core	
 Rally	Bravery	Cost	Add two dice to someone else’s Soul roll (before they roll). [Instant]	-	Power	Core	
 Glare	Bravery	Roll	A Near target can’t move range bands until line of sight breaks. One at a time.	-	Power	Core	
 SystemCall	Bravery	Roll	Convince one or more Near targets to focus their hostile attention on you.	-	Power	Core	
@@ -100,7 +100,7 @@ OverwriteNCP	Charm	Cost	Trick a hostile Virus into helping you. The bigger the a
 HarmlessNCP	Charm	Roll	Avert hostile attention from yourself.	3	PowerNCP	Core	
 HypnotizeNCP	Charm	Roll	Gradually lull a Close target to sleep.	3	PowerNCP	Core	
 PlaybackNCP	Charm	Roll	Imitate someone else’s voice.	3	PowerNCP	Core	
-BodyguardNCP	Bravery	Cost	The next time an ally of your choice is attacked, you are attacked instead. [Instant]	3	PowerNCP	Core	
+BodyguardNCP	Bravery	Cost	Pick an ally. Next time they’re attacked & Near, step in to take the attack instead. [Instant]	3	PowerNCP	Core	
 RallyNCP	Bravery	Cost	Add two dice to someone else’s Soul roll (before they roll). [Instant]	3	PowerNCP	Core	
 GlareNCP	Bravery	Roll	A Near target can’t move range bands until line of sight breaks. One at a time.	3	PowerNCP	Core	
 SystemCallNCP	Bravery	Roll	Convince one or more Near targets to focus their hostile attention on you.	3	PowerNCP	Core	
@@ -216,7 +216,7 @@ Ricochet	Volley	Upgrade	Can instead spend 1 Sense to reroll an attack you just m
 Aggregator	Analyze	Upgrade	Can spend hits to learn their: NetOp, Bonds, Zenny, and emotional state.	1	NPU	Navi Power Upgrades	
 Exploit	Analyze	Upgrade	Add +2 dice to the first 2 allied rolls vs. the target. Once per target.	2	NPU	Navi Power Upgrades	
 Anticipation	Foresight	Upgrade	Foresight also lets you parry, not just dodge.	2	NPU	Navi Power Upgrades	
-ChipCracker	Foresight	Upgrade	If you pick Mind, you can also roll Info to defend against BattleChips.	2	NPU	Navi Power Upgrades	
+ChipCracker	Foresight	Upgrade	If you pick Mind, you can also roll Info to defend against BattleChips.	1	NPU	Navi Power Upgrades	
 SearchIndex	MemoryScan	Upgrade	You can find distant memories if you give a specific date/time.	2	NPU	Navi Power Upgrades	
 StorageViolation	MemoryScan	Upgrade	MemoryScan can also scan Navis. [Often illegal.]	3	NPU	Navi Power Upgrades	
 FolderOverload	Reconfig	Upgrade	You can spend an unused chip in your Folder to activate Reconfig.	2	NPU	Navi Power Upgrades	
@@ -578,7 +578,7 @@ Populate	Affinity	Cost	Add a fake creature to the room. It rolls with your stats
 SOSMail	-	-	Once per jack-in, can send an SOS w/ your location to all chat rooms on the server.	1	NCP	Mudslurp	
 FamilyFilter	-	-	Your body beeps loudly to censor any Near audible insults or rude language.	1	NCP	Mudslurp	
 FriendsList	-	-	A heads-up display shows the status of your bonded allies in very limited detail.	1	NCP	Mudslurp	FriendList
-EmotiConlang	-	-	You can roll Charm instead of Coding to hack into Close inanimate Viruses.	2	NCP	Mudslurp	
+EmotiConlang	-	-	You can roll Charm instead of Coding to hack into Close Inanimate Viruses.	2	NCP	Mudslurp	
 Necropost	-	-	Shortly after targets are deleted, you can speak with them. Viruses will be friendly.	2	NCP	Mudslurp	
 MysteryChannel	-	-	Secret comms channel! Contains strange signals, odd secrets, and... Virus chatter?	2	NCP	Mudslurp	
 							

@@ -10,8 +10,8 @@
 - Add MegaCheer as query
  - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
  - Update OmegaVirus vs MegaVirus color
- - Add art for the following viruses: flashy, cactikil, flamey, mettauromega, puffball
  - Update progbot virus art links once merged into progbot
+ - Clean up floating pixels around Flashy and Drixol art
 
 ### New Features
 - Secret Nyx link command (>nyx) [wartorn: will add `>nyx` alias later]
