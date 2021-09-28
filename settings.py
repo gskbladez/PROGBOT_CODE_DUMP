@@ -65,7 +65,7 @@ uncommon_md_image = r"https://raw.githubusercontent.com/gskbladez/meddyexe/maste
 rare_md_image = r"https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/raremysterydata.png"
 gold_md_image = r"https://raw.githubusercontent.com/Wartorn/PROGBOT_CODE_DUMP/big-shot/virusart/goldmysterydata.png"
 violet_md_image = r"https://raw.githubusercontent.com/Wartorn/PROGBOT_CODE_DUMP/big-shot/virusart/violetmysterydata.png"
-sapphire_md_image = r"https://raw.githubusercontent.com/Wartorn/PROGBOT_CODE_DUMP/big-shot/virusart/sapphiremysterydata.png"
+sapphire_md_image = r"https://raw.githubusercontent.com/Wartorn/PROGBOT_CODE_DUMP/289979127042d22804242cc27a63f42dd86e558f/virusart/sapphiremysterydata.png"
 bug_image = r"https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png"
 invite_link = r"https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0"
 notion_collection_id = "97e4a870-4673-4fc7-a2c7-3fb876e4d837"
