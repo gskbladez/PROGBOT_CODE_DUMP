@@ -130,11 +130,11 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                     "rare": {"color": 0xD8E100,
                              "image": settings.rare_md_image},
                     "gold": {"color": 0xFFD541,
-                             "image": ""},
+                             "image": settings.gold_md_image},
                     "violet": {"color": 0x895EFF,
-                             "image": ""},
+                             "image": settings.violet_md_image},
                     "sapphire": {"color": 0x3659FE,
-                             "image": ""}}
+                             "image": settings.sapphire_md_image}}
 
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
