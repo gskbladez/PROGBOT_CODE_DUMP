@@ -848,24 +848,24 @@ async def chip(context, *args, **kwargss):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a Battle Chip and I can pull up its info for you!\n" +
+                                        sendcontent="Give me the name of 1-%d **BattleChips** and I can pull up their info for you!\n\n" % MAX_CHIP_QUERY+
                                                     "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! \n" +
-                                                    "I can also list all current chip categories with `{cp}chip category`, and all current chip tags with `{cp}chip tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)".replace(
-                                                        "{cp}", koduck.get_prefix(context["message"])))
+                                                    "I can also list all current chip categories with `{cp}chip category`, and all current chip tags with `{cp}chip tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)"\
+                                        .replace("{cp}", koduck.get_prefix(context["message"])))
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "chipruling", suppress_notfound=True)
         if ruling_msg is None:
             return await koduck.sendmessage(context["message"],
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                    sendcontent=ruling_msg["Response"])
+                                    sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     if cleaned_args[0] in ['folder', 'folders']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "folder", suppress_notfound=True)
         if ruling_msg is None:
             return await koduck.sendmessage(context["message"],
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                    sendcontent=ruling_msg["Response"])
+                                    sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     if 'blank' in cleaned_args[0]:
         embed = discord.Embed(
             title="__Blank BattleChip__",
@@ -1171,7 +1171,7 @@ async def power(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a Navi Power and I can pull up its info for you!\n" +
+                                        sendcontent="Give me the name of 1-%d **Powers** and I can pull up their info for you!\n\n" % MAX_POWER_QUERY +
                                                     "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
                                                     "Try giving me multiple queries at once, i.e. `{cp}power sense cost` or `{cp}power virus passive`!".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])))
@@ -1181,7 +1181,7 @@ async def power(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                    sendcontent=ruling_msg["Response"])
+                                    sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
     if len(cleaned_args) > MAX_POWER_QUERY:
         return await koduck.sendmessage(context["message"],
@@ -1259,8 +1259,8 @@ async def ncp(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a NaviCust Part and I can pull up its info for you!\n" +
-                                                    "I can also query NCPs by EB and Crossover Content!")
+                                        sendcontent="Give me the names of 1-%d **NaviCust Parts** (NCPs) and I can pull up their info for you!\n\n" % MAX_POWER_QUERY +
+                                                    "I can also query NCPs by **EB** and **Crossover Content!**")
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "ncpruling", suppress_notfound=True)
@@ -1268,7 +1268,7 @@ async def ncp(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                    sendcontent=ruling_msg["Response"])
+                                    sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
     arg_combined = " ".join(cleaned_args)
     is_query, results_title, results_msg = query_ncp(arg_combined)
@@ -1326,7 +1326,7 @@ async def upgrade(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of 1-%d default Navi Powers and I can find its upgrades for you!" % MAX_NPU_QUERY)
+                                        sendcontent="Give me the name of 1-%d default Navi Powers and I can find its **upgrades** for you!" % MAX_NPU_QUERY)
     if len(cleaned_args) > MAX_NPU_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can't pull up more than %d Navi Power Upgrades at a time!" % MAX_NPU_QUERY)
@@ -1337,7 +1337,7 @@ async def upgrade(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                    sendcontent=ruling_msg["Response"])
+                                    sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
     for arg in cleaned_args:
         arg = arg.lower()
@@ -1477,7 +1477,7 @@ async def virus(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of 1-%d Viruses and I can pull up their info for you!\n" % MAX_VIRUS_QUERY +
+                                        sendcontent="Give me the name of 1-%d **Viruses** and I can pull up their info for you!\n\n" % MAX_VIRUS_QUERY +
                                                     "I can query Viruses by **Category**, **Tag**, or **Crossover Content**, and pull up the list of Virus categories with `{cp}virus category`!\n".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])) +
                                                     "For a list of all Virus categories, use `{cp}virus category`, and all current Virus tags with `{cp}virus tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag artillery`)".replace(
@@ -1496,7 +1496,7 @@ async def virus(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                    sendcontent=ruling_msg["Response"])
+                                    sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     elif len(cleaned_args) > MAX_VIRUS_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many viruses, no more than %d!" % MAX_VIRUS_QUERY)
@@ -1526,7 +1526,7 @@ async def virusx(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me the name of a Virus and I can pull up its full info for you!")
+                                        sendcontent="Give me the name of a **Virus** and I can pull up its full info for you!")
     elif len(cleaned_args) > 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can only output one virusx block at a time!")
@@ -1656,8 +1656,8 @@ async def mysterydata(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll Mystery Data for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance.\n" + \
-                                                    "You can also ask for advice using `{cp}mysterydata advice`".replace(
+                                        sendcontent="I can roll **Mystery Data** for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance.\n" + \
+                                                    "You can also ask for advice using `{cp}mysterydata advice`!".replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
 
     if cleaned_args[0] in ['advice', 'rule', 'ruling', 'rules']:
@@ -1666,7 +1666,7 @@ async def mysterydata(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
+                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     await mysterydata_master(context, cleaned_args, force_reward=False)
 
 
@@ -1674,7 +1674,7 @@ async def crimsonnoise(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll CrimsonNoise for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace(
+                                        sendcontent="I can roll **CrimsonNoise** for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
 
     arg = cleaned_args[0]
@@ -1711,7 +1711,7 @@ async def mysteryreward(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll Mystery Data for you, keeping it to the BattleChips and NCPs! " +
+                                        sendcontent="I can roll **Mystery Data** for you, keeping it to the BattleChips and NCPs! " +
                                                     "Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance!".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])))
 
@@ -1723,7 +1723,7 @@ async def bond(context, *args, **kwargs):
     cleaned_args = [arg.lower() for arg in args]
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give me a Bond Power and I can pull up its info for you!\nFor a list of all Bond Powers, use `{cp}bond all`!".replace(
+                                        sendcontent="Give me a **Bond Power** and I can pull up its info for you!\nFor a list of all Bond Powers, use `{cp}bond all`!".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "bondruling", suppress_notfound=True)
@@ -1731,7 +1731,7 @@ async def bond(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                    sendcontent=ruling_msg["Response"])
+                                    sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     elif (len(cleaned_args) > MAX_BOND_QUERY):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many Bond Powers; no more than %d!\nBesides, there's only four Bond Powers in the game!" % MAX_BOND_QUERY)
@@ -1770,7 +1770,7 @@ async def daemon(context, *args, **kwargs):
     arg_combined = " ".join(cleaned_args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Lists the complete information of a Daemon for DarkChip rules.")
+                                        sendcontent="Lists the complete information of a **Daemon** for DarkChip rules.")
     is_ruling = False
     ruling_msg = None
     if arg_combined in ["all", "list"]:
@@ -1797,7 +1797,7 @@ async def daemon(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
+                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
     daemon_info = await find_value_in_table(context, daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
@@ -1837,9 +1837,9 @@ async def element(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give you up to %d random elements from the Element Generation table. " % MAX_ELEMENT_QUERY +
-                                                    "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n".replace(
-                                                        "{cp}", koduck.get_prefix(context["message"])) +
+                                        sendcontent="Give you up to %d random **elements** from the Element Generation table. " % MAX_ELEMENT_QUERY +
+                                                    "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n"\
+                                        .replace("{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(element_category_list))
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
@@ -1848,7 +1848,7 @@ async def element(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
+                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     if len(cleaned_args) > 2:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace(
@@ -1911,7 +1911,7 @@ async def rulebook(context, *args, **kwargs):
                       ret_books.iterrows()]
     elif cleaned_args[0] == "help":
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Links the rulebooks for NetBattlers! " +
+                                        sendcontent="Links the **rulebooks** for NetBattlers! " +
                                                     "You can also look for a specific rulebook version! (i.e. `{cp}rulebook beta 7 adv 6`) \n"
                                                     .replace("{cp}", koduck.get_prefix(context["message"])))
     elif cleaned_args[0] in ['nyx', 'cc', 'crossover']:
@@ -2037,7 +2037,7 @@ async def networkmod(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Pulls up info for 1-%d Network Modifiers! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY)
+                                        sendcontent="Pulls up info for 1-%d **Network Modifiers**! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY)
 
     if len(cleaned_args) > MAX_MOD_QUERY:
         return await koduck.sendmessage(context["message"],
@@ -2052,7 +2052,7 @@ async def networkmod(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
+                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
     for arg in cleaned_args:
         networkmod_info = await find_value_in_table(context, networkmod_df, "Name", arg, suppress_notfound=False)
@@ -2176,7 +2176,7 @@ async def cheer(context, *args, **kwargs):
                 return await koduck.sendmessage(context["message"],
                                                 sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
             return await koduck.sendmessage(context["message"],
-                                            sendcontent=ruling_msg["Response"])
+                                            sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     modded_arg = list(args)
     if modded_arg:
         modded_arg[0] = modded_arg[0] + " cheer"
@@ -2203,7 +2203,7 @@ async def jeer(context, *args, **kwargs):
                 return await koduck.sendmessage(context["message"],
                                                 sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
             return await koduck.sendmessage(context["message"],
-                                            sendcontent=ruling_msg["Response"])
+                                            sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
     modded_arg = list(args)
     if modded_arg:
@@ -2240,7 +2240,7 @@ async def audience(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
+                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
     is_query = False
     is_spend = False
@@ -2403,7 +2403,7 @@ async def virusr(context, *args, **kwargs):
 
     cleaned_args = clean_args([arg_string])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        audience_help_msg = "I can roll 1-%d random Viruses!\n" % MAX_RANDOM_VIRUSES + \
+        audience_help_msg = "I can roll 1-%d random **Viruses**!\n" % MAX_RANDOM_VIRUSES + \
                             "You can also give me the **Categories** and **number of Viruses** you want to roll too! (i.e. `{cp}virusr support 1, artillery 2`)\n" + \
                             "You can specify Mega or Omega Viruses too! (Otherwise, they will not be rolled.)\n\n" + \
                             "**Available Virus Categories:** %s" % ", ".join(["Any"] + virus_category_list)
@@ -2516,7 +2516,7 @@ async def change_prefix(context, *args, **kwargs):
 async def repo(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        message_help =  "Give me the name of custom game content and I can look them up on the official repository for you! " + \
+        message_help =  "Give me the name of custom game content and I can look them up on the official **repository** for you! " + \
                         "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
         return await koduck.sendmessage(context["message"],
                                     sendcontent=message_help.format(pmc_link))
@@ -2859,7 +2859,7 @@ async def spotlight(context, *args, **kwargs):
 
     cleaned_args = clean_args([" ".join(args)], lowercase=False) # begone, you hecking commas
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        help_msg = "Start up a Spotlight Checklist for this text channel with `{cp}spotlight start`! Add people right away with `{cp}spotlight start Lan/MegaMan Mayl/Roll Dex/GutsMan`.\n" + \
+        help_msg = "Start up a **Spotlight Checklist** for this text channel with `{cp}spotlight start`! Add people right away with `{cp}spotlight start Lan/MegaMan Mayl/Roll Dex/GutsMan`.\n" + \
                    "Mark off people who've acted with `{cp}spotlight Lan`! The checklist will automatically refresh when everyone has acted!\n\n" + \
                    "**List of Commands:**\n" + \
                    "> `{cp}spotlight start`, `{cp}spotlight start Lan/MegaMan Mayl/Roll`: Start the checklist in this text channel. You can include names too, separated by spaces or commas!\n" + \
@@ -2878,7 +2878,7 @@ async def spotlight(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
+                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
 
     if cleaned_args[0].lower() in ['start', 'begin', 'on']:
@@ -3017,7 +3017,7 @@ async def weather(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Pulls up info for 1-%d types of CyberWeather! I can also list all types of CyberWeather if you tell me `list` or `all`!" % MAX_WEATHER_QUERY)
+                                        sendcontent="Pulls up info for 1-%d types of **CyberWeather**! I can also list all types of CyberWeather if you tell me `list` or `all`!" % MAX_WEATHER_QUERY)
 
     if len(cleaned_args) > MAX_WEATHER_QUERY:
         return await koduck.sendmessage(context["message"],
@@ -3033,7 +3033,7 @@ async def weather(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"])
+                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
     for arg in cleaned_args:
         weather_info = await find_value_in_table(context, weather_df, "Name", arg, suppress_notfound=False)
@@ -3100,7 +3100,7 @@ async def achievement(context, *args, **kwargs):
 async def glossary(context, *args, **kwargs):
     if not context["params"]:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Use me to pull up a Glossary term in ProgBot! I can also try to search for a term if you know the first few letters!")
+                                        sendcontent="Use me to pull up a **Glossary** term in ProgBot! I can also try to search for a term if you know the first few letters!")
     arg = context["paramline"].strip()
     cleaned_arg = arg.lower()
 
