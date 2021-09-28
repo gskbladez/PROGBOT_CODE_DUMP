@@ -3058,7 +3058,11 @@ async def weather(context, *args, **kwargs):
 
 
 async def achievement(context, *args, **kwargs):
-    if not context["params"]:
+    if context["params"]:
+        help_msg = context["paramline"].strip().lower() == "help"
+    else:
+        help_msg = True
+    if help_msg:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Pulls up info for a NetBattlers Advance **Achievement**! I can also list all the Achievements if you tell me `list` or `all`!")
 
@@ -3166,11 +3170,11 @@ async def fbf(context, *args, **kwargs):
                                     sendcontent=":warning: A participant would like to take it slow during the oncoming scene. Continue as planned with caution.")
 
 async def find_chip_ncp_power(context, *args, **kwargs):
-    if not context["params"]:
+    cleaned_args = clean_args([" ".join(args)])
+
+    if not context["params"] or (cleaned_args[0] in ["help"]):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="I can search through **Chips**, **Powers**, and **NCPs**! Give me 1-%d terms and I'll try to find them!" % MAX_CHIP_QUERY)
-
-    cleaned_args = clean_args([" ".join(args)])
 
     if len(cleaned_args) > MAX_CHIP_QUERY:
         return await koduck.sendmessage(context["message"], sendcontent="Too many items, no more than 5!")
