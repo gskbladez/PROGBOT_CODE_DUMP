@@ -5,7 +5,6 @@ userlevelstablename = "userlevels.txt"
 customresponsestablename = "customresponses.txt"
 logfile = "log.txt"
 formattedlogfile = "formattedlog.txt"
-audiencefile = "audience.json"
 prefixfile = "prefixes.json"
 
 chipfile = "chipdata.tsv"

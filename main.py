@@ -207,10 +207,6 @@ glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
 
-# reinitializes audience data on powerup
-with open(settings.audiencefile, 'w') as afp:
-    json.dump({}, afp, sort_keys=True, indent=4)
-
 if not os.path.isfile(settings.logfile):
     with open(settings.prefixfile, 'w') as lfp:
         pass
