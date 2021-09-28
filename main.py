@@ -29,7 +29,8 @@ MAX_CHEER_JEER_ROLL = 5
 MAX_CHEER_JEER_VALUE = 100
 MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
-SPOTLIGHT_TIMEOUT  = datetime.timedelta(days=0, hours=1, seconds=10)
+MAX_SPOTLIGHTS = 1
+SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=10)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
 MAX_WEATHER_QUERY = 5
@@ -2885,6 +2886,9 @@ async def spotlight(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendembed=embed_spotlight_message("Spotlight Tracker already started in this channel!",
                                                                               msg_location, error=True))
+        if (len(spotlight_db)+1) > MAX_SPOTLIGHTS:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.")
         if len(cleaned_args) > 1:
             participants = dict.fromkeys(cleaned_args[1:], False)
         else:
@@ -2954,15 +2958,16 @@ async def spotlight(context, *args, **kwargs):
             else:
                 spotlight_db[channel_id][match_name] = True
 
-        if all(spotlight_db[channel_id].values()):
-            await koduck.sendmessage(context["message"],
-                                     sendembed=embed_spotlight_message("Spotlight Reset!", msg_location))
-            spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
+        if len(spotlight_db[channel_id]) > 1: # not just last modified
+            if all(spotlight_db[channel_id].values()):
+                await koduck.sendmessage(context["message"],
+                                         sendembed=embed_spotlight_message("Spotlight Reset!", msg_location))
+                spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
 
-        if already_went_list:
-            await koduck.sendmessage(context["message"],
-                                     sendembed=embed_spotlight_message(
-                                         "%s already went!" % ", ".join(already_went_list), msg_location, error=True))
+            if already_went_list:
+                await koduck.sendmessage(context["message"],
+                                         sendembed=embed_spotlight_message(
+                                             "%s already went!" % ", ".join(already_went_list), msg_location, error=True))
 
     embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location)
     return await koduck.sendmessage(context["message"], sendembed=embed)
