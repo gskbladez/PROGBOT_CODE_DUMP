@@ -24,6 +24,7 @@ MAX_ELEMENT_ROLL = 12
 MAX_MOD_QUERY = 5
 MAX_BOND_QUERY = 4
 MAX_NPU_QUERY = MAX_NCP_QUERY
+MAX_ELEMENT_QUERY = 12
 ROLL_COMMENT_CHAR = '#'
 MAX_CHEER_JEER_ROLL = 5
 MAX_CHEER_JEER_VALUE = 100
@@ -1836,7 +1837,7 @@ async def element(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Give you random elements from the Element Generation table. " +
+                                        sendcontent="Give you up to %d random elements from the Element Generation table. " % MAX_ELEMENT_QUERY +
                                                     "To use, enter `{cp}element [#]` or `{cp}element [category] [#]`!\n".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(element_category_list))
@@ -1872,7 +1873,7 @@ async def element(context, *args, **kwargs):
     if element_return_number < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="The number of elements can't be 0 or negative!")
-    if element_return_number > 12:
+    if element_return_number > MAX_ELEMENT_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="That's too many elements! Are you sure you need more than %d?" % MAX_ELEMENT_ROLL)
 
