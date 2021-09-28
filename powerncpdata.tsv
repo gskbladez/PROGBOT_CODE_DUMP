@@ -175,7 +175,7 @@ Meltdown	-	-	Before you roll, can spend up to 3 HP to add that many dice to it.	
 MimicStrike	-	-	On Near Virus deletion, get its passives until jack-out or next trigger. Can toss all passives.	4	NCP	Core	
 Proxy	-	-	When using a Support BattleChip, you can transfer the benefits to a Near ally instead.	4	NCP	Core	
 Mega+1	-	-	+1 maximum MegaChips in your Folder.	5	BoostNCP	Core	
-TandemMastery	-	-	All Bond Powers except Overload cost one less Bond Point to activate.	6	NCP	Core	
+TandemMastery	-	-	When you spend 2+ BP on a Bond Power, get 1 BP back. This includes Overload.	6	NCP	Core	
 SignatureMove	-	-	Work with the GM to design a NaviChip based off of you. Only you can use it.	7	NCP	Core	
 							
 EncryptedChat	-	-	Can speak in code to anyone who has this NCP. Sounds like animal noises otherwise.	1	NCP	ChitChat	
