@@ -119,6 +119,9 @@ Starts a Spotlight Tracker in the current text channel.
 `glossary`
 Searches and pulls up the ProgBot output for a Glossary term.
 
+`find`/`search`
+Searches through Chips, NPCs, and Powers for information all at once.
+
 `daemon`
 (NetBattlers Advance) Pulls up Daemon information.
 
