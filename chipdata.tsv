@@ -73,7 +73,7 @@ LavaSeed	-	Near	Throws a large seed that spreads gushing lava over everything ar
 MagSeed	-	Near	Throws a seed that magnetizes all surfaces around the target.	Hazard	Awkward	 [Awkward]	Throws a seed that magnetizes all surfaces around the target. [Awkward]	Core		
 MetalGears	4	Close	Two huge metal gears slowly grind around the floor, crushing anything in their way.	Hazard	Dangerous, Slow	 [Dangerous, Slow]	Two huge metal gears slowly grind around the floor, crushing anything in their way. [Dangerous, Slow]	Core		MetalGear
 MetalStage	-	Near	Surfaces of your choice turn to hard metal, resisting damage and conducting electricity.	Hazard			Surfaces of your choice turn to hard metal, resisting damage and conducting electricity.	Core		
-PoisonSeed	-	Near	Throws a noxious ball that bursts on impact, creating a cloud of corrosive, poisonous gas.	Hazard	Dangerous	 [Dangerous]	Throws a noxious ball that bursts on impact, creating a cloud of corrosive, poisonous gas. [Dangerous]	Core		
+Toxic	-	Near	Throws a noxious ball that bursts on impact, creating a cloud of corrosive, poisonous gas.	Hazard	Dangerous	 [Dangerous]	Throws a noxious ball that bursts on impact, creating a cloud of corrosive, poisonous gas. [Dangerous]	Core		
 PopUp	-	Close	Creates a foxhole right beneath your feet.	Hazard			Creates a foxhole right beneath your feet.	Core		
 Rope	1	Near	Summons a briar patch to ensnare any that step in it.	Hazard	Piercing, Slow	 [Piercing, Slow]	Summons a briar patch to ensnare any that step in it. [Piercing, Slow]	Core		
 SandRing	1	Close	A hidden pitfall trap forms in front of you.	Hazard	Slow	 [Slow]	A hidden pitfall trap forms in front of you. [Slow]	Core	A-License	
