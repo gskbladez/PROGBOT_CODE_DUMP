@@ -31,7 +31,8 @@ MAX_CHEER_JEER_VALUE = 100
 MAX_AUDIENCES = 100
 AUDIENCE_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=0)
 MAX_SPOTLIGHTS = 1
-SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=1, seconds=10)
+MAX_CHECKLIST_SIZE = 10
+SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=3, seconds=10)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
 MAX_WEATHER_QUERY = 5
@@ -2880,7 +2881,8 @@ async def spotlight(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
 
-
+    notification_msg = ""
+    err_msg = ""
     if cleaned_args[0].lower() in ['start', 'begin', 'on']:
         if channel_id in spotlight_db:
             spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -2890,13 +2892,30 @@ async def spotlight(context, *args, **kwargs):
         if (len(spotlight_db)+1) > MAX_SPOTLIGHTS:
             return await koduck.sendmessage(context["message"],
                                             sendcontent="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.")
+        if len(cleaned_args) > (MAX_CHECKLIST_SIZE + 1):
+            return await koduck.sendmessage(context["message"],
+                                            sendembed=embed_spotlight_message("Max of %d participants in a checklist!" %
+                                                                              MAX_CHECKLIST_SIZE,
+                                                                              msg_location, error=True))
         if len(cleaned_args) > 1:
-            participants = dict.fromkeys(cleaned_args[1:], False)
+            participants = {}
+            dups = []
+            i = 0
+            name_list = pd.Series("", index=range(len(cleaned_args)-1))
+            for arg in cleaned_args[1:]:
+                if any(name_list.str.contains(arg, flags=re.IGNORECASE)):
+                    dups.append(arg)
+                else:
+                    name_list.iloc[i] = arg
+                    participants[arg] = False
+                    i += 1
+            if dups:
+                err_msg = "(Note: %s are duplicates!)" % ", ".join(dups)
         else:
             participants = {}
         spotlight_db[channel_id] = participants
         spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location)
+        embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=err_msg)
         return await koduck.sendmessage(context["message"], sendembed=embed)
 
     if channel_id not in spotlight_db:
@@ -2916,9 +2935,24 @@ async def spotlight(context, *args, **kwargs):
             return await koduck.sendmessage(context["message"],
                                             sendembed=embed_spotlight_message("Please list who you want to add!",
                                                                               msg_location, error=True))
-            return
+        if (len(spotlight_db[channel_id]) + len(cleaned_args) - 2) > MAX_CHECKLIST_SIZE:
+            return await koduck.sendmessage(context["message"],
+                                            sendembed=embed_spotlight_message("Max of %d participants in a checklist!" %
+                                                                              MAX_CHECKLIST_SIZE,
+                                                                              msg_location, error=True))
+        dups = []
+        n = len(cleaned_args)-1 # max number of new entries
+        name_list = pd.Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
+        i = len(spotlight_db[channel_id]) # end of the array
         for arg in cleaned_args[1:]:
-            spotlight_db[channel_id][arg] = False
+            if any(name_list.str.contains(arg, flags=re.IGNORECASE)):
+                dups.append(arg)
+            else:
+                name_list.iloc[i] = arg
+                spotlight_db[channel_id][arg] = False
+                i += 1
+            if dups:
+                err_msg = "(%s already in the checklist!)" % ", ".join(dups)
     elif cleaned_args[0].lower() in ['reset', 'clear']:
         if len(cleaned_args) == 1 or cleaned_args[1] == "all":
             spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
@@ -2961,16 +2995,14 @@ async def spotlight(context, *args, **kwargs):
 
         if len(spotlight_db[channel_id]) > 1: # not just last modified
             if all(spotlight_db[channel_id].values()):
-                await koduck.sendmessage(context["message"],
-                                         sendembed=embed_spotlight_message("Spotlight Reset!", msg_location))
+                notification_msg = "Spotlight Reset!"
                 spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
 
             if already_went_list:
-                await koduck.sendmessage(context["message"],
-                                         sendembed=embed_spotlight_message(
-                                             "%s already went!" % ", ".join(already_went_list), msg_location, error=True))
+                err_msg = "(%s already went!)" % ", ".join(already_went_list)
 
-    embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location)
+    notify_str = "\n".join([i for i in (notification_msg, err_msg) if i])
+    embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
     return await koduck.sendmessage(context["message"], sendembed=embed)
 
 async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_location):
@@ -2996,7 +3028,7 @@ def embed_spotlight_message(err_msg, location, error=False):
                               color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
-def embed_spotlight_tracker(dict_line, location):
+def embed_spotlight_tracker(dict_line, location, notification=""):
     participants = dict_line.copy()
     del participants["Last Modified"]
     if not participants:
@@ -3006,6 +3038,8 @@ def embed_spotlight_tracker(dict_line, location):
         used_emoji = ":ballot_box_with_check:"
         embed_descript = "\n".join(["%s %s" % (used_emoji, participant) if pstatus else "%s %s" % (unused_emoji, participant) for
                           participant, pstatus in participants.items()])
+    if notification:
+        embed_descript = notification + "\n\n" + embed_descript
     embed = discord.Embed(title="__Spotlight Checklist__",
                           description=embed_descript,
                           color=cj_colors["cheer"])
