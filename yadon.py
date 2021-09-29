@@ -13,7 +13,7 @@ from collections import OrderedDict
 #Reads a table and returns either a dictionary with the table data, or None if the table doesn't exist
 def ReadTable(tablename):
     try:
-        file = open("{}.txt".format(tablename), encoding="utf8")
+        file = open(tablename, encoding="utf8")
     except FileNotFoundError:
         return None
     

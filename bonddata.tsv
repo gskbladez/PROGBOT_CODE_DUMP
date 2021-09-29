@@ -1,5 +1,5 @@
 BondPower	Alias	Cost	Description
-Overload		1+ Bond Point	When an attack would delete you, consume all your remaining Bond Points. You are left with 1HP. Your next roll is Easy, no matter what.
-StandTogether	Stand Together	2 Bond Points	Immediately appear Close to an ally and act, jacking in if you weren’t already. You and your ally downshift your first [User’s NetOp Bravery + User’s Navi Bravery + 1] rolls if the rolls are to protect each other.
-CrossSoul	Cross Soul, crossoul	3 Bond Points	Temporarily gain the energy of the Navi of a friend you have 2+ Bond Level with. You can use their element as well as your own. In addition, you can replace **one of your stat scores and two of your skill scores** with theirs. Ends after your Navi makes 5 rolls.
+Overload		1+ Bond Point	When you would be deleted, consume all your remaining Bond Points. You are left with 1HP. Your next roll is Easy, no matter what.
+DestinySpark	Destiny Spark	1 Bond Point	Introduce a helpful (but not overwhelmingly powerful) narrative element into the scene with a twist of fate. (e.g. A friendly NPC; a news bulletin; a brief distraction.) Navis and NetOps can use this.
+CrossSoul	Cross Soul, Crossoul	3 Bond Points	Temporarily gain the energy of the Navi of a friend you have 2+ Bond Level with. You can use **their element** as well as your own. In addition, you can replace **one of your stat scores** and **two of your skill scores** with theirs. Ends after your Navi makes 5 rolls.
 FullSynchro	Full Synchro	4 Bond Points	Add all of your NetOp's stats + skills to your Navi's. When your Navi takes damage, your NetOp does too. Ends either after [NetOp Soul + NetOp Affinity + 3] rolls, or when the NetOp hits 0 HP. Unusable by Independent Navis.

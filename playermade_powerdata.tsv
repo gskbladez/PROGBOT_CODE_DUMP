@@ -1,71 +1,70 @@
-Power/NCP	Skill	Type	Effect	EB	Sort	From?
-ColorBuster	-	-	Your attacks leave a splatter of vivid colors on impact. They are difficult to remove.	1	NCP	Genso Network
-Give&Take	-	-	You may occupy the same space as an ally, as if both of you were non-solid.	1	NCP	Genso Network
-SafeMode	-	-	When connection between PET, Navi, and/or NetOp are separated, the Navi may keep one BattleChip to use.	1	NCP	Genso Network
-SmartCookie	-	-	Spend a couple seconds to create a small sandwich, dessert, snack, or some other unspecified finger food in your hand.	1	NCP	Genso Network
-BlitzBuster	-	-	Can turn a non-multihit Shot chip into a 1x(X+1) multihit chip. X = chip damage (min 2).	2	NCP	Genso Network
-ChargeBomb	-	-	When using a Thrown chip, roll Strength to throw at Far. A partial success will make the chip have the Slow tag.	2	NCP	Genso Network
-ChipLance	-	-	Sacrifice -1 damage of a Blade/Impact chip to make defenses against it upshifted.	2	NCP	Genso Network
-CrimsonNoise	-	-	Downloading chips from enemies may instead use the tables below for random chips. (May use MysteryData tables instead)	2	NCP	Genso Network
-DuelOS	-	-	When an enemy attempts to parry your attacks, you can take half their damage (rounded up) to ignore it, dealing full damage to them.	2	NCP	Genso Network
-HumorTalk	-	-	Once per jack-in, on failing a social roll, can make a joke/pun for a full success. Result depends on GM reaction and ruling.	2	NCP	Genso Network
-AddButton	-	-	Sacrifice 1 unused chip to list 6 chips you own not currently in your Folder. Roll a 1d6 to select one; it activates, even if circumstances forbid it.	3	NCP	Genso Network
-AngerMind	-	-	When desired, you may upshift your next defense roll. If you take damage, add that amount of dice to your next rolled attack.	3	NCP	Genso Network
-BlastCannon	-	-	Before an attack roll, you may add +3 dice. Reduce the used skill by 1 after the attack.	3	NCP	Genso Network
-ChipCharge	-	-	Sacrifice 1 unused chip to add +1 damage to another damaging chip you can use. For multi-hit chips, adds another hit to it instead.	3	NCP	Genso Network
-ElemReuse	-	-	When an ally downshifts your roll, you may spend 1 Affinity to summon their element around you.	3	NCP	Genso Network
-OpenPort	-	-	For any damaging chip, reduce your HP by 4-X (X = chip damage) to guarantee the secondary effect on a single target.	3	NCP	Genso Network
-SpeedRunner	-	-	When enemies are not engaged with you or your allies, you can focus more on moving. Speed rolls gain a free extra three dice.	3	NCP	Genso Network
-ElemPeace	-	-	Your Navi has an additional element. Roll one less die to summon/manipulate it. Standard Element selection rules apply.	4	NCP	Genso Network
-Grimoire	-	-	You can spend 1 skill point to gain a Navi power of the relevant skill. Can only hold one extra gained power at a time.	4	NCP	Genso Network
-MyGarden	-	-	Before jack-in, pick a specific type of terrain, with GM discretion. While you are Close to this terrain, all of your rolls are downshifted.	4	NCP	Genso Network
-RunSoul	-	-	On jack-in, pick one skill from Soul. You may roll Speed as a replacement for rolls using that skill, with one less die.	4	NCP	Genso Network
-FanClub	-	-	4 times per jack-in, summon a goon Near you that uses a starter BattleChip of your choice.	5	NCP	Genso Network
-HardObject	-	-	Summoned allies/objects/Viruses spawn with a free Guard, protecting against one attack.	5	NCP	Genso Network
-DamageGhost	-	-	When you take damage, you are given a Guard that absorbs a single hit.	6	NCP	Genso Network
-AcidBody	-	Minus	All healing from any source is halved (except for Regenerate), rounded down. Regenerate lasts for 3 rolls/chips instead of 5.	2	MinusCust	Genso Network
-JunkBuster	-	Minus	All rolled attacks have -1 die.	2	MinusCust	Genso Network
-Unshuffle	-	Minus	BattleChips must be used alphabetically, from A to Z.	2	MinusCust	Genso Network
-CustomPain	-	Minus	On chip use, take 1 damage. Takes place before chip effects. Not capable of deleting.	3	MinusCust	Genso Network
-LostCustom	-	Minus	Maximum Folder size reduced by 2. Cannot be used with Custom+3.	3	MinusCust	Genso Network
-Slippery	-	Minus	Navi has trouble landing hits. All rolled attacks deal -1 damage. All chips used gain the Awkward tag as you slide around.	4	MinusCust	Genso Network
-MeltSelf	-	Minus	Every time you take damage, you take 1 extra point of damage.	4	MinusCust	Genso Network
-ElemFatigue	-	Minus	Your element is draining to you. Being Close to it upshifts all of your rolls. Taking damage will make it leak out.	5	MinusCust	Genso Network
-LostLight	-	Minus	Navi has trouble perceiving the area. Can only attack at Close, no matter what. Further-ranged chips and powers must be used in Close range.	5	MinusCust	Genso Network
-NoGuard	-	Minus	Your Navi’s chassis is fragile. All defense rolls are upshifted. Guard effects fizzle away on you.	6	MinusCust	Genso Network
-UsedPain	-	Minus	Powers become painful. When using a Roll power, roll twice and take the lowest value. For Cost powers, this applies to your next roll.	6	MinusCust	Genso Network
-DarkMind	-	Minus	No Bond Powers. All positive effects from allied chips, NCPs, elements, or powers fail on you.	7	MinusCust	Genso Network
-LostArea	-	Minus	On rolling partial success/failure or using a chip, a medium Hazard spawns atop you, consuming any of your element present. Only affects you.	7	MinusCust	Genso Network
-DeadBody	-	Minus	Max. HP is 1, and HP cannot go above 1, no matter what. Low HP benefits do not activate.	10	MinusCust	Genso Network
-NebulaHole	-	Minus	You can feel yourself slipping away. Whenever you roll, spend a skill point in the rolled skill. Whenever you use a chip, sacrifice another chip.	10	MinusCust	Genso Network
-						
-NotDifficult	-	Passive	Sense attacks are Piercing and ignore Guards.	-	Virus Power	Genso Network
-Reinforced	-	Passive	Immunity to stun or interrupting effects. Attacks always go off.	-	Virus Power	Genso Network
-TrapCard	-	Passive	On taking damage, you may immediately counterattack a target.	-	Virus Power	Genso Network
-Precognition	Info	Roll	Can roll Info to dodge an attack you've seen. On dodging a rolled attack, enemy gets 1 skill reduction in that skill until virus is deleted.	-	Virus Power	Genso Network
-SoulVision	Affinity	Roll	Learn one memory the target has per hit.	-	Virus Power	Genso Network
-Collaborate	Affinity	Cost	Briefly project an illusion of anything you've seen/heard in Near range.	-	Virus Power	Genso Network
-Astonish	Speed	Cost	Make a free attack to immediately interrupt a Near enemy's attack.	-	Virus Power	Genso Network
-Pester	-	Passive	When performing an opening attack, or taking an opponent by surprise, roll twice and take the better result.	-	Virus Power	Genso Network
-HopTolt	-	Passive	Can bypass structures/hazards unharmed, even inexplicably.	-	Virus Power	Genso Network
-FlashFreeze	Affinity	Cost	Next ranged attack freezes enemy in place until they break free.	-	Virus Power	Genso Network
-Lasso	-	Passive	Enemies hit with attacks are briefly stunned and drug into Close.	-	Virus Power	Genso Network
-AuraBattler	-	Passive	Has a Guard that ignores all <2 damage. Pops on 2+ damage.	-	Virus Power	Genso Network
-Pursuit	Bravery	Cost	If enemy moves away a range band, immediately make a downshifted attack.	-	Virus Power	Genso Network
-Encirclement	-	Passive	When a Near ally attacks or defends in melee, you may immediately move in Close next to them. Your next attack is downshifted.	-	Virus Power	Genso Network
-Mimesis	Affinity	Cost	Steal someone else's appearance, replacing one stat with theirs.	-	Virus Power	Genso Network
-TakeItEasy	Affinity	Roll	Emit your element outwards, healing 1 HP per hit to Near allies.	-	Virus Power	Genso Network
-CuddleBug	-	Passive	When allies are Close to your element, downshift their rolls.	-	Virus Power	Genso Network
-CoProcessor	Sense	Cost	Upgrade an ally's targeting. They can attack one more range band.	-	Virus Power	Genso Network
-ProjectTarget	Coding	Roll	Target an enemy, downshifting X+1 allied rolls against them. X = hits.	-	Virus Power	Genso Network
-Myotoxin	Affinity	Cost	Until you lose HP, all Near to you upshift or downshift a chosen skill.	-	Virus Power	Genso Network
-Picrotoxin	Affinity	Cost	Spray at a Close target. They lose or gain 2 dice on their next roll.	-	Virus Power	Genso Network
-Projection	Affinity	Cost	Put a Guard on an ally. Next time they defend, add your Stamina to their roll.	-	Virus Power	Genso Network
-DeepLink	Affinity	Cost	Trap a Near surface; creating a 2 damage freezing blast when touched.	-	Virus Power	Genso Network
-HyperLink	Affinity	Cost	Place a hidden normal hazard on a Near entrance.	-	Virus Power	Genso Network
-AccessJack	-	Passive	Damaged foes have last-used NCPs/Powers disabled for 3 rolls.	-	Virus Power	Genso Network
-DataDump	Sense	Roll	Roll to attack a Near target. Everything Close to the target is also hit. Spreads your element all over target and everything Close on impact.	-	Virus Power	Genso Network
-CodeTrail	Affinity	Cost	Make a ranged attack on a grounded Near target.	-	Virus Power	Genso Network
-Cutie	-	Passive	Downshift Charm rolls for Close allies.	-	Virus Power	Genso Network
-AtAnchor	-	Passive	If you fall a range band, destroy any structure/object you land on.	-	Virus Power	Genso Network
-FloodOut	-	Passive	When a structure breaks, spawn a normal hazard of your element.	-	Virus Power	Genso Network
+Power/NCP	Alias	Skill	Type	Tags	Effect	EB	Sort	From?
+ColorBuster		-	-		Your attacks leave a splatter of vivid colors on impact. They are difficult to remove.	1	NCP	Genso Network
+Give&Take	GiveAndTake	-	-		You may occupy the same space as an ally, as if both of you were non-solid.	1	NCP	Genso Network
+SafeMode		-	-		When connection between PET, Navi, and/or NetOp are separated, the Navi may keep one BattleChip to use.	1	NCP	Genso Network
+SmartCookie		-	-		Spend a couple seconds to create a small sandwich, dessert, snack, or some other unspecified finger food in your hand.	1	NCP	Genso Network
+BlitzBuster		-	-		Can turn a non-multihit Shot chip into a 1x(X+1) multihit chip. X = chip damage (min 2).	2	NCP	Genso Network
+ChargeBomb		-	-		When using a Thrown chip, roll Strength to throw at Far. A partial success will make the chip have the Slow tag.	2	NCP	Genso Network
+ChipLance		-	-		Sacrifice -1 damage of a Blade/Impact chip to make defenses against it upshifted.	2	NCP	Genso Network
+CrimsonNoise		-	-		Downloading chips from enemies may instead use the tables below for random chips. (May use MysteryData tables instead)	2	NCP	Genso Network
+DuelOS		-	-		When an enemy attempts to parry your attacks, you can take half their damage (rounded up) to ignore it, dealing full damage to them.	2	NCP	Genso Network
+HumorTalk		-	-		Once per jack-in, on failing a social roll, can make a joke/pun for a full success. Result depends on GM reaction and ruling.	2	NCP	Genso Network
+AddButton		-	-		Sacrifice 1 unused chip to list 6 chips you own not currently in your Folder. Roll a 1d6 to select one; it activates, even if circumstances forbid it.	3	NCP	Genso Network
+AngerMind		-	-		When desired, you may upshift your next defense roll. If you take damage, add that amount of dice to your next rolled attack.	3	NCP	Genso Network
+BlastCannon		-	-		Before an attack roll, you may add +3 dice. Reduce the used skill by 1 after the attack.	3	NCP	Genso Network
+ChipCharge		-	-		Sacrifice 1 unused chip to add +1 damage to another damaging chip you can use. For multi-hit chips, adds another hit to it instead.	3	NCP	Genso Network
+ElemReuse		-	-		When an ally downshifts your roll, you may spend 1 Affinity to summon their element around you.	3	NCP	Genso Network
+OpenPort		-	-		For any damaging chip, reduce your HP by 4-X (X = chip damage) to guarantee the secondary effect on a single target.	3	NCP	Genso Network
+SpeedRunner		-	-		When enemies are not engaged with you or your allies, you can focus more on moving. Speed rolls gain a free extra three dice.	3	NCP	Genso Network
+ElemPeace		-	-		Your Navi has an additional element. Roll one less die to summon/manipulate it. Standard Element selection rules apply.	4	NCP	Genso Network
+Grimoire		-	-		You can spend 1 skill point to gain a Navi power of the relevant skill. Can only hold one extra gained power at a time.	4	NCP	Genso Network
+MyGarden		-	-		Before jack-in, pick a specific type of terrain, with GM discretion. While you are Close to this terrain, all of your rolls are downshifted.	4	NCP	Genso Network
+RunSoul		-	-		On jack-in, pick one skill from Soul. You may roll Speed as a replacement for rolls using that skill, with one less die.	4	NCP	Genso Network
+FanClub		-	-		4 times per jack-in, summon a goon Near you that uses a starter BattleChip of your choice.	5	NCP	Genso Network
+HardObject		-	-		Summoned allies/objects/Viruses spawn with a free Guard, protecting against one attack.	5	NCP	Genso Network
+DamageGhost		-	-		When you take damage, you are given a Guard that absorbs a single hit.	6	NCP	Genso Network
+AcidBody		-	Minus		All healing from any source is halved (except for Regenerate), rounded down. Regenerate lasts for 3 rolls/chips instead of 5.	2	MinusCust	Genso Network
+JunkBuster		-	Minus		All rolled attacks have -1 die.	2	MinusCust	Genso Network
+Unshuffle		-	Minus		BattleChips must be used alphabetically, from A to Z.	2	MinusCust	Genso Network
+CustomPain		-	Minus		On chip use, take 1 damage. Takes place before chip effects. Not capable of deleting.	3	MinusCust	Genso Network
+LostCustom		-	Minus		Maximum Folder size reduced by 2. Cannot be used with Custom+3.	3	MinusCust	Genso Network
+Slippery		-	Minus		Navi has trouble landing hits. All rolled attacks deal -1 damage. All chips used gain the Awkward tag as you slide around.	4	MinusCust	Genso Network
+MeltSelf		-	Minus		Every time you take damage, you take 1 extra point of damage.	4	MinusCust	Genso Network
+ElemFatigue		-	Minus		Your element is draining to you. Being Close to it upshifts all of your rolls. Taking damage will make it leak out.	5	MinusCust	Genso Network
+LostLight		-	Minus		Navi has trouble perceiving the area. Can only attack at Close, no matter what. Further-ranged chips and powers must be used in Close range.	5	MinusCust	Genso Network
+NoGuard		-	Minus		Your Navi’s chassis is fragile. All defense rolls are upshifted. Guard effects fizzle away on you.	6	MinusCust	Genso Network
+UsedPain		-	Minus		Powers become painful. When using a Roll power, roll twice and take the lowest value. For Cost powers, this applies to your next roll.	6	MinusCust	Genso Network
+DarkMind		-	Minus		No Bond Powers. All positive effects from allied chips, NCPs, elements, or powers fail on you.	7	MinusCust	Genso Network
+LostArea		-	Minus		On rolling partial success/failure or using a chip, a medium Hazard spawns atop you, consuming any of your element present. Only affects you.	7	MinusCust	Genso Network
+DeadBody		-	Minus		Max. HP is 1, and HP cannot go above 1, no matter what. Low HP benefits do not activate.	10	MinusCust	Genso Network
+NebulaHole		-	Minus		You can feel yourself slipping away. Whenever you roll, spend a skill point in the rolled skill. Whenever you use a chip, sacrifice another chip.	10	MinusCust	Genso Network
+								
+NotDifficult		-	Passive		Sense attacks are Piercing and ignore Guards.	-	Virus Power	Genso Network
+Reinforced		-	Passive		Immunity to stun or interrupting effects. Attacks always go off.	-	Virus Power	Genso Network
+TrapCard		-	Passive		On taking damage, you may immediately counterattack a target.	-	Virus Power	Genso Network
+Precognition		Info	Roll		Can roll Info to dodge an attack you've seen. On dodging a rolled attack, enemy gets 1 skill reduction in that skill until virus is deleted.	-	Virus Power	Genso Network
+SoulVision		Affinity	Roll		Learn one memory the target has per hit.	-	Virus Power	Genso Network
+Collaborate		Affinity	Cost		Briefly project an illusion of anything you've seen/heard in Near range.	-	Virus Power	Genso Network
+Astonish		Speed	Cost		Make a free attack to immediately interrupt a Near enemy's attack.	-	Virus Power	Genso Network
+Pester		-	Passive		When performing an opening attack, or taking an opponent by surprise, roll twice and take the better result.	-	Virus Power	Genso Network
+HopToIt	HopTolt	-	Passive		Can bypass structures/hazards unharmed, even inexplicably.	-	Virus Power	Genso Network
+FlashFreeze		Affinity	Cost		Next ranged attack freezes enemy in place until they break free.	-	Virus Power	Genso Network
+Lasso		-	Passive		Enemies hit with attacks are briefly stunned and drug into Close.	-	Virus Power	Genso Network
+AuraBattler		-	Passive		Has a Guard that ignores all <2 damage. Pops on 2+ damage.	-	Virus Power	Genso Network
+Pursuit		Bravery	Cost		If enemy moves away a range band, immediately make a downshifted attack.	-	Virus Power	Genso Network
+Encirclement		-	Passive		When a Near ally attacks or defends in melee, you may immediately move in Close next to them. Your next attack is downshifted.	-	Virus Power	Genso Network
+Mimesis		Affinity	Cost		Steal someone else's appearance, replacing one stat with theirs.	-	Virus Power	Genso Network
+TakeItEasy		Affinity	Roll		Emit your element outwards, healing 1 HP per hit to Near allies.	-	Virus Power	Genso Network
+CuddleBug		-	Passive		When allies are Close to your element, downshift their rolls.	-	Virus Power	Genso Network
+CoProcessor		Sense	Cost		Upgrade an ally's targeting. They can attack one more range band.	-	Virus Power	Genso Network
+ProjectTarget		Coding	Roll		Target an enemy, downshifting X+1 allied rolls against them. X = hits.	-	Virus Power	Genso Network
+Myotoxin		Affinity	Cost		Until you lose HP, all Near to you upshift or downshift a chosen skill.	-	Virus Power	Genso Network
+Picrotoxin	Picotoxin	Affinity	Cost		Spray at a Close target. They lose or gain 2 dice on their next roll.	-	Virus Power	Genso Network
+Projection		Affinity	Cost		Put a Guard on an ally. Next time they defend, add your Stamina to their roll.	-	Virus Power	Genso Network
+DeepLink		Affinity	Cost		Trap a Near surface; creating a 2 damage freezing blast when touched.	-	Virus Power	Genso Network
+HyperLink		Affinity	Cost		Place a hidden normal hazard on a Near entrance.	-	Virus Power	Genso Network
+AccessJack		-	Passive		Damaged foes have last-used NCPs/Powers disabled for 3 rolls.	-	Virus Power	Genso Network
+DataDump		Sense	Roll		Roll to attack a Near target. Everything Close to the target is also hit. Spreads your element all over target and everything Close on impact.	-	Virus Power	Genso Network
+CodeTrail		Affinity	Cost		Your next attack leaves trails of your element behind.	-	Virus Power	Genso Network
+AtAnchor		-	Passive		If you fall a range band, destroy any structure/object you land on.	-	Virus Power	Genso Network
+FloodOut		-	Passive		When a structure breaks, spawn a normal hazard of your element.	-	Virus Power	Genso Network

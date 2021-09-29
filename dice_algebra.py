@@ -158,7 +158,7 @@ class DiceOp(BaseBox):
 
     def explode(self,limit):
         if limit < 2:
-            raise BadArgument("Cannot explode on 1 or higher! (For bot safety)")
+            raise BadArgument("Cannot explode on 1! (For bot safety)")
         repr_result = self.results[:]
         for i in range(0,len(self.results)):
             if self.results[i] >= limit:

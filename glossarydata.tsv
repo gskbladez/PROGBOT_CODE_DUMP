@@ -1,0 +1,52 @@
+Name	Alias	In Progbot?	ProgBot Command	ProgBot Function	ProgBot Argument
+Accurate	Accu., Accu	TRUE	tag accurate	tag	accurate
+Ally		TRUE	help target	help_cmd	target
+Awkward	Awk., Awk	TRUE	tag awkward	tag	awkward
+BattleChip	Chip	TRUE	chip rule	chip	rule
+BattleChip, Blank	Blank Chip, Blank	TRUE	chip blank	chip	blank
+Bond	Bonds	TRUE	bond rule	bond	rule
+Counter		TRUE	help counter	help_cmd	counter
+Critical Success	Crit	TRUE	help difficulty	help_cmd	difficulty
+Dangerous	Dngr., Dngr	TRUE	tag dangerous	tag	dangerous
+Downshift		TRUE	help downshift	help_cmd	downshift
+Easy		TRUE	help difficulty	help_cmd	difficulty
+Element		TRUE	element rule	element	rule
+Enemy	Enemies	TRUE	help target	help_cmd	target
+Failure		TRUE	help difficulty	help_cmd	difficulty
+Folder		TRUE	help folder	help_cmd	folder
+Full Success		TRUE	help difficulty	help_cmd	difficulty
+Goals	Goal	TRUE	help goal	help_cmd	goal
+Guard	Guards	TRUE	tag guard	tag	guard
+Hazard	Hazards	TRUE	help hazard	help_cmd	hazard
+Hit Points	HP, HitPoints	TRUE	help hitpoints	help_cmd	hitpoints
+Hotspot	HotSpots	TRUE	help hotspot	help_cmd	hotspot
+MegaChip	MegaChips, Mega	TRUE	tag mega	tag	mega
+Mixed Success		TRUE	help mixed	help_cmd	mixed
+Multi-Hit	MultiHit, MultiHits	TRUE	help multihit	help_cmd	multihit
+Mystery Data	MysteryData	TRUE	mysterydata rule	mysterydata	rule
+Navi	NetNavi, NetNavigator, Internet Navigator	TRUE	help navi	help_cmd	navi
+Navi Customizer	NaviCust, NaviCustomizer	TRUE	help navicust	help_cmd	navicust
+Navi Customizer Programs	NCP, NCPs	TRUE	ncp rule	ncp	rule
+Navi Power	NaviPower	TRUE	power rule	power	rule
+NetOp		TRUE	help netop	help_cmd	netop
+Normal		TRUE	help difficulty	help_cmd	difficulty
+Jack in	Jack-In	TRUE	help pet	help_cmd	pet
+Parry	Parries, Parrying	TRUE	help parry	help_cmd	parry
+PET		TRUE	help pet	help_cmd	pet
+Piercing	Prcn, Prcn.	TRUE	tag piercing	tag	piercing
+Range Band	RangeBand	TRUE	help rangebands	help_cmd	rangebands
+Ready, Aim, Fire	Flow Of Action, Flow	TRUE	help threats	help_cmd	threats
+Secondary Effect	SecondaryEffect	TRUE	help secondaryeffects	help_cmd	secondaryeffects
+Simple	Simp, Simp.	TRUE	tag simple	tag	simple
+Skill	Skills	TRUE	help stats	help_cmd	stats
+Slow		TRUE	tag slow	tag	slow
+Stack		TRUE	help secondaryeffects	help_cmd	secondaryeffects
+Someone		TRUE	help target	help_cmd	target
+Something		TRUE	help target	help_cmd	target
+Spotlight Checklist	Spotlight, SpotlightChecklist	TRUE	spotlight help	spotlight	help
+Stat	Stats	TRUE	help stats	help_cmd	stats
+Talent	Talents	TRUE	help talents	help_cmd	talents
+Target	Targets	TRUE	help target	help_cmd	target
+Upshift	Upshifts	TRUE	help difficulty	help_cmd	difficulty
+Virus	Viruses	TRUE	virus rule	virus	rule
+Zenny		TRUE	help zenny	help_cmd	zenny
