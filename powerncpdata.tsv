@@ -143,7 +143,7 @@ Diffusal	-	-	When something reduces one of your skills by 1, your element appear
 EjectButton	-	-	2 times per jack-in, you can spring a range band in any direction. Can still act in midair.	2	NCP	Core	
 ElemRitual	-	-	If you spend a minute concentrating, your next Affinity roll uses at least 5 dice.	2	NCP	Core	
 PassengerMode	-	-	When you use Rush chips, you can take a Close target with you.	2	NCP	Core	
-Pettaur	-	-	A round little buddy! It can’t attack, obeys basic orders, and vanishes for a bit if hurt.	2	NCP	Core
+Pettaur	-	-	A round little buddy! It can’t attack, obeys basic orders, and vanishes for a bit if hurt.	2	NCP	Core	
 RocketFist	-	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot parry at range.	2	NCP	Core	
 SearchOptimized	-	-	Pick a descriptor - NPCs will associate you with that word unless they know better.	2	NCP	Core	
 SetElement	-	-	On jack-in, your element appears around you; if you use it immediately, downshift.	2	NCP	Core	
@@ -279,7 +279,7 @@ Fabricator	ModelEdit	Upgrade	ModelEdit can be used as a Roll Power. Major change
 Influencer	Overwrite	Upgrade	Overwrite also works on generic/unnamed digital NPCs. [Often illegal.]	1	NPU	Navi Power Upgrades	
 Tamer	Overwrite	Upgrade	If a Virus is near deletion, you can permanently tame them (1 Virus at a time).	3	NPU	Navi Power Upgrades	
 							
-Callout	Glare	Upgrade	Glare works on fleeing Near targets. They turn to face you.	2	NPU	Navi Power Upgrades	
+Ferocity	Glare	Upgrade	When you successfully Glare a target, you can instantly act upon them.	2	NPU	Navi Power Upgrades	
 SnakeEyes	Glare	Upgrade	Briefly stun a target the first time you successfully Glare them.	2	NPU	Navi Power Upgrades	
 Arena	SystemCall	Upgrade	On success, an elemental ring shuts others out and you and the targets in.	2	NPU	Navi Power Upgrades	
 Gladiator	SystemCall	Upgrade	When parrying a SystemCall target, you can turn one failure into an escalation.	2	NPU	Navi Power Upgrades	
