@@ -10,7 +10,6 @@
 - Add MegaCheer as query
 - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
 - Update OmegaVirus vs MegaVirus color
-- Clean up floating pixels around Drixol art
 - Resume command?
 
 ### New Features
