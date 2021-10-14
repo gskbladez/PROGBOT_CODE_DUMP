@@ -36,6 +36,9 @@ SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=3, seconds=10)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
 MAX_WEATHER_QUERY = 5
+REROLL_DICE_SIZE_THRESHOLD = 10000000000
+MAX_REROLL_QUERY = 20
+MAX_REROLL_QUERY_LARGE = 5
 
 # Runtime database; expires on shutdown
 audience_data = {}
@@ -640,6 +643,14 @@ async def repeatroll(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="No roll given!")
 
+    dice_size = re.search('d(\d+)', roll_line)
+    reroll_size = int(dice_size.group(1))
+    if repeat_arg > MAX_REROLL_QUERY:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Too many small rerolls in one query! Maximum of %d for dice sizes under %d!" % (MAX_REROLL_QUERY, REROLL_DICE_SIZE_THRESHOLD))
+    if repeat_arg > MAX_REROLL_QUERY_LARGE and reroll_size > REROLL_DICE_SIZE_THRESHOLD:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Too many large rerolls in one query! Maximum of %d for dice sizes over %d!" % (MAX_REROLL_QUERY_LARGE, REROLL_DICE_SIZE_THRESHOLD))
 
     try:
         roll_results = [roll_master(roll_line) for i in range(0, repeat_arg)]
