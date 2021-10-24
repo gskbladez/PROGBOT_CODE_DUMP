@@ -142,7 +142,7 @@ DataMine	-	-	Can turn Thrown chips into mines! They target whoever touches or at
 Diffusal	-	-	When something reduces one of your skills by 1, your element appears Close to you.	2	NCP	Core	
 EjectButton	-	-	2 times per jack-in, you can spring a range band in any direction. Can still act in midair.	2	NCP	Core	
 ElemRitual	-	-	If you spend a minute concentrating, your next Affinity roll uses at least 5 dice.	2	NCP	Core	
-PassengerMode	-	-	When you use Rush chips, you can take a Close target with you.	2	NCP	Core	
+PassengerMode	-	-	When you use Rush chips, you can take a Close target with you.	2	NCP	Core
 Pettaur	-	-	A round little buddy! It can’t attack, obeys basic orders, and vanishes for a bit if hurt.	2	NCP	Core
 RocketFist	-	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot parry at range.	2	NCP	Core	
 SearchOptimized	-	-	Pick a descriptor - NPCs will associate you with that word unless they know better.	2	NCP	Core	
