@@ -8,14 +8,12 @@
 - Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
 - `>rule` command
 - Add MegaCheer as query
- - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
- - Update OmegaVirus vs MegaVirus color
- - Clean up floating pixels around Drixol art
- - Fix Divergence Goal text
- - Resume command?
+- Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
+- Update OmegaVirus vs MegaVirus color
+- Resume command?
 
 ### New Features
-- Secret Nyx link command (>nyx) [wartorn: will add `>nyx` alias later] [iza: rulebook nyx is close enough, right?]
+- Secret Nyx link command (>nyx) [wartorn: will add `>nyx` alias later] [iza: rulebook nyx is close enough, right?] [war: works for me]
 - query and similar commands really should have some simple stuff like boolean joins.
 - Chip or queries: simple+guard, support+guard
 - Random weather (and other?) rollers
