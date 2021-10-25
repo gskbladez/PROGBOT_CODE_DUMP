@@ -46,6 +46,7 @@ usercooldown_1 = 3000
 outputhistorysize = 10
 backgroundtask = None
 backgroundtaskinterval = 10
+msg_char_limit = 2000
 
 #MESSAGES
 message_somethingbroke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
@@ -77,3 +78,4 @@ source_guild_id = 556291542206382080
 custom_emoji_instant = r"<:instant:892170110465363969>"
 custom_emoji_cost = r"<:cost:892170110364680202>"
 custom_emoji_roll = r"<:roll:892170110377295934>"
+custom_emoji_underflow = r"<:underflow:901995743752106064>"

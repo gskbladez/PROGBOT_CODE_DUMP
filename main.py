@@ -592,7 +592,13 @@ def roll_master(roll_line):
     zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
 
     roll_results = parser.parse(lexer.lex(zero_formatted_roll))
-    return roll_results
+    if sum(roll_results.results) == 0:
+        results_bare_str = roll_results.modifications[0][1]
+        num_ones = len(re.findall(r'(\D*1\D*)', results_bare_str))
+        roll_is_underflow = num_ones >= 3
+    else:
+        roll_is_underflow = False
+    return roll_results, roll_is_underflow
 
 
 def format_hits_roll(roll_result):
@@ -653,7 +659,9 @@ async def repeatroll(context, *args, **kwargs):
                                         sendcontent="Too many large rerolls in one query! Maximum of %d for dice sizes over %d!" % (MAX_REROLL_QUERY_LARGE, REROLL_DICE_SIZE_THRESHOLD))
 
     try:
-        roll_results = [roll_master(roll_line) for i in range(0, repeat_arg)]
+        roll_heck = [roll_master(roll_line) for i in range(0, repeat_arg)]
+        roll_results, is_underflow_list = res = list(zip(*roll_heck))
+
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
@@ -675,7 +683,14 @@ async def repeatroll(context, *args, **kwargs):
     if roll_comment:
         progroll_output += " #{}".format(roll_comment.rstrip())
     progroll_output = "{}\n>>> {}".format(progroll_output,"\n".join(roll_outputs))
-    return await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+
+    progmsg = await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+    if not any(is_underflow_list):
+        return
+    try:
+        await progmsg.add_reaction(settings.custom_emoji_underflow)
+    except discord.errors.HTTPException:
+        return
 
 
 async def roll(context, *args, **kwargs):
@@ -699,7 +714,7 @@ async def roll(context, *args, **kwargs):
                                         sendcontent="No roll given!")
 
     try:
-        roll_results = roll_master(roll_line)
+        roll_results, is_underflow = roll_master(roll_line)
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
@@ -719,7 +734,13 @@ async def roll(context, *args, **kwargs):
     if roll_comment:
         progroll_output += " #{}".format(roll_comment.rstrip())
 
-    return await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+    progmsg = await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+    if not is_underflow:
+        return
+    try:
+        await progmsg.add_reaction(settings.custom_emoji_underflow)
+    except discord.errors.HTTPException:
+        return
 
 
 async def tag(context, *args, **kwargs):
@@ -1070,7 +1091,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
 
     # determines custom emojis
     if koduck.client.get_guild(id=settings.source_guild_id):
-        emojis_available = 1
+        emojis_available = True
         if power_tag in ['Instant']:
             emoji_tag = settings.custom_emoji_instant
         if power_type in ['Cost']:
@@ -1078,7 +1099,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
         elif power_type in ['Roll']:
             emoji_type = settings.custom_emoji_roll
     else:
-        emojis_available = 0
+        emojis_available = False
 
     if power_eb == '-' or force_power:  # display as power, rather than ncp
         if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
