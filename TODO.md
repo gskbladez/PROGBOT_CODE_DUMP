@@ -1,7 +1,6 @@
 # TODO List
 
 ### Known Bugs
-- `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
 - Progbot can't handle decimals at all
 - Weird rr 3, 69d6>6 underflow bug; third output is cut off
 
@@ -12,15 +11,15 @@
 - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
 - Update OmegaVirus vs MegaVirus color
 - Resume command?
+- `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
+- Improve organization of >commands output
 
 ### New Features
-- Secret Nyx link command (>nyx) [wartorn: will add `>nyx` alias later] [iza: rulebook nyx is close enough, right?] [war: works for me]
 - query and similar commands really should have some simple stuff like boolean joins.
 - Chip or queries: simple+guard, support+guard
 - Random weather (and other?) rollers
 - tape on like 4 or 5 more flashlights for the spotlight command
 - progbutt
-- numberman personally laughs at your underflow rolls
 
 ### Potential Ideas
 - Add NaviChip creation rules
