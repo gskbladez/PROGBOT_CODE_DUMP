@@ -3,6 +3,7 @@
 ### Known Bugs
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
 - Progbot can't handle decimals at all
+- Weird rr 3, 69d6>6 underflow bug; third output is cut off
 
 ### Improvements
 - Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)

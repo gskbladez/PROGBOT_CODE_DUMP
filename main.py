@@ -659,7 +659,6 @@ async def repeatroll(context, *args, **kwargs):
                                         sendcontent="Too many large rerolls in one query! Maximum of %d for dice sizes over %d!" % (MAX_REROLL_QUERY_LARGE, REROLL_DICE_SIZE_THRESHOLD))
 
     try:
-        # roll_results, is_underflow = [roll_master(roll_line) for i in range(0, repeat_arg)]
         roll_heck = [roll_master(roll_line) for i in range(0, repeat_arg)]
         roll_results, is_underflow_list = res = list(zip(*roll_heck))
 
@@ -684,6 +683,7 @@ async def repeatroll(context, *args, **kwargs):
     if roll_comment:
         progroll_output += " #{}".format(roll_comment.rstrip())
     progroll_output = "{}\n>>> {}".format(progroll_output,"\n".join(roll_outputs))
+
     progmsg = await koduck.sendmessage(context["message"], sendcontent=progroll_output)
     if not any(is_underflow_list):
         return
@@ -691,7 +691,6 @@ async def repeatroll(context, *args, **kwargs):
         await progmsg.add_reaction(settings.custom_emoji_underflow)
     except discord.errors.HTTPException:
         return
-
 
 
 async def roll(context, *args, **kwargs):

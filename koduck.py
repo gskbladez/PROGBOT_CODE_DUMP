@@ -186,7 +186,7 @@ async def sendmessage(receivemessage, sendchannel=None, sendcontent="", sendembe
             return
     
     #Discord messages cap at 2000 characters
-    if len(sendcontent) > 2000:
+    if len(sendcontent) > settings.msg_char_limit:
         sendcontent = settings.message_resulttoolong.format(len(sendcontent))
     
     #send the message and track some data

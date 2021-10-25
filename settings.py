@@ -46,6 +46,7 @@ usercooldown_1 = 3000
 outputhistorysize = 10
 backgroundtask = None
 backgroundtaskinterval = 10
+msg_char_limit = 2000
 
 #MESSAGES
 message_somethingbroke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
