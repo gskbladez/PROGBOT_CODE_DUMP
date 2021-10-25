@@ -3,7 +3,8 @@
 ### Known Bugs
 - Progbot can't handle decimals at all
 - Weird rr 3, 69d6>6 underflow bug; third output is cut off
-
+- Unusual result clipping after latest API change (query `"netbattlers"` only returns a single entry, fix before launch)
+ 
 ### Improvements
 - Improve README ([ROBOT_IS_YOU](https://github.com/RocketRace/robot-is-you) seems to be a good example)
 - `>rule` command
@@ -32,4 +33,5 @@
   the data structure by hand, but it fought me at every corner.
 * My reasoning for this is that while the XHR structure might be the same now, there's no guarantee it will be later, especially when there's the looming idea of that private API beta going public.  There's already a recorded instance of this breaking in the past with unofficial APIs.
 * And if there's any more evidence needed that Zone was right.. well, I found out just a few hours ago that the `token_v2` property could _break_ if you just decided to sign in and out to another account, entirely. That's not acceptable for our use case in any circumstance. -Wartorn
+  * motherfuck - Wartorn
 * Double-check Beta 8 no-damage chip rules
