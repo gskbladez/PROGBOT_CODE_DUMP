@@ -2605,6 +2605,10 @@ async def repo(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                  sendcontent="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
 
+    # just leaving this here for the next time i need to work on this again..
+    #parse = json.loads(r.content)
+    #print(json.dumps(parse, indent=4, sort_keys=True))
+
     # iza helped me rewrite the overwhelming bulk of this.
     # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.
     repo_results_dict = {}
@@ -2613,12 +2617,13 @@ async def repo(context, *args, **kwargs):
         if "properties" in blockmap[k]["value"]:
             repo_results_dict[k] = blockmap[k]["value"]["properties"]
     df_column_names = {}
+
     header_blk = r.json()["recordMap"]["collection"][data["collection"]["id"]]["value"]["schema"]
     for k in header_blk:
         df_column_names[k] = header_blk[k]["name"]
 
-    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='index',how='any')
-    repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game'] else x)
+    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='columns',how='any')
+    repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game', 'Contents'] else x)
 
     size = repo_results_df.shape[0]
     if not size:
