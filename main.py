@@ -527,6 +527,14 @@ async def help_cmd(context, *args, **kwargs):
                                     sendcontent="Couldn't pull up additional ruling information for %s! You should probably let the devs know..." % help_msg["Ruling?"])
             help_response = help_response + "\n\n" + ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"]))
 
+        # determines custom emojis
+        unique_emojis = np.unique(np.array(re.findall(r"<:(\S+):>", help_response)))
+        for cust_emoji in unique_emojis:
+            if (koduck.client.get_guild(id=settings.source_guild_id)) and (cust_emoji in settings.custom_emojis):
+                help_response = re.sub(r"<:%s:>" % cust_emoji, settings.custom_emojis[cust_emoji], help_response)
+            else:
+                help_response = re.sub(r"\s*<:%s:>\s*" % cust_emoji, "", help_response)
+
     return await koduck.sendmessage(context["message"],
                                     sendcontent=help_response)
 
@@ -691,7 +699,7 @@ async def repeatroll(context, *args, **kwargs):
     if not any(is_underflow_list):
         return
     try:
-        await progmsg.add_reaction(settings.custom_emoji_underflow)
+        await progmsg.add_reaction(settings.custom_emojis["underflow"])
     except discord.errors.HTTPException:
         return
 
@@ -741,7 +749,7 @@ async def roll(context, *args, **kwargs):
     if not is_underflow:
         return
     try:
-        await progmsg.add_reaction(settings.custom_emoji_underflow)
+        await progmsg.add_reaction(settings.custom_emojis["underflow"])
     except discord.errors.HTTPException:
         return
 
@@ -1096,11 +1104,11 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
     if koduck.client.get_guild(id=settings.source_guild_id):
         emojis_available = True
         if power_tag in ['Instant']:
-            emoji_tag = settings.custom_emoji_instant
+            emoji_tag = settings.custom_emojis["instant"]
         if power_type in ['Cost']:
-            emoji_type = settings.custom_emoji_cost
+            emoji_type = settings.custom_emojis["cost"]
         elif power_type in ['Roll']:
-            emoji_type = settings.custom_emoji_roll
+            emoji_type = settings.custom_emojis["roll"]
     else:
         emojis_available = False
 
