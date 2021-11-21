@@ -624,8 +624,9 @@ def roll_master(roll_line, format_limit=FORMAT_LIMIT):
     zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
 
     roll_results = parser.parse(lexer.lex(zero_formatted_roll))
-    if len(re.findall(r"(\*|\_|~)+", roll_results.modifications[1][1])) > (format_limit * 2):
-        raise dice_algebra.OutOfDiceBounds("Too many formatting elements! (Yes this is a weird error.)\n(Basically your roll is too fancy.)\n(Try not using `>`/`<` operators, or lowering the number of dice!)");
+    if (len(roll_results.modifications) == 2):
+        if len(re.findall(r"(\*|\_|~)+", roll_results.modifications[1][1])) > (format_limit * 2):
+            raise dice_algebra.OutOfDiceBounds("Too many formatting elements! (Yes this is a weird error.)\n(Basically your roll is too fancy.)\n(Try not using `>`/`<` operators, or lowering the number of dice!)");
     if sum(roll_results.results) == 0:
         results_bare_str = roll_results.modifications[0][1]
         num_ones = len(re.findall(r'(\D*1\D*)', results_bare_str))
