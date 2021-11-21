@@ -204,6 +204,10 @@ pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 grid_link = rulebook_df[rulebook_df["Name"] == "Grid-Based Combat"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] == "NetBattlers") | (rulebook_df["Name"] == "NetBattlers Advance")]
+# these might start complaining; double check that the labels in the rulebook are exact: captilization and whitespace matter!
+rulebook_df["Type"] = rulebook_df["Type"].astype('category').cat.reorder_categories(["Mobile", "Full Res", "Bonus BattleChips"])
+rulebook_df["Release"] = rulebook_df["Release"].astype('category').cat.reorder_categories(["Beta", "Alpha", "Pre-Alpha", "Version"])
+rulebook_df = rulebook_df.sort_values(["Name", "Release", "Version", "Type"])
 
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
