@@ -617,19 +617,20 @@ def roll_master(roll_line, format_limit=FORMAT_LIMIT):
     roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
                        flags=re.IGNORECASE)
     # adds 1 in front of bare d6, d20 references
-    roll_line = re.sub("(?P<baredice>^|\b)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
-    zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
-
+    roll_line = re.sub(r"(?P<baredice>^|\b)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
+    zero_formatted_roll = re.sub(r'{(.*)}', '0', roll_line)
+    roll_is_underflow = False
     roll_results = parser.parse(lexer.lex(zero_formatted_roll))
-    if (len(roll_results.modifications) == 2):
-        if len(re.findall(r"(\*|\_|~)+", roll_results.modifications[1][1])) > (format_limit * 2):
-            raise dice_algebra.OutOfDiceBounds("Too many formatting elements! (Yes this is a weird error.)\n(Basically your roll is too fancy.)\n(Try not using `>`/`<` operators, or lowering the number of dice!)");
-    if sum(roll_results.results) == 0:
-        results_bare_str = roll_results.modifications[0][1]
-        num_ones = len(re.findall(r'(\D*1\D*)', results_bare_str))
-        roll_is_underflow = num_ones >= 3
-    else:
-        roll_is_underflow = False
+
+    if hasattr(roll_results, "modifications"):
+        if (len(roll_results.modifications) == 2):
+            if len(re.findall(r"(\*|\_|~)+", roll_results.modifications[1][1])) > (format_limit * 2):
+                raise dice_algebra.OutOfDiceBounds("Too many formatting elements! (Yes this is a weird error.)\n(Basically your roll is too fancy.)\n(Try not using `>`/`<` operators, or lowering the number of dice!)");
+        if sum(roll_results.results) == 0:
+            results_bare_str = roll_results.modifications[0][1]
+            num_ones = len(re.findall(r'(\D*1\D*)', results_bare_str))
+            roll_is_underflow = num_ones >= 3
+
     return roll_results, roll_is_underflow
 
 
@@ -693,11 +694,10 @@ async def repeatroll(context, *args, **kwargs):
     try:
         roll_heck = [roll_master(roll_line, format_limit=(FORMAT_LIMIT/repeat_arg)) for i in range(0, repeat_arg)]
         roll_results, is_underflow_list = list(zip(*roll_heck))
-
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
-    except AttributeError:
+    except AttributeError as e:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Sorry, I can't understand the roll. Try writing it out differently!")
     except dice_algebra.DiceError:
@@ -750,7 +750,7 @@ async def roll(context, *args, **kwargs):
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
-    except AttributeError:
+    except AttributeError as e:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Sorry, I can't understand the roll. Try writing it out differently!")
     except dice_algebra.DiceError:
