@@ -16,7 +16,6 @@
 - Update OmegaVirus vs MegaVirus color
 - Resume command?
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
-- Improve organization of >commands output
 
 ### New Features
 - query and similar commands really should have some simple stuff like boolean joins.
