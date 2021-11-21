@@ -533,7 +533,7 @@ async def help_cmd(context, *args, **kwargs):
             if (koduck.client.get_guild(id=settings.source_guild_id)) and (cust_emoji in settings.custom_emojis):
                 help_response = re.sub(r"<:%s:>" % cust_emoji, settings.custom_emojis[cust_emoji], help_response)
             else:
-                help_response = re.sub(r"\s*<:%s:>\s*" % cust_emoji, "", help_response)
+                help_response = re.sub(r"(^\s*)?<:%s:>(\s*$|\s)?" % cust_emoji, "", help_response)
 
     return await koduck.sendmessage(context["message"],
                                     sendcontent=help_response)
