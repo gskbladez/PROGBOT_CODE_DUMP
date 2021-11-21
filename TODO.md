@@ -20,6 +20,7 @@
 - Random weather (and other?) rollers
 - tape on like 4 or 5 more flashlights for the spotlight command
 - progbutt
+- reset RNG seed?
 
 ### Potential Ideas
 - Add NaviChip creation rules
