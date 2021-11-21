@@ -52,7 +52,7 @@ def WriteTable(tablename, dict):
     
     #Can happen occasionally if tables are being edited very quickly
     try:
-        file = open("{}.txt".format(tablename), "w", encoding="utf8")
+        file = open("{}".format(tablename), "w", encoding="utf8")
     except OSError:
         raise
     
@@ -71,13 +71,12 @@ def WriteTable(tablename, dict):
 #Appends to text file instead of rewriting the whole file, which should be faster
 def AppendRowToTable(tablename, key, values):
     dict = ReadTable(tablename)
-    
     if dict is None:
         WriteTable(tablename, {key:values})
     elif key in dict.keys():
         return -1
     else:
-        file = open("{}.txt".format(tablename), "a", encoding="utf8")
+        file = open("{}".format(tablename), "a", encoding="utf8")
         file.write("\t".join([str(key)] + values) + "\n")
         file.close()
         return 0

@@ -130,7 +130,7 @@ ProgBody	-	-	You can appear like a Mr. Prog! (Hat of your choice optional.)	1	NC
 ProgRadar	-	-	Beeps depending on proximity to nearest Prog.	1	NCP	Core	
 SignPost	-	-	You can leave a sign, similar to a BBS post, anywhere online.	1	NCP	Core	
 ThemeSong	-	-	On your first critical success per jack-in, a celebratory fanfare blares around you.	1	NCP	Core	
-Underflow	-	-	If a failed roll has three or more 1’s, count it as two hits instead.	1	NCP	Core	
+Underflow	-	-	If a roll with zero hits has three or more 1’s, count it as two hits instead.	1	NCP	Core	
 ZennyMiner	-	-	On sending Virus data to a Blank BattleChip, get a bonus 300z.	1	NCP	Core	
 							
 AutoWrite	-	-	To download Virus data, you can erase a chip in your Folder for a full success.	2	NCP	Core	
@@ -143,7 +143,7 @@ Diffusal	-	-	When something reduces one of your skills by 1, your element appear
 EjectButton	-	-	2 times per jack-in, you can spring a range band in any direction. Can still act in midair.	2	NCP	Core	
 ElemRitual	-	-	If you spend a minute concentrating, your next Affinity roll uses at least 5 dice.	2	NCP	Core	
 PassengerMode	-	-	When you use Rush chips, you can take a Close target with you.	2	NCP	Core	
-Pettaur	-	-	A round little buddy! It can’t attack, obeys basic orders, and vanishes for a bit if hurt.	2	NCP	Core
+Pettaur	-	-	A round little buddy! It can’t attack, obeys basic orders, and vanishes for a bit if hurt.	2	NCP	Core	
 RocketFist	-	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot parry at range.	2	NCP	Core	
 SearchOptimized	-	-	Pick a descriptor - NPCs will associate you with that word unless they know better.	2	NCP	Core	
 SetElement	-	-	On jack-in, your element appears around you; if you use it immediately, downshift.	2	NCP	Core	
@@ -154,7 +154,7 @@ Ventrillo	-	-	You can make your voice come from anywhere in Near range.	2	NCP	Co
 							
 Custom+3	-	-	+3 maximum BattleChips in your Folder.	3	BoostNCP	Core	
 DarkLicense	-	-	Fake credentials that shift into whatever you need them to be. [Often Illegal.]	3	NCP	Core	
-DualPipeline	-	-	Can use two Shot BattleChips at the same time. Counts as two separate attacks.	3	NCP	Core	
+DualPipeline	-	-	You can use two Shot chips, one after the other, with no delay between them.	3	NCP	Core	
 EnergyChange	-	-	Sacrifice an unused chip to instantly spawn a lot of your element Close to you.	3	NCP	Core	
 ExecutionUnit	-	-	When you delete a Virus or Navi, heal 3 HP.	3	NCP	Core	
 FirstArmor	-	-	On jack-in, get a 6 HP Guard. It takes dmg for you until it runs out of HP. It can’t heal.	3	NCP	Core	
@@ -215,7 +215,7 @@ Ricochet	Volley	Upgrade	Can instead spend 1 Sense to reroll an attack you just m
 							
 Aggregator	Analyze	Upgrade	Can spend hits to learn their: NetOp, Bonds, Zenny, and emotional state.	1	NPU	Navi Power Upgrades	
 Exploit	Analyze	Upgrade	Add +2 dice to the first 2 allied rolls vs. the target. Once per target.	2	NPU	Navi Power Upgrades	
-Anticipation	Foresight	Upgrade	Foresight also lets you parry, not just dodge.	2	NPU	Navi Power Upgrades	
+Anticipation	Foresight	Upgrade	Foresight also lets you parry melee attacks, not just defend.	2	NPU	Navi Power Upgrades	
 ChipCracker	Foresight	Upgrade	If you pick Mind, you can also roll Info to defend against BattleChips.	1	NPU	Navi Power Upgrades	
 SearchIndex	MemoryScan	Upgrade	You can find distant memories if you give a specific date/time.	2	NPU	Navi Power Upgrades	
 StorageViolation	MemoryScan	Upgrade	MemoryScan can also scan Navis. [Often illegal.]	3	NPU	Navi Power Upgrades	
@@ -296,7 +296,7 @@ ControlA	Control	Upgrade	Detonate all abundances of your element in Near range, 
 ControlX	Control	Upgrade	Control is now a melee-only attack. Gain the element of the last enemy you deleted.	3	NPU	Navi Power Upgrades	CtrlX, Control-X, Ctrl-X
 BurstTransmission	Shift	Upgrade	When appearing at your destination, cover everything Close in your element.	2	NPU	Navi Power Upgrades	
 Redirect	Shift	Upgrade	You can Shift with a known Near abundance of your element not in sight.	2	NPU	Navi Power Upgrades	
-BufferOverflow	CodeInjection	Upgrade	If your next attack deletes, cover all Close to the target with your element.	1	NPU	Navi Power Upgrades	
+BufferOverflow	CodeInjection	Upgrade	Foresight also lets you parry melee attacks, not just defend.	1	NPU	Navi Power Upgrades	
 Universal	CodeInjection	Upgrade	Non-attack rolls can use CodeInjection as long as they have a target.	1	NPU	Navi Power Upgrades	
 ElemenTango	Save	Upgrade	Save also gives the target an elemental barrier (Guard) that negates 1 attack.	2	NPU	Navi Power Upgrades	
 SaveAs	Save	Upgrade	Save also gives the target control over your element for one roll.	1	NPU	Navi Power Upgrades	
@@ -333,7 +333,7 @@ Spores	-	Passive	When attacks hit, target upshifts next Mind roll; next 3 Mind r
 Ensemble	Affinity	Roll	Plays a riff that turns Near enemy summoned elements into musical instruments.	-	Virus Power	Core	
 Fermata	Affinity	Roll	Plays a tune that freezes Near Navis in place for X rolls. X = hits rolled.	-	Virus Power	Core	
 Tacet	Affinity	Roll	Plays a melody that blinds Near Navis for 2 rolls.	-	Virus Power	Core	
-Err+Del	Coding	Cost	Pick a Near target. If they win their next opposed roll, hit the loser with a 3-damage bolt. [Instant]	-	Virus Power	Core	
+Err+Del	Coding	Cost	Pick someone Near. If they win their next opposed roll, hit the loser with a 3-damage bolt. [Instant]	-	Virus Power	Core	
 Ping	Coding	Roll	Repeatedly message a Near Navi’s PET, briefly blocking NetOp/Navi interaction.	-	Virus Power	Core	
 							
 EvilTwin	Bravery	Roll	Copy a skill & Navi Power from the target. Expires when you get hit.	-	Virus Power	Core	
@@ -380,7 +380,7 @@ Tandem	-	Passive	When you move a range band, you can bring one Close target with
 Reinforce	Affinity	Roll	Add +1 to an ally’s Stamina per hit. One ally at a time; expires on your deletion.	-	Virus Power	Core	
 							
 Ingredients	Affinity	Roll	Consume somebody else’s Near element to produce your element.	-	Virus Power	Core	
-SweetTreat	Affinity	Roll	Consume your element to heal a Close ally 2 HP.	-	Virus Power	Core	
+SweetTreat	Affinity	Cost	Consume your element to heal a Close ally 2 HP.	-	Virus Power	Core	
 Poser	Affinity	Roll	Pose, downshifting all Near allies’ next Soul roll.	-	Virus Power	Core	
 Shy	-	Passive	You are immobilized when Near Navis look at you.	-	Virus Power	Core	
 Backup	-	Passive	When you attack with an ally, add your dice to an ally’s attack.	-	Virus Power	Core	
@@ -432,7 +432,7 @@ Shakedown	-	Passive	When you hit a target, they drop 100z per point of damage.	-
 							
 HypnoShot	Charm	Cost	Your next attack makes the target (pick 1): very sleepy; see illusions; upshift next Mind roll.	-	Virus Power	Mystic Lilies	
 Sublimation	Speed	Cost	Summons mist. If you roll 3 times while in the mist, you can warp two range bands away.	-	Virus Power	Mystic Lilies	
-CrystalEyes	-	Passive	When you cover something with your element, gain +1 Sense.	-	Virus Power	Mystic Lilies	
+CrystalEyes	-	Passive	When you cover something with your element, gain +1 Sense. This can stack.	-	Virus Power	Mystic Lilies	
 SpadeCurse	-	Passive	On hit, targets are unable to lie unless they make a Hard Bravery roll or jack out.	-	Virus Power	Mystic Lilies	
 Trojan	Coding	Cost	Message a Near Navi’s PET with a link. If they open it, it makes a secret backdoor.	-	Virus Power	Mystic Lilies	
 RedLetter	Affinity	Cost	Curse Near writing, changing the text and installing a secret PET backdoor on touch.	-	Virus Power	Mystic Lilies	
@@ -444,7 +444,7 @@ Superego	Charm	Roll	Bewitch a Near NPC’s mind, rewriting their sense of morali
 DarkMark	Coding	Cost	Mark a Near target. Hard Coding roll to remove - only one try. Remains after jack-out.	-	Virus Power	Mystic Lilies	
 Payback	-	Passive	After your deletion, at some point, consume the Mark with a temporary curse (pick 1): make their highest stat 1; they make a loud, embarrassing noise; change their element to Bad Jokes.	-	Virus Power	Mystic Lilies	
 ExtraExtra	Info	Cost	Creates a big, hefty textbox with scandalous info you’ve gained. Can absorb 1 attack. [Instant]	-	Virus Power	Mystic Lilies	
-Muckrake	-	Passive	When you hit a Navi, gain +1 Info and an embarrassing/damaging fact from their social media.	-	Virus Power	Mystic Lilies	
+Muckrake	-	Passive	When you cover something with your element, gain +1 Sense. This can stack.	-	Virus Power	Mystic Lilies	
 NightSign	Affinity	Cost	Mark a Near target. Removing a Mark requires a Hard Coding roll or jacking out.	-	Virus Power	Mystic Lilies	
 Stalker	-	Passive	Once per minute, you can teleport directly behind any Marked target.	-	Virus Power	Mystic Lilies	
 SmokeStep	-	Passive	You can move up to a range band immediately after being hit.	-	Virus Power	Mystic Lilies	
@@ -567,7 +567,7 @@ EleMercy	-	Passive	When you’re hurt, spawn your element Close.	-	Virus Power	M
 EleMajesty	-	Passive	You can control up to 3 elements at once.	-	Virus Power	Mega Viruses	
 Redshift	Coding	Cost	Your element briefly (pick 1): reveals invisibility; blinds Close to it; starts growing in size.	-	Virus Power	Mega Viruses	
 SolarFlare	Affinity	Roll	(Requires 8+ Affinity.) Overheat a Near target’s PET. Interrupts the connection.	-	Virus Power	Mega Viruses	
-Supernova	-	Passive	After rolling Affinity, gain 1 Affinity, lose 1 HP, and increase the server’s temperature.	-	Virus Power	Mega Viruses	
+Supernova	-	Passive	After rolling Affinity, gain 1 Affinity (stacking), lose 1 HP, and raise the server’s temperature.	-	Virus Power	Mega Viruses	
 SupernovaΩ	-	Passive	After rolling Affinity, gain 2 Affinity, lose 2 HP, and greatly increase the server’s temperature.	-	Omega Virus Power	Mega Viruses	SupernovaOmega
 StarCrossed	Affinity	Roll	(Requires 20+ Affinity.) Pick an object Near the real-world server; it catches on fire.	-	Virus Power	Mega Viruses	
 Backdoor	Coding	Cost	Create a Near door that leads to a fake room. The room’s walls count as your body.	-	Virus Power	Mega Viruses	

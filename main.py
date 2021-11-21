@@ -36,10 +36,16 @@ SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=3, seconds=10)
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
 MAX_WEATHER_QUERY = 5
+REROLL_DICE_SIZE_THRESHOLD = 10000000000
+MAX_REROLL_QUERY = 20
+MAX_REROLL_QUERY_LARGE = 5
+FORMAT_LIMIT = 175 # technically actually 198 or so, buuuuut
 
 # Runtime database; expires on shutdown
 audience_data = {}
 spotlight_db = {}
+
+commands_df = pd.read_csv(settings.commandstablename, sep="\t").fillna('')
 
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
@@ -200,6 +206,10 @@ pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 grid_link = rulebook_df[rulebook_df["Name"] == "Grid-Based Combat"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] == "NetBattlers") | (rulebook_df["Name"] == "NetBattlers Advance")]
+# these might start complaining; double check that the labels in the rulebook are exact: captilization and whitespace matter!
+rulebook_df["Type"] = rulebook_df["Type"].astype('category').cat.reorder_categories(["Mobile", "Full Res", "Bonus BattleChips"])
+rulebook_df["Release"] = rulebook_df["Release"].astype('category').cat.reorder_categories(["Beta", "Alpha", "Pre-Alpha", "Version"])
+rulebook_df = rulebook_df.sort_values(["Name", "Release", "Version", "Type"])
 
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
@@ -218,7 +228,7 @@ if not os.path.isfile(settings.logfile):
     with open(settings.prefixfile, 'w') as lfp:
         pass
 
-if not os.path.isfile(settings.customresponsestablename+".txt"):
+if not os.path.isfile(settings.customresponsestablename):
     with open(settings.customresponsestablename, 'w') as ffp:
         pass
 
@@ -233,14 +243,20 @@ if bad_files:
 ##################
 # Be careful not to leave out this command or else a restart might be needed for any updates to commands
 async def updatecommands(context, *args, **kwargs):
-    tableitems = yadon.ReadTable(settings.commandstablename).items()
-    if tableitems is not None:
+
+    #tableitems = yadon.ReadTable(settings.commandstablename).items()
+
+    def cmd_func(row):
+        koduck.addcommand(row['Command'],globals()[row['Function']], row['Type'], int(row['Permission']))
+        return
+
+    if commands_df.shape[0] > 0:
         koduck.clearcommands()
-        for name, details in tableitems:
-            try:
-                koduck.addcommand(name, globals()[details[0]], details[1], int(details[2]))
-            except (KeyError, IndexError, ValueError):
-                pass
+        try:
+            commands_df.apply(cmd_func, axis=1)
+        except (KeyError, IndexError, ValueError) as e:
+            print(e)
+            pass
 
 
 async def goodnight(context, *args, **kwargs):
@@ -432,6 +448,9 @@ async def customresponse(context, *args, **kwargs):
     if response:
         return await koduck.sendmessage(context["message"], sendcontent=response[0])
 
+def export_tsv(df, filename):
+    df.to_csv(filename, sep='\t', index=False)
+    return
 
 async def addresponse(context, *args, **kwargs):
     if len(args) < 2:
@@ -442,7 +461,10 @@ async def addresponse(context, *args, **kwargs):
     if result == -1:
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_addresponse_failed)
     else:
-        yadon.WriteRowToTable(settings.commandstablename, trigger, ["customresponse", "match", "1"])
+        temp_command = {'Command': trigger, "Type": "match", 'Function': 'customresponse', 'Category': 'Custom', 'Permission': '1'}
+        global commands_df
+        commands_df = commands_df.append(temp_command, ignore_index=True)
+        export_tsv(commands_df, settings.commandstablename)
         koduck.addcommand(trigger, customresponse, "match", 1)
         return await koduck.sendmessage(context["message"],
                                         sendcontent=settings.message_addresponse_success.format(trigger, response))
@@ -457,7 +479,9 @@ async def removeresponse(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent=settings.message_removeresponse_failed.format(trigger))
     else:
-        yadon.RemoveRowFromTable(settings.commandstablename, trigger)
+        global commands_df
+        commands_df = commands_df[commands_df["Command"] != trigger]
+        export_tsv(commands_df, settings.commandstablename)
         koduck.removecommand(trigger)
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_removeresponse_success)
 
@@ -482,13 +506,13 @@ async def oops(context, *args, **kwargs):
 async def commands(context, *args, **kwargs):
     # filter out the commands that the user doesn't have permission to run
     currentlevel = koduck.getuserlevel(context["message"].author.id)
-    availablecommands = []
-    for commandname in koduck.commands.keys():
-        command = koduck.commands[commandname]
-        if command[2] <= currentlevel and command[1] == "prefix":
-            availablecommands.append(commandname)
-    availablecommands.sort()
-    return await koduck.sendmessage(context["message"], sendcontent=", ".join(availablecommands))
+    availablecommands = commands_df[commands_df["Permission"] <= currentlevel].sort_values(["Function", "Command", "Permission"])
+    if (context["message"].author.id == context["message"].guild.owner_id):
+        availablecommands = availablecommands.append(commands_df[commands_df["Permission"] == 4])
+    cmd_groups = availablecommands.groupby(["Category"])
+    return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
+                   name]
+    return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
 
 
 async def help_cmd(context, *args, **kwargs):
@@ -522,6 +546,14 @@ async def help_cmd(context, *args, **kwargs):
                 return await koduck.sendmessage(context["message"],
                                     sendcontent="Couldn't pull up additional ruling information for %s! You should probably let the devs know..." % help_msg["Ruling?"])
             help_response = help_response + "\n\n" + ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"]))
+
+        # determines custom emojis
+        unique_emojis = np.unique(np.array(re.findall(r"<:(\S+):>", help_response)))
+        for cust_emoji in unique_emojis:
+            if (koduck.client.get_guild(id=settings.source_guild_id)) and (cust_emoji in settings.custom_emojis):
+                help_response = re.sub(r"<:%s:>" % cust_emoji, settings.custom_emojis[cust_emoji], help_response)
+            else:
+                help_response = re.sub(r"(^\s*)?<:%s:>(\s*$|\s)?" % cust_emoji, "", help_response)
 
     return await koduck.sendmessage(context["message"],
                                     sendcontent=help_response)
@@ -579,17 +611,27 @@ def get_roll_from_macro(diff, dicenum):
     return "%dd6>%d" % (roll_dicenum, roll_difficulty)
 
 
-def roll_master(roll_line):
+def roll_master(roll_line, format_limit=FORMAT_LIMIT):
     # subs out the macros
     macro_regex = r"\$?(E|N|H)(\d+)"
     roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
                        flags=re.IGNORECASE)
     # adds 1 in front of bare d6, d20 references
-    roll_line = re.sub("(?P<baredice>^|\s+)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
-    zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
-
+    roll_line = re.sub(r"(?P<baredice>^|\b)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
+    zero_formatted_roll = re.sub(r'{(.*)}', '0', roll_line)
+    roll_is_underflow = False
     roll_results = parser.parse(lexer.lex(zero_formatted_roll))
-    return roll_results
+
+    if hasattr(roll_results, "modifications"):
+        if (len(roll_results.modifications) == 2):
+            if len(re.findall(r"(\*|\_|~)+", roll_results.modifications[1][1])) > (format_limit * 2):
+                raise dice_algebra.OutOfDiceBounds("Too many formatting elements! (Yes this is a weird error.)\n(Basically your roll is too fancy.)\n(Try not using `>`/`<` operators, or lowering the number of dice!)");
+        if sum(roll_results.results) == 0:
+            results_bare_str = roll_results.modifications[0][1]
+            num_ones = len(re.findall(r'(\D*1\D*)', results_bare_str))
+            roll_is_underflow = num_ones >= 3
+
+    return roll_results, roll_is_underflow
 
 
 def format_hits_roll(roll_result):
@@ -640,9 +682,18 @@ async def repeatroll(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="No roll given!")
 
+    dice_size = re.search('d(\d+)', roll_line)
+    reroll_size = int(dice_size.group(1))
+    if repeat_arg > MAX_REROLL_QUERY:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Too many small rerolls in one query! Maximum of %d for dice sizes under %d!" % (MAX_REROLL_QUERY, REROLL_DICE_SIZE_THRESHOLD))
+    if repeat_arg > MAX_REROLL_QUERY_LARGE and reroll_size > REROLL_DICE_SIZE_THRESHOLD:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Too many large rerolls in one query! Maximum of %d for dice sizes over %d!" % (MAX_REROLL_QUERY_LARGE, REROLL_DICE_SIZE_THRESHOLD))
 
     try:
-        roll_results = [roll_master(roll_line) for i in range(0, repeat_arg)]
+        roll_heck = [roll_master(roll_line, format_limit=(FORMAT_LIMIT/repeat_arg)) for i in range(0, repeat_arg)]
+        roll_results, is_underflow_list = list(zip(*roll_heck))
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
@@ -652,9 +703,9 @@ async def repeatroll(context, *args, **kwargs):
     except dice_algebra.DiceError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="The dice algebra is incorrect! Did you type out the roll correctly?")
-    except dice_algebra.OutOfDiceBounds:
+    except dice_algebra.OutOfDiceBounds as e:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
+                                        sendcontent=str(e))
     except dice_algebra.BadArgument as e:
         return await koduck.sendmessage(context["message"], sendcontent="Bad argument! " + str(e))
 
@@ -664,7 +715,14 @@ async def repeatroll(context, *args, **kwargs):
     if roll_comment:
         progroll_output += " #{}".format(roll_comment.rstrip())
     progroll_output = "{}\n>>> {}".format(progroll_output,"\n".join(roll_outputs))
-    return await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+
+    progmsg = await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+    if not any(is_underflow_list):
+        return
+    try:
+        await progmsg.add_reaction(settings.custom_emojis["underflow"])
+    except discord.errors.HTTPException:
+        return
 
 
 async def roll(context, *args, **kwargs):
@@ -688,7 +746,7 @@ async def roll(context, *args, **kwargs):
                                         sendcontent="No roll given!")
 
     try:
-        roll_results = roll_master(roll_line)
+        roll_results, is_underflow = roll_master(roll_line)
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
@@ -708,7 +766,13 @@ async def roll(context, *args, **kwargs):
     if roll_comment:
         progroll_output += " #{}".format(roll_comment.rstrip())
 
-    return await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+    progmsg = await koduck.sendmessage(context["message"], sendcontent=progroll_output)
+    if not is_underflow:
+        return
+    try:
+        await progmsg.add_reaction(settings.custom_emojis["underflow"])
+    except discord.errors.HTTPException:
+        return
 
 
 async def tag(context, *args, **kwargs):
@@ -1059,15 +1123,15 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
 
     # determines custom emojis
     if koduck.client.get_guild(id=settings.source_guild_id):
-        emojis_available = 1
+        emojis_available = True
         if power_tag in ['Instant']:
-            emoji_tag = settings.custom_emoji_instant
+            emoji_tag = settings.custom_emojis["instant"]
         if power_type in ['Cost']:
-            emoji_type = settings.custom_emoji_cost
+            emoji_type = settings.custom_emojis["cost"]
         elif power_type in ['Roll']:
-            emoji_type = settings.custom_emoji_roll
+            emoji_type = settings.custom_emojis["roll"]
     else:
-        emojis_available = 0
+        emojis_available = False
 
     if power_eb == '-' or force_power:  # display as power, rather than ncp
         if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
@@ -1771,7 +1835,8 @@ async def daemon(context, *args, **kwargs):
     arg_combined = " ".join(cleaned_args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Lists the complete information of a **Daemon** for DarkChip rules.")
+                                        sendcontent="Lists the complete information of a **Daemon** for DarkChip rules. "
+                                                    + "Use `{cp}daemon all` to pull up the names of all Official Daemons!".replace("{cp}", koduck.get_prefix(context["message"])))
     is_ruling = False
     ruling_msg = None
     if arg_combined in ["all", "list"]:
@@ -1896,7 +1961,7 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, re.IGNORECASE) for arg in args]
+    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, flags=re.IGNORECASE) for arg in args]
     cleaned_args = clean_args([" ".join(split_args)])
 
     errmsg = []
@@ -2523,24 +2588,44 @@ async def repo(context, *args, **kwargs):
                                     sendcontent=message_help.format(pmc_link))
     user_query = context["paramline"]
 
+    # api change @ 10/24/21:
+    # major change is that "query" is no longer a thing and "type" no longer accepts table searching in favor of "reducers".
+    # table search aggregate is now categorized under the "reducer" parameter.
+    # searchQuery is no longer embedded in loader and is now in "sort". "query" is no longer a parameter field.
+    # UTZ has been moved to "sort" as well.
+    # collectionId and collectionViewId appear to have been deprecated in favor of "collection" and "collectionView" sub-parameters.
+    # now requires id and separate "spaceId" values, though what the usecase for the latter is unknown to me.
+
     data = {
-        "collectionId": settings.notion_collection_id,
-        "collectionViewId": settings.notion_collection_view_id,
+        "collection": {
+            "id": settings.notion_collection_id, "spaceId": settings.notion_collection_space_id
+        },
+        "collectionView": {
+            "id": settings.notion_collection_view_id, "spaceId": settings.notion_collection_space_id
+        },
         "loader": {
-            "limit": 50,
-            "loadContentCover": True,
+            "type": "reducer",
+            "reducers": {
+                "collection_group_results": {
+                    "type": "results",
+                    "limit": 50
+                },
+                "table:uncategorized:title:count": {
+                    "type": "aggregation",
+                    "aggregation":
+                        {"property":"title",
+                         "aggregator":"count"}
+                }
+            },
+        "sort":
+            [{"property":"g=]<","direction":"ascending"},
+             {"property":"title","direction":"ascending"},
+             {"property":"UjPS","direction":"descending"}],
             "searchQuery": user_query,
-            "type": "table",
-            "userTimeZone": "America/Chicago",  # oh NOW you want this field. >_>
-        },
-        "query": {
-            "aggregations": [{"property":"title",
-                              "aggregator":"count"}],
-            "sort": [{"property":"g=]<","direction":"ascending"},
-                     {"property":"title","direction":"ascending"},
-                     {"property":"UjPS","direction":"descending"}],
-        },
+            "userTimeZone": "America/Chicago"
+        }
     }
+
     r = requests.post(settings.notion_query_link, json=data)
 
     # R:200 - all good
@@ -2549,8 +2634,13 @@ async def repo(context, *args, **kwargs):
     # R:5xx - notion's down (i.e.: not our problem)
     if r.status_code != 200:
         print(r.status_code, r.reason)
+        print("Response:", r.content)
         return await koduck.sendmessage(context["message"],
                                  sendcontent="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
+
+    # just leaving this here for the next time i need to work on this again..
+    #parse = json.loads(r.content)
+    #print(json.dumps(parse, indent=4, sort_keys=True))
 
     # iza helped me rewrite the overwhelming bulk of this.
     # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.
@@ -2559,14 +2649,14 @@ async def repo(context, *args, **kwargs):
     for k in blockmap:
         if "properties" in blockmap[k]["value"]:
             repo_results_dict[k] = blockmap[k]["value"]["properties"]
-
     df_column_names = {}
-    header_blk = r.json()["recordMap"]["collection"][data["collectionId"]]["value"]["schema"]
+
+    header_blk = r.json()["recordMap"]["collection"][data["collection"]["id"]]["value"]["schema"]
     for k in header_blk:
         df_column_names[k] = header_blk[k]["name"]
 
-    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='index',how='any')
-    repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game'] else x)
+    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='columns',how='any')
+    repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game', 'Contents'] else x)
 
     size = repo_results_df.shape[0]
     if not size:
@@ -3007,6 +3097,7 @@ async def spotlight(context, *args, **kwargs):
 
 async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_location):
     participant_list = pd.Series(participant_dict.keys())
+    participant_list = participant_list[participant_list != "Last Modified"]
     match_candidates = participant_list[participant_list.str.contains(arg, flags=re.IGNORECASE)]
     if match_candidates.shape[0] == 0:
         await koduck.sendmessage(msg_cnt["message"],
@@ -3200,6 +3291,10 @@ async def rewind(context, *args, **kwargs):
 async def pause(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"],
                                     sendcontent=":pause_button: A participant would like to take a break.")
+
+async def resume(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":arrow_forward: A participant is ready to resume play.")
 
 async def fbf(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"],
