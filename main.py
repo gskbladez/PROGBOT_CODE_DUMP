@@ -1961,7 +1961,7 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, re.IGNORECASE) for arg in args]
+    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, flags=re.IGNORECASE) for arg in args]
     cleaned_args = clean_args([" ".join(split_args)])
 
     errmsg = []
