@@ -14,7 +14,6 @@
 - Add MegaCheer as query
 - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
 - Update OmegaVirus vs MegaVirus color
-- Resume command?
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
 
 ### New Features
