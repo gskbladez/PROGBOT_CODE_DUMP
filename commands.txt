@@ -83,6 +83,8 @@ fwd	ffwd	prefix	1
 ff	ffwd	prefix	1
 pause	pause	prefix	1
 break	pause	prefix	1
+resume	resume	prefix	1
+play	resume	prefix	1
 fbf	fbf	prefix	1
 slow	fbf	prefix	1
 framebyframe	fbf	prefix	1

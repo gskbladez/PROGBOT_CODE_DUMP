@@ -3067,6 +3067,7 @@ async def spotlight(context, *args, **kwargs):
 
 async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_location):
     participant_list = pd.Series(participant_dict.keys())
+    participant_list = participant_list[participant_list != "Last Modified"]
     match_candidates = participant_list[participant_list.str.contains(arg, flags=re.IGNORECASE)]
     if match_candidates.shape[0] == 0:
         await koduck.sendmessage(msg_cnt["message"],
@@ -3260,6 +3261,10 @@ async def rewind(context, *args, **kwargs):
 async def pause(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"],
                                     sendcontent=":pause_button: A participant would like to take a break.")
+
+async def resume(context, *args, **kwargs):
+    return await koduck.sendmessage(context["message"],
+                                    sendcontent=":arrow_forward: A participant is ready to resume play.")
 
 async def fbf(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"],
