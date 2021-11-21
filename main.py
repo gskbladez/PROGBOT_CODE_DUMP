@@ -697,7 +697,7 @@ async def repeatroll(context, *args, **kwargs):
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
-    except AttributeError as e:
+    except AttributeError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Sorry, I can't understand the roll. Try writing it out differently!")
     except dice_algebra.DiceError:
@@ -750,7 +750,7 @@ async def roll(context, *args, **kwargs):
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Unexpected characters found! Did you type out the roll correctly?")
-    except AttributeError as e:
+    except AttributeError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Sorry, I can't understand the roll. Try writing it out differently!")
     except dice_algebra.DiceError:
