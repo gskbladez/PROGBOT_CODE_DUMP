@@ -507,7 +507,8 @@ async def commands(context, *args, **kwargs):
     # filter out the commands that the user doesn't have permission to run
     currentlevel = koduck.getuserlevel(context["message"].author.id)
     availablecommands = commands_df[commands_df["Permission"] <= currentlevel].sort_values(["Function", "Command", "Permission"])
-
+    if (context["message"].author.id == context["message"].guild.owner_id):
+        availablecommands = availablecommands.append(commands_df[commands_df["Permission"] == 4])
     cmd_groups = availablecommands.groupby(["Category"])
     return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
                    name]
