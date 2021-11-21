@@ -482,7 +482,6 @@ async def removeresponse(context, *args, **kwargs):
         global commands_df
         commands_df = commands_df[commands_df["Command"] != trigger]
         export_tsv(commands_df, settings.commandstablename)
-        #yadon.RemoveRowFromTable(settings.commandstablename, trigger)
         koduck.removecommand(trigger)
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_removeresponse_success)
 
@@ -509,10 +508,7 @@ async def commands(context, *args, **kwargs):
     currentlevel = koduck.getuserlevel(context["message"].author.id)
     availablecommands = commands_df[commands_df["Permission"] <= currentlevel].sort_values(["Function", "Command", "Permission"])
 
-    #availablecommands.sort()
-
     cmd_groups = availablecommands.groupby(["Category"])
-    #cmd_groups = sub_df.groupby(["Type"])
     return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
                    name]
     return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
@@ -1838,7 +1834,8 @@ async def daemon(context, *args, **kwargs):
     arg_combined = " ".join(cleaned_args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Lists the complete information of a **Daemon** for DarkChip rules.")
+                                        sendcontent="Lists the complete information of a **Daemon** for DarkChip rules. "
+                                                    + "Use `{cp}daemon all` to pull up the names of all Official Daemons!".replace("{cp}", koduck.get_prefix(context["message"])))
     is_ruling = False
     ruling_msg = None
     if arg_combined in ["all", "list"]:
