@@ -23,7 +23,6 @@
 - Chip or queries: simple+guard, support+guard
 - Random weather (and other?) rollers
 - tape on like 4 or 5 more flashlights for the spotlight command
-- progbutt
 - reset RNG seed?
 
 ### Potential Ideas
@@ -39,4 +38,3 @@
 * And if there's any more evidence needed that Zone was right.. well, I found out just a few hours ago that the `token_v2` property could _break_ if you just decided to sign in and out to another account, entirely. That's not acceptable for our use case in any circumstance. -Wartorn
   * motherfuck - Wartorn
   * investigate api versioning in notion api after i fly back home - Wartorn
-* Double-check Beta 8 no-damage chip rules
