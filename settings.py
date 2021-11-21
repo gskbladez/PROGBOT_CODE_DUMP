@@ -70,6 +70,7 @@ bug_image = r"https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusa
 invite_link = r"https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0"
 notion_collection_id = "97e4a870-4673-4fc7-a2c7-3fb876e4d837"
 notion_collection_view_id = "085a4095-0668-4722-a8ec-91ae6f56640c"
+notion_collection_space_id = "678b1442-260b-497a-9bf3-0d6ab3938e0d"
 notion_query_link = r"https://www.notion.so/api/v3/queryCollection"
 
 #CUSTOM EMOJI SUPPORT

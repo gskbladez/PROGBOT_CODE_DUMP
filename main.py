@@ -2555,24 +2555,44 @@ async def repo(context, *args, **kwargs):
                                     sendcontent=message_help.format(pmc_link))
     user_query = context["paramline"]
 
+    # api change @ 10/24/21:
+    # major change is that "query" is no longer a thing and "type" no longer accepts table searching in favor of "reducers".
+    # table search aggregate is now categorized under the "reducer" parameter.
+    # searchQuery is no longer embedded in loader and is now in "sort". "query" is no longer a parameter field.
+    # UTZ has been moved to "sort" as well.
+    # collectionId and collectionViewId appear to have been deprecated in favor of "collection" and "collectionView" sub-parameters.
+    # now requires id and separate "spaceId" values, though what the usecase for the latter is unknown to me.
+
     data = {
-        "collectionId": settings.notion_collection_id,
-        "collectionViewId": settings.notion_collection_view_id,
+        "collection": {
+            "id": settings.notion_collection_id, "spaceId": settings.notion_collection_space_id
+        },
+        "collectionView": {
+            "id": settings.notion_collection_view_id, "spaceId": settings.notion_collection_space_id
+        },
         "loader": {
-            "limit": 50,
-            "loadContentCover": True,
+            "type": "reducer",
+            "reducers": {
+                "collection_group_results": {
+                    "type": "results",
+                    "limit": 50
+                },
+                "table:uncategorized:title:count": {
+                    "type": "aggregation",
+                    "aggregation":
+                        {"property":"title",
+                         "aggregator":"count"}
+                }
+            },
+        "sort":
+            [{"property":"g=]<","direction":"ascending"},
+             {"property":"title","direction":"ascending"},
+             {"property":"UjPS","direction":"descending"}],
             "searchQuery": user_query,
-            "type": "table",
-            "userTimeZone": "America/Chicago",  # oh NOW you want this field. >_>
-        },
-        "query": {
-            "aggregations": [{"property":"title",
-                              "aggregator":"count"}],
-            "sort": [{"property":"g=]<","direction":"ascending"},
-                     {"property":"title","direction":"ascending"},
-                     {"property":"UjPS","direction":"descending"}],
-        },
+            "userTimeZone": "America/Chicago"
+        }
     }
+
     r = requests.post(settings.notion_query_link, json=data)
 
     # R:200 - all good
@@ -2581,8 +2601,13 @@ async def repo(context, *args, **kwargs):
     # R:5xx - notion's down (i.e.: not our problem)
     if r.status_code != 200:
         print(r.status_code, r.reason)
+        print("Response:", r.content)
         return await koduck.sendmessage(context["message"],
                                  sendcontent="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
+
+    # just leaving this here for the next time i need to work on this again..
+    #parse = json.loads(r.content)
+    #print(json.dumps(parse, indent=4, sort_keys=True))
 
     # iza helped me rewrite the overwhelming bulk of this.
     # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.
@@ -2591,14 +2616,14 @@ async def repo(context, *args, **kwargs):
     for k in blockmap:
         if "properties" in blockmap[k]["value"]:
             repo_results_dict[k] = blockmap[k]["value"]["properties"]
-
     df_column_names = {}
-    header_blk = r.json()["recordMap"]["collection"][data["collectionId"]]["value"]["schema"]
+
+    header_blk = r.json()["recordMap"]["collection"][data["collection"]["id"]]["value"]["schema"]
     for k in header_blk:
         df_column_names[k] = header_blk[k]["name"]
 
-    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='index',how='any')
-    repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game'] else x)
+    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='columns',how='any')
+    repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game', 'Contents'] else x)
 
     size = repo_results_df.shape[0]
     if not size:
