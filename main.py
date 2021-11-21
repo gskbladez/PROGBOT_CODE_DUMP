@@ -39,6 +39,7 @@ MAX_WEATHER_QUERY = 5
 REROLL_DICE_SIZE_THRESHOLD = 10000000000
 MAX_REROLL_QUERY = 20
 MAX_REROLL_QUERY_LARGE = 5
+FORMAT_LIMIT = 175 # technically actually 198 or so, buuuuut
 
 # Runtime database; expires on shutdown
 audience_data = {}
@@ -582,16 +583,18 @@ def get_roll_from_macro(diff, dicenum):
     return "%dd6>%d" % (roll_dicenum, roll_difficulty)
 
 
-def roll_master(roll_line):
+def roll_master(roll_line, format_limit=FORMAT_LIMIT):
     # subs out the macros
     macro_regex = r"\$?(E|N|H)(\d+)"
     roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
                        flags=re.IGNORECASE)
     # adds 1 in front of bare d6, d20 references
-    roll_line = re.sub("(?P<baredice>^|\s+)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
+    roll_line = re.sub("(?P<baredice>^|\b)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
     zero_formatted_roll = re.sub('{(.*)}', '0', roll_line)
 
     roll_results = parser.parse(lexer.lex(zero_formatted_roll))
+    if len(re.findall(r"(\*|\_|~)+", roll_results.modifications[1][1])) > (format_limit * 2):
+        raise dice_algebra.OutOfDiceBounds("Too many formatting elements! (Yes this is a weird error.)\n(Basically your roll is too fancy.)\n(Try not using `>`/`<` operators, or lowering the number of dice!)");
     if sum(roll_results.results) == 0:
         results_bare_str = roll_results.modifications[0][1]
         num_ones = len(re.findall(r'(\D*1\D*)', results_bare_str))
@@ -659,8 +662,8 @@ async def repeatroll(context, *args, **kwargs):
                                         sendcontent="Too many large rerolls in one query! Maximum of %d for dice sizes over %d!" % (MAX_REROLL_QUERY_LARGE, REROLL_DICE_SIZE_THRESHOLD))
 
     try:
-        roll_heck = [roll_master(roll_line) for i in range(0, repeat_arg)]
-        roll_results, is_underflow_list = res = list(zip(*roll_heck))
+        roll_heck = [roll_master(roll_line, format_limit=(FORMAT_LIMIT/repeat_arg)) for i in range(0, repeat_arg)]
+        roll_results, is_underflow_list = list(zip(*roll_heck))
 
     except rply.errors.LexingError:
         return await koduck.sendmessage(context["message"],
@@ -671,9 +674,9 @@ async def repeatroll(context, *args, **kwargs):
     except dice_algebra.DiceError:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="The dice algebra is incorrect! Did you type out the roll correctly?")
-    except dice_algebra.OutOfDiceBounds:
+    except dice_algebra.OutOfDiceBounds as e:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
+                                        sendcontent=str(e))
     except dice_algebra.BadArgument as e:
         return await koduck.sendmessage(context["message"], sendcontent="Bad argument! " + str(e))
 
