@@ -45,6 +45,8 @@ FORMAT_LIMIT = 175 # technically actually 198 or so, buuuuut
 audience_data = {}
 spotlight_db = {}
 
+commands_df = pd.read_csv(settings.commandstablename, sep="\t").fillna('')
+
 # Background task is run every set interval while bot is running (by default every 10 seconds)
 async def backgroundtask():
     await clean()
@@ -226,7 +228,7 @@ if not os.path.isfile(settings.logfile):
     with open(settings.prefixfile, 'w') as lfp:
         pass
 
-if not os.path.isfile(settings.customresponsestablename+".txt"):
+if not os.path.isfile(settings.customresponsestablename):
     with open(settings.customresponsestablename, 'w') as ffp:
         pass
 
@@ -241,14 +243,20 @@ if bad_files:
 ##################
 # Be careful not to leave out this command or else a restart might be needed for any updates to commands
 async def updatecommands(context, *args, **kwargs):
-    tableitems = yadon.ReadTable(settings.commandstablename).items()
-    if tableitems is not None:
+
+    #tableitems = yadon.ReadTable(settings.commandstablename).items()
+
+    def cmd_func(row):
+        koduck.addcommand(row['Command'],globals()[row['Function']], row['Type'], int(row['Permission']))
+        return
+
+    if commands_df.shape[0] > 0:
         koduck.clearcommands()
-        for name, details in tableitems:
-            try:
-                koduck.addcommand(name, globals()[details[0]], details[1], int(details[2]))
-            except (KeyError, IndexError, ValueError):
-                pass
+        try:
+            commands_df.apply(cmd_func, axis=1)
+        except (KeyError, IndexError, ValueError) as e:
+            print(e)
+            pass
 
 
 async def goodnight(context, *args, **kwargs):
@@ -440,6 +448,9 @@ async def customresponse(context, *args, **kwargs):
     if response:
         return await koduck.sendmessage(context["message"], sendcontent=response[0])
 
+def export_tsv(df, filename):
+    df.to_csv(filename, sep='\t', index=False)
+    return
 
 async def addresponse(context, *args, **kwargs):
     if len(args) < 2:
@@ -450,7 +461,10 @@ async def addresponse(context, *args, **kwargs):
     if result == -1:
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_addresponse_failed)
     else:
-        yadon.WriteRowToTable(settings.commandstablename, trigger, ["customresponse", "match", "1"])
+        temp_command = {'Command': trigger, "Type": "match", 'Function': 'customresponse', 'Category': 'Custom', 'Permission': '1'}
+        global commands_df
+        commands_df = commands_df.append(temp_command, ignore_index=True)
+        export_tsv(commands_df, settings.commandstablename)
         koduck.addcommand(trigger, customresponse, "match", 1)
         return await koduck.sendmessage(context["message"],
                                         sendcontent=settings.message_addresponse_success.format(trigger, response))
@@ -465,7 +479,10 @@ async def removeresponse(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent=settings.message_removeresponse_failed.format(trigger))
     else:
-        yadon.RemoveRowFromTable(settings.commandstablename, trigger)
+        global commands_df
+        commands_df = commands_df[commands_df["Command"] != trigger]
+        export_tsv(commands_df, settings.commandstablename)
+        #yadon.RemoveRowFromTable(settings.commandstablename, trigger)
         koduck.removecommand(trigger)
         return await koduck.sendmessage(context["message"], sendcontent=settings.message_removeresponse_success)
 
@@ -490,13 +507,15 @@ async def oops(context, *args, **kwargs):
 async def commands(context, *args, **kwargs):
     # filter out the commands that the user doesn't have permission to run
     currentlevel = koduck.getuserlevel(context["message"].author.id)
-    availablecommands = []
-    for commandname in koduck.commands.keys():
-        command = koduck.commands[commandname]
-        if command[2] <= currentlevel and command[1] == "prefix":
-            availablecommands.append(commandname)
-    availablecommands.sort()
-    return await koduck.sendmessage(context["message"], sendcontent=", ".join(availablecommands))
+    availablecommands = commands_df[commands_df["Permission"] <= currentlevel].sort_values(["Function", "Command", "Permission"])
+
+    #availablecommands.sort()
+
+    cmd_groups = availablecommands.groupby(["Category"])
+    #cmd_groups = sub_df.groupby(["Type"])
+    return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
+                   name]
+    return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
 
 
 async def help_cmd(context, *args, **kwargs):

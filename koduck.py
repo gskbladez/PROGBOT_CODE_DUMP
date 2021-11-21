@@ -414,21 +414,21 @@ async def on_message(message):
             if context["command"] not in prefixcommands:
                 log(message, logresult=settings.message_unknowncommand)
                 context, args, kwargs = {"message": message, "command": ""}, [], {}
-        
+
         #MATCH COMMANDS
         if not context["command"]:
             for commandname in matchcommands:
-                if commandname == message.content.lower():
+                if commandname == message.content[len(serv_prefix):].lower():
                     context["command"] = commandname
                     break
         
         #CONTAIN COMMANDS
         if not context["command"]:
             for commandname in containcommands:
-                if commandname in message.content.lower():
+                if commandname in message.content[len(serv_prefix):].lower():
                     context["command"] = commandname
                     break
-        
+
         if not context["command"]:
             return
 

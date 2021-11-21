@@ -1,5 +1,5 @@
 #BOT FILES
-commandstablename = "commands.txt"
+commandstablename = "commands.tsv"
 settingstablename = "settings.txt"
 userlevelstablename = "userlevels.txt"
 customresponsestablename = "customresponses.txt"
@@ -57,6 +57,9 @@ message_cooldownactive = "Cooldown active."
 message_restrictedaccess = "You do not have permission to use this command."
 message_oops_failed = "Oops failed!"
 message_oops_success = "Oops success!"
+message_addresponse_failed = "Failed to add custom response!"
+message_removeresponse_success = "Custom response successfully removed!"
+message_removeresponse_failed = "Failed to remove custom response!"
 
 #HARDCODED LINKS
 character_sheet = r"https://docs.google.com/spreadsheets/d/158iI4LCpfS4AGjV5EshHkbKUD4GxogJCiwZCV6QzJ5s/edit#gid=295914024"
