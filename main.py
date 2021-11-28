@@ -211,10 +211,12 @@ rulebook_df["Type"] = rulebook_df["Type"].astype('category').cat.reorder_categor
 rulebook_df["Release"] = rulebook_df["Release"].astype('category').cat.reorder_categories(["Beta", "Alpha", "Pre-Alpha", "Version"])
 rulebook_df = rulebook_df.sort_values(["Name", "Release", "Version", "Type"])
 
+achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
+achievement_df["Category"] = achievement_df["Category"].astype('category').cat.reorder_categories(["First Steps", "Admin Privileges", "Tricky Bits", "Smooth Operation", "Milestones"])
+achievement_df = achievement_df.sort_values(["Category", "Name"])
 adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
 weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
-achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
 glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
 
 parser = dice_algebra.parser
