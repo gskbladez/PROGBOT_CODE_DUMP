@@ -509,7 +509,9 @@ async def commands(context, *args, **kwargs):
     # filter out the commands that the user doesn't have permission to run
     currentlevel = koduck.getuserlevel(context["message"].author.id)
     availablecommands = commands_df[commands_df["Permission"] <= currentlevel].sort_values(["Function", "Command", "Permission"])
-    if (context["message"].author.id == context["message"].guild.owner_id):
+    if context["message"].channel.type is discord.ChannelType.private:
+        pass
+    elif (context["message"].author.id == context["message"].guild.owner_id):
         availablecommands = availablecommands.append(commands_df[commands_df["Permission"] == 4])
     cmd_groups = availablecommands.groupby(["Category"])
     return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
@@ -2647,10 +2649,17 @@ async def repo(context, *args, **kwargs):
     # iza helped me rewrite the overwhelming bulk of this.
     # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.
     repo_results_dict = {}
-    blockmap = r.json()["recordMap"]["block"]
+    blockmap = r.json()["recordMap"]
+    if "block" not in blockmap:
+        return await koduck.sendmessage(context["message"],
+                                 sendcontent="I can't find anything with that query, sorry!")
+    else:
+        blockmap = r.json()["recordMap"]["block"]
+
     for k in blockmap:
         if "properties" in blockmap[k]["value"]:
             repo_results_dict[k] = blockmap[k]["value"]["properties"]
+
     df_column_names = {}
 
     header_blk = r.json()["recordMap"]["collection"][data["collection"]["id"]]["value"]["schema"]
