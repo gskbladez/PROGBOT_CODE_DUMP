@@ -154,7 +154,7 @@ Ventrillo	-	-	You can make your voice come from anywhere in Near range.	2	NCP	Co
 							
 Custom+3	-	-	+3 maximum BattleChips in your Folder.	3	BoostNCP	Core	
 DarkLicense	-	-	Fake credentials that shift into whatever you need them to be. [Often Illegal.]	3	NCP	Core	
-DualPipeline	-	-	You can use two Shot chips, one after the other, with no delay between them.	3	NCP	Core	
+DualPipeline	-	-	You can use two Shot BattleChips, one right after the other, as a multi-hit attack.	3	NCP	Core	
 EnergyChange	-	-	Sacrifice an unused chip to instantly spawn a lot of your element Close to you.	3	NCP	Core	
 ExecutionUnit	-	-	When you delete a Virus or Navi, heal 3 HP.	3	NCP	Core	
 FirstArmor	-	-	On jack-in, get a 6 HP Guard. It takes dmg for you until it runs out of HP. It can’t heal.	3	NCP	Core	
