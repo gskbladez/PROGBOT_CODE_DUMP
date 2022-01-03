@@ -1098,7 +1098,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
 
     power_name = power_info["Power/NCP"]
 
-    if ncp_only and any(power_df["Power/NCP"].str.contains("%sncp" % power_name, flags=re.IGNORECASE)):
+    if ncp_only and any(power_df["Power/NCP"].str.contains(re.escape("%sncp" % power_name), flags=re.IGNORECASE)):
         power_info = await find_value_in_table(context, local_power_df, "Power/NCP", power_name+"ncp",
                                                suppress_notfound=True, alias_message=False)
         power_name = power_info["Power/NCP"]
@@ -1265,7 +1265,7 @@ async def power(context, *args, **kwargs):
     for arg in cleaned_args:
         if not arg:
             continue
-        is_power_ncp = re.match(r"^(\S+)\s*ncp$", arg, flags=re.IGNORECASE)
+        is_power_ncp = re.match(r"^(\S+)\s*ncp$", re.escape(arg), flags=re.IGNORECASE)
         if is_power_ncp:
             arg = is_power_ncp.group(1)
         power_name, field_title, field_description, power_color, field_footer = await power_ncp(context, arg,
@@ -1373,7 +1373,7 @@ def query_npu(arg):
     if arg.capitalize() in skill_list:
         return False, "", ""
 
-    eb_match = re.match(r"^(\d+)(?:\s*EB)?$", arg, flags=re.IGNORECASE)
+    eb_match = re.match(r"^(\d+)(?:\s*EB)?$", re.escape(arg), flags=re.IGNORECASE)
     if eb_match:
         eb_search = eb_match.group(1)
         result_ncps = power_df[(power_df["Type"] == "Upgrade") & (power_df["EB"] == eb_search)]
@@ -1677,7 +1677,7 @@ async def query(context, *args, **kwargs):
 
 async def mysterydata_master(context, args, force_reward=False):
     arg = args[0]
-    mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains("^%s$" % arg, flags=re.IGNORECASE)]
+    mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
 
     if mysterydata_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
@@ -1747,7 +1747,7 @@ async def crimsonnoise(context, *args, **kwargs):
                                             "{cp}", koduck.get_prefix(context["message"])))
 
     arg = cleaned_args[0]
-    crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains("^%s$" % arg, flags=re.IGNORECASE)]
+    crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
 
     if crimsonnoise_type.shape[0] == 0:
         return await koduck.sendmessage(context["message"],
@@ -1965,7 +1965,7 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, flags=re.IGNORECASE) for arg in args]
+    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", re.escape(arg), flags=re.IGNORECASE) for arg in args]
     cleaned_args = clean_args([" ".join(split_args)])
 
     errmsg = []
@@ -3004,7 +3004,7 @@ async def spotlight(context, *args, **kwargs):
             i = 0
             name_list = pd.Series("", index=range(len(cleaned_args)-1))
             for arg in cleaned_args[1:]:
-                if any(name_list.str.contains(arg, flags=re.IGNORECASE)):
+                if any(name_list.str.contains(re.escape(arg), flags=re.IGNORECASE)):
                     dups.append(arg)
                 else:
                     name_list.iloc[i] = arg
@@ -3046,7 +3046,7 @@ async def spotlight(context, *args, **kwargs):
         name_list = pd.Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
         i = len(spotlight_db[channel_id]) # end of the array
         for arg in cleaned_args[1:]:
-            if any(name_list.str.contains(arg, flags=re.IGNORECASE)):
+            if any(name_list.str.contains(re.escape(arg), flags=re.IGNORECASE)):
                 dups.append(arg)
             else:
                 name_list.iloc[i] = arg
@@ -3109,7 +3109,7 @@ async def spotlight(context, *args, **kwargs):
 async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_location):
     participant_list = pd.Series(participant_dict.keys())
     participant_list = participant_list[participant_list != "Last Modified"]
-    match_candidates = participant_list[participant_list.str.contains(arg, flags=re.IGNORECASE)]
+    match_candidates = participant_list[participant_list.str.contains(re.escape(arg), flags=re.IGNORECASE)]
     if match_candidates.shape[0] == 0:
         await koduck.sendmessage(msg_cnt["message"],
                                  sendembed=embed_spotlight_message("Unable to find `%s` as a participant!" % arg,
@@ -3213,7 +3213,7 @@ async def achievement(context, *args, **kwargs):
                        if name]
         return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
 
-    match_candidates = achievement_df[achievement_df["Name"].str.contains(cleaned_args, flags=re.IGNORECASE)]
+    match_candidates = achievement_df[achievement_df["Name"].str.contains(re.escape(cleaned_args), flags=re.IGNORECASE)]
     if match_candidates.shape[0] < 1:
         return await koduck.sendmessage(context["message"], sendcontent="Didn't find any matches for `%s`!" % arg)
     if match_candidates.shape[0] > 1:
@@ -3243,7 +3243,7 @@ async def glossary(context, *args, **kwargs):
     glossary_info = await find_value_in_table(context, glossary_df, "Name", cleaned_arg, suppress_notfound=True) # exact match
 
     if glossary_info is None: # fuzzier match
-        match_candidates = glossary_df[glossary_df["Name"].str.contains("^" + cleaned_arg, flags=re.IGNORECASE)]
+        match_candidates = glossary_df[glossary_df["Name"].str.contains("^" + re.escape(cleaned_arg), flags=re.IGNORECASE)]
 
         if match_candidates.shape[0] < 1:
             return await koduck.sendmessage(context["message"], sendcontent="Didn't find any matches for `%s` in the glossary!" % arg)
