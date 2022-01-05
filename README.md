@@ -16,6 +16,7 @@ To add ProgBot to your server, click [this link](https://discordapp.com/oauth2/a
 - Add the Python directory with the executable to PATH environment variable
    - [Windows Guide](https://www.educative.io/edpresso/how-to-add-python-to-path-variable-in-windows), [Mac Guide](https://www.educative.io/edpresso/how-to-add-python-to-the-path-variable-in-mac)
    - Otherwise, you will have to substitute the executable filepath in place of `python` calls.
+- In Command Line, change directory to location of ProgBot Code Dump with: `cd [filepath_to_progbot]`
 - In Command Line, install all dependencies using pip: `python -m pip install -r dependencies.txt`. 
     - You may need additional flags. If so, try `python -3 -m pip install -Iv [package]==[version]`
 - Generate a bot token via the [Discord Developer Portal](https://discordapp.com/developers/applications/)
@@ -25,7 +26,6 @@ To add ProgBot to your server, click [this link](https://discordapp.com/oauth2/a
     # env
     DISCORD_TOKEN=[PASTE TOKEN HERE, REPLACING BRACKETS AS WELL]
     ```
-- In Command Line, change directory to location of ProgBot Code Dump with: `cd [filepath_to_progbot]`
 - Start the bot using: `python main.py`
     - If successful, it will output the following after a few seconds, in the command line:
      ```
