@@ -53,26 +53,6 @@ cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard D
            "Tarot": "", "Nyx": ""}
 cc_list = list(cc_dict.keys())
 cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
-cc_color_dictionary = {"MegaChip": 0xA8E8E8,
-                       "ChitChat": 0xff8000,
-                       "Radical Spin": 0x3f5cff,
-                       "Skateboard Dog": 0xff0000,
-                       "Night Drifters": 0xff0055,
-                       "Mystic Lilies": 0x99004c,
-                       "Leximancy": 0x481f65,
-                       "Underground Broadcast": 0x73ab50,
-                       "New Connections": 0xededed,
-                       "Silicon Skin": 0xf012be,
-                       "The Walls Will Swallow You": 0x734b38,
-                       "MUDSLURP": 0x7687c6,
-                       "Mudslurp": 0x7687c6,
-                       "Tarot": 0xfcf4dc,
-                       "Nyx": 0xa29e14,
-                       "Genso Network": 0xff605d,
-                       "Dark": 0xB088D0,
-                       "Item": 0xffffff,
-                       "Chip": 0xbfbfbf,
-                       "Mystery": 0x000000}
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xA8E8E8,
                 "OmegaVirus": 0xA8E8E8}
@@ -500,8 +480,13 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
             emoji_type = settings.custom_emojis["cost"]
         elif power_type in ['Roll']:
             emoji_type = settings.custom_emojis["roll"]
+        else:
+            emoji_type = ""
+        emoji_tag = ""
     else:
         emojis_available = False
+        emoji_type = ""
+        emoji_tag = ""
 
     if power_eb == '-' or force_power:  # display as power, rather than ncp
         if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
