@@ -12,6 +12,7 @@ import rply
 from dotenv import load_dotenv
 import json
 import datetime
+import advancemain
 
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
