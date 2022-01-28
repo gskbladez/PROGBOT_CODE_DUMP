@@ -1,97 +1,97 @@
-Command	Function	Category	Type	Permission
-changestatus	changestatus	Admin	prefix	3
-updatecommands	updatecommands	Admin	prefix	3
-goodnight	goodnight	Admin	prefix	3
-sendmessage	sendmessage	Admin	prefix	3
-updatesettings	updatesettings	Admin	prefix	3
-updatesetting	updatesetting	Admin	prefix	3
-addsetting	addsetting	Admin	prefix	3
-addresponse	addresponse	Admin	prefix	3
-removeresponse	removeresponse	Admin	prefix	3
-purge	purge	Admin	prefix	2
-restrict	restrictuser	Admin	prefix	2
-unrestrict	unrestrictuser	Admin	prefix	2
-bugreport	bugreport	ProgBot	prefix	1
-oops	oops	ProgBot	prefix	1
-command	commands	ProgBot	prefix	1
-commands	commands	ProgBot	prefix	1
-help	help_cmd	Game Lookup	prefix	1
-invite	invite	ProgBot	prefix	1
-roll	roll	Rollers	prefix	1
-r	roll	Rollers	prefix	1
-repeatroll	repeatroll	Rollers	prefix	1
-repeatr	repeatroll	Rollers	prefix	1
-rr	repeatroll	Rollers	prefix	1
-rroll	repeatroll	Rollers	prefix	1
-chip	chip	Game Lookup	prefix	1
-chips	chip	Game Lookup	prefix	1
-power	power	Game Lookup	prefix	1
-powers	power	Game Lookup	prefix	1
-ncp	ncp	Game Lookup	prefix	1
-virus	virus	Game Lookup	prefix	1
-virusx	virusx	Game Lookup	prefix	1
-tag	tag	Game Lookup	prefix	1
-category	tag	Game Lookup	prefix	1
-query	query	Info	prefix	1
-bond	bond	Game Lookup	prefix	1
-bondpower	bond	Game Lookup	prefix	1
-bondpowers	bond	Game Lookup	prefix	1
-mysterydata	mysterydata	Rollers	prefix	1
-md	mysterydata	Rollers	prefix	1
-mysteryreward	mysteryreward	Rollers	prefix	1
-rulebook	rulebook	Info	prefix	1
-element	element	Rollers	prefix	1
-daemon	daemon	Game Lookup	prefix	1
-upgrade	upgrade	Game Lookup	prefix	1
-npu	upgrade	Game Lookup	prefix	1
-crimsonnoise	crimsonnoise	Rollers	prefix	1
-mod	networkmod	Game Lookup	prefix	1
-networkmod	networkmod	Game Lookup	prefix	1
-audience	audience	Assistant	prefix	1
-cheer	cheer	Assistant	prefix	1
-jeer	jeer	Assistant	prefix	1
-virusr	virusr	Rollers	prefix	1
-virusrandom	virusr	Rollers	prefix	1
-changeprefix	change_prefix	Admin	prefix	4
-repo	repo	Info	prefix	1
-pmr	repo	Info	prefix	1
-playermade	repo	Info	prefix	1
-pmc	repo	Info	prefix	1
-adventure	adventure	Rollers	prefix	1
-fight	fight	Rollers	prefix	1
-sheet	sheet	Info	prefix	1
-spot	spotlight	Assistant	prefix	1
-spotlight	spotlight	Assistant	prefix	1
-checklist	spotlight	Assistant	prefix	1
-weather	weather	Game Lookup	prefix	1
-cyberweather	weather	Game Lookup	prefix	1
-achievement	achievement	Game Lookup	prefix	1
-achievements	achievement	Game Lookup	prefix	1
-achieve	achievement	Game Lookup	prefix	1
-glossary	glossary	Game Lookup	prefix	1
-xcard	xcard	Safety Tools	prefix	1
-x	xcard	Safety Tools	prefix	1
-ocard	ocard	Safety Tools	prefix	1
-o	ocard	Safety Tools	prefix	1
-ncard	ncard	Safety Tools	prefix	1
-n	ncard	Safety Tools	prefix	1
-rewind	rewind	Safety Tools	prefix	1
-rwd	rewind	Safety Tools	prefix	1
-rw	rewind	Safety Tools	prefix	1
-ffwd	ffwd	Safety Tools	prefix	1
-fastforward	ffwd	Safety Tools	prefix	1
-fwd	ffwd	Safety Tools	prefix	1
-ff	ffwd	Safety Tools	prefix	1
-pause	pause	Safety Tools	prefix	1
-break	pause	Safety Tools	prefix	1
-resume	resume	Safety Tools	prefix	1
-play	resume	Safety Tools	prefix	1
-fbf	fbf	Safety Tools	prefix	1
-slow	fbf	Safety Tools	prefix	1
-framebyframe	fbf	Safety Tools	prefix	1
-opendoor	opendoor	Safety Tools	prefix	1
-luxton	luxton	Safety Tools	prefix	1
-line	line	Safety Tools	prefix	1
-veil	veil	Safety Tools	prefix	1
-find	find_chip_ncp_power	Info	prefix	1
-search	find_chip_ncp_power	Info	prefix	1
+Command	Function	Category	Module	Type	Permission	Hidden
+changestatus	changestatus	Admin	main	prefix	3	F
+updatecommands	updatecommands	Admin	main	prefix	3	F
+goodnight	goodnight	Admin	main	prefix	3	F
+sendmessage	sendmessage	Admin	main	prefix	3	F
+updatesettings	updatesettings	Admin	main	prefix	3	T
+updatesetting	updatesetting	Admin	main	prefix	3	F
+addsetting	addsetting	Admin	main	prefix	3	F
+addresponse	addresponse	Admin	main	prefix	3	F
+removeresponse	removeresponse	Admin	main	prefix	3	F
+purge	purge	Admin	main	prefix	2	F
+restrict	restrictuser	Admin	main	prefix	2	F
+unrestrict	unrestrictuser	Admin	main	prefix	2	F
+bugreport	bugreport	ProgBot	main	prefix	1	F
+oops	oops	ProgBot	main	prefix	1	F
+command	commands	ProgBot	main	prefix	1	F
+commands	commands	ProgBot	main	prefix	1	F
+help	help_cmd	Game Lookup	base	prefix	1	F
+invite	invite	ProgBot	main	prefix	1	F
+roll	roll	Rollers	roll	prefix	1	F
+r	roll	Rollers	roll	prefix	1	F
+repeatroll	repeatroll	Rollers	roll	prefix	1	F
+repeatr	repeatroll	Rollers	roll	prefix	1	T
+rr	repeatroll	Rollers	roll	prefix	1	F
+rroll	repeatroll	Rollers	roll	prefix	1	T
+chip	chip	Game Lookup	base	prefix	1	F
+chips	chip	Game Lookup	base	prefix	1	T
+power	power	Game Lookup	base	prefix	1	F
+powers	power	Game Lookup	base	prefix	1	T
+ncp	ncp	Game Lookup	base	prefix	1	F
+virus	virus	Game Lookup	base	prefix	1	F
+virusx	virusx	Game Lookup	base	prefix	1	F
+tag	tag	Game Lookup	base	prefix	1	F
+category	tag	Game Lookup	base	prefix	1	F
+query	query	Info	base	prefix	1	F
+bond	bond	Game Lookup	base	prefix	1	F
+bondpower	bond	Game Lookup	base	prefix	1	F
+bondpowers	bond	Game Lookup	base	prefix	1	T
+mysterydata	mysterydata	Rollers	base	prefix	1	F
+md	mysterydata	Rollers	base	prefix	1	F
+mysteryreward	mysteryreward	Rollers	base	prefix	1	F
+rulebook	rulebook	Info	base	prefix	1	F
+element	element	Rollers	base	prefix	1	F
+daemon	daemon	Game Lookup	advance	prefix	1	F
+upgrade	upgrade	Game Lookup	base	prefix	1	F
+npu	upgrade	Game Lookup	base	prefix	1	F
+crimsonnoise	crimsonnoise	Rollers	advance	prefix	1	F
+mod	networkmod	Game Lookup	advance	prefix	1	F
+networkmod	networkmod	Game Lookup	advance	prefix	1	F
+audience	audience	Assistant	advance	prefix	1	F
+cheer	cheer	Assistant	advance	prefix	1	F
+jeer	jeer	Assistant	advance	prefix	1	F
+virusr	virusr	Rollers	base	prefix	1	F
+virusrandom	virusr	Rollers	base	prefix	1	F
+changeprefix	change_prefix	Admin	base	prefix	4	F
+repo	repo	Info	advance	prefix	1	F
+pmr	repo	Info	advance	prefix	1	T
+playermade	repo	Info	advance	prefix	1	T
+pmc	repo	Info	advance	prefix	1	T
+adventure	adventure	Rollers	base	prefix	1	F
+fight	fight	Rollers	base	prefix	1	F
+sheet	sheet	Info	base	prefix	1	F
+spot	spotlight	Assistant	advance	prefix	1	F
+spotlight	spotlight	Assistant	advance	prefix	1	F
+checklist	spotlight	Assistant	advance	prefix	1	T
+weather	weather	Game Lookup	advance	prefix	1	F
+cyberweather	weather	Game Lookup	advance	prefix	1	T
+achievement	achievement	Game Lookup	advance	prefix	1	F
+achievements	achievement	Game Lookup	advance	prefix	1	T
+achieve	achievement	Game Lookup	advance	prefix	1	F
+glossary	glossary	Game Lookup	base	prefix	1	F
+xcard	xcard	Safety Tools	safety	prefix	1	F
+x	xcard	Safety Tools	safety	prefix	1	F
+ocard	ocard	Safety Tools	safety	prefix	1	F
+o	ocard	Safety Tools	safety	prefix	1	F
+ncard	ncard	Safety Tools	safety	prefix	1	F
+n	ncard	Safety Tools	safety	prefix	1	F
+rewind	rewind	Safety Tools	safety	prefix	1	F
+rwd	rewind	Safety Tools	safety	prefix	1	T
+rw	rewind	Safety Tools	safety	prefix	1	F
+ffwd	ffwd	Safety Tools	safety	prefix	1	T
+fastforward	ffwd	Safety Tools	safety	prefix	1	F
+fwd	ffwd	Safety Tools	safety	prefix	1	T
+ff	ffwd	Safety Tools	safety	prefix	1	F
+pause	pause	Safety Tools	safety	prefix	1	F
+break	pause	Safety Tools	safety	prefix	1	T
+resume	resume	Safety Tools	safety	prefix	1	F
+play	resume	Safety Tools	safety	prefix	1	F
+fbf	fbf	Safety Tools	safety	prefix	1	T
+slow	fbf	Safety Tools	safety	prefix	1	F
+framebyframe	fbf	Safety Tools	safety	prefix	1	F
+opendoor	opendoor	Safety Tools	safety	prefix	1	F
+luxton	luxton	Safety Tools	safety	prefix	1	F
+line	line	Safety Tools	safety	prefix	1	F
+veil	veil	Safety Tools	safety	prefix	1	F
+find	find_chip_ncp_power	Info	base	prefix	1	F
+search	find_chip_ncp_power	Info	base	prefix	1	F

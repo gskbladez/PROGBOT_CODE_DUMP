@@ -17,6 +17,7 @@
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
 - Dice size limit
 - Add emojis to commands
+- Query: Bond
 
 ### New Features
 - query and similar commands really should have some simple stuff like boolean joins.
