@@ -1,12 +1,9 @@
 import discord
-import os
 import koduck
 import settings
 import re
 import dice_algebra
 import rply
-from dotenv import load_dotenv
-import datetime
 from maincommon import find_value_in_table
 from maincommon import help_df
 

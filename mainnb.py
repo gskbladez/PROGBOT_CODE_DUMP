@@ -429,6 +429,7 @@ async def chipfinder(context, arg, suppress_err_msg=False):
 
     return chip_title, "/".join(subtitle_trimmed), chip_description, color, ""
 
+
 def find_skill_color(skill_key):
     if skill_key in ["Sense", "Info", "Coding"]:
         color = skill_color_dictionary["Mind"]
@@ -1327,6 +1328,7 @@ async def rulebook(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Couldn't find any rulebooks for `%s`!" % " ".join(args))
     return await koduck.sendmessage(context["message"],  sendcontent="\n".join(book_names))
+
 
 async def virusr(context, *args, **kwargs):
     mod_args = []
