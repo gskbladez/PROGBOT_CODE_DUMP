@@ -84,7 +84,7 @@ async def repeatroll(context, *args, **kwargs):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Can't repeat a roll a negative or zero number of times!")
 
-    roll_line = args[1]
+    roll_line = context["paramline"].split(",", 1)[1]
 
     if ROLL_COMMENT_CHAR in roll_line:
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)

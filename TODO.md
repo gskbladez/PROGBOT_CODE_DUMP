@@ -17,7 +17,6 @@
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
 - Add emojis to commands
 - Query: Bond
-- Fix commas in repeatroll comments
 
 ### New Features
 - query and similar commands really should have some simple stuff like boolean joins.
