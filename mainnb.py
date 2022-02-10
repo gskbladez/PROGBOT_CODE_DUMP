@@ -541,6 +541,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
 
     return power_name, field_title, field_description, power_color, field_footer
 
+
 def query_power(args):
     sub_df = power_df
     is_default = True
@@ -1188,9 +1189,8 @@ async def element(context, *args, **kwargs):
 
 
 async def rulebook(context, *args, **kwargs):
-    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", re.escape(arg), flags=re.IGNORECASE) for arg in args]
+    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, flags=re.IGNORECASE) for arg in args]
     cleaned_args = clean_args([" ".join(split_args)])
-
     errmsg = []
     if args:
         is_get_latest = cleaned_args[0] in ["all", "latest", "new"]

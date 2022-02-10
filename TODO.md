@@ -15,9 +15,10 @@
 - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
 - Update OmegaVirus vs MegaVirus color
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
-- Dice size limit
 - Add emojis to commands
 - Query: Bond
+- Fix commas in repeatroll comments
+- Add NPU info to block when called via power
 
 ### New Features
 - query and similar commands really should have some simple stuff like boolean joins.

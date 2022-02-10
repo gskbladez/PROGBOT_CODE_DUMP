@@ -707,7 +707,7 @@ async def spotlight(context, *args, **kwargs):
 
     spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    if cleaned_args[0].lower() in ['close', 'shutdown', 'end']:
+    if cleaned_args[0].lower() in ['close', 'shutdown', 'end', 'stop', 'finish']:
         del spotlight_db[channel_id]
         return await koduck.sendmessage(context["message"],
                                         sendembed=embed_spotlight_message("Shutting down this Spotlight Tracker! Goodnight!",
@@ -786,6 +786,7 @@ async def spotlight(context, *args, **kwargs):
     notify_str = "\n".join([i for i in (notification_msg, err_msg) if i])
     embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
     return await koduck.sendmessage(context["message"], sendembed=embed)
+
 
 async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_location):
     participant_list = pd.Series(participant_dict.keys())
