@@ -113,6 +113,11 @@ pmc_chip_df = pd.read_csv(settings.pmc_chipfile, sep="\t").fillna('')
 pmc_power_df = pd.read_csv(settings.pmc_powerfile, sep="\t").fillna('')
 pmc_virus_df = pd.read_csv(settings.pmc_virusfile, sep="\t").fillna('')
 
+chip_drops = chip_df.merge(virus_df[["Name", "Drops1"]], left_on="Chip", right_on="Drops1", how="left")
+chip_drops = chip_drops.merge(virus_df[["Name", "Drops2"]], left_on="Chip", right_on="Drops2", how="left")
+chip_drops["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y'])
+chip_df["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y']).fillna('')
+
 async def help_cmd(context, *args, **kwargs):
     # Default message if no parameter is given
     if len(args) == 0:
