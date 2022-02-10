@@ -494,7 +494,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
         emoji_tag = ""
 
     if power_eb == '-' or force_power:  # display as power, rather than ncp
-        if power_type == 'Passive' or power_type == '-' or power_type == 'Upgrade':
+        if power_type in ['Passive', '-', 'Upgrade']:
             field_title = 'Passive Power'
         elif emojis_available:
             field_title = "%s Power/%s%s" % (power_skill, emoji_type, power_type)
@@ -506,6 +506,9 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
                 field_title += "/%s" % power_tag
 
         field_description = power_description
+
+        if 'Upgrade' in power_type:
+            field_description = "(%s Upgrade) %s" % (power_skill, field_description)
 
         # Unused Source description line
         if False:
