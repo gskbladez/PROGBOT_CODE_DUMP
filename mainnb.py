@@ -496,6 +496,8 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
     if power_eb == '-' or force_power:  # display as power, rather than ncp
         if power_type in ['Passive', '-', 'Upgrade']:
             field_title = 'Passive Power'
+        elif power_type in ['Minus']:
+            field_title = 'MinusCust Passive Power'
         elif emojis_available:
             field_title = "%s Power/%s%s" % (power_skill, emoji_type, power_type)
             if power_tag:
