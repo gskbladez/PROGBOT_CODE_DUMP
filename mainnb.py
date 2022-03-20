@@ -1121,7 +1121,7 @@ async def bond(context, *args, **kwargs):
     for arg in cleaned_args:
         bond_info = await find_value_in_table(context, bond_df, "BondPower", arg)
         if bond_info is None:
-            return
+            continue
 
         bond_title = bond_info["BondPower"]
         bond_cost = bond_info["Cost"]

@@ -73,6 +73,8 @@ async def send_query_msg(context, return_title, return_msg):
 
 
 async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
+    if not search_arg:
+        return None
     if "Alias" in df:
         alias_check = df[
             df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
