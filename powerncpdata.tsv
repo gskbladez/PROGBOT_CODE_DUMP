@@ -296,7 +296,7 @@ ControlA	Control	Upgrade	Detonate all abundances of your element in Near range, 
 ControlX	Control	Upgrade	Control is now a melee-only attack. Gain the element of the last enemy you deleted.	3	NPU	Navi Power Upgrades	CtrlX, Control-X, Ctrl-X
 BurstTransmission	Shift	Upgrade	When appearing at your destination, cover everything Close in your element.	2	NPU	Navi Power Upgrades	
 Redirect	Shift	Upgrade	You can Shift with a known Near abundance of your element not in sight.	2	NPU	Navi Power Upgrades	
-BufferOverflow	CodeInjection	Upgrade	Foresight also lets you parry melee attacks, not just defend.	1	NPU	Navi Power Upgrades	
+BufferOverflow	CodeInjection	Upgrade	If your next rolled attack deletes, cover all Close to the target with your element.	1	NPU	Navi Power Upgrades	
 Universal	CodeInjection	Upgrade	Non-attack rolls can use CodeInjection as long as they have a target.	1	NPU	Navi Power Upgrades	
 ElemenTango	Save	Upgrade	Save also gives the target an elemental barrier (Guard) that negates 1 attack.	2	NPU	Navi Power Upgrades	
 SaveAs	Save	Upgrade	Save also gives the target control over your element for one roll.	1	NPU	Navi Power Upgrades	
@@ -352,7 +352,7 @@ Hoedown	-	Passive	When riding a target, you can make them help you, rolling thei
 Rollout	Strength	Roll	Move Close to a Near grounded target and attack.	-	Virus Power	Core	
 Treehugger	-	Passive	When you roll while Close to your element, heal 1 HP.	-	Virus Power	Core	
 OneTwo	-	Passive	You can spend 1 HP to reroll one of your attacks.	-	Virus Power	Core	
-Blast	Affinity	Affinity	Attack everything Close with your element.	-	Virus Power	Core	
+Blast	Affinity	Roll	Attack everything Close with your element.	-	Virus Power	Core	
 DrillOut	Speed	Roll	Make a hole leading anywhere in Near range.	-	Virus Power	Core	
 Guardbreaker	-	Passive	Upshift enemy rolls to defend with Stamina.	-	Virus Power	Core	
 Burnout	-	Passive	Can spend 1 HP to move a range band after any roll.	-	Virus Power	Core	
