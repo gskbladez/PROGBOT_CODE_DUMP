@@ -329,6 +329,7 @@ async def commands(context, *args, **kwargs):
         pass
     elif (context["message"].author.id == context["message"].guild.owner_id):
         availablecommands = availablecommands.append(commands_df[commands_df["Permission"] == 4])
+    availablecommands = availablecommands[~availablecommands["Hidden"]]
     cmd_groups = availablecommands.groupby(["Category"])
     return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
                    name]

@@ -1013,6 +1013,11 @@ async def query(context, *args, **kwargs):
         _, result_title, result_msg = mainadvance.query_weather()
         return await send_query_msg(context, result_title, result_msg)
 
+    if arg_combined in ['bond', 'bondpower', 'bondpowers', 'bonds']:
+        result_title = "Pulling up all Bond Powers..."
+        result_msg = ', '.join(bond_df["BondPower"])
+        return await send_query_msg(context, result_title, result_msg)
+
     would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
         return await koduck.sendmessage(context["message"],
@@ -1085,6 +1090,7 @@ async def mysterydata(context, *args, **kwargs):
                                         sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     await mysterydata_master(context, cleaned_args, force_reward=False)
 
+
 async def mysteryreward(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
@@ -1110,7 +1116,7 @@ async def bond(context, *args, **kwargs):
                                         sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
                                     sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
-    elif (len(cleaned_args) > MAX_BOND_QUERY):
+    elif len(cleaned_args) > MAX_BOND_QUERY:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Too many Bond Powers; no more than %d!\nBesides, there's only four Bond Powers in the game!" % MAX_BOND_QUERY)
     if cleaned_args[0] in ['all', 'list']:
@@ -1435,6 +1441,7 @@ async def virusr(context, *args, **kwargs):
 
 async def break_test(context, *args, **kwargs):
     return await koduck.sendmessage(context["message"], sendcontent=str(0 / 0))
+
 
 # UGH permissions
 async def change_prefix(context, *args, **kwargs):
