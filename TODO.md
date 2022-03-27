@@ -15,7 +15,6 @@
 - Migrate userlevels.txt and restrict/unrestrict/user permissions to .json
 - Update OmegaVirus vs MegaVirus color
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
-- Dice size limit
 - Add emojis to commands
 
 ### New Features

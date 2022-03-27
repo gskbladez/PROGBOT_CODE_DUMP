@@ -1,97 +1,97 @@
-Command	Function	Category	Type	Permission
-changestatus	changestatus	Admin	prefix	3
-updatecommands	updatecommands	Admin	prefix	3
-goodnight	goodnight	Admin	prefix	3
-sendmessage	sendmessage	Admin	prefix	3
-updatesettings	updatesettings	Admin	prefix	3
-updatesetting	updatesetting	Admin	prefix	3
-addsetting	addsetting	Admin	prefix	3
-addresponse	addresponse	Admin	prefix	3
-removeresponse	removeresponse	Admin	prefix	3
-purge	purge	Admin	prefix	2
-restrict	restrictuser	Admin	prefix	2
-unrestrict	unrestrictuser	Admin	prefix	2
-bugreport	bugreport	ProgBot	prefix	1
-oops	oops	ProgBot	prefix	1
-command	commands	ProgBot	prefix	1
-commands	commands	ProgBot	prefix	1
-help	help_cmd	Game Lookup	prefix	1
-invite	invite	ProgBot	prefix	1
-roll	roll	Rollers	prefix	1
-r	roll	Rollers	prefix	1
-repeatroll	repeatroll	Rollers	prefix	1
-repeatr	repeatroll	Rollers	prefix	1
-rr	repeatroll	Rollers	prefix	1
-rroll	repeatroll	Rollers	prefix	1
-chip	chip	Game Lookup	prefix	1
-chips	chip	Game Lookup	prefix	1
-power	power	Game Lookup	prefix	1
-powers	power	Game Lookup	prefix	1
-ncp	ncp	Game Lookup	prefix	1
-virus	virus	Game Lookup	prefix	1
-virusx	virusx	Game Lookup	prefix	1
-tag	tag	Game Lookup	prefix	1
-category	tag	Game Lookup	prefix	1
-query	query	Info	prefix	1
-bond	bond	Game Lookup	prefix	1
-bondpower	bond	Game Lookup	prefix	1
-bondpowers	bond	Game Lookup	prefix	1
-mysterydata	mysterydata	Rollers	prefix	1
-md	mysterydata	Rollers	prefix	1
-mysteryreward	mysteryreward	Rollers	prefix	1
-rulebook	rulebook	Info	prefix	1
-element	element	Rollers	prefix	1
-daemon	daemon	Game Lookup	prefix	1
-upgrade	upgrade	Game Lookup	prefix	1
-npu	upgrade	Game Lookup	prefix	1
-crimsonnoise	crimsonnoise	Rollers	prefix	1
-mod	networkmod	Game Lookup	prefix	1
-networkmod	networkmod	Game Lookup	prefix	1
-audience	audience	Assistant	prefix	1
-cheer	cheer	Assistant	prefix	1
-jeer	jeer	Assistant	prefix	1
-virusr	virusr	Rollers	prefix	1
-virusrandom	virusr	Rollers	prefix	1
-changeprefix	change_prefix	Admin	prefix	4
-repo	repo	Info	prefix	1
-pmr	repo	Info	prefix	1
-playermade	repo	Info	prefix	1
-pmc	repo	Info	prefix	1
-adventure	adventure	Rollers	prefix	1
-fight	fight	Rollers	prefix	1
-sheet	sheet	Info	prefix	1
-spot	spotlight	Assistant	prefix	1
-spotlight	spotlight	Assistant	prefix	1
-checklist	spotlight	Assistant	prefix	1
-weather	weather	Game Lookup	prefix	1
-cyberweather	weather	Game Lookup	prefix	1
-achievement	achievement	Game Lookup	prefix	1
-achievements	achievement	Game Lookup	prefix	1
-achieve	achievement	Game Lookup	prefix	1
-glossary	glossary	Game Lookup	prefix	1
-xcard	xcard	Safety Tools	prefix	1
-x	xcard	Safety Tools	prefix	1
-ocard	ocard	Safety Tools	prefix	1
-o	ocard	Safety Tools	prefix	1
-ncard	ncard	Safety Tools	prefix	1
-n	ncard	Safety Tools	prefix	1
-rewind	rewind	Safety Tools	prefix	1
-rwd	rewind	Safety Tools	prefix	1
-rw	rewind	Safety Tools	prefix	1
-ffwd	ffwd	Safety Tools	prefix	1
-fastforward	ffwd	Safety Tools	prefix	1
-fwd	ffwd	Safety Tools	prefix	1
-ff	ffwd	Safety Tools	prefix	1
-pause	pause	Safety Tools	prefix	1
-break	pause	Safety Tools	prefix	1
-resume	resume	Safety Tools	prefix	1
-play	resume	Safety Tools	prefix	1
-fbf	fbf	Safety Tools	prefix	1
-slow	fbf	Safety Tools	prefix	1
-framebyframe	fbf	Safety Tools	prefix	1
-opendoor	opendoor	Safety Tools	prefix	1
-luxton	luxton	Safety Tools	prefix	1
-line	line	Safety Tools	prefix	1
-veil	veil	Safety Tools	prefix	1
-find	find_chip_ncp_power	Info	prefix	1
-search	find_chip_ncp_power	Info	prefix	1
+Command	Function	Category	Module	Type	Permission	Hidden
+changestatus	changestatus	Admin	main	prefix	3	FALSE
+updatecommands	updatecommands	Admin	main	prefix	3	FALSE
+goodnight	goodnight	Admin	main	prefix	3	FALSE
+sendmessage	sendmessage	Admin	main	prefix	3	FALSE
+updatesettings	updatesettings	Admin	main	prefix	3	TRUE
+updatesetting	updatesetting	Admin	main	prefix	3	FALSE
+addsetting	addsetting	Admin	main	prefix	3	FALSE
+addresponse	addresponse	Admin	main	prefix	3	FALSE
+removeresponse	removeresponse	Admin	main	prefix	3	FALSE
+purge	purge	Admin	main	prefix	2	FALSE
+restrict	restrictuser	Admin	main	prefix	2	FALSE
+unrestrict	unrestrictuser	Admin	main	prefix	2	FALSE
+bugreport	bugreport	ProgBot	main	prefix	1	FALSE
+oops	oops	ProgBot	main	prefix	1	FALSE
+command	commands	ProgBot	main	prefix	1	FALSE
+commands	commands	ProgBot	main	prefix	1	TRUE
+help	help_cmd	Game Lookup	base	prefix	1	FALSE
+invite	invite	ProgBot	main	prefix	1	FALSE
+roll	roll	Rollers	roll	prefix	1	FALSE
+r	roll	Rollers	roll	prefix	1	FALSE
+repeatroll	repeatroll	Rollers	roll	prefix	1	FALSE
+repeatr	repeatroll	Rollers	roll	prefix	1	TRUE
+rr	repeatroll	Rollers	roll	prefix	1	FALSE
+rroll	repeatroll	Rollers	roll	prefix	1	TRUE
+chip	chip	Game Lookup	base	prefix	1	FALSE
+chips	chip	Game Lookup	base	prefix	1	TRUE
+power	power	Game Lookup	base	prefix	1	FALSE
+powers	power	Game Lookup	base	prefix	1	TRUE
+ncp	ncp	Game Lookup	base	prefix	1	FALSE
+virus	virus	Game Lookup	base	prefix	1	FALSE
+virusx	virusx	Game Lookup	base	prefix	1	FALSE
+tag	tag	Game Lookup	base	prefix	1	FALSE
+category	tag	Game Lookup	base	prefix	1	TRUE
+query	query	Info	base	prefix	1	FALSE
+bond	bond	Game Lookup	base	prefix	1	FALSE
+bondpower	bond	Game Lookup	base	prefix	1	FALSE
+bondpowers	bond	Game Lookup	base	prefix	1	TRUE
+mysterydata	mysterydata	Rollers	base	prefix	1	FALSE
+md	mysterydata	Rollers	base	prefix	1	FALSE
+mysteryreward	mysteryreward	Rollers	base	prefix	1	FALSE
+rulebook	rulebook	Info	base	prefix	1	FALSE
+element	element	Rollers	base	prefix	1	FALSE
+daemon	daemon	Game Lookup	advance	prefix	1	FALSE
+upgrade	upgrade	Game Lookup	base	prefix	1	TRUE
+npu	upgrade	Game Lookup	base	prefix	1	FALSE
+crimsonnoise	crimsonnoise	Rollers	advance	prefix	1	FALSE
+mod	networkmod	Game Lookup	advance	prefix	1	FALSE
+networkmod	networkmod	Game Lookup	advance	prefix	1	TRUE
+audience	audience	Assistant	advance	prefix	1	FALSE
+cheer	cheer	Assistant	advance	prefix	1	FALSE
+jeer	jeer	Assistant	advance	prefix	1	FALSE
+virusrandom	virusr	Rollers	base	prefix	1	FALSE
+virusr	virusr	Rollers	base	prefix	1	TRUE
+changeprefix	change_prefix	Admin	base	prefix	4	FALSE
+repo	repo	Info	advance	prefix	1	FALSE
+pmr	repo	Info	advance	prefix	1	TRUE
+playermade	repo	Info	advance	prefix	1	TRUE
+pmc	repo	Info	advance	prefix	1	TRUE
+adventure	adventure	Rollers	base	prefix	1	FALSE
+fight	fight	Rollers	base	prefix	1	FALSE
+sheet	sheet	Info	base	prefix	1	FALSE
+spot	spotlight	Assistant	advance	prefix	1	FALSE
+spotlight	spotlight	Assistant	advance	prefix	1	FALSE
+checklist	spotlight	Assistant	advance	prefix	1	TRUE
+weather	weather	Game Lookup	advance	prefix	1	FALSE
+cyberweather	weather	Game Lookup	advance	prefix	1	TRUE
+achievement	achievement	Game Lookup	advance	prefix	1	FALSE
+achievements	achievement	Game Lookup	advance	prefix	1	TRUE
+achieve	achievement	Game Lookup	advance	prefix	1	FALSE
+glossary	glossary	Game Lookup	base	prefix	1	FALSE
+xcard	xcard	Safety Tools	safety	prefix	1	FALSE
+x	xcard	Safety Tools	safety	prefix	1	TRUE
+ocard	ocard	Safety Tools	safety	prefix	1	FALSE
+o	ocard	Safety Tools	safety	prefix	1	TRUE
+ncard	ncard	Safety Tools	safety	prefix	1	FALSE
+n	ncard	Safety Tools	safety	prefix	1	TRUE
+rewind	rewind	Safety Tools	safety	prefix	1	FALSE
+rwd	rewind	Safety Tools	safety	prefix	1	TRUE
+rw	rewind	Safety Tools	safety	prefix	1	FALSE
+ffwd	ffwd	Safety Tools	safety	prefix	1	TRUE
+fastforward	ffwd	Safety Tools	safety	prefix	1	FALSE
+fwd	ffwd	Safety Tools	safety	prefix	1	TRUE
+ff	ffwd	Safety Tools	safety	prefix	1	TRUE
+pause	pause	Safety Tools	safety	prefix	1	FALSE
+break	pause	Safety Tools	safety	prefix	1	TRUE
+resume	resume	Safety Tools	safety	prefix	1	TRUE
+play	resume	Safety Tools	safety	prefix	1	FALSE
+fbf	fbf	Safety Tools	safety	prefix	1	TRUE
+slow	fbf	Safety Tools	safety	prefix	1	TRUE
+framebyframe	fbf	Safety Tools	safety	prefix	1	FALSE
+opendoor	opendoor	Safety Tools	safety	prefix	1	FALSE
+luxton	luxton	Safety Tools	safety	prefix	1	FALSE
+line	line	Safety Tools	safety	prefix	1	FALSE
+veil	veil	Safety Tools	safety	prefix	1	FALSE
+find	find_chip_ncp_power	Game Lookup	base	prefix	1	FALSE
+search	find_chip_ncp_power	Game Lookup	base	prefix	1	FALSE
