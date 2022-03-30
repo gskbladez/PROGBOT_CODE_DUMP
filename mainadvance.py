@@ -45,6 +45,7 @@ adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
 fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
 weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
 glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
+autoloot_df = pd.read_csv(settings.autolootfile, sep="\t").fillna('')
 
 pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
@@ -934,3 +935,292 @@ async def repo(context, *args, **kwargs):
                         "*'%s'*" % repo_results
         return await koduck.sendmessage(context["message"],
                                         sendcontent=generated_msg.format(size, user_query))
+
+# There are 7 major categories that need to be procedurally filled out.
+# Cost, Guard, Category, Damage, Range, Tags, Effect
+# Each condition has several sub conditions and tables that are met based on rolling the dice.
+# With the way it functions, there's very few things that can actually be externalized AFAIK.
+
+# iza since i know you'll be looking at this soon, here's the result strings that need to populate the function:
+# cost_result (can be empty)
+# guard_result
+# category_result
+# category_description (can be empty)
+# damage_result
+# xdamage_description (can be empty)
+
+# there's a few more i haven't mapped out variables to yet and i don't know how many i'll need until i'm finished here
+# but just assume that the end result should look as if the user invoked >chip
+
+async def autoloot(context, *args, **kwargs):
+    cleaned_args = clean_args(args)
+
+    skill_sub = autoloot_df[autoloot_df["Type"] == "StatSkill"]
+    category_sub = autoloot_df[autoloot_df["Type"] == "Category"]
+
+    verb_sub = autoloot_df[autoloot_df["Type"] == "VerbTable"]
+    noun_sub = autoloot_df[autoloot_df["Type"] == "NounTable"]
+    adj_sub = autoloot_df[autoloot_df["Type"] == "AdjectiveTable"]
+
+    guarddmg_sub = autoloot_df[autoloot_df["Type"] == "GuardTriggerDamage"]
+    guardelement_sub = autoloot_df[autoloot_df["Type"] == "GuardTriggerElement"]
+    guardhp_sub = autoloot_df[autoloot_df["Type"] == "GuardTriggerHP"]
+    guardroll_sub = autoloot_df[autoloot_df["Type"] == "GuardTriggerRoll"]
+
+    xdmg_chipdf_sub = autoloot_df[autoloot_df["Type"] == "XDamageChip"]
+
+# COST:
+    cost_r = random.randint(1, 6)
+        if cost_r == 1:
+            cost_txt = ("Spend 1 BP to ")
+        if cost_r == 2:
+            row_num = random.randint(1, skilldf_sub.shape[0]) - 1
+            skill = [skilldf_sub.iloc[row_num]["Result"]]
+            cost_txt = ("Spend 1 %s to " % skill)
+        if cost_r == 3:
+            cost_txt = ("Spend %s HP to " % random.randint(1, 6))
+        cost_result = cost_txt
+        # check length of cost_r on function fill
+
+# GUARD:
+    guard_r = random.randint(1, 6)
+        if guard_r == range(1, 2):
+            triggertype_r = random.randint(1, 6)
+                if triggertype_r == range(1, 3): # "Next Time You" condition range
+                    nty_r = random.randint(1, 6)
+                    recursive = True
+
+                    prefix_text = "Next time you "
+                    guard_txt = " "
+
+                    recursion_value = 3
+                    recursion_firsttime = True
+
+                    while recursive == True:
+                        if nty_r == 1: # condition: damage
+                            row_num = random.randint(1, guarddmg_sub.shape[0]) - 1
+                            guarddmg = [guarddmg_sub.iloc[row_num]["Result"]]
+                            guard_txt = ("%s damage." % guarddmg)
+                            recursive = False
+                        if nty_r == 2: #condition: element
+                            row_num = random.randint(1, guardelement_sub.shape[0]) - 1
+                            guardelement = [guardelement_sub.iloc[row_num]["Result"]]
+                            guard_txt = ("%s element." % guardelement)
+                            recursive = False
+                        if nty_r == 3: # condition: health
+                            row_num = random.randint(1, guardhp_sub.shape[0]) - 1
+                            guardhp = [guardhp_sub.iloc[row_num]["Result"]]
+                            guard_txt = ("%s HP." % guardhp)
+                            recursive = False
+                        if nty_r == 4: # condition: rolls
+                            row_num = random.randint(1, guardroll_sub.shape[0]) - 1
+                            guardroll = [guardroll_sub.iloc[row_num]["Result"]]
+                            guard_txt = ("%s HP." % random.randint(1,6), guardroll)
+                            recursive = False
+                        if nty_r == 5: # condition: verbs
+                            row_num = random.randint(1, verb_sub.shape[0]) - 1
+                            verb = [verb_sub.iloc[row_num]["Result"]]
+                            guard_txt = ("%s" % verb)
+                            recursive = False
+                        if nty_r == 6:
+                            if recursion_firsttime == True:
+                                prefix_text = ("Next %s times you " % recursion_value)
+                                recursion_firsttime = False
+                            else:
+                                prefix_text = ("Next %s times you " % recursion_value)
+                                recursion_value += 1
+                    guard_result = prefix_text + guard_txt
+                if triggertype_r == range(4, 6): # "After" condition range
+                    after_r = random.randint(1, 6)
+                    if after_r == range(1, 2):
+                        guard_result = ("After %s minutes. " % random.randint(1,6))
+                    if after_r == range(3, 4):
+                        guard_result = ("After %s rolls. " % random.randint(1,6))
+                    if after_r == 5:
+                        guard_result = ("After you say %s words. " % random.randint(1,6))
+                    if after_r == 6:
+                        row_num = random.randint(1, verb_sub.shape[0]) - 1
+                        verb = [verb_sub.iloc[row_num]["Result"]]
+                        row_num = random.randint(1, noun_sub.shape[0]) - 1
+                        noun = [noun_sub.iloc[row_num]["Result"]]
+                        guard_result = ("After you {} {} {}s ".format(verb, random.randint(1,6), noun))
+
+# CATEGORY:
+    row_num = random.randint(1, category_sub.shape[0]) - 1
+    category = [category_sub.iloc[row_num]["Result"]]
+
+    category_result = category[0].lower()
+
+    row_num = random.randint(1, adj_sub.shape[0]) - 1
+    adj = [adj_sub.iloc[row_num]["Result"]]
+    row_num = random.randint(1, noun_sub.shape[0]) - 1
+    noun = [noun_sub.iloc[row_num]["Result"]]
+    row_num = random.randint(1, verb_sub.shape[0]) - 1
+    verb = [verb_sub.iloc[row_num]["Result"]]
+
+    # category conditionals
+    if category[0].lower() == 'Hazard':
+        hazard_r = random.randint(1, 5)
+
+        if hazard_r == 1:
+            hazard_txt = ("Surfaces and objects Close to the target turn {}. ".format(adj))
+        if hazard_r == 2:
+            hazard_txt = ("Turns an object into {}. ".format(noun))
+        if hazard_r == 3:
+            hazard_txt = ("An {} {} pops out of a surface. ".format(adj, noun))
+        if hazard_r == 4:
+            hazard_txt = ("Makes all {}s {}.".format(noun, verb))
+        if hazard_r == 5:
+            hazard_txt = ("Disguise the target as a {}. ".format(noun))
+        if hazard_r == 6:
+            hazard_txt = ("All {} objects explode.".format(adj))
+        category_description = hazard_txt
+
+    if category[0].lower() == 'Summon':
+        summon_r = random.randint(1, 6)
+
+        if summon_r == range(1, 3):
+            summon_txt = ("a/n {}".format(noun))
+        if summon_r == range(4, 5):
+            summon_txt = ("a/n {} {}".format(adj, noun))
+        if summon_r == 6:
+            roll = random.randint(1, 6)
+            summon_txt = ("{} {} {}".format(roll, adj, noun))
+        category_description = ("Summons {}.".format(summon_txt))
+
+    if category[0].lower() == 'Rush':
+        rush_r = random.randint(1, 6)
+
+        if rush_r == range(1, 2):
+            rush_txt = "Dash Close to the target!"
+        if rush_r == range(3, 4):
+            rush_txt = "Fly through the air Close to the target!"
+        if rush_r == 5:
+            rush_txt = "Dash a range band away from the target!"
+        if rush_r == 6:
+            rush_txt = "Fly through the air a range band away from the target!"
+        category_description = rush_txt
+
+# DAMAGE:
+    if category[0].lower() != 'Support':
+        damagetype_r = random.randint(1, 6)
+        isXdamage = False
+        damagetype = None
+        if damagetype_r == range(1, 4):
+            damagetype = "single"
+        if damagetype_r == range(5, 6):
+            damagetype = "multi"
+
+        if damagetype == "single":
+            damagesingle_r = random.randint(1, 6)
+            if damagesingle_r == 1:
+                damagesingle_txt = "0 Damage"
+            if damagesingle_r == 2:
+                damagesingle_txt = "1 Damage"
+            if damagesingle_r == 3:
+                damagesingle_txt = "2 Damage"
+            if damagesingle_r == 4:
+                damagesingle_txt = "3 Damage"
+            if damagesingle_r == 5: # big damage conditional
+                damagebig_r = random.randint(1, 6)
+                if damagebig_r == range(1, 3):
+                    damagesingle_txt = "4 Damage"
+                if damagebig_r == range(4, 5):
+                    damagesingle_txt = "5 Damage"
+                if damagebig_r == 6:
+                    damagesingle_txt = "6 Damage"
+            if damagesingle_r == 6:
+                damagesingle_txt = "X Damage"
+                isXdamage = true;
+            damage_result = damagesingle_txt
+
+        if damagetype == "multi":
+            damagemulti_base_r = random.randint(1, 6)
+            damagemulti_count_r = random.randint(1, 6)
+
+            if damagemulti_base_r == 1:
+                base_damage = "0"
+            if damagemulti_base_r == range(2, 3):
+                base_damage = "1"
+            if damagemulti_base_r == range(4, 5):
+                base_damage = "2"
+            if damagemulti_base_r == 6:
+                damagebig_r = random.randint(1, 6)
+                if damagebig_r == range(1, 4):
+                    base_damage = "3"
+                if damagebig_r == 5:
+                    base_damage = "4"
+                if damagebig_r == 6:
+                    base_damage = "X"
+                    isXdamage = true;
+
+            if damagemulti_count_r == range(1, 3):
+                hit_count = "x2"
+            if damagemulti_count_r == 4:
+                hit_count = "x3"
+            if damagemulti_count_r == 5:
+                hit_count = "x4"
+            if damagemulti_count_r == 6:
+                hit_count = "x5"
+            damage_result = ("{}{} Damage".format(base_damage, hit_count))
+
+        if isXdamage == True:
+            xdamage_r = random.randint(1, 6)
+            if xdamage_r == 1:
+                row_num = random.randint(1, skilldf_sub.shape[0]) - 1
+                skill = [skilldf_sub.iloc[row_num]["Result"]]
+                ownership_r = random.randint(1, 2)
+                if ownership_r == 1:
+                    ownership = "Your"
+                if ownership_r == 2:
+                    ownership = "The target's"
+                xdamage_txt = ("X = {} {}".format(ownership, skill))
+            if xdamage_r == 2:
+                row_num = random.randint(1, xdmg_chipdf_sub.shape[0]) - 1
+                xdamagechip = [xdmg_chipdf_sub.iloc[row_num]["Result"]]
+                xdamage_txt = ("X = {} chips in your Folder.".format(xdamagechip))
+            if xdamage_r == 3: # whyyyyyy
+                hardcode_bullshit_r = randint(1, 5)
+                if hardcode_bullshit_r == 1:
+                    bullshit = "are Close"
+                if hardcode_bullshit_r == 2:
+                    bullshit = "are Near"
+                if hardcode_bullshit_r == 3:
+                    bullshit = ("have {}ed you since jack-in".format(verb))
+                if hardcode_bullshit_r == 4:
+                    bullshit = ("you {}ed since jack-in".format(verb))
+                if hardcode_bullshit_r == 5:
+                    bullshit = ("are {}ing".format(verb))
+
+                xdamage_txt = ("X = Number of {} that {}, max {}".format(noun, bullshit, random.randint(1, 6)))
+            if xdamage_r == 4:
+                hardcode_bullshit_r = randint(1, 5)
+                if hardcode_bullshit_r == 1:
+                    bullshit = "HP"
+                if hardcode_bullshit_r == 2:
+                    row_num = random.randint(1, skilldf_sub.shape[0]) - 1
+                    skill = [skilldf_sub.iloc[row_num]["Result"]]
+                    bullshit = skill
+                if hardcode_bullshit_r == 3:
+                    bullshit = "unused chips"
+                if hardcode_bullshit_r == 4:
+                    bullshit = "BP"
+                if hardcode_bullshit_r == 5:
+                    bullshit = "Max HP"
+
+                xdamage_txt = ("Sacrifice up to {} {} to add to X.".format(random.randint(1, 6), bullshit))
+            if xdamage_r == 5:
+                hardcode_bullshit_r = randint(1, 3)
+                if hardcode_bullshit_r == 1:
+                    row_num = random.randint(1, skilldf_sub.shape[0]) - 1
+                    skill = [skilldf_sub.iloc[row_num]["Result"]]
+                    bullshit = skill
+                if hardcode_bullshit_r == 2:
+                    bullshit = "HP"
+                if hardcode_bullshit_r == 3:
+                    bullshit = "BP"
+                xdamage_txt = ("Add 1 to X for each {} reduction".format(bullshit))
+            # if xdamage_r == 6:
+            # incomplete at this time
+        xdamage_description = xdamage_txt
+
