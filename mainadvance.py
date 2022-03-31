@@ -48,6 +48,7 @@ weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
 glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
 
 pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
+autoloot_df = pd.read_csv(settings.autolootfile, sep="\t").fillna('')
 
 audience_data = {}
 spotlight_db = {}
@@ -1229,7 +1230,7 @@ async def autoloot(context, *args, **kwargs):
                     bullshit = "HP"
                 if hardcode_bullshit_r == 3:
                     bullshit = "BP"
-                xdamage_txt = ("Add 1 to X for each {} reduction".format(bullshit))
+                xdamage_txt = ("Add 1 to X for each {} reduction.".format(bullshit))
             if xdamage_r == 6:
                 xdamage_txt = ""
             # incomplete at this time
