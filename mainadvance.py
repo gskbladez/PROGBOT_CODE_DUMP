@@ -2094,7 +2094,7 @@ async def autoloot(context, *args, **kwargs):
     subtitle_trimmed = "/".join(filter(None, (damage_result, range_description, category_result, tag_result)))
 
     embed = discord.Embed(
-        title="__{}__".format("Autoloot Chip"),
+        title="__{}__".format("(Insert Super Cool Autoloot Chip Name Here)"),
         color=cc_color_dictionary["Nyx"])
     embed.add_field(name="[%s]" % subtitle_trimmed,
                     value="_%s_" % chip_description)
