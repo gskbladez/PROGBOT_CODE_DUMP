@@ -1,0 +1,195 @@
+Type	Result	Sort	Definition
+StatSkill	Sense		
+StatSkill	Info		
+StatSkill	Coding		
+StatSkill	Strength		
+StatSkill	Speed		
+StatSkill	Stamina		
+StatSkill	Charm		
+StatSkill	Bravery		
+StatSkill	Affinity		
+StatSkill	Mind		
+StatSkill	Body		
+StatSkill	Soul		
+GuardTriggerDamage	take		
+GuardTriggerDamage	deal		
+GuardTriggerDamage	take or deal		
+GuardTriggerDamage	resist all		
+GuardTriggerDamage	witness		
+GuardTriggerDamage	think about		
+GuardTriggerElement	summon your		
+GuardTriggerElement	manipulate your		
+GuardTriggerElement	summon or manipulate your		
+GuardTriggerElement	destroy your		
+GuardTriggerElement	destroy an enemy's		
+GuardTriggerElement	change your		
+GuardTriggerHP	lose		
+GuardTriggerHP	heal		
+GuardTriggerHP	spend		
+GuardTriggerHP	lose all your		
+GuardTriggerHP	steal an enemy's		
+GuardTriggerHP	successfully lie to your GM about your		
+GuardTriggerRoll	at least		
+GuardTriggerRoll	up to		
+GuardTriggerRoll	exactly		
+GuardTriggerRoll	anything but		
+Category	Blade		
+Category	Hazard		
+Category	Impact		
+Category	Rush		
+Category	Shot		
+Category	Summon		
+Category	Support		
+Category	Thrown		
+Category	Wave		
+XDamageChip	used		
+XDamageChip	unused		
+XDamageChip	Category		
+XDamageChip	Damaging		
+XDamageChip	Non-Damaging		
+XDamageChip	Accurate		
+XDamageChip	Piercing		
+XDamageChip	Simple		
+XDamageChip	Awkward		
+XDamageChip	Slow		
+XDamageChip	Dangerous		
+XDamageMath	lowest result		
+XDamageMath	highest result		
+XDamageMath	sum		
+TagTable	Awkward		
+TagTable	Dangerous		
+TagTable	Slow		
+TagTable	Piercing		
+TagTable	Accurate		
+VerbTable	Create		
+VerbTable	Speak to		
+VerbTable	Assist		
+VerbTable	Think about		
+VerbTable	Rotate		
+VerbTable	Play (with)		
+VerbTable	Dance (with)		
+VerbTable	Hug		
+VerbTable	Electrify		
+VerbTable	Burn		
+VerbTable	Freeze		
+VerbTable	Paint		
+VerbTable	Paint (on)		
+VerbTable	Sing (to)		
+VerbTable	Open		
+VerbTable	Douse		
+VerbTable	Reject		
+VerbTable	Replicate		
+VerbTable	Explode		
+VerbTable	Poke		
+VerbTable	Step (on)		
+VerbTable	Bisect		
+VerbTable	Buy		
+VerbTable	Build		
+VerbTable	Discover		
+VerbTable	Bless		
+VerbTable	Encourage		
+VerbTable	Grease		
+VerbTable	Imitate		
+VerbTable	Eat		
+VerbTable	Petrify		
+VerbTable	Poison		
+VerbTable	Twist		
+VerbTable	Throw		
+VerbTable	Record		
+VerbTable	Wash		
+NounTable	Virus		
+NounTable	Navi		
+NounTable	Prog		
+NounTable	BattleChip		
+NounTable	NCP		
+NounTable	Mystery Data		
+NounTable	Problem		
+NounTable	Server		
+NounTable	Element		
+NounTable	Ally		
+NounTable	Enemy		
+NounTable	NetOp		
+NounTable	HotSpot		
+NounTable	Book		
+NounTable	Rock		
+NounTable	Fire		
+NounTable	Tree		
+NounTable	Garbage		
+NounTable	Rumor		
+NounTable	Lie		
+NounTable	Artwork		
+NounTable	Success		
+NounTable	Failure		
+NounTable	Owl		
+NounTable	Sport		
+NounTable	Law		
+NounTable	Number		
+NounTable	Video Game		
+NounTable	Mystery		
+NounTable	Song		
+NounTable	Britney Spears		
+AdjectiveTable	Giant		
+AdjectiveTable	Flat		
+AdjectiveTable	Burning		
+AdjectiveTable	Icy		
+AdjectiveTable	Living		
+AdjectiveTable	Toxic		
+AdjectiveTable	Tiny		
+AdjectiveTable	Flying		
+AdjectiveTable	Upside-down		
+AdjectiveTable	Spinning		
+AdjectiveTable	Grounded		
+AdjectiveTable	Cringe		
+AdjectiveTable	Cheesy		
+AdjectiveTable	Flamboyant		
+AdjectiveTable	Toothy		
+AdjectiveTable	Cavernous		
+AdjectiveTable	Potable		
+AdjectiveTable	Feathered		
+AdjectiveTable	Boring		
+AdjectiveTable	Annoying		
+AdjectiveTable	Fleshy		
+AdjectiveTable	Sad		
+AdjectiveTable	Colorful		
+AdjectiveTable	Epic		
+AdjectiveTable	Furry		
+AdjectiveTable	Rocky		
+AdjectiveTable	Evil		
+AdjectiveTable	Jellicle		
+AdjectiveTable	Short		
+AdjectiveTable	Floccinaucinihilipilificatively		
+AdjectiveTable	Violent		
+AdjectiveTable	Kawaii		
+AdjectiveTable	Dreamlike		
+AdjectiveTable	Purple		
+AdjectiveTable	Nostalgic		
+AdjectiveTable	Inflammable		
+ConditionalOwnership	your		
+ConditionalOwnership	an ally's		
+ConditionalOwnership	an enemy's		
+ConditionalOwnership	anyone's		
+ConditionalLocation	close		
+ConditionalLocation	near		
+ConditionalLocation	far		
+ConditionalLocation	above		
+ConditionalLocation	within		
+ConditionalLocation	below		
+MiscBirthday	your		
+MiscBirthday	the target's		
+MiscBirthday	you, the player's,		
+MiscBirthday	the GM's		
+MiscBirthday	someone's		
+MiscBirthday	Will Uhl's		
+MiscDays	Monday		
+MiscDays	Tuesday		
+MiscDays	Wednesday		
+MiscDays	Thursday		
+MiscDays	Friday		
+MiscDays	Saturday		
+MiscDays	Sunday		
+MiscDays	April 1st		
+MiscDays	January 1st		
+MiscDays	November 21st		
+MiscDays	February 29th		
+MiscDays	a good day		
+MiscDays	Februcember 44rd		

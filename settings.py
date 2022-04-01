@@ -31,6 +31,7 @@ fightfile = "fightdata.tsv"
 weatherfile = "weatherdata.tsv"
 achievementfile = "achievementdata.tsv"
 glossaryfile = "glossarydata.tsv"
+autolootfile = "autolootdata.tsv"
 
 #BOT SETTINGS
 botname = "ProgBot"
