@@ -940,7 +940,6 @@ async def repo(context, *args, **kwargs):
 # There are 7 major categories that need to be procedurally filled out.
 # Cost, Guard, Category, Damage, Range, Tags, Effect
 # Each condition has several sub conditions and tables that are met based on rolling the dice.
-# With the way it functions, there's very few things that can actually be externalized AFAIK.
 async def autoloot(context, *args, **kwargs):
     cleaned_args = clean_args(args)
 
@@ -971,13 +970,13 @@ async def autoloot(context, *args, **kwargs):
 # COST:
     cost_r = random.randint(1, 6)
     if cost_r == 1:
-        cost_txt = ("Spend 1 BP; ")
+        cost_txt = ("Spend 1 BP: ")
     elif cost_r == 2:
         row_num = random.randint(1, skill_sub.shape[0]) - 1
         skill = [skill_sub.iloc[row_num]["Result"]]
-        cost_txt = ("Spend 1 %s; " % skill)
+        cost_txt = ("Spend 1 {}: ".format(*skill))
     elif cost_r == 3:
-        cost_txt = ("Spend %s HP; " % random.randint(1, 6))
+        cost_txt = ("Spend {} HP: ".format(random.randint(1, 6)))
     else:
         cost_txt = ("")
     cost_result = cost_txt
@@ -985,6 +984,7 @@ async def autoloot(context, *args, **kwargs):
 
 # GUARD:
     guard_r = random.randint(1, 6)
+    guard_result = ""
     if guard_r not in range(1, 3):
         guard_result = ""
     else:
@@ -1000,50 +1000,50 @@ async def autoloot(context, *args, **kwargs):
                 if nty_r == 1:  # condition: damage
                     row_num = random.randint(1, guarddmg_sub.shape[0]) - 1
                     guarddmg = [guarddmg_sub.iloc[row_num]["Result"]]
-                    guard_txt = ("%s damage," % guarddmg)
+                    guard_txt = ("{} damage,".format(*guarddmg))
                     break
                 if nty_r == 2:  #condition: element
                     row_num = random.randint(1, guardelement_sub.shape[0]) - 1
                     guardelement = [guardelement_sub.iloc[row_num]["Result"]]
-                    guard_txt = ("%s element," % guardelement)
+                    guard_txt = ("{} element,".format(*guardelement))
                     break
                 if nty_r == 3:  # condition: health
                     row_num = random.randint(1, guardhp_sub.shape[0]) - 1
                     guardhp = [guardhp_sub.iloc[row_num]["Result"]]
-                    guard_txt = ("%s HP," % guardhp)
+                    guard_txt = ("{} HP,".format(*guardhp))
                     break
                 if nty_r == 4:  # condition: rolls
                     row_num = random.randint(1, guardroll_sub.shape[0]) - 1
                     guardroll = [guardroll_sub.iloc[row_num]["Result"]]
-                    guard_txt = "roll {} {} hits,".format(guardroll, random.randint(1,6))
+                    guard_txt = "roll {} {} hits,".format(*guardroll, random.randint(1,6))
                     break
                 if nty_r == 5:  # condition: verbs
                     row_num = random.randint(1, verb_sub.shape[0]) - 1
                     verb = [verb_sub.iloc[row_num]["Result"]]
-                    guard_txt = ("%s," % verb)
+                    guard_txt = ("{},".format(*verb))
                     break
                 if nty_r == 6:
                     if recursion_firsttime:
                         recursion_value = 3
                         recursion_firsttime = False
                     else:
-                        prefix_text = ("Next %s times you " % recursion_value)
+                        prefix_text = ("Next {} times you ".format(recursion_value))
                         recursion_value += 1
             guard_result = prefix_text + guard_txt
         if triggertype_r in range(4, 7): # "After" condition range
             after_r = random.randint(1, 6)
             if after_r in range(1, 3):
-                guard_result = ("After %s minutes, " % random.randint(1,6))
+                guard_result = ("After {} minutes, ".format(random.randint(1,6)))
             elif after_r in range(3, 5):
-                guard_result = ("After %s rolls, " % random.randint(1,6))
+                guard_result = ("After {} rolls, ".format(random.randint(1,6)))
             elif after_r == 5:
-                guard_result = ("After you say %s words, " % random.randint(1,6))
+                guard_result = ("After you say {} words, ".format(random.randint(1,6)))
             elif after_r == 6:
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                guard_result = ("After you {} {} {}s, ".format(verb, random.randint(1,6), noun))
+                guard_result = ("After you {} {} {}s, ".format(*verb, random.randint(1,6), *noun))
 
 
 # CATEGORY:
@@ -1063,27 +1063,27 @@ async def autoloot(context, *args, **kwargs):
     if category_result == 'Hazard':
         hazard_r = random.randint(1, 5)
         if hazard_r == 1:
-            hazard_txt = ("Surfaces and objects Close to the target turn {}. ".format(adj))
+            hazard_txt = ("Surfaces and objects Close to the target turn {}. ".format(*adj))
         elif hazard_r == 2:
-            hazard_txt = ("Turns an object into {}. ".format(noun))
+            hazard_txt = ("Turns an object into {}. ".format(*noun))
         elif hazard_r == 3:
-            hazard_txt = ("An {} {} pops out of a surface. ".format(adj, noun))
+            hazard_txt = ("An {} {} pops out of a surface. ".format(*adj, *noun))
         elif hazard_r == 4:
-            hazard_txt = ("Makes all {}s {}.".format(noun, verb))
+            hazard_txt = ("Makes all {}s {}.".format(*noun, *verb))
         elif hazard_r == 5:
-            hazard_txt = ("Disguise the target as a {}. ".format(noun))
+            hazard_txt = ("Disguise the target as a {}. ".format(*noun))
         elif hazard_r == 6:
-            hazard_txt = ("All {} objects explode.".format(adj))
+            hazard_txt = ("All {} objects explode.".format(*adj))
         category_description = hazard_txt
     elif category_result == 'Summon':
         summon_r = random.randint(1, 6)
         if summon_r in range(1, 4):
-            summon_txt = ("a/n {}".format(noun))
+            summon_txt = ("a {}".format(*noun))
         elif summon_r in range(4, 6):
-            summon_txt = ("a/n {} {}".format(adj, noun))
+            summon_txt = ("a {} {}".format(*adj, *noun))
         elif summon_r == 6:
             roll = random.randint(1, 6)
-            summon_txt = ("{} {} {}".format(roll, adj, noun))
+            summon_txt = ("{} {} {}".format(roll, *adj, *noun))
         category_description = ("Summons {}.".format(summon_txt))
     elif category_result == 'Rush':
         rush_r = random.randint(1, 6)
@@ -1141,6 +1141,8 @@ async def autoloot(context, *args, **kwargs):
         elif damagetype == "multi":
             damagemulti_base_r = random.randint(1, 6)
             damagemulti_count_r = random.randint(1, 6)
+            base_damage = ""
+            hit_count = ""
 
             if damagemulti_base_r == 1:
                 base_damage = "0"
@@ -1166,7 +1168,7 @@ async def autoloot(context, *args, **kwargs):
                 hit_count = "x4"
             elif damagemulti_count_r == 6:
                 hit_count = "x5"
-            damage_result = ("{}{} Damage".format(base_damage, hit_count))
+            damage_result = ("{}{} Damage".format(*base_damage, hit_count))
 
         if not isXdamage:
             xdamage_txt = ""
@@ -1176,37 +1178,40 @@ async def autoloot(context, *args, **kwargs):
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
                 ownership_r = random.randint(1, 2)
+                ownership = ""
                 if ownership_r == 1:
                     ownership = "Your"
                 if ownership_r == 2:
                     ownership = "The target's"
-                xdamage_txt = ("X = {} {}".format(ownership, skill))
+                xdamage_txt = ("X = {} {}".format(ownership, *skill))
             if xdamage_r == 2:
                 row_num = random.randint(1, xdmg_chipdf_sub.shape[0]) - 1
                 xdamagechip = [xdmg_chipdf_sub.iloc[row_num]["Result"]]
-                xdamage_txt = ("X = {} chips in your Folder.".format(xdamagechip))
+                xdamage_txt = ("X = {} chips in your Folder.".format(*xdamagechip))
             if xdamage_r == 3:  # whyyyyyy
                 hardcode_bullshit_r = randint(1, 5)
+                bullshit = ""
                 if hardcode_bullshit_r == 1:
                     bullshit = "are Close"
                 if hardcode_bullshit_r == 2:
                     bullshit = "are Near"
                 if hardcode_bullshit_r == 3:
-                    bullshit = ("have {}ed you since jack-in".format(verb))
+                    bullshit = ("have {}ed you since jack-in".format(*verb))
                 if hardcode_bullshit_r == 4:
-                    bullshit = ("you {}ed since jack-in".format(verb))
+                    bullshit = ("you {}ed since jack-in".format(*verb))
                 if hardcode_bullshit_r == 5:
-                    bullshit = ("are {}ing".format(verb))
+                    bullshit = ("are {}ing".format(*verb))
 
-                xdamage_txt = ("X = Number of {} that {}, max {}".format(noun, bullshit, random.randint(1, 6)))
+                xdamage_txt = ("X = Number of {} that {}, max {}".format(*noun, bullshit, random.randint(1, 6)))
             if xdamage_r == 4:
                 hardcode_bullshit_r = randint(1, 5)
+                bullshit = ""
                 if hardcode_bullshit_r == 1:
                     bullshit = "HP"
                 if hardcode_bullshit_r == 2:
                     row_num = random.randint(1, skill_sub.shape[0]) - 1
                     skill = [skill_sub.iloc[row_num]["Result"]]
-                    bullshit = skill
+                    bullshit = "{}".format(*skill)
                 if hardcode_bullshit_r == 3:
                     bullshit = "unused chips"
                 if hardcode_bullshit_r == 4:
@@ -1217,10 +1222,11 @@ async def autoloot(context, *args, **kwargs):
                 xdamage_txt = ("Sacrifice up to {} {} to add to X.".format(random.randint(1, 6), bullshit))
             if xdamage_r == 5:
                 hardcode_bullshit_r = randint(1, 3)
+                bullshit = ""
                 if hardcode_bullshit_r == 1:
                     row_num = random.randint(1, skill_sub.shape[0]) - 1
                     skill = [skill_sub.iloc[row_num]["Result"]]
-                    bullshit = skill
+                    bullshit = "{}".format(*skill)
                 if hardcode_bullshit_r == 2:
                     bullshit = "HP"
                 if hardcode_bullshit_r == 3:
@@ -1229,7 +1235,7 @@ async def autoloot(context, *args, **kwargs):
             if xdamage_r == 6:
                 row_num = random.randint(1, xdmg_mathdf_sub.shape[0]) - 1
                 xmath = [xdmg_mathdf_sub.iloc[row_num]["Result"]]
-                xdamage_txt = ("Roll {}d{}, take the {}".format(random.randint(1, 6), random.randint(1, 6), xmath))
+                xdamage_txt = ("Roll {}d{}, take the {}".format(random.randint(1, 6), random.randint(1, 6), *xmath))
 
         xdamage_description = xdamage_txt
 
@@ -1275,6 +1281,7 @@ async def autoloot(context, *args, **kwargs):
 
 # EFFECT: Condition
     condition_r = random.randint(1, 6)
+    condition_txt = ""
     if condition_r in range (1, 5):
         condition_combined = ""
     if condition_r in range (5, 7):
@@ -1286,9 +1293,9 @@ async def autoloot(context, *args, **kwargs):
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 r = random.randint(1, 2)
                 if r == 1:
-                    condition_txt = ("is {},".format(adj))
+                    condition_txt = ("is {},".format(*adj))
                 if r == 2:
-                    condition_txt = ("is not {},".format(adj))
+                    condition_txt = ("is not {},".format(*adj))
             if target_r == 2:
                 r = random.randint(1, 2)
                 if r == 1:
@@ -1300,47 +1307,47 @@ async def autoloot(context, *args, **kwargs):
                 if r == 1:
                     row_num = random.randint(1, noun_sub.shape[0]) - 1
                     noun = [noun_sub.iloc[row_num]["Result"]]
-                    condition_txt = ("is a {},".format(noun))
+                    condition_txt = ("is a {},".format(*noun))
                 if r == 2:
                     row_num = random.randint(1, noun_sub.shape[0]) - 1
                     noun = [noun_sub.iloc[row_num]["Result"]]
-                    condition_txt = ("is not a {},".format(noun))
+                    condition_txt = ("is not a {},".format(*noun))
                 if r == 3:
                     row_num = random.randint(1, noun_sub.shape[0]) - 1
                     noun = [noun_sub.iloc[row_num]["Result"]]
-                    condition_txt = ("has a {},".format(noun))
+                    condition_txt = ("has a {},".format(*noun))
                 if r == 4:
                     row_num = random.randint(1, noun_sub.shape[0]) - 1
                     noun = [noun_sub.iloc[row_num]["Result"]]
-                    condition_txt = ("does not have a {},".format(noun))
+                    condition_txt = ("does not have a {},".format(*noun))
             if target_r == 4:
                 r = random.randint(1, 2)
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
                 if r == 1:
-                    condition_txt = ("failed a {} roll recently,".format(skill))
+                    condition_txt = ("failed a {} roll recently,".format(*skill))
                 if r == 2:
-                    condition_txt = ("succeeded a {} roll recently,".format(skill))
+                    condition_txt = ("succeeded a {} roll recently,".format(*skill))
             if target_r == 5:
                 r = random.randint (1, 6)
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
                 if r == 1:
-                    condition_txt = ("has {}ed in the past {} scenes,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} scenes,".format(*verb, random.randint(1, 6)))
                 if r == 2:
-                    condition_txt = ("has {}ed in the past {} seconds,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} seconds,".format(*verb, random.randint(1, 6)))
                 if r == 3:
-                    condition_txt = ("has {}ed in the past {} minutes,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} minutes,".format(*verb, random.randint(1, 6)))
                 if r == 4:
-                    condition_txt = ("has {}ed in the past {} hours,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} hours,".format(*verb, random.randint(1, 6)))
                 if r == 5:
-                    condition_txt = ("has {}ed in the past {} days,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} days,".format(*verb, random.randint(1, 6)))
                 if r == 6:
-                    condition_txt = ("has {}ed in the past {} years,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} years,".format(*verb, random.randint(1, 6)))
             if target_r == 6:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                condition_txt = ("is more {} than you.".format(adj))
+                condition_txt = ("is more {} than you.".format(*adj))
             condition_combined = ("If the target {} ".format(condition_txt))
         if conditiontable_r == 2: # user condition table
             user_r = random.randint(1, 6)
@@ -1357,21 +1364,21 @@ async def autoloot(context, *args, **kwargs):
                 noun = [noun_sub.iloc[row_num]["Result"]]
                 r = random.randint(1, 4)
                 if r == 1:
-                    condition_txt = ("are a {},".format(noun))
+                    condition_txt = ("are a {},".format(*noun))
                 if r == 2:
-                    condition_txt = ("are not a {},".format(noun))
+                    condition_txt = ("are not a {},".format(*noun))
                 if r == 3:
-                    condition_txt = ("have a {},".format(noun))
+                    condition_txt = ("have a {},".format(*noun))
                 if r == 4:
-                    condition_txt = ("do not have a {},".format(noun))
+                    condition_txt = ("do not have a {},".format(*noun))
             if user_r == 3:
                 r = random.randint(1, 2)
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 if r == 1:
-                    condition_txt = ("are {},".format(adj))
+                    condition_txt = ("are {},".format(*adj))
                 if r == 2:
-                    condition_txt = ("are not {}".format(adj))
+                    condition_txt = ("are not {}".format(*adj))
             if user_r == 4:
                 r = random.randint(1, 2)
                 if r == 1:
@@ -1383,17 +1390,17 @@ async def autoloot(context, *args, **kwargs):
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
                 if r == 1:
-                    condition_txt = ("has {}ed in the past {} scenes,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} scenes,".format(*verb, random.randint(1, 6)))
                 if r == 2:
-                    condition_txt = ("has {}ed in the past {} seconds,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} seconds,".format(*verb, random.randint(1, 6)))
                 if r == 3:
-                    condition_txt = ("has {}ed in the past {} minutes,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} minutes,".format(*verb, random.randint(1, 6)))
                 if r == 4:
-                    condition_txt = ("has {}ed in the past {} hours,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} hours,".format(*verb, random.randint(1, 6)))
                 if r == 5:
-                    condition_txt = ("has {}ed in the past {} days,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} days,".format(*verb, random.randint(1, 6)))
                 if r == 6:
-                    condition_txt = ("has {}ed in the past {} years,".format(verb, random.randint(1, 6)))
+                    condition_txt = ("has {}ed in the past {} years,".format(*verb, random.randint(1, 6)))
             if user_r == 6:
                 r = random.randint(1, 2)
                 if r == 1:
@@ -1414,7 +1421,7 @@ async def autoloot(context, *args, **kwargs):
             if damage_r == 3:
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
-                condition_txt = ("the target successfully defends with {},".format(skill))
+                condition_txt = ("the target successfully defends with {},".format(*skill))
             if damage_r == 4:
                 condition_txt = "this hits the target,"
             if damage_r == 5: # i have basically forgotten that the spreadsheet existed at this point but i don't have time
@@ -1446,23 +1453,23 @@ async def autoloot(context, *args, **kwargs):
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 if r == 1:
                     if sub_r == 1:
-                        condition_txt = ("you are a range band above a {},".format(noun))
+                        condition_txt = ("you are a range band above a {},".format(*noun))
                     if sub_r == 2:
-                        condition_txt = ("you are a range band above something {},".format(adj))
+                        condition_txt = ("you are a range band above something {},".format(*adj))
                 if r == 2:
                     if sub_r == 1:
-                        condition_txt = ("you are a range band below a {},".format(noun))
+                        condition_txt = ("you are a range band below a {},".format(*noun))
                     if sub_r == 2:
-                        condition_txt = ("you are a range band below something {},".format(adj))
+                        condition_txt = ("you are a range band below something {},".format(*adj))
                 if r == 3:
                     if sub_r == 1:
-                        condition_txt = ("you are a range band away from a {},".format(noun))
+                        condition_txt = ("you are a range band away from a {},".format(*noun))
                     if sub_r == 2:
-                        condition_txt = ("you are a range band away from something {},".format(adj))
+                        condition_txt = ("you are a range band away from something {},".format(*adj))
             if env_r == 2:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                condition_txt = ("this damages a {},".format(noun))
+                condition_txt = ("this damages a {},".format(*noun))
             if env_r == 3:
                 condition_txt = "this destroys an object,"
             if env_r == 4:
@@ -1481,9 +1488,9 @@ async def autoloot(context, *args, **kwargs):
             row_num = random.randint(1, cndloc_sub.shape[0]) - 1
             cnd_location = [cndloc_sub.iloc[row_num]["Result"]]
             if element_r == 1:
-                condition_txt = ("you are {} {} element, ".format(cnd_location, cnd_ownership))
+                condition_txt = ("you are {} {} element, ".format(*cnd_location, *cnd_ownership))
             if element_r == 2:
-                condition_txt = ("{} element is not present,".format(cnd_ownership))
+                condition_txt = ("{} element is not present,".format(*cnd_ownership))
             if element_r == 3:
                 r = random.randint(1, 2)
                 sub_r = random.randint(1, 2)
@@ -1493,14 +1500,14 @@ async def autoloot(context, *args, **kwargs):
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 if r == 1:
                     if sub_r == 1:
-                        condition_txt = ("your element is {},".format(noun))
+                        condition_txt = ("your element is {},".format(*noun))
                     if sub_r == 2:
-                        condition_txt = ("your element is {},".format(adj))
+                        condition_txt = ("your element is {},".format(*adj))
                 if r == 2:
                     if sub_r == 1:
-                        condition_txt = ("your element is not {},".format(noun))
+                        condition_txt = ("your element is not {},".format(*noun))
                     if sub_r == 2:
-                        condition_txt = ("your element is not {},".format(adj))
+                        condition_txt = ("your element is not {},".format(*adj))
             if element_r == 4:
                 condition_txt = ("you have {} elements available,".format(random.randint(1, 6)))
             if element_r == 5:
@@ -1520,21 +1527,21 @@ async def autoloot(context, *args, **kwargs):
             if misc_r == 1:
                 row_num = random.randint(1, miscbday_sub.shape[0]) - 1
                 misc_bday = [miscbday_sub.iloc[row_num]["Result"]]
-                condition_txt = ("it's {} birthday,".format(misc_bday))
+                condition_txt = ("it's {} birthday,".format(*misc_bday))
             if misc_r == 2:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                condition_txt = ("the vibes are {},".format(adj))
+                condition_txt = ("the vibes are {},".format(*adj))
             if misc_r == 3:
                 condition_txt = ("you correctly predict how much damage this will deal at least {} in advance,".format(random.randint(1, 6)))
             if misc_r == 4:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                condition_txt = ("you can tell a funny joke about a {},".format(noun))
+                condition_txt = ("you can tell a funny joke about a {},".format(*noun))
             if misc_r == 5:
                 row_num = random.randint(1, miscdays_sub.shape[0]) - 1
                 misc_days = [miscdays_sub.iloc[row_num]["Result"]]
-                condition_txt = ("it is {},".format(misc_days))
+                condition_txt = ("it is {},".format(*misc_days))
             if misc_r == 6:
                 condition_txt = "everyone at the table agrees,"
             condition_combined = ("If {} ".format(condition_txt))
@@ -1555,7 +1562,7 @@ async def autoloot(context, *args, **kwargs):
         if r == 1:
             row_num = random.randint(1, noun_sub.shape[0]) - 1
             noun = [noun_sub.iloc[row_num]["Result"]]
-            subject = ("All {} in range".format(noun))
+            subject = ("All {} in range".format(*noun))
         if r == 2:
             sub_r = random.randint(1, 2)
             if sub_r == 1:
@@ -1620,7 +1627,7 @@ async def autoloot(context, *args, **kwargs):
         duration = "as long as you can convince the GM it should last for"
     if duration_r == 6:
         duration = "forever, even after jack-out"
-# ACTION:
+# ACTION: Effect table
     if isModal:
         action_list = [modal_prefix]
     else:
@@ -1629,8 +1636,10 @@ async def autoloot(context, *args, **kwargs):
     numberOfEffects = 0
     while numberOfEffects < modalDegree:
         #action - subject table
+        action_text = ""
         if actionHasSubject:
             r = random.randint(1, 37)
+            #action_text = ""
             if r == 1:
                 action_text = ("Pushes {} back a range band.".format(subject))
             if r == 2:
@@ -1638,11 +1647,11 @@ async def autoloot(context, *args, **kwargs):
             if r == 3:
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
-                action_text = ("Upshifts {}'s next {} {} rolls.".format(subject, random.randint(1, 6), skill))
+                action_text = ("Upshifts {}'s next {} {} rolls.".format(subject, random.randint(1, 6), *skill))
             if r == 4:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Covers {} in {}s for {}.".format(subject, noun, duration))
+                action_text = ("Covers {} in {}s for {}.".format(subject, *noun, duration))
             if r == 5:
                 action_text = ("Disables {}'s element for {}.".format(subject, duration))
             if r == 6:
@@ -1650,40 +1659,40 @@ async def autoloot(context, *args, **kwargs):
             if r == 7:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("{} can now freely move through {} objects.".format(subject, adj))
+                action_text = ("{} can now freely move through {} objects.".format(subject, *adj))
             if r == 8:
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("{} can {} any {} for {}.".format(subject, verb, noun, duration))
+                action_text = ("{} can {} any {} {}.".format(subject, *verb, *noun, duration))
             if r == 9:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Turns {} into a {} for {}.".format(subject, noun, duration))
+                action_text = ("Turns {} into a {} {}.".format(subject, *noun, duration))
             if r == 10:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Makes {} {} for {}.".format(subject, adj, duration))
+                action_text = ("Makes {} {} {}.".format(subject, *adj, duration))
             if r == 11:
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
-                action_text = ("{} gets a +{} dice to their next {} roll.".format(subject, random.randint(1, 6), skill))
+                action_text = ("{} gets a +{} dice to their next {} roll.".format(subject, random.randint(1, 6), *skill))
             if r == 12:
                 action_text = ("Heals {} {} HP.".format(subject, random.randint(1, 6)))
             if r == 13:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("{} gains the element {} for {}.".format(subject, noun, duration))
+                action_text = ("{} gains the element {} {}.".format(subject, *noun, duration))
             if r == 14:
-                emotions = ["positively", "negatively", "confusing"]
-                action_text = ("Overwhelms {} with {} emotions for {}.".format(subject, random.choice(emotions), duration))
+                emotions = ["positive", "negative", "confusing"]
+                action_text = ("Overwhelms {} with {} emotions {}.".format(subject, random.choice(emotions), duration))
             if r == 15:
                 action_text = ("{} starts doing an elaborate dance routine.".format(subject))
             if r == 16:
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
-                action_text = ("You can roll {} on {} as if you were Close.".format(skill, subject))
+                action_text = ("You can roll {} on {} as if you were Close.".format(*skill, subject))
             if r == 17:
                 action_text = ("Creates a group DM between the user and {}.".format(subject))
             if r == 18:
@@ -1691,7 +1700,7 @@ async def autoloot(context, *args, **kwargs):
             if r == 19:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Rates {} 1-10 based on how {} they are.".format(subject, adj))
+                action_text = ("Rates {} 1-10 based on how {} they are.".format(subject, *adj))
             if r == 20:
                 action_text = ("Launches {} a range band skyward.".format(subject))
             if r == 21:
@@ -1701,7 +1710,7 @@ async def autoloot(context, *args, **kwargs):
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("If {} is touch a {} surface, they are attacked by {}s.".format(subject, adj, noun))
+                action_text = ("If {} is touch a {} surface, they are attacked by {}s.".format(subject, *adj, *noun))
             if r == 23:
                 action_text = ("{} can refresh a chip in their folder.".format(subject))
             if r == 24:
@@ -1711,7 +1720,7 @@ async def autoloot(context, *args, **kwargs):
             if r == 26:
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
-                action_text = ("Makes {} {} you if {} is Inanimate.".format(subject, verb, subject))
+                action_text = ("Makes {} {} you if {} is Inanimate.".format(subject, *verb, subject))
             if r == 27:
                 action_text = ("Does the exact opposite of the last chip {} used.".format(subject))
             if r == 28:
@@ -1726,7 +1735,7 @@ async def autoloot(context, *args, **kwargs):
             if r == 32:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Sends a message of {}'s choice to the entire server announced by a {} noise.".format(subject, adj))
+                action_text = ("Sends a message of {}'s choice to the entire server announced by a {} noise.".format(subject, *adj))
             if r == 33:
                 action_text = ("Swap places with {}.".format(subject))
             if r == 34:
@@ -1746,13 +1755,13 @@ async def autoloot(context, *args, **kwargs):
             if r == 3:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Vaporizes any {}s.".format(noun))
+                action_text = ("Vaporizes any {}s.".format(*noun))
             if r == 4:
                 action_text = "Screams." # same
             if r == 5:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Opens a wormhole to somewhere {}.".format(adj))
+                action_text = ("Opens a wormhole to somewhere {}.".format(*adj))
             if r == 6:
                 action_text = "Does its very best." # not this time hun
             if r == 7:
@@ -1760,11 +1769,11 @@ async def autoloot(context, *args, **kwargs):
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Spreads a lot of {} {}s.".format(adj, noun))
+                action_text = ("Spreads a lot of {} {}s.".format(*adj, *noun))
             if r == 8:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Burns through any {} material.".format(adj))
+                action_text = ("Burns through any {} material.".format(*adj))
             if r == 9:
                 action_text = ("This can hit {} targets.".format(random.randint(1, 6)))
             if r == 10:
@@ -1772,21 +1781,21 @@ async def autoloot(context, *args, **kwargs):
             if r == 11:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Changes the session music to something {}.".format(adj))
+                action_text = ("Changes the session music to something {}.".format(*adj))
             if r == 12:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
-                action_text = ("Awakens the {} {} Program.".format(noun, verb))
+                action_text = ("Awakens the {} {} Program.".format(*noun, *verb))
             if r == 13:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Leaves a {} behind.".format(noun))
+                action_text = ("Leaves a {} behind.".format(*noun))
             if r == 14:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("A NICE, BIG {}.".format(noun))
+                action_text = ("A NICE, BIG {}.".format(*noun))
             if r == 15:
                 action_text = "This passes through surfaces."
             if r == 16:
@@ -1794,7 +1803,7 @@ async def autoloot(context, *args, **kwargs):
             if r == 17:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = "Gets {} with it.".format(adj)
+                action_text = "Gets {} with it.".format(*adj)
             if r == 18:
                 action_text = "Reroll this chip in its entirety after use."
             if r == 19:
@@ -1802,17 +1811,17 @@ async def autoloot(context, *args, **kwargs):
             if r == 20:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Makes the vibes a LOT more {}.".format(adj))
+                action_text = ("Makes the vibes a LOT more {}.".format(*adj))
             if r == 21:
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
-                action_text = ("Can also be defended against by {}ing.".format(verb))
+                action_text = ("Can also be defended against by {}ing.".format(*verb))
             if r == 22:
                 action_text = "Summons a deafening silence."
             if r == 23:
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
-                action_text = ("This can only be used while {}ing.".format(verb))
+                action_text = ("This can only be used while {}ing.".format(*verb))
             if r == 24:
                 dtype = ["Crushing", "Slashing", "Incendiary", "Holy", "Pure", "Special"]
                 action_text = ("Deals {} Damage.".format(random.choice(dtype)))
@@ -1836,26 +1845,26 @@ async def autoloot(context, *args, **kwargs):
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Exposes the truth behind the mystery of the {} {}.".format(adj, noun))
+                action_text = ("Exposes the truth behind the mystery of the {} {}.".format(*adj, *noun))
             if r == 32:
                 action_text = "Deals triple damage if you successfully lie to the rest of your group about how much damage this chip does."
             if r == 33:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Replaces all summoned element in range with {}s.".format(noun))
+                action_text = ("Replaces all summoned element in range with {}s.".format(*noun))
             if r == 34:
                 action_text = "Do Navis feel pain? What about Viruses? It all feels like a sport, a game, a dream... Do you care? Are you happier not knowing? "
             if r == 35:
                 type = ["Upshifts", "Downshifts", "Adds 1d6 dice to"]
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                type2 = ["parries", "counters", "{} rolls".format(adj)]
+                type2 = ["parries", "counters", "{} rolls".format(*adj)]
                 action_text = "{} {}.".format(random.choice(type), random.choice(type2))
             if r == 36:
                 action_text = "Alerts God."  # Too late; not even He can save us now
 
         numberOfEffects += 1
-        print("Action Roll: {}".format(r))
+        #print("Action Roll: {}".format(r))
         if numberOfEffects < modalDegree:
             action_list.append(action_text[:-1] + ";")
         else:
@@ -1865,8 +1874,13 @@ async def autoloot(context, *args, **kwargs):
     chip_description = " ".join(filter(None, (category_description, cost_result, guard_result, action_result, xdamage_description)))
     subtitle_trimmed = "/".join(filter(None, (damage_result, range_description, category_result, tag_result)))
 
+# NAME:
+    row_num = random.randint(1, adj_sub.shape[0]) - 1
+    adj = [adj_sub.iloc[row_num]["Result"]]
+    row_num = random.randint(1, noun_sub.shape[0]) - 1
+    noun = [noun_sub.iloc[row_num]["Result"]]
     embed = discord.Embed(
-        title="__{}__".format("(Insert Super Cool Autoloot Chip Name Here)"),
+        title="__{}{}__".format(*adj, *noun),
         color=cc_color_dictionary["Nyx"])
     embed.add_field(name="[%s]" % subtitle_trimmed,
                     value="_%s_" % chip_description)
