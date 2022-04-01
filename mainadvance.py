@@ -1638,22 +1638,22 @@ async def autoloot(context, *args, **kwargs):
         #action - subject table
         action_text = ""
         if actionHasSubject:
-            r = random.randint(1, 37)
+            r = random.randint(1, 36)
             #action_text = ""
             if r == 1:
-                action_text = ("Pushes {} back a range band.".format(subject))
+                action_text = ("Pushes {} back a range band.".format(subject.lower()))
             if r == 2:
-                action_text = ("Stuns {} for {}.".format(subject, duration))
+                action_text = ("Stuns {} for {}.".format(subject, duration.lower()))
             if r == 3:
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
-                action_text = ("Upshifts {}'s next {} {} rolls.".format(subject, random.randint(1, 6), *skill))
+                action_text = ("Upshifts {}'s next {} {} rolls.".format(subject.lower(), random.randint(1, 6), *skill))
             if r == 4:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Covers {} in {}s for {}.".format(subject, *noun, duration))
+                action_text = ("Covers {} in {}s for {}.".format(subject.lower(), *noun, duration))
             if r == 5:
-                action_text = ("Disables {}'s element for {}.".format(subject, duration))
+                action_text = ("Disables {}'s element for {}.".format(subject.lower(), duration))
             if r == 6:
                 action_text = ("{} loses {} HP.".format(subject, random.randint(1, 6)))
             if r == 7:
@@ -1669,85 +1669,85 @@ async def autoloot(context, *args, **kwargs):
             if r == 9:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("Turns {} into a {} {}.".format(subject, *noun, duration))
+                action_text = ("Turns {} into a {} {}.".format(subject.lower(), *noun, duration))
             if r == 10:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Makes {} {} {}.".format(subject, *adj, duration))
+                action_text = ("Makes {} {} {}.".format(subject.lower(), *adj, duration))
             if r == 11:
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
                 action_text = ("{} gets a +{} dice to their next {} roll.".format(subject, random.randint(1, 6), *skill))
             if r == 12:
-                action_text = ("Heals {} {} HP.".format(subject, random.randint(1, 6)))
+                action_text = ("Heals {} {} HP.".format(subject.lower(), random.randint(1, 6)))
             if r == 13:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
                 action_text = ("{} gains the element {} {}.".format(subject, *noun, duration))
             if r == 14:
                 emotions = ["positive", "negative", "confusing"]
-                action_text = ("Overwhelms {} with {} emotions {}.".format(subject, random.choice(emotions), duration))
+                action_text = ("Overwhelms {} with {} emotions {}.".format(subject.lower(), random.choice(emotions), duration))
             if r == 15:
                 action_text = ("{} starts doing an elaborate dance routine.".format(subject))
             if r == 16:
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
-                action_text = ("You can roll {} on {} as if you were Close.".format(*skill, subject))
+                action_text = ("You can roll {} on {} as if you were Close.".format(*skill, subject.lower()))
             if r == 17:
-                action_text = ("Creates a group DM between the user and {}.".format(subject))
+                action_text = ("Creates a group DM between the user and {}.".format(subject.lower()))
             if r == 18:
-                action_text = ("Jam {}'s PET for {}.".format(subject, duration))
+                action_text = ("Jam {}'s PET for {}.".format(subject.lower(), duration))
             if r == 19:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Rates {} 1-10 based on how {} they are.".format(subject, *adj))
+                action_text = ("Rates {} 1-10 based on how {} they are.".format(subject.lower(), *adj))
             if r == 20:
-                action_text = ("Launches {} a range band skyward.".format(subject))
+                action_text = ("Launches {} a range band skyward.".format(subject.lower()))
             if r == 21:
-                action_text = ("Forces {} to jack out.".format(subject))
+                action_text = ("Forces {} to jack out.".format(subject.lower()))
             if r == 22:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("If {} is touch a {} surface, they are attacked by {}s.".format(subject, *adj, *noun))
+                action_text = ("If {} is touch a {} surface, they are attacked by {}s.".format(subject.lower(), *adj, *noun))
             if r == 23:
                 action_text = ("{} can refresh a chip in their folder.".format(subject))
             if r == 24:
-                action_text = ("Reveals an image of {}'s true love.".format(subject))
+                action_text = ("Reveals an image of {}'s true love.".format(subject.lower()))
             if r == 25:
-                action_text = ("This cannot delete {}.".format(subject))
+                action_text = ("This cannot delete {}.".format(subject.lower()))
             if r == 26:
                 row_num = random.randint(1, verb_sub.shape[0]) - 1
                 verb = [verb_sub.iloc[row_num]["Result"]]
-                action_text = ("Makes {} {} you if {} is Inanimate.".format(subject, *verb, subject))
+                action_text = ("Makes {} {} you if {} is Inanimate.".format(subject.lower(), *verb, subject))
             if r == 27:
                 action_text = ("Does the exact opposite of the last chip {} used.".format(subject))
             if r == 28:
                 action_text = ("Takes a photo of {}.".format(subject))
             if r == 29:
                 zenny = random.randint(1, 6) + random.randint(1, 6) + random.randint(1, 6) * 100
-                action_text = ("{} loses {} Zenny.".format(subject, zenny))
+                action_text = ("{} loses {} Zenny.".format(subject.lower(), zenny))
             if r == 30:
-                action_text = ("Anyone can ask {} {} questions and receive an honest answer.".format(subject, random.randint(1, 6)))
+                action_text = ("Anyone can ask {} {} questions and receive an honest answer.".format(subject.lower(), random.randint(1, 6)))
             if r == 31:
                 action_text = ("{}'s PET catches on fire.".format(subject))
             if r == 32:
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
-                action_text = ("Sends a message of {}'s choice to the entire server announced by a {} noise.".format(subject, *adj))
+                action_text = ("Sends a message of {}'s choice to the entire server announced by a {} noise.".format(subject.lower(), *adj))
             if r == 33:
-                action_text = ("Swap places with {}.".format(subject))
+                action_text = ("Swap places with {}.".format(subject.lower()))
             if r == 34:
-                action_text = ("Next time {} would fail a roll, they can reroll.".format(subject))
+                action_text = ("Next time {} would fail a roll, they can reroll.".format(subject.lower()))
             if r == 35:
                 action_text = ("{} gets a fashion makeover.".format(subject))
             if r == 36:
-                action_text = ("Sends an invite to {} to support their favorite indie game developer.".format(subject))
+                action_text = ("Sends an invite to {} to support their favorite indie game developer.".format(subject.lower()))
 
                 # action - no subject table
         else:  # not actionHasSubject:
-            r = random.randint(1, 37)
+            r = random.randint(1, 36)
             if r == 1:
                 action_text = ("Deals +{} damage.".format(random.randint(1, 6)))
             if r == 2:
@@ -1795,7 +1795,7 @@ async def autoloot(context, *args, **kwargs):
             if r == 14:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
-                action_text = ("A NICE, BIG {}.".format(*noun))
+                action_text = ("A NICE, BIG {}.".format(*noun).upper())
             if r == 15:
                 action_text = "This passes through surfaces."
             if r == 16:
@@ -1864,14 +1864,20 @@ async def autoloot(context, *args, **kwargs):
                 action_text = "Alerts God."  # Too late; not even He can save us now
 
         numberOfEffects += 1
-        #print("Action Roll: {}".format(r))
+        if isModal and ("NICE, BIG" not in action_text):
+            action_text = action_text[0].lower() + action_text[1:] # lowercases modal phrases
         if numberOfEffects < modalDegree:
             action_list.append(action_text[:-1] + ";")
         else:
             action_list.append(action_text)
 
-    action_result = condition_combined + " ".join(action_list)
-    chip_description = " ".join(filter(None, (category_description, cost_result, guard_result, action_result, xdamage_description)))
+    action_result = " ".join(action_list)
+
+    chip_description_list = list(filter(None, (cost_result, guard_result, condition_combined, action_result)))
+    chip_list_format = [i[0].lower()+i[1:] if i[0] != 'A' else i for i in chip_description_list[1:]]  # lowercases the first letter of non-first phrases, except for A NICE, BIG {}
+    chip_description_list = chip_description_list[0:1] + chip_list_format
+    chip_description_list = [category_description] + chip_description_list + [xdamage_description]
+    chip_description = " ".join(chip_description_list)
     subtitle_trimmed = "/".join(filter(None, (damage_result, range_description, category_result, tag_result)))
 
 # NAME:
