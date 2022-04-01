@@ -1183,7 +1183,7 @@ async def autoloot(context, *args, **kwargs):
                     ownership = "Your"
                 if ownership_r == 2:
                     ownership = "The target's"
-                xdamage_txt = ("X = {} {}".format(ownership, *skill))
+                xdamage_txt = ("X = {} {}.".format(ownership, *skill))
             if xdamage_r == 2:
                 row_num = random.randint(1, xdmg_chipdf_sub.shape[0]) - 1
                 xdamagechip = [xdmg_chipdf_sub.iloc[row_num]["Result"]]
@@ -1202,7 +1202,7 @@ async def autoloot(context, *args, **kwargs):
                 if hardcode_bullshit_r == 5:
                     bullshit = ("are {}ing".format(*verb))
 
-                xdamage_txt = ("X = Number of {} that {}, max {}".format(*noun, bullshit, random.randint(1, 6)))
+                xdamage_txt = ("X = Number of {} that {}, max {}.".format(*noun, bullshit, random.randint(1, 6)))
             if xdamage_r == 4:
                 hardcode_bullshit_r = randint(1, 5)
                 bullshit = ""
@@ -1235,7 +1235,7 @@ async def autoloot(context, *args, **kwargs):
             if xdamage_r == 6:
                 row_num = random.randint(1, xdmg_mathdf_sub.shape[0]) - 1
                 xmath = [xdmg_mathdf_sub.iloc[row_num]["Result"]]
-                xdamage_txt = ("Roll {}d{}, take the {}".format(random.randint(1, 6), random.randint(1, 6), *xmath))
+                xdamage_txt = ("Roll {}d{}, take the {}.".format(random.randint(1, 6), random.randint(1, 6), *xmath))
 
         xdamage_description = xdamage_txt
 
@@ -1874,7 +1874,7 @@ async def autoloot(context, *args, **kwargs):
     action_result = " ".join(action_list)
 
     chip_description_list = list(filter(None, (cost_result, guard_result, condition_combined, action_result)))
-    chip_list_format = [i[0].lower()+i[1:] if i[0] != 'A' else i for i in chip_description_list[1:]]  # lowercases the first letter of non-first phrases, except for A NICE, BIG {}
+    chip_list_format = [i[0].lower()+i[1:] if 'NICE, BIG' not in i else i for i in chip_description_list[1:]]  # lowercases the first letter of non-first phrases, except for A NICE, BIG {} and Alerts God
     chip_description_list = chip_description_list[0:1] + chip_list_format
     chip_description_list = [category_description] + chip_description_list + [xdamage_description]
     chip_description = " ".join(chip_description_list)
