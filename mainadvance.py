@@ -941,18 +941,6 @@ async def repo(context, *args, **kwargs):
 # Cost, Guard, Category, Damage, Range, Tags, Effect
 # Each condition has several sub conditions and tables that are met based on rolling the dice.
 # With the way it functions, there's very few things that can actually be externalized AFAIK.
-
-# iza since i know you'll be looking at this soon, here's the result strings that need to populate the function:
-# cost_result (can be empty)
-# guard_result
-# category_result
-# category_description (can be empty)
-# damage_result
-# xdamage_description (can be empty)
-
-# there's a few more i haven't mapped out variables to yet and i don't know how many i'll need until i'm finished here
-# but just assume that the end result should look as if the user invoked >chip
-
 async def autoloot(context, *args, **kwargs):
     cleaned_args = clean_args(args)
 
@@ -969,6 +957,16 @@ async def autoloot(context, *args, **kwargs):
     guardroll_sub = autoloot_df[autoloot_df["Type"] == "GuardTriggerRoll"]
 
     xdmg_chipdf_sub = autoloot_df[autoloot_df["Type"] == "XDamageChip"]
+    xdmg_mathdf_sub = autoloot_df[autoloot_df["Type"] == "XDamageMath"]
+
+    tagdf_sub = autoloot_df[autoloot_df["Type"] == "TagTable"]
+
+    cndown_sub = autoloot_df[autoloot_df["Type"] == "ConditionalOwnership"]
+    cndloc_sub = autoloot_df[autoloot_df["Type"] == "ConditionalLocation"]
+
+    miscbday_sub = autoloot_df[autoloot_df["Type"] == "MiscBirthday"]
+    miscdays_sub = autoloot_df[autoloot_df["Type"] == "MiscDays"]
+
 
 # COST:
     cost_r = random.randint(1, 6)
@@ -996,7 +994,7 @@ async def autoloot(context, *args, **kwargs):
             recursive = True
 
             prefix_text = "Next time you "
-            guard_txt = " "
+            guard_txt = ""
 
             recursion_value = 3
             recursion_firsttime = True
@@ -1232,13 +1230,402 @@ async def autoloot(context, *args, **kwargs):
                     bullshit = "BP"
                 xdamage_txt = ("Add 1 to X for each {} reduction.".format(bullshit))
             if xdamage_r == 6:
-                xdamage_txt = ""
-            # incomplete at this time
+                row_num = random.randint(1, xdmg_mathdf_sub.shape[0]) - 1
+                xmath = [xdmg_mathdf_sub.iloc[row_num]["Result"]]
+                xdamage_txt = ("Roll {}d{}, take the {}".format(random.randint(1, 6), random.randint(1, 6), xmath))
+
         xdamage_description = xdamage_txt
 
+# RANGE:
+    range_r = random.randint(1, 6)
+    if range_r in range(1, 4):
+        range_description = "Close"
+    if range_r in range(4, 6):
+        range_description = "Near"
+    if range_r == 6:
+        range_description = "Far"
+# TAG:
+    tagnumber_r = random.randint(1, 6)
+    if tagnumber_r == 1:
+        tagnumber = 0
+        tag_result = ("")
+    if tagnumber_r in range(2, 4):
+        tagnumber = 1
+
+    if tagnumber_r == 4:
+        tagnumber = 2
+    if tagnumber_r == 5:
+        tagnumber = 3
+    if tagnumber_r == 6:
+        tagnumber = 4
+
+    if tagnumber != 0:
+        decide_bonus = random.randint(1, 6)
+        taglist = ""
+        if decide_bonus in (5, 7):
+            bonustable_r = random.randint(1, 6)
+            if bonustable_r in range(1, 5):
+                if tagnumber == 4: # the tag table only has 5, so we should just add simple in manually.
+                    tagnumber += 1
+                    taglist += ("Simple")
+                else:
+                    tagnumber += 2
+            else:
+                taglist += ("Simple")
+        while (len(taglist) <= tagnumber):
+            row_num = random.randint(1, tagdf_sub.shape[0]) - 1
+            tag_r = [tagdf_sub.iloc[row_num]["Result"]]
+            taglist += (tag_r)
+
+            tag_result = taglist
+
+# EFFECT: Condition
+    condition_r = random.randint(1, 6)
+    if condition_r in range (1, 5):
+        condition_result = ""
+    if condition_r in range (5, 7):
+        conditiontable_r = random.randint(1, 6)
+        if conditiontable_r == 1: # target condition table
+            target_r = random.randint(1, 6)
+            if target_r == 1:
+                row_num = random.randint(1, adj_sub.shape[0]) - 1
+                adj = [adj_sub.iloc[row_num]["Result"]]
+                r = random.randint(1, 2)
+                if r == 1:
+                    condition_txt = ("is {},".format(*adj))
+                if r == 2:
+                    condition_txt = ("is not {},".format(*adj))
+            if target_r == 2:
+                r = random.randint(1, 2)
+                if r == 1:
+                    condition_txt = ("is deleted by this attack,")
+                if r == 2:
+                    condition_txt = ("is not deleted by this attack,")
+            if target_r == 3:
+                r = random.randint(1, 4)
+                if r == 1:
+                    row_num = random.randint(1, noun_sub.shape[0]) - 1
+                    noun = [noun_sub.iloc[row_num]["Result"]]
+                    condition_txt = ("is a {},".format(noun))
+                if r == 2:
+                    row_num = random.randint(1, noun_sub.shape[0]) - 1
+                    noun = [noun_sub.iloc[row_num]["Result"]]
+                    condition_txt = ("is not a {},".format(noun))
+                if r == 3:
+                    row_num = random.randint(1, noun_sub.shape[0]) - 1
+                    noun = [noun_sub.iloc[row_num]["Result"]]
+                    condition_txt = ("has a {},".format(noun))
+                if r == 4:
+                    row_num = random.randint(1, noun_sub.shape[0]) - 1
+                    noun = [noun_sub.iloc[row_num]["Result"]]
+                    condition_txt = ("does not have a {},".format(noun))
+            if target_r == 4:
+                r = random.randint(1, 2)
+                row_num = random.randint(1, skill_sub.shape[0]) - 1
+                skill = [skill_sub.iloc[row_num]["Result"]]
+                if r == 1:
+                    condition_txt = ("failed a {} roll recently,".format(skill))
+                if r == 2:
+                    condition_txt = ("succeeded a {} roll recently,".format(skill))
+            if target_r == 5:
+                r = random.randint (1, 6)
+                row_num = random.randint(1, verb_sub.shape[0]) - 1
+                verb = [verb_sub.iloc[row_num]["Result"]]
+                if r == 1:
+                    condition_txt = ("has {}ed in the past {} scenes,".format(*verb, random.randint(1, 6)))
+                if r == 2:
+                    condition_txt = ("has {}ed in the past {} seconds,".format(*verb, random.randint(1, 6)))
+                if r == 3:
+                    condition_txt = ("has {}ed in the past {} minutes,".format(*verb, random.randint(1, 6)))
+                if r == 4:
+                    condition_txt = ("has {}ed in the past {} hours,".format(*verb, random.randint(1, 6)))
+                if r == 5:
+                    condition_txt = ("has {}ed in the past {} days,".format(*verb, random.randint(1, 6)))
+                if r == 6:
+                    condition_txt = ("has {}ed in the past {} years,".format(*verb, random.randint(1, 6)))
+            if target_r == 6:
+                row_num = random.randint(1, adj_sub.shape[0]) - 1
+                adj = [adj_sub.iloc[row_num]["Result"]]
+                condition_txt = ("is more {} than you.".format(*adj))
+            condition_combined = ("If the target {}".format(*condition_txt))
+        if conditiontable_r == 2: # user condition table
+            user_r = random.randint(1, 6)
+            if user_r == 1:
+                r = random.randint(1, 3)
+                if r == 1:
+                    condition_txt = ("are at {} HP,".format(random.randint(1, 6)))
+                if r == 2:
+                    condition_txt = ("are below {} HP,".format(random.randint(1, 6)))
+                if r == 3:
+                    condition_txt = ("are above {} HP,".format(random.randint(1, 6)))
+            if user_r == 2:
+                row_num = random.randint(1, noun_sub.shape[0]) - 1
+                noun = [noun_sub.iloc[row_num]["Result"]]
+                r = random.randint(1, 4)
+                    if r == 1:
+                        condition_txt = ("are a {},".format(*noun))
+                    if r == 2:
+                        condition_txt = ("are not a {},".format(*noun))
+                    if r == 3:
+                        condition_txt = ("have a {},".format(*noun))
+                    if r == 4:
+                        condition_txt = ("do not have a {},".format(*noun))
+            if user_r == 3:
+                r = random.randint(1, 2)
+                row_num = random.randint(1, adj_sub.shape[0]) - 1
+                adj = [adj_sub.iloc[row_num]["Result"]]
+                if r == 1:
+                    condition_txt = ("are {},".format(*adj))
+                if r == 2:
+                    condition_txt = ("are not {}".format(*adj))
+            if user_r == 4:
+                r = random.randint(1, 2)
+                if r == 1:
+                    condition_txt = "are deleted by this attack,"
+                if r == 2:
+                    condition_txt = "are not deleted by this attack,"
+            if user_r == 5:
+                r = random.randint (1, 6)
+                row_num = random.randint(1, verb_sub.shape[0]) - 1
+                verb = [verb_sub.iloc[row_num]["Result"]]
+                if r == 1:
+                    condition_txt = ("has {}ed in the past {} scenes,".format(*verb, random.randint(1, 6)))
+                if r == 2:
+                    condition_txt = ("has {}ed in the past {} seconds,".format(*verb, random.randint(1, 6)))
+                if r == 3:
+                    condition_txt = ("has {}ed in the past {} minutes,".format(*verb, random.randint(1, 6)))
+                if r == 4:
+                    condition_txt = ("has {}ed in the past {} hours,".format(*verb, random.randint(1, 6)))
+                if r == 5:
+                    condition_txt = ("has {}ed in the past {} days,".format(*verb, random.randint(1, 6)))
+                if r == 6:
+                    condition_txt = ("has {}ed in the past {} years,".format(*verb, random.randint(1, 6)))
+            if user_r == 6:
+                r = random.randint(1, 2)
+                if r == 1:
+                    condition_txt = ("stand still and don't move,")
+                if r == 2:
+                    condition_txt = ("are moving,")
+            condition_combined = ("If you {}".format(*condition_txt))
+        if conditiontable_r == 3 :  # damage condition table
+            damage_r = random.randint(1, 6)
+            if damage_r == 1:
+                condition_txt = ("this deals {} damage,".format(random.randint(1, 6)))
+            if damage_r == 2:
+                r = random.randint(1, 2)
+                if r == 1:
+                    condition_txt = "you win a parry with this,"
+                if r == 2:
+                    condition_txt = "you lose a parry with this,"
+            if damage_r == 3:
+                row_num = random.randint(1, skill_sub.shape[0]) - 1
+                skill = [skill_sub.iloc[row_num]["Result"]]
+                condition_txt = ("the target successfully defends with {},".format(*skill))
+            if damage_r == 4:
+                condition_txt = "this hits the target,"
+            if damage_r == 5: # i have basically forgotten that the spreadsheet existed at this point but i don't have time
+                r = random.randint(1, 6)
+                if r == 1:
+                    condition_txt = "this is your first attack on the target,"
+                if r == 2:
+                    condition_txt = "this is your second attack on the target,"
+                if r == 3:
+                    condition_txt = "this is your third attack on the target,"
+                if r == 4:
+                    condition_txt = "this is your fourth attack on the target,"
+                if r == 5:
+                    condition_txt = "this is your fifth attack on the target,"
+                if r == 6:
+                    condition_txt = "this is your tenth attack on the target,"
+            if damage_r == 6:
+                condition_txt = ("this deals less than {} damage,".format(random.randint(1, 6)))
+
+            condition_combined = ("If {}".format(*condition_txt))
+        if conditiontable_r == 4: # environment condition table
+            env_r = randint(1, 6)
+            if env_r == 1:
+                r = random.randint(1, 4)
+                sub_r = random.randint(1, 2)
+                row_num = random.randint(1, noun_sub.shape[0]) - 1
+                noun = [noun_sub.iloc[row_num]["Result"]]
+                row_num = random.randint(1, adj_sub.shape[0]) - 1
+                adj = [adj_sub.iloc[row_num]["Result"]]
+                if r == 1:
+                    if sub_r == 1:
+                    condition_txt = ("you are a range band above a {},".format(*noun))
+                    if sub_r == 2:
+                    condition_txt = ("you are a range band above something {},".format(*adj))
+                if r == 2:
+                    if sub_r == 1:
+                        condition_txt = ("you are a range band below a {},".format(*noun))
+                    if sub_r == 2:
+                        condition_txt = ("you are a range band below something {},".format(*adj))
+                if r == 3:
+                    if sub_r == 1:
+                    condition_txt = ("you are a range band away from a {},".format(*noun))
+                    if sub_r == 2:
+                    condition_txt = ("you are a range band away from something {},".format(*adj))
+            if env_r == 2:
+                row_num = random.randint(1, noun_sub.shape[0]) - 1
+                noun = [skill_sub.iloc[row_num]["Result"]]
+                condition_txt = ("this damages a {},".noun)
+            if env_r == 3:
+                condition_txt = "this destroys an object,"
+            if env_r == 4:
+                condition_txt = "the target is an object,"
+            if env_r == 5:
+                condition_txt = "the target just destroyed an object,"
+            if env_r == 6:
+                condition_txt = "everything around you is really messed up - I mean like, straight-up irrevocably busted, the kind of thing that makes you feel bad for whoever’s gotta foot the bill to get everything put back together (and don’t forget the poor sap that has to clean it all up! jeez),"
+
+            condition_combined = ("If {}".format(*condition_txt))
+        if conditiontable_r == 5: # element condition table
+            element_r = random.randint(1, 6)
+
+            row_num = random.randint(1, cndown_sub.shape[0]) - 1
+            cnd_ownership = [cndown_sub.iloc[row_num]["Result"]]
+            row_num = random.randint(1, cndloc_sub.shape[0]) - 1
+            cnd_location = [cndloc_sub.iloc[row_num]["Result"]]
+            if element_r == 1:
+                condition_txt = ("you are {} {} element,".format(*cnd_location, *cnd_ownership))
+            if element_r == 2:
+                condition_txt = ("{} element is not present,".format(*cnd_ownership))
+            if element_r == 3:
+                r = random.randint(1, 2)
+                sub_r = random.randint(1, 2)
+                row_num = random.randint(1, noun_sub.shape[0]) - 1
+                noun = [noun_sub.iloc[row_num]["Result"]]
+                row_num = random.randint(1, adj_sub.shape[0]) - 1
+                adj = [adj_sub.iloc[row_num]["Result"]]
+                if r == 1:
+                    if sub_r == 1:
+                        condition_txt = ("your element is {},".format(*noun))
+                    if sub_r == 2:
+                        condition_txt = ("your element is {},".format(*adj))
+                if r == 2:
+                    if sub_r == 1:
+                        condition_txt = ("your element is not {},".format(*noun))
+                    if sub_r == 2:
+                        condition_txt = ("your element is not {},".format(*adj))
+            if element_r == 4:
+                condition_txt = ("you have {} elements available,".format(random.randint(1, 6)))
+            if element_r == 5:
+                r = random.randint(1, 3)
+                sum = random.randint(1, 6) + random.randint(1, 6)
+                if r == 1:
+                    condition_txt = ("your element is over {} letters long,".format(sum))
+                if r == 2:
+                    condition_txt = ("your element is under {} letters long,".format(sum))
+                if r == 3:
+                    condition_txt = ("your element is exactly {} letters long,".format(sum))
+            if element_r == 6:
+                condition_txt = "your element is kind of a pain in the butt for the GM,"
+            condition_combined = ("If {}".format(*condition_txt))
+        if conditiontable_r == 6: # misc condition table
+            misc_r = random.randint(1, 6)
+            if misc_r == 1:
+                row_num = random.randint(1, miscbday_sub.shape[0]) - 1
+                misc_bday = [miscbday_sub.iloc[row_num]["Result"]]
+                condition_txt = ("it's {} birthday,".format(*misc_bday))
+            if misc_r == 2:
+                row_num = random.randint(1, adj_sub.shape[0]) - 1
+                adj = [adj_sub.iloc[row_num]["Result"]]
+                condition_txt = ("the vibes are {},".format(*adj))
+            if misc_r == 3:
+                condition_txt = ("you correctly predict how much damage this will deal at least {} in advance,".format(random.randint(1, 6)))
+            if misc_r == 4:
+                row_num = random.randint(1, noun_sub.shape[0]) - 1
+                noun = [noun_sub.iloc[row_num]["Result"]]
+                condition_txt = ("you can tell a funny joke about a {},".format(*noun))
+            if misc_r == 5:
+                row_num = random.randint(1, miscdays_sub.shape[0]) - 1
+                misc_days = [miscdays_sub.iloc[row_num]["Result"]]
+                condition_txt = ("it is {},".format(*misc_days))
+            if misc_r == 6:
+                condition_txt = "everyone at the table agrees,"
+            condition_combined = ("If {}".format(*condition_txt))
+# EFFECT: Subject
+    subject_r = random.randint(1, 6)
+    actionHasSubject = False
+    if subject_r in range(1, 4):
+        actionHasSubject = False
+    if subject_r == 4:
+        subject = "The user"
+        actionHasSubject = True
+    if subject_r == 5:
+        subject = "Targets"
+        actionHasSubject = True
+    if subject_r == 6:
+        r = random.randint(1, 6)
+        if r == 1:
+            row_num = random.randint(1, noun_sub.shape[0]) - 1
+            noun = [noun_sub.iloc[row_num]["Result"]]
+            subject = ("All {} in range".format(*noun))
+        if r == 2:
+            sub_r = random.randint(1, 2)
+            if sub_r == 1:
+                subject = ("The target's PET")
+            if sub_r == 2:
+                subject = ("The user's PET")
+        if r == 3:
+            subject = "The user and the targets"
+        if r == 4:
+            subject = "Everything in range"
+        if r == 5:
+            sub_r = random.randint(1, 2)
+            if sub_r == 1:
+                subject = ("{} targets of your choice".format(random.randint(1, 6)))
+            if sub_r == 2:
+                subject = ("{} targets of GM's choice".format(random.randint(1, 6)))
+        if r == 6:
+            subject = "The server"
+#EFFECT: Modal
+    isModal = False
+    modalCheck = random.randint(1, 6)
+    if modalCheck in range(1, 5):
+        isModal = False
+    if modalCheck in range (5, 7):
+        isModal = True
+    modal_r = random.randint(1, 6)
+    modalDegree = 0
+    if modal_r in range(1, 3):
+        modal_prefix = "Pick 1:"
+        modalDegree = 2
+    if modal_r in range(3, 5):
+        modal_prefix = "Pick 1:"
+        modalDegree = 3
+    if modal_r == 5:
+        modal_prefix = "Pick 2:"
+        modalDegree = 3
+    if modal_r == 6:
+        r = random.randint(1, 6)
+        if r in range(1, 4):
+            modal_prefix = "Pick 1:"
+            modalDegree = 1 + random.randint(1, 6)
+        if r in range(4, 7):
+            modal_prefix = ("Pick {}".format(random.randint(1, 6)))
+            modalDegree = random.randint(1, 6)
+            
+    if isModal == True:
+        numberOfEffects = ""
+        while (len(numberOfEffects <= modalDegree)):
+            if actionHasSubject == True:
+
+
+    action_result = (modal_prefix + )
+
+
+    #modal_prefix = ("".format({}))
+
+    if actionHasSubject == False:
+
+    if actionHasSubject == True
+
+
+
     effect_description = ("Glows brightly!")
-    range_description = ("Close")
-    tag_result = ("Dangerous")
+    #range_description = ("Close")
+    #tag_result = ("Dangerous")
     chip_description = " ".join(filter(None, (category_description, cost_result, guard_result, effect_description, xdamage_description)))
     subtitle_trimmed = "/".join(filter(None, (damage_result, range_description, category_result, tag_result)))
 

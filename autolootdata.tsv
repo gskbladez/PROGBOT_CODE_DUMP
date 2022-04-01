@@ -47,25 +47,20 @@ XDamageChip	unused
 XDamageChip	Category		
 XDamageChip	Damaging		
 XDamageChip	Non-Damaging		
-XDamageChip	Tag		
+XDamageChip	Accurate		
+XDamageChip	Piercing		
+XDamageChip	Simple		
+XDamageChip	Awkward		
+XDamageChip	Slow		
+XDamageChip	Dangerous		
 XDamageMath	lowest result		
 XDamageMath	highest result		
 XDamageMath	sum		
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+TagTable	Awkward		
+TagTable	Dangerous		
+TagTable	Slow		
+TagTable	Piercing		
+TagTable	Accurate		
 VerbTable	Create		
 VerbTable	Speak to		
 VerbTable	Assist		
@@ -132,6 +127,7 @@ NounTable	Number
 NounTable	Video Game		
 NounTable	Mystery		
 NounTable	Song		
+NounTable	Britney Spears		
 AdjectiveTable	Giant		
 AdjectiveTable	Flat		
 AdjectiveTable	Burning		
@@ -161,7 +157,6 @@ AdjectiveTable	Rocky
 AdjectiveTable	Evil		
 AdjectiveTable	Jellicle		
 AdjectiveTable	Short		
-AdjectiveTable	Will You're Not Paying Me Enough To Type This Out At 5 AM		
 AdjectiveTable	Floccinaucinihilipilificatively		
 AdjectiveTable	Violent		
 AdjectiveTable	Kawaii		
@@ -169,3 +164,32 @@ AdjectiveTable	Dreamlike
 AdjectiveTable	Purple		
 AdjectiveTable	Nostalgic		
 AdjectiveTable	Inflammable		
+ConditionalOwnership	your		
+ConditionalOwnership	an ally's		
+ConditionalOwnership	an enemy's		
+ConditionalOwnership	anyone's		
+ConditionalLocation	close		
+ConditionalLocation	near		
+ConditionalLocation	far		
+ConditionalLocation	above		
+ConditionalLocation	within		
+ConditionalLocation	below		
+MiscBirthday	your		
+MiscBirthday	the target's		
+MiscBirthday	you, the player's,		
+MiscBirthday	the GM's		
+MiscBirthday	someone's		
+MiscBirthday	Will Uhl's		
+MiscDays	Monday		
+MiscDays	Tuesday		
+MiscDays	Wednesday		
+MiscDays	Thursday		
+MiscDays	Friday		
+MiscDays	Saturday		
+MiscDays	Sunday		
+MiscDays	April 1st		
+MiscDays	January 1st		
+MiscDays	November 21st		
+MiscDays	February 29th		
+MiscDays	a good day		
+MiscDays	Februcember 44rd		
