@@ -235,7 +235,7 @@ Tinker	HotSwap	Upgrade	If you spend a minute of uninterrupted concentration, Hot
 Motorize	MapEdit	Upgrade	Structures can move independently; Easy Coding roll to change the speed.	2	NPU	Navi Power Upgrades	
 TexturePack	MapEdit	Upgrade	Structures can be bouncy, sticky, floating, slippery, magnetic, or gelatinous.	2	NPU	Navi Power Upgrades	
 							
-GutsImpact	Gutsy	Upgrade	When a Gutsy’d ally rolls to melee attack midair, they add your Body.	2	NPU	Navi Power Upgrades	
+GutsImpact	Gutsy	Upgrade	When a Gutsy’d ally rolls to melee attack midair, they add your Body.	2	NPU	Navi Power Upgrades	GutImpact
 GutStrike	Gutsy	Upgrade	You can roll 1 fewer die on any melee attack to give it Gutsy’s effect.	1	NPU	Navi Power Upgrades	GutsStrike
 Demolition	Shatter	Upgrade	Before rolling, can choose for the target object to become a Normal hazard.	2	NPU	Navi Power Upgrades	
 Infiltrate	Shatter	Upgrade	Shatter can be silent if you have a few moments of uninterrupted preparation.	1	NPU	Navi Power Upgrades	
@@ -590,3 +590,9 @@ StandTogether	-	-	If you’re safe, bonded allies can teleport you Close to them
 							
 RingOut	Affinity	Roll	Warp a Near target touching your element to another Near instance of your element.	-	Virus Power	Core	
 Predictor	Info	Roll	You can defend against an attack with Info if you’ve seen this enemy use it before.	-	Virus Power	Core	
+							
+Knockoff	Coding	Roll	Make a forgery of a Near object. It briefly stuns whoever touches it first other than you.	-	Virus Power	Cast the Dice	
+LightTrick	Affinity	Cost	Make a fake Virus hologram. It can (pick 2): move a bit; look convincing; fake an attack	-	Virus Power	Cast the Dice	
+DanceOff	Charm	Cost	Boogie! Any Near can join. All who spend time dancing spawn their element Close to them.	-	Virus Power	Cast the Dice	
+PartyFoul	Speed	Cost	Next time you would take dmg, you zoom away instead, leaving the area entirely. [Instant]	-	Virus Power	Cast the Dice	
+HypeBeast	-	Passive	Whenever you or an ally roll 1+ hits, toss a little bit of your element at any Near target.	-	Virus Power	Cast the Dice	

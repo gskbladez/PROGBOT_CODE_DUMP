@@ -1049,7 +1049,6 @@ async def autoloot(context, *args, **kwargs):
 # CATEGORY:
     row_num = random.randint(1, category_sub.shape[0]) - 1
     category = [category_sub.iloc[row_num]["Result"]]
-
     category_result = category[0]
 
     row_num = random.randint(1, adj_sub.shape[0]) - 1
@@ -1187,6 +1186,10 @@ async def autoloot(context, *args, **kwargs):
             if xdamage_r == 2:
                 row_num = random.randint(1, xdmg_chipdf_sub.shape[0]) - 1
                 xdamagechip = [xdmg_chipdf_sub.iloc[row_num]["Result"]]
+                if xdamagechip == 'Category':
+                    row_num = random.randint(1, category_sub.shape[0]) - 1
+                    category = [category_sub.iloc[row_num]["Result"]]
+                    xdamagechip = category[0]
                 xdamage_txt = ("X = {} chips in your Folder.".format(*xdamagechip))
             if xdamage_r == 3:  # whyyyyyy
                 hardcode_bullshit_r = randint(1, 5)
@@ -1533,7 +1536,7 @@ async def autoloot(context, *args, **kwargs):
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 condition_txt = ("the vibes are {},".format(*adj))
             if misc_r == 3:
-                condition_txt = ("you correctly predict how much damage this will deal at least {} in advance,".format(random.randint(1, 6)))
+                condition_txt = ("you correctly predict how much damage this will deal at least {} minutes in advance,".format(random.randint(1, 6)))
             if misc_r == 4:
                 row_num = random.randint(1, noun_sub.shape[0]) - 1
                 noun = [noun_sub.iloc[row_num]["Result"]]
@@ -1617,10 +1620,10 @@ async def autoloot(context, *args, **kwargs):
         duration = "for a moment"
     if duration_r == 2:
         type = ["seconds", "rolls", "minutes"]
-        duration = ("for 1d6 {}".format(random.choice(type)))
+        duration = ("for {} {}".format(randint(1,6), random.choice(type)))
     if duration_r == 3:
         type = ["minutes", "hours", "sessions", "days"]
-        duration = ("for 1d6 out-of-game {}".format(random.choice(type)))
+        duration = ("for {} out-of-game {}".format(randint(1,6), random.choice(type)))
     if duration_r == 4:
         duration = "until jack-out"
     if duration_r == 5:
@@ -1643,7 +1646,7 @@ async def autoloot(context, *args, **kwargs):
             if r == 1:
                 action_text = ("Pushes {} back a range band.".format(subject.lower()))
             if r == 2:
-                action_text = ("Stuns {} for {}.".format(subject, duration.lower()))
+                action_text = ("Stuns {} for {}.".format(subject.lower(), duration.lower()))
             if r == 3:
                 row_num = random.randint(1, skill_sub.shape[0]) - 1
                 skill = [skill_sub.iloc[row_num]["Result"]]
@@ -1855,7 +1858,7 @@ async def autoloot(context, *args, **kwargs):
             if r == 34:
                 action_text = "Do Navis feel pain? What about Viruses? It all feels like a sport, a game, a dream... Do you care? Are you happier not knowing? "
             if r == 35:
-                type = ["Upshifts", "Downshifts", "Adds 1d6 dice to"]
+                type = ["Upshifts", "Downshifts", "Adds {} dice to".format(randint(1,6))]
                 row_num = random.randint(1, adj_sub.shape[0]) - 1
                 adj = [adj_sub.iloc[row_num]["Result"]]
                 type2 = ["parries", "counters", "{} rolls".format(*adj)]
