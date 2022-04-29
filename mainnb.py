@@ -50,7 +50,7 @@ cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard D
            "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
            "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
            "MUDSLURP": "Discord, MUD",
-           "Tarot": "", "Nyx": ""}
+           "Tarot": "", "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice"}
 cc_list = list(cc_dict.keys())
 cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 virus_colors = {"Virus": 0x7c00ff,
@@ -1713,7 +1713,7 @@ async def fight(context, *args, **kwargs):
 
 
 async def sheet(context, *args, **kwargs):
-    msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `{cp}repo sheets`!" % settings.character_sheet).replace(
+    msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `{cp}repo character sheet`!" % settings.character_sheet).replace(
                                                         "{cp}", koduck.get_prefix(context["message"]))
     return await koduck.sendmessage(context["message"], sendcontent=msg_txt)
 
