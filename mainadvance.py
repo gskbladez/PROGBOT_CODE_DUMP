@@ -602,7 +602,10 @@ async def weatherforecast(context, *args, **kwargs):
                                         "To use, enter `{cp}weatherreport [#]` or `{cp}report [category] [#]`!\n"\
                                         .replace("{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(weather_category_list))
-    
+    if len(cleaned_args) > 2:
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Command is too long! Just give me `{cp}weather [#]` or `{cp}weather [category] [#]`!".replace(
+                                            "{cp}", koduck.get_prefix(context["message"])))
     
     weather_return_number = 1  # number of weather to return, 1 by default
     weather_category = None
