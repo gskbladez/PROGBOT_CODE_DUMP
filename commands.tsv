@@ -65,7 +65,7 @@ spotlight	spotlight	Assistant	advance	prefix	1	FALSE
 checklist	spotlight	Assistant	advance	prefix	1	TRUE
 weather	weather	Game Lookup	advance	prefix	1	FALSE
 cyberweather	weather	Game Lookup	advance	prefix	1	TRUE
-weatherforecast weatherforecast Game	Lookup	advance	prefix	1	FALSE
+weatherforecast	weatherforecast	Game Lookup	advance	prefix	1	FALSE
 achievement	achievement	Game Lookup	advance	prefix	1	FALSE
 achievements	achievement	Game Lookup	advance	prefix	1	TRUE
 achieve	achievement	Game Lookup	advance	prefix	1	FALSE
