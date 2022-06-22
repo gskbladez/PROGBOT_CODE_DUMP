@@ -595,16 +595,17 @@ async def weather(context, *args, **kwargs):
 
 
 async def weatherforecast(context, *args, **kwargs):
+    # most of this was borrowed from the element code god bless you whoever worked on it
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Pulls up a random set of 1-%d types of **CyberWeather**!" % MAX_WEATHER_ROLL + 
-                                        "To use, enter `{cp}weatherreport [#]` or `{cp}report [category] [#]`!\n"\
+                                        sendcontent="Pulls up a random set of 1-%d types of **CyberWeather**! " % MAX_WEATHER_ROLL + 
+                                        "To use, enter `{cp}weatherreport [#]` or `{cp}weatherforecast [category] [#]`!\n"\
                                         .replace("{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(weather_category_list))
     if len(cleaned_args) > 2:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Command is too long! Just give me `{cp}weather [#]` or `{cp}weather [category] [#]`!".replace(
+                                        sendcontent="Command is too long! Just give me `{cp}weatherforecast [#]` or `{cp}weatherforecast [category] [#]`!".replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
     
     weather_return_number = 1  # number of weather to return, 1 by default
@@ -616,11 +617,12 @@ async def weatherforecast(context, *args, **kwargs):
         except ValueError:
             weather_category = arg.lower().capitalize()
             
-            sub_weather_df = weather_df[weather_df["Category"].str.contains(re.escape(arg), flags=re.IGNORECASE)]
+            sub_weather_df = weather_df[weather_df["Category"].str.fullmatch(re.escape(arg), flags=re.IGNORECASE)]
             if sub_weather_df.shape[0] == 0:
                 return await koduck.sendmessage(context["message"],
-                                            sendcontent="Not a valid category!\n" +
+                                                sendcontent="Not a valid category!\n" +
                                                         "Categories: **%s**" % ", ".join(weather_category_list))
+    
     category_range_max = sub_weather_df.shape[0]
     if weather_return_number < 1:
         return await koduck.sendmessage(context["message"],
@@ -636,13 +638,26 @@ async def weatherforecast(context, *args, **kwargs):
     weather_name = [sub_weather_df.iloc[i]["Name"] for i in weather_selected]
     
     if weather_category is None:
-        weather_flavor_title = "Picked {} random weather(s): ".format(str(weather_return_number))
+        weather_flavor_title = "Picked {} random weather(s):".format(str(weather_return_number))
     else:
-        weather_flavor_title = "Picked {} random weather(s) from the {} category: ".format(str(weather_return_number),
+        weather_flavor_title = "Picked {} random weather(s) from the {} category:".format(str(weather_return_number),
                                                                                             weather_category)
+    
+    weather_color = 0xd5b5f7
+    if weather_category == "Basic":
+        weather_color = weather_color_dictionary["Blue"]
+    elif weather_category == "Glitched":
+        weather_color = weather_color_dictionary["Yellow"]
+    elif weather_category == "Error":
+        weather_color = weather_color_dictionary["Red"]
+    
     weather_list = ", ".join(weather_name)
-    weather_message = weather_flavor_title + weather_list
-    return await koduck.sendmessage(context["message"], sendcontent=weather_message)
+    embed = discord.Embed(title=weather_flavor_title,
+                          color=weather_color,
+                          description=weather_list)
+    # weather_message = "`{} {}`".format(weather_flavor_title,weather_list) # no embed method
+    return await koduck.sendmessage(context["message"], sendembed=embed)
+
 
 async def achievement(context, *args, **kwargs):
     if context["params"]:
