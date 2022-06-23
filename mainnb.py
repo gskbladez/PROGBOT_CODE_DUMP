@@ -1159,27 +1159,28 @@ async def element(context, *args, **kwargs):
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
                                         sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
-    if len(cleaned_args) > 2:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
 
     element_return_number = 1  # number of elements to return, 1 by default
-    element_category = None
-    sub_element_df = element_df
+    element_category = []
+    argDone = False
     for arg in cleaned_args:
+        if argDone:
+            await koduck.sendmessage(context["message"],
+                                     sendcontent="Extra arguments after number of elements; ignoring!")
+            break
         try:
             element_return_number = int(arg)
-            break
+            argDone = True
         except ValueError:
-            element_category = arg.lower().capitalize()
+            element_category.append(arg)
 
-            sub_element_df = element_df[element_df["category"].str.contains(re.escape(arg), flags=re.IGNORECASE)]
-            if sub_element_df.shape[0] == 0:
-                return await koduck.sendmessage(context["message"],
-                                                sendcontent="Not a valid category!\n" +
-                                                            "Categories: **%s**" % ", ".join(element_category_list))
-
+    regex_search = [f"^\s*{re.escape(a)}\s*$" for a in element_category]
+    sub_element_df = element_df[element_df["category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
+    all_cats = sub_element_df["category"].unique().tolist()
+    if len(all_cats) != len(element_category): # so one of the categories isn't actually in the DB
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Invalid category provided!\n" +
+                                                    "Categories: **%s**" % ", ".join(element_category_list))
     if element_return_number < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="The number of elements can't be 0 or negative!")
@@ -1190,11 +1191,14 @@ async def element(context, *args, **kwargs):
     elements_selected = random.sample(range(sub_element_df.shape[0]), element_return_number)
     elements_name = [sub_element_df.iloc[i]["element"] for i in elements_selected]
 
-    if element_category is None:
+    if not element_category:
         element_flavor_title = "Picked {} random element(s)...".format(str(element_return_number))
-    else:
+    elif len(all_cats) == 1:
         element_flavor_title = "Picked {} random element(s) from the {} category...".format(str(element_return_number),
-                                                                                            element_category)
+                                                                                            all_cats[0])
+    else:
+        element_flavor_title = "Picked {} random element(s) from the {} and {} categories...".format(str(element_return_number),
+                                                                                            ", ".join(all_cats[:-1]), all_cats[-1])
     element_color = 0x48C800
     elements_list = ", ".join(elements_name)
 
