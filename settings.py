@@ -70,6 +70,7 @@ rare_md_image = r"https://raw.githubusercontent.com/gskbladez/meddyexe/master/vi
 gold_md_image = r"https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/goldmysterydata.png"
 violet_md_image = r"https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/violetmysterydata.png"
 sapphire_md_image = r"https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/sapphiremysterydata.png"
+sunny_md_image = r"https://github.com/izaneighi/PROGBOT_CODE_DUMP/tree/iza_dev_branch/virusart/sunny.png"
 bug_image = r"https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png"
 invite_link = r"https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0"
 notion_collection_id = "97e4a870-4673-4fc7-a2c7-3fb876e4d837"

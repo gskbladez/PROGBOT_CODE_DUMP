@@ -64,8 +64,8 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                              "image": settings.violet_md_image},
                     "sapphire": {"color": 0x3659FE,
                              "image": settings.sapphire_md_image},
-                    "sunny": {"color": 0xffed9c,
-                              "image": settings.gold_md_image}}
+                    "sunny": {"color": cc_color_dictionary["Summber Camp"],
+                              "image": settings.sunny_md_image}}
 
 chip_df = pd.read_csv(settings.chipfile, sep="\t").fillna('')
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
