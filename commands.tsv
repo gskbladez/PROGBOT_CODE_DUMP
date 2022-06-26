@@ -69,6 +69,8 @@ spotlight	spotlight	Assistant	advance	prefix	1	FALSE
 checklist	spotlight	Assistant	advance	prefix	1	TRUE
 weather	weather	Game Lookup	advance	prefix	1	FALSE
 cyberweather	weather	Game Lookup	advance	prefix	1	TRUE
+weatherforecast	weatherforecast	Rollers	advance	prefix	1	FALSE
+randomweather	weatherforecast	Rollers	advance	prefix	1	FALSE
 achievement	achievement	Game Lookup	advance	prefix	1	FALSE
 achievements	achievement	Game Lookup	advance	prefix	1	TRUE
 achieve	achievement	Game Lookup	advance	prefix	1	FALSE
@@ -99,4 +101,5 @@ line	line	Safety Tools	safety	prefix	1	FALSE
 veil	veil	Safety Tools	safety	prefix	1	FALSE
 find	find_chip_ncp_power	Game Lookup	base	prefix	1	FALSE
 search	find_chip_ncp_power	Game Lookup	base	prefix	1	FALSE
-autoloot	autoloot	Game Rollers	fools	prefix	1	FALSE
+autoloot	autoloot	Rollers	advance	prefix	1	FALSE
+
