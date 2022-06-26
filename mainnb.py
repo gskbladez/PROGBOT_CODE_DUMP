@@ -133,6 +133,8 @@ async def help_cmd(context, *args, **kwargs):
         help_groups = sub_df.groupby(["Type"])
         return_msgs = ["%s\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in help_groups if name]
         return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
+    elif re.match("help(help)+", cleaned_args[0]):
+        cleaned_args = ["helphelp"]  # assuming direct control
 
     funkyarg = ''.join(cleaned_args)
     help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)

@@ -8,7 +8,6 @@ import re
 import datetime
 from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table
 from maincommon import help_df, cc_color_dictionary, pmc_link
-from random import randint
 
 MAX_MOD_QUERY = 5
 ROLL_COMMENT_CHAR = '#'
