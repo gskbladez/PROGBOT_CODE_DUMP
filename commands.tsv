@@ -12,6 +12,8 @@ purge	purge	Admin	main	prefix	2	FALSE
 restrict	restrictuser	Admin	main	prefix	2	FALSE
 unrestrict	unrestrictuser	Admin	main	prefix	2	FALSE
 bugreport	bugreport	ProgBot	main	prefix	1	FALSE
+bugfix	bugreport	ProgBot	main	prefix	1	TRUE
+bug	bugreport	ProgBot	main	prefix	1	TRUE
 oops	oops	ProgBot	main	prefix	1	FALSE
 command	commands	ProgBot	main	prefix	1	FALSE
 commands	commands	ProgBot	main	prefix	1	TRUE
@@ -40,6 +42,8 @@ mysterydata	mysterydata	Rollers	base	prefix	1	FALSE
 md	mysterydata	Rollers	base	prefix	1	FALSE
 mysteryreward	mysteryreward	Rollers	base	prefix	1	FALSE
 rulebook	rulebook	Info	base	prefix	1	FALSE
+book	rulebook	Info	base	prefix	1	TRUE
+books	rulebook	Info	base	prefix	1	TRUE
 element	element	Rollers	base	prefix	1	FALSE
 daemon	daemon	Game Lookup	advance	prefix	1	FALSE
 upgrade	upgrade	Game Lookup	base	prefix	1	TRUE
@@ -95,4 +99,4 @@ line	line	Safety Tools	safety	prefix	1	FALSE
 veil	veil	Safety Tools	safety	prefix	1	FALSE
 find	find_chip_ncp_power	Game Lookup	base	prefix	1	FALSE
 search	find_chip_ncp_power	Game Lookup	base	prefix	1	FALSE
-autoloot	autoloot	Game Rollers	advance	prefix	1	FALSE
+autoloot	autoloot	Game Rollers	fools	prefix	1	FALSE

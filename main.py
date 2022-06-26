@@ -1,6 +1,7 @@
 import discord
 import os
 import koduck
+import mainaprilfools
 import yadon
 import settings
 import pandas as pd
@@ -62,8 +63,10 @@ async def updatecommands(context, *args, **kwargs):
             koduck.addcommand(row['Command'], getattr(mainroll, row['Function']), row['Type'], int(row['Permission']))
         elif "base" in row["Module"]:
             koduck.addcommand(row['Command'], getattr(mainnb, row['Function']), row['Type'], int(row['Permission']))
+        elif "fools" in row["Module"]:
+            koduck.addcommand(row['Command'], getattr(mainaprilfools, row['Function']), row['Type'], int(row['Permission']))
         else:
-            koduck.addcommand(row['Command'],globals()[row['Function']], row['Type'], int(row['Permission']))
+            koduck.addcommand(row['Command'], globals()[row['Function']], row['Type'], int(row['Permission']))
         return
 
     if commands_df.shape[0] > 0:
