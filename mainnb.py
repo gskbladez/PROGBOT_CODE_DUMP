@@ -6,15 +6,9 @@ import pandas as pd
 import numpy as np
 import re
 import mainadvance
-from maincommon import clean_args
-from maincommon import send_query_msg
-from maincommon import find_value_in_table
-from maincommon import cc_color_dictionary
-from maincommon import rulebook_df
-from maincommon import nyx_link
-from maincommon import grid_link
-from maincommon import help_df
-from maincommon import playermade_list
+from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table
+from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
+from maincommon import nyx_link, grid_link
 
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
@@ -27,6 +21,7 @@ MAX_NPU_QUERY = MAX_NCP_QUERY
 PROBABLY_INFINITE = 99
 MAX_RANDOM_VIRUSES = 6
 MAX_ELEMENT_QUERY = 12
+MAX_MD_BONUS = 20
 
 skill_list = ['Sense', 'Info', 'Coding',
               'Strength', 'Speed', 'Stamina',
@@ -50,7 +45,9 @@ cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard D
            "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
            "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
            "MUDSLURP": "Discord, MUD",
-           "Tarot": "", "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice"}
+           "Tarot": "",
+           "Summber Camp": "Summer Camp, SummerCamp, Summer, Camp, Summber",
+           "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice"}
 cc_list = list(cc_dict.keys())
 cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 virus_colors = {"Virus": 0x7c00ff,
@@ -68,7 +65,9 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                     "violet": {"color": 0x895EFF,
                              "image": settings.violet_md_image},
                     "sapphire": {"color": 0x3659FE,
-                             "image": settings.sapphire_md_image}}
+                             "image": settings.sapphire_md_image},
+                    "sunny": {"color": cc_color_dictionary["Summber Camp"],
+                              "image": settings.sunny_md_image}}
 
 chip_df = pd.read_csv(settings.chipfile, sep="\t").fillna('')
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
@@ -136,6 +135,8 @@ async def help_cmd(context, *args, **kwargs):
         help_groups = sub_df.groupby(["Type"])
         return_msgs = ["%s\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in help_groups if name]
         return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
+    elif re.match("help(help)+", cleaned_args[0]):
+        cleaned_args = ["helphelp"]  # assuming direct control
 
     funkyarg = ''.join(cleaned_args)
     help_msg = await find_value_in_table(context, help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)
@@ -1027,6 +1028,7 @@ async def query(context, *args, **kwargs):
                                     sendcontent="`%s` is not a valid query!" % args[0])
 
 
+
 async def mysterydata_master(context, args, force_reward=False):
     arg = args[0]
     mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
@@ -1035,25 +1037,39 @@ async def mysterydata_master(context, args, force_reward=False):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Common, Uncommon, or Rare MysteryData. Also accepts Gold, Violet, or Sapphire.")
 
-    roll_probabilities = mysterydata_type[mysterydata_type["Type"] == "Info"]
-    if force_reward:
-        roll_probabilities = roll_probabilities[roll_probabilities["Value"].str.contains("^BattleChip|NCP|NPU$", flags=re.IGNORECASE)]
-    firstroll = random.randint(1, roll_probabilities.shape[0])-1
-    roll_category = roll_probabilities.iloc[firstroll]["Value"]
+    bonus_count = 0
+    bonus_limit = 1
 
-    df_sub = mysterydata_type[mysterydata_type["Type"] == roll_category]
-    row_num = random.randint(1, df_sub.shape[0]) - 1
-    result_chip = df_sub.iloc[row_num]["Value"]
-    if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
-        result_text = " %s!" % roll_category
-    else:
-        result_chip = re.sub(r"\.$", '!', result_chip)  # replaces any periods with exclamation marks!
-        result_text = ""
+    results_list = []
+    while bonus_count < bonus_limit:
+        if bonus_count >= MAX_MD_BONUS:
+            break
 
-    if roll_category == "Zenny":
-        result_chip = "%d" % (int(result_chip) * (random.randint(1, 6) + random.randint(1, 6)))
+        roll_probabilities = mysterydata_type[mysterydata_type["Type"] == "Info"]
+        if force_reward:
+            roll_probabilities = roll_probabilities[
+                roll_probabilities["Value"].str.contains("^BattleChip|NCP|NPU$", flags=re.IGNORECASE)]
+        roll_category = roll_row_from_table(roll_probabilities)["Value"]
 
-    result_text = result_chip + result_text
+        #temporary bonus roll shenanigans
+        if "Bonus Roll" in roll_category:
+            bonus_limit += 1
+            continue
+
+        df_sub = mysterydata_type[mysterydata_type["Type"] == roll_category]
+        result_chip = roll_row_from_table(df_sub)["Value"]
+
+        if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
+            results_list.append(result_chip)
+        else:
+            results_list = [re.sub(r"\s*(\.|!|\?)+\s*$", '', result_chip)]  # removes last punctuation marks!
+            break
+
+        if roll_category == "Zenny":
+            results_list = [f"{int(result_chip) * (random.randint(1, 6) + random.randint(1, 6))} Zenny"]
+            break
+
+        bonus_count += 1
 
     if arg in mysterydata_dict:
         md_color = mysterydata_dict[arg]["color"]
@@ -1062,8 +1078,13 @@ async def mysterydata_master(context, args, force_reward=False):
         md_color = 0xffffff
         md_image_url = ""
 
-    md_type = arg.capitalize()
+    if len(results_list) > 1:
+        result_text = f"{', '.join(results_list[0:-1])} and {results_list[-1]}"  # proper grammar, darnit
+    else:
+        result_text = results_list[0]
+    result_text += "!"
 
+    md_type = arg.capitalize()
     embed = discord.Embed(title="__{} MysteryData__".format(md_type),
                           description="_%s accessed the MysteryData..._\n" % context["message"].author.mention +
                                       "\nGot: **%s**" % result_text,
@@ -1159,27 +1180,28 @@ async def element(context, *args, **kwargs):
                                             sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
                                         sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
-    if len(cleaned_args) > 2:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Command is too long! Just give me `{cp}element [#]` or `{cp}element [category] [#]`!".replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
 
     element_return_number = 1  # number of elements to return, 1 by default
-    element_category = None
-    sub_element_df = element_df
+    element_category = []
+    argDone = False
     for arg in cleaned_args:
+        if argDone:
+            await koduck.sendmessage(context["message"],
+                                     sendcontent="Extra arguments after number of elements; ignoring!")
+            break
         try:
             element_return_number = int(arg)
-            break
+            argDone = True
         except ValueError:
-            element_category = arg.lower().capitalize()
+            element_category.append(arg)
 
-            sub_element_df = element_df[element_df["category"].str.contains(re.escape(arg), flags=re.IGNORECASE)]
-            if sub_element_df.shape[0] == 0:
-                return await koduck.sendmessage(context["message"],
-                                                sendcontent="Not a valid category!\n" +
-                                                            "Categories: **%s**" % ", ".join(element_category_list))
-
+    regex_search = [f"^\s*{re.escape(a)}\s*$" for a in element_category]
+    sub_element_df = element_df[element_df["category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
+    all_cats = sub_element_df["category"].unique().tolist()
+    if len(all_cats) != len(element_category): # so one of the categories isn't actually in the DB
+        return await koduck.sendmessage(context["message"],
+                                        sendcontent="Invalid category provided!\n" +
+                                                    "Categories: **%s**" % ", ".join(element_category_list))
     if element_return_number < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="The number of elements can't be 0 or negative!")
@@ -1190,11 +1212,14 @@ async def element(context, *args, **kwargs):
     elements_selected = random.sample(range(sub_element_df.shape[0]), element_return_number)
     elements_name = [sub_element_df.iloc[i]["element"] for i in elements_selected]
 
-    if element_category is None:
+    if not element_category:
         element_flavor_title = "Picked {} random element(s)...".format(str(element_return_number))
-    else:
+    elif len(all_cats) == 1:
         element_flavor_title = "Picked {} random element(s) from the {} category...".format(str(element_return_number),
-                                                                                            element_category)
+                                                                                            all_cats[0])
+    else:
+        element_flavor_title = "Picked {} random element(s) from the {} and {} categories...".format(str(element_return_number),
+                                                                                            ", ".join(all_cats[:-1]), all_cats[-1])
     element_color = 0x48C800
     elements_list = ", ".join(elements_name)
 
@@ -1471,7 +1496,12 @@ async def adventure(context, *args, **kwargs):
                                         sendcontent="I can only generate one adventure at a time!")
     await adventure_master(context, cleaned_args)
 
+
 async def adventure_master(context, args):
+    if args[0].lower() == 'core':
+        adventure_df_use = adventure_df[adventure_df["Sort"] == "Core"]
+    else:
+        adventure_df_use = adventure_df
 # -----------------------------------------------------------------------
 # ADVENTURE HEADERS
     # The "Sort" column controls how the data is sorted between the option presets.
@@ -1481,171 +1511,79 @@ async def adventure_master(context, args):
     # The following sorting mechanisms have been removed until more options have been created for them.
     # Atmosphere, NPC last names, vulnerability header, some sort/definition rules that are needed in later iterations
 # -----------------------------------------------------------------------
-# Classification headers (for the type of adventure the generator sorts from)
-# These three work together (Except core rulebook doesn't really care about ClassHeader, for now.)
-
-    classdf_sub = adventure_df[adventure_df["Type"] == "ClassHeader"]
-    row_num = random.randint(1, classdf_sub.shape[0]) - 1
-    # sort_class = [classdf_sub.iloc[row_num]["Sort"]]
-    class_header = [classdf_sub.iloc[row_num]["Result"]]
-
 # Adventure headers
 # Corresponds to the header table in the book. Extended for customization.
 
     advheaddf_sub = adventure_df[adventure_df["Type"] == "AdvHeader"]
-    row_num = random.randint(1, advheaddf_sub.shape[0]) - 1
-    sort_advheader = [advheaddf_sub.iloc[row_num]["Sort"]]
-    define_advheader = [advheaddf_sub.iloc[row_num]["Definition"]]
-    adv_header = [advheaddf_sub.iloc[row_num]["Result"]]
+    advhead_row = roll_row_from_table(adventure_df_use, df_filters={"Type": "AdvHeader"})
+    define_advheader = [advhead_row["Definition"]]
+    adv_header = advhead_row["Result"]
 
+# -----------------------------------------------------------------------
 # Header results
 # Corresponds to the results table in the book.
 
-    headresultdf_sub = adventure_df[adventure_df["Type"] == "HeaderResult"]
-    row_num = random.randint(1, headresultdf_sub.shape[0]) - 1
-    sort_headresult = [headresultdf_sub.iloc[row_num]["Sort"]]
-    define_headresult = [headresultdf_sub.iloc[row_num]["Definition"]]
-    header_result = [headresultdf_sub.iloc[row_num]["Result"]]
+    headresultdf_row = roll_row_from_table(adventure_df_use, df_filters={"Type": "HeaderResult"})
+    define_headresult = [headresultdf_row["Definition"]]
+    header_result = headresultdf_row["Result"]
 
-# -----------------------------------------------------------------------
-# Element generation. Just borrowed the element picker code for this.
-
-    navi_element = 1
-    navi_element = random.sample(range(element_df.shape[0]), navi_element)
-    navi_element = [element_df.iloc[i]["element"] for i in navi_element]
 
 # -----------------------------------------------------------------------
 # Conflict generators. Headers for conflicts and vulnerabilities primarily exist for homebrew tables.
 
-    conflictheaddf_sub = adventure_df[adventure_df["Type"] == "ConflictHeader"]
-    row_num = random.randint(1, conflictheaddf_sub.shape[0]) - 1
-    # sort_conflicthead = [conflictheaddf_sub.iloc[row_num]["Sort"]]
-    # define_conflicthead = [conflictheaddf_sub.iloc[row_num]["Definition"]]
-    conflict_header = [conflictheaddf_sub.iloc[row_num]["Result"]]
-
-    conflictresultdf_sub = adventure_df[adventure_df["Type"] == "ConflictResult"]
-    row_num = random.randint(1, conflictresultdf_sub.shape[0]) - 1
-    sort_conflictresult = [conflictresultdf_sub.iloc[row_num]["Sort"]]
-    # define_conflictresult = [conflictresultdf_sub.iloc[row_num]["Definition"]]
-    conflict_result = [conflictresultdf_sub.iloc[row_num]["Result"]]
-
-    vulnresdf_sub = adventure_df[adventure_df["Type"] == "VulnResult"]
-    row_num = random.randint(1, vulnresdf_sub.shape[0]) - 1
-    sort_vulnres = [vulnresdf_sub.iloc[row_num]["Sort"]]
-    # define_vulnres = [vulnresdf_sub.iloc[row_num]["Definition"]]
-    vuln_result = [vulnresdf_sub.iloc[row_num]["Result"]]
-
-# -----------------------------------------------------------------------
-# Extended generator tables.
-
-    conflicttypedf_sub = adventure_df[adventure_df["Type"] == "ConflictType"]
-    row_num = random.randint(1, conflicttypedf_sub.shape[0]) - 1
-    conflict_type = [conflicttypedf_sub.iloc[row_num]["Result"]]
+    conflict_result = roll_row_from_table(adventure_df_use, df_filters={"Type": "ConflictResult"})["Result"]
+    vuln_result = roll_row_from_table(adventure_df_use, df_filters={"Type": "VulnResult"})["Result"]
 
 # -----------------------------------------------------------------------
 # Generators for human beings.
 # Although with the NBC you never know, it might be for ghosts instead.
 # First name generator corresponds to the first names in the Core book. Last names are homebrew.
 # Maybe to-do navi names too?
-
-    npcfirstdf_sub = adventure_df[adventure_df["Type"] == "NPCFirstName"]
-    row_num = random.randint(1, npcfirstdf_sub.shape[0]) - 1
-    sort_npcfirst = [npcfirstdf_sub.iloc[row_num]["Sort"]]
-    npc_firstname = [npcfirstdf_sub.iloc[row_num]["Result"]]
+    npc_firstname = roll_row_from_table(adventure_df_use, df_filters={"Type": "NPCFirstName"})["Result"]
 
 # -----------------------------------------------------------------------
 # these use the same tables, just need individual results
-    npcpersonalitydf_sub = adventure_df[adventure_df["Type"] == "Personality"]
-    row_num = random.randint(1, npcpersonalitydf_sub.shape[0]) - 1
-    sort_npcpersonality = [npcpersonalitydf_sub.iloc[row_num]["Sort"]]
-    npc_personality = [npcpersonalitydf_sub.iloc[row_num]["Result"]]
+    npc_personality = roll_row_from_table(adventure_df_use, df_filters={"Type": "Personality"})["Result"]
 
-    navipersonalitydf_sub = adventure_df[adventure_df["Type"] == "Personality"]
-    row_num = random.randint(1, navipersonalitydf_sub.shape[0]) - 1
-    navi_personality = [navipersonalitydf_sub.iloc[row_num]["Result"]]
 # -----------------------------------------------------------------------
 
-    npcoccupationdf_sub = adventure_df[adventure_df["Type"] == "Occupation"]
-    row_num = random.randint(1, npcoccupationdf_sub.shape[0]) - 1
-    sort_npcoccupation = [npcoccupationdf_sub.iloc[row_num]["Sort"]]
-    npc_occupation = [npcoccupationdf_sub.iloc[row_num]["Result"]]
-
-    npcfeaturedf_sub = adventure_df[adventure_df["Type"] == "Feature"]
-    row_num = random.randint(1, npcfeaturedf_sub.shape[0]) - 1
-    sort_npcfeature = [npcfeaturedf_sub.iloc[row_num]["Sort"]]
-    npc_feature = [npcfeaturedf_sub.iloc[row_num]["Result"]]
-
-    navihostilitydf_sub = adventure_df[adventure_df["Type"] == "NaviHostility"]
-    row_num = random.randint(1, navihostilitydf_sub.shape[0]) - 1
-    navi_hostility = [navihostilitydf_sub.iloc[row_num]["Result"]]
+    npc_occupation = roll_row_from_table(adventure_df_use, df_filters={"Type": "Occupation"})["Result"]
+    npc_feature = roll_row_from_table(adventure_df_use, df_filters={"Type": "Feature"})["Result"]
 
     if args[0] == 'core':
-        while sort_advheader[0].lower() != 'core':
-            row_num = random.randint(1, advheaddf_sub.shape[0]) - 1
-            sort_advheader = [advheaddf_sub.iloc[row_num]["Sort"]]
-            define_advheader = [advheaddf_sub.iloc[row_num]["Definition"]]
-            adv_header = [advheaddf_sub.iloc[row_num]["Result"]]
-
-        while sort_headresult[0].lower() != 'core' or define_headresult[0] != define_advheader[0]:
-            row_num = random.randint(1, headresultdf_sub.shape[0]) - 1
-            sort_headresult = [headresultdf_sub.iloc[row_num]["Sort"]]
-            define_headresult = [headresultdf_sub.iloc[row_num]["Definition"]]
-            header_result = [headresultdf_sub.iloc[row_num]["Result"]]
-
-        while sort_conflictresult[0].lower() != 'core':
-            row_num = random.randint(1, conflictresultdf_sub.shape[0]) - 1
-            sort_conflictresult = [conflictresultdf_sub.iloc[row_num]["Sort"]]
-            # define_conflictresult = [conflictresultdf_sub.iloc[row_num]["Definition"]]
-            conflict_result = [conflictresultdf_sub.iloc[row_num]["Result"]]
-
-        while sort_npcfirst[0].lower() != 'core':
-            row_num = random.randint(1, npcfirstdf_sub.shape[0]) - 1
-            sort_npcfirst = [npcfirstdf_sub.iloc[row_num]["Sort"]]
-            npc_firstname = [npcfirstdf_sub.iloc[row_num]["Result"]]
-
-        while sort_npcpersonality[0].lower() != 'core':
-            row_num = random.randint(1, npcpersonalitydf_sub.shape[0]) - 1
-            sort_npcpersonality = [npcpersonalitydf_sub.iloc[row_num]["Sort"]]
-            npc_personality = [npcpersonalitydf_sub.iloc[row_num]["Result"]]
-
-        while sort_npcoccupation[0].lower() != 'core':
-            row_num = random.randint(1, npcoccupationdf_sub.shape[0]) - 1
-            sort_npcoccupation = [npcoccupationdf_sub.iloc[row_num]["Sort"]]
-            npc_occupation = [npcoccupationdf_sub.iloc[row_num]["Result"]]
-
-        while sort_npcfeature[0].lower() != 'core':
-            row_num = random.randint(1, npcfeaturedf_sub.shape[0]) - 1
-            sort_npcfeature = [npcfeaturedf_sub.iloc[row_num]["Sort"]]
-            npc_feature = [npcfeaturedf_sub.iloc[row_num]["Result"]]
-
-        while sort_vulnres[0].lower() != 'core':
-            row_num = random.randint(1, vulnresdf_sub.shape[0]) - 1
-            sort_vulnres = [vulnresdf_sub.iloc[row_num]["Sort"]]
-            # define_vulnres = [vulnresdf_sub.iloc[row_num]["Definition"]]
-            vuln_result = [vulnresdf_sub.iloc[row_num]["Result"]]
-
-        generated_msg = "The adventure starts with the kids {} {} " + \
-                        "But an evildoer is there to {} Their name is **{}**, and they are {} {}, notable for {}. Their vulnerability is {}\n"
+        generated_msg = f"The adventure starts with the kids {adv_header} {header_result} " + \
+                        f"But an evildoer is there to {conflict_result} " + \
+                        f"Their name is **{npc_firstname}**, and they are {npc_personality} {npc_occupation}, notable for {npc_feature}. " + \
+                        f"Their vulnerability is {vuln_result}\n"
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=generated_msg.format(*adv_header, *header_result,
-                                                                         *conflict_result, *npc_firstname,
-                                                                         *npc_personality, *npc_occupation,
-                                                                         *npc_feature, *vuln_result))
+                                        sendcontent=generated_msg)
+
+    # Classification headers (for the type of adventure the generator sorts from)
+    # These three work together (Except core rulebook doesn't really care about ClassHeader, for now.)
+
+    class_header = roll_row_from_table(adventure_df_use, df_filters={"Type": "ClassHeader"})["Result"]
+    conflict_header = roll_row_from_table(adventure_df_use, df_filters={"Type": "ConflictHeader"})["Result"]
+    navi_personality = roll_row_from_table(adventure_df_use, df_filters={"Type": "Personality"})["Result"]
+    navi_hostility = roll_row_from_table(adventure_df_use, df_filters={"Type": "NaviHostility"})["Result"]
+
+    # -----------------------------------------------------------------------
+    # Element generation. Just borrowed the element picker code for this.
+    navi_element = roll_row_from_table(element_df)["element"]
+
+    # -----------------------------------------------------------------------
+    # Extended generator tables.
+    conflict_type = roll_row_from_table(adventure_df_use, df_filters={"Type": "ConflictType"})["Result"]
+
 #   TODO:
 #    if (args[0] == 'extended'):
     if args[0] == 'chaos':
-        generated_msg = "The adventure starts with {} {} {} " + \
-                        "But {} {} Their vulnerability is {}\n" + \
-                        "**{}** is {} {}, notable for {}.\n" + \
-                        "Next, {} meet {} navi with the element of {} that greets them with {}.\n" + \
-                        "The primary conflict is {}"
+        generated_msg = f"The adventure starts with {class_header} {adv_header} {header_result} " + \
+                        f"But {conflict_header} {conflict_result} Their vulnerability is {vuln_result}\n" + \
+                        f"**{npc_firstname}** is {npc_personality} {npc_occupation}, notable for {npc_feature}.\n" + \
+                        f"Next, {class_header} meet {navi_personality} navi with the element of {navi_element} that greets them with {navi_hostility}.\n" + \
+                        f"The primary conflict is {conflict_type}"
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=generated_msg.format(*class_header, *adv_header, *header_result,
-                                                                         *conflict_header, *conflict_result,
-                                                                         *vuln_result,
-                                                                         *npc_firstname, *npc_personality,
-                                                                         *npc_occupation, *npc_feature, *class_header,
-                                                                         *navi_personality, *navi_element, *navi_hostility, *conflict_type))
+                                        sendcontent=generated_msg)
     else:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Please specify either Core or Chaos.")
@@ -1653,60 +1591,36 @@ async def adventure_master(context, args):
 async def fight(context, *args, **kwargs):
     cleaned_args = clean_args(args)
 
-    skilldf_sub = fight_df[fight_df["Type"] == "Skill"]
-    weapondf_sub = fight_df[fight_df["Type"] == "SecretWeapon"]
-    weaknessdf_sub = fight_df[fight_df["Type"] == "Weakness"]
-    arenadf_sub = fight_df[fight_df["Type"] == "Arena"]
-    manifestdf_sub = fight_df[fight_df["Type"] == "ElementManifest"]
-    navistartdf_sub = fight_df[fight_df["Type"] == "NaviStart"]
-    troubledf_sub = fight_df[fight_df["Type"] == "TroubleType"]
-    objectivedf_sub = fight_df[fight_df["Type"] == "FightObjective"]
-    realassistdf_sub = fight_df[fight_df["Type"] == "RealWorldAssist"]
-
     # element
-    navi_element = 1
-    navi_element = random.sample(range(element_df.shape[0]), navi_element)
-    navi_element = [element_df.iloc[i]["element"] for i in navi_element]
+    navi_element = roll_row_from_table(element_df)["element"]
     # skills
-    row_num = random.randint(1, skilldf_sub.shape[0]) - 1
-    bestskill = [skilldf_sub.iloc[row_num]["Result"]]
-    row_num = random.randint(1, skilldf_sub.shape[0]) - 1
-    trainedskill = [skilldf_sub.iloc[row_num]["Result"]]
+    bestskill = roll_row_from_table(fight_df, df_filters={"Type": "Skill"})["Result"]
+    trainedskill = roll_row_from_table(fight_df, df_filters={"Type": "Skill"})["Result"]
     # secret weapon
-    row_num = random.randint(1, weapondf_sub.shape[0]) - 1
-    secret_weapon = [weapondf_sub.iloc[row_num]["Result"]]
+    secret_weapon = roll_row_from_table(fight_df, df_filters={"Type": "SecretWeapon"})["Result"]
     # weakness
-    row_num = random.randint(1, weaknessdf_sub.shape[0]) - 1
-    weakness = [weaknessdf_sub.iloc[row_num]["Result"]]
+    weakness = roll_row_from_table(fight_df, df_filters={"Type": "Weakness"})["Result"]
+
     # arena
-    row_num = random.randint(1, arenadf_sub.shape[0]) - 1
-    arena = [arenadf_sub.iloc[row_num]["Result"]]
+    arena = roll_row_from_table(fight_df, df_filters={"Type": "Arena"})["Result"]
     # element manifest
-    row_num = random.randint(1, manifestdf_sub.shape[0]) - 1
-    element_manifest = [manifestdf_sub.iloc[row_num]["Result"]]
+    element_manifest = roll_row_from_table(fight_df, df_filters={"Type": "ElementManifest"})["Result"]
     # navi start
-    row_num = random.randint(1, navistartdf_sub.shape[0]) - 1
-    navi_start = [navistartdf_sub.iloc[row_num]["Result"]]
+    navi_start = roll_row_from_table(fight_df, df_filters={"Type": "NaviStart"})["Result"]
     # trouble type
-    row_num = random.randint(1, troubledf_sub.shape[0]) - 1
-    trouble_type = [troubledf_sub.iloc[row_num]["Result"]]
+    trouble_type = roll_row_from_table(fight_df, df_filters={"Type": "TroubleType"})["Result"]
     # fight objective
-    row_num = random.randint(1, objectivedf_sub.shape[0]) - 1
-    fight_objective = [objectivedf_sub.iloc[row_num]["Result"]]
+    fight_objective = roll_row_from_table(fight_df, df_filters={"Type": "FightObjective"})["Result"]
     # real world assist
-    row_num = random.randint(1, realassistdf_sub.shape[0]) - 1
-    real_world_assist = [realassistdf_sub.iloc[row_num]["Result"]]
+    real_world_assist = roll_row_from_table(fight_df, df_filters={"Type": "RealWorldAssist"})["Result"]
+
     if (len(cleaned_args) < 1):
-        generated_msg = "For this fight, this Navi has the element **{}**, and is proficient in **{}**. They are also trained in **{}**. " + \
-                        "**{}**, but their weakness is **{}**.\n" + \
-                        "The arena is **{}**, and the Navi's element manifests as **{}**. The Navi is **{}**!\n" + \
-                        "{}, and the NetOps need to **{}**! However, in the real world, **{}** is there to help!"
+        generated_msg = f"For this fight, this Navi has the element **{navi_element}**, and is proficient in **{bestskill}**. They are also trained in **{trainedskill}**. " + \
+                        f"**{secret_weapon}**, but their weakness is **{weakness}**.\n" + \
+                        f"The arena is **{arena}**, and the Navi's element manifests as **{element_manifest}**. The Navi is **{navi_start}**!\n" + \
+                        f"{trouble_type}, and the NetOps need to **{fight_objective}**! However, in the real world, **{real_world_assist}** is there to help!"
         return await koduck.sendmessage(context["message"],
-                                        sendcontent=generated_msg.format(*navi_element, *bestskill, *trainedskill,
-                                                                         *secret_weapon, *weakness,
-                                                                         *arena,
-                                                                         *element_manifest, *navi_start,
-                                                                         *trouble_type, *fight_objective, *real_world_assist))
+                                        sendcontent=generated_msg)
     if cleaned_args[0] == 'help':
         fight_help_msg = "I can generate a Navi boss fight for you! Specify `{cp}fight` to generate one!"
         return await koduck.sendmessage(context["message"], sendcontent=fight_help_msg.replace("{cp}", settings.commandprefix))

@@ -20,6 +20,7 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Tarot": 0xfcf4dc,
                        "Nyx": 0xa29e14,
                        "Cast the Dice": 0x429ef5,
+                       "Summber Camp": 0xffad33,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
                        "Item": 0xffffff,
@@ -103,3 +104,18 @@ async def find_value_in_table(context, df, search_col, search_arg, suppress_notf
                                      sendcontent="Found more than one match for %s! You should probably let the devs know..." % search_arg)
         return None
     return search_results.iloc[0]
+
+
+def roll_row_from_table(roll_df, df_filters={}):
+    bool_filt = None
+    if df_filters:
+        for k, v in df_filters.items():
+            if bool_filt is None:
+                bool_filt = (roll_df[k] == v)
+            else:
+                bool_filt = bool_filt & (roll_df[k] == v)
+        sub_df = roll_df[bool_filt]
+    else:
+        sub_df = roll_df
+    row_num = random.randint(1, sub_df.shape[0]) - 1
+    return sub_df.iloc[row_num]
