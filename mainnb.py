@@ -1195,13 +1195,16 @@ async def element(context, *args, **kwargs):
         except ValueError:
             element_category.append(arg)
 
-    regex_search = [f"^\s*{re.escape(a)}\s*$" for a in element_category]
-    sub_element_df = element_df[element_df["category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
-    all_cats = sub_element_df["category"].unique().tolist()
-    if len(all_cats) != len(element_category): # so one of the categories isn't actually in the DB
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Invalid category provided!\n" +
-                                                    "Categories: **%s**" % ", ".join(element_category_list))
+    if element_category:
+        regex_search = [f"^\s*{re.escape(a)}\s*$" for a in element_category]
+        sub_element_df = element_df[element_df["category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
+        all_cats = sub_element_df["category"].unique().tolist()
+        if len(all_cats) != len(element_category):  # so one of the categories isn't actually in the DB
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Invalid category provided!\n" +
+                                                        "Categories: **%s**" % ", ".join(element_category_list))
+    else:
+        sub_element_df = element_df
     if element_return_number < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="The number of elements can't be 0 or negative!")
