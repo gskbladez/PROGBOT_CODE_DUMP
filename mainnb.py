@@ -44,7 +44,7 @@ cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard D
            "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
            "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
            "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
-           "MUDSLURP": "Discord, MUD",
+           "MUDSLURP": "MUD",
            "Tarot": "",
            "Summer Camp": "Summber Camp, SummerCamp, Summer, Sunmer Camp",
            "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice"}
