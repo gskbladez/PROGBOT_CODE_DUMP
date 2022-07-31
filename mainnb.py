@@ -44,9 +44,9 @@ cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard D
            "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
            "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
            "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
-           "MUDSLURP": "Discord, MUD",
+           "MUDSLURP": "MUD",
            "Tarot": "",
-           "Summber Camp": "Summer Camp, SummerCamp, Summer, Camp, Summber",
+           "Summer Camp": "Summber Camp, SummerCamp, Summer, Sunmer Camp",
            "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice"}
 cc_list = list(cc_dict.keys())
 cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
@@ -231,13 +231,13 @@ def query_chip(args):
         subdf = nyx_chip_df
         if subdf.shape[0] == 0:
             return False, "", ""
-        return_title = "Pulling up all BattleChips from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
+        return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower not in ["core"] and arg_lower in chip_from_list:
         subdf = chip_df[chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
         if subdf.shape[0] == 0:
             return False, "", ""
-        return_title = "Pulling up all BattleChips from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
+        return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in [i.lower() for i in playermade_list]:
         subdf = pmc_chip_df[pmc_chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
@@ -269,7 +269,7 @@ async def chip(context, *args, **kwargss):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of 1-%d **BattleChips** and I can pull up their info for you!\n\n" % MAX_CHIP_QUERY+
-                                                    "I can also query chips by **Category**, **Tag**, **License**, and **Crossover Content**! \n" +
+                                                    "I can also query chips by **Category**, **Tag**, **License**, and **Advance Content**! \n" +
                                                     "I can also list all current chip categories with `{cp}chip category`, and all current chip tags with `{cp}chip tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag blade`)"\
                                         .replace("{cp}", koduck.get_prefix(context["message"])))
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
@@ -324,7 +324,7 @@ async def chip(context, *args, **kwargss):
     would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="`%s` has no Crossover Content BattleChips!" % would_be_valid)
+                                        sendcontent="`%s` has no Advance Content BattleChips!" % would_be_valid)
 
     if len(cleaned_args) > MAX_CHIP_QUERY:
         return await koduck.sendmessage(context["message"], sendcontent="Too many chips, no more than 5!")
@@ -518,7 +518,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
             if power_source in playermade_list:
                 field_footer = "Source: %s (Unofficial)" % power_source
             elif power_source in cc_list:
-                field_footer = "Source: %s (Crossover Content)" % power_source
+                field_footer = "Source: %s (Advance Content)" % power_source
 
     else:
         field_title = '%s EB' % power_eb
@@ -537,7 +537,7 @@ async def power_ncp(context, arg, force_power=False, ncp_only=False, suppress_er
             else:
                 power_name += (" (%s Illegal Crossover NCP) " % power_source)
         elif power_source != "Core":
-            power_name += " (%s Crossover NCP)" % power_source
+            power_name += " (%s Advance NCP)" % power_source
 
         if power_type in ['Passive', '-', 'Upgrade', 'Minus']:
             field_description = power_description
@@ -651,11 +651,11 @@ def query_ncp(arg_lower):
         return True, results_title, results_msg
     elif arg_lower in ["nyx"]:
         subdf = nyx_power_df
-        results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
+        results_title = "Pulling up all NCPs from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in valid_cc_list:
         subdf = ncp_df[ncp_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        results_title = "Pulling up all NCPs from the `%s` Crossover Content..." % subdf.iloc[0]["From?"]
+        results_title = "Pulling up all NCPs from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in [i.lower() for i in playermade_list]:
         subdf = pmc_power_df[(pmc_power_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)) &
@@ -677,7 +677,7 @@ async def ncp(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the names of 1-%d **NaviCust Parts** (NCPs) and I can pull up their info for you!\n\n" % MAX_POWER_QUERY +
-                                                    "I can also query NCPs by **EB** and **Crossover Content!**")
+                                                    "I can also query NCPs by **EB** and **Advance Content!**")
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "ncpruling", suppress_notfound=True)
@@ -694,7 +694,7 @@ async def ncp(context, *args, **kwargs):
     would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="`%s` has no Crossover Content NCPs!" % would_be_valid)
+                                        sendcontent="`%s` has no Advance Content NCPs!" % would_be_valid)
 
     if len(cleaned_args) > MAX_NCP_QUERY:
         return await koduck.sendmessage(context["message"],
@@ -804,7 +804,7 @@ async def virus_master(context, arg, simplified=True):
     if virus_source in playermade_list:
         virus_footer += " (%s Unofficial %s)" % (virus_source, virus_footer_bit)
     elif virus_source in cc_list:
-        virus_footer += " (%s Crossover %s)" % (virus_source, virus_footer_bit)
+        virus_footer += " (%s Advance %s)" % (virus_source, virus_footer_bit)
     if virus_artist:
         if " (Provided)" in virus_artist:
             virus_footer += "\n(Artwork provided by %s)" % virus_artist.replace(" (Provided)", "")
@@ -877,7 +877,7 @@ def query_virus(arg_lower):
         result_msg = ", ".join(sub_df["Name"])
     elif arg_lower in valid_cc_list:
         sub_df = virus_df[virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        result_title = "Viruses from the `%s` Crossover Content..." % sub_df.iloc[0]["From?"]
+        result_title = "Viruses from the `%s` Advance Content..." % sub_df.iloc[0]["From?"]
         result_msg = ", ".join(sub_df["Name"])
     elif arg_lower in [i.lower() for i in playermade_list]:
         subdf = pmc_virus_df[pmc_virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
@@ -895,7 +895,7 @@ async def virus(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Give me the name of 1-%d **Viruses** and I can pull up their info for you!\n\n" % MAX_VIRUS_QUERY +
-                                                    "I can query Viruses by **Category**, **Tag**, or **Crossover Content**, and pull up the list of Virus categories with `{cp}virus category`!\n".replace(
+                                                    "I can query Viruses by **Category**, **Tag**, or **Advance Content**, and pull up the list of Virus categories with `{cp}virus category`!\n".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])) +
                                                     "For a list of all Virus categories, use `{cp}virus category`, and all current Virus tags with `{cp}virus tag`. To pull up details on a specific Category or Tag, use `{cp}tag` instead. (i.e. `{cp}tag artillery`)".replace(
                                                         "{cp}", koduck.get_prefix(context["message"])))
@@ -972,7 +972,7 @@ async def query(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) < 1:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Crossover Content chips! " +
+                                        sendcontent="This command can sort battlechips, NCPs, and powers by Category, and single out Advance Content chips! " +
                                                     "Please type `{cp}help query` for more information.".replace("{cp}",
                                                                                                                  koduck.get_prefix(context["message"])))
     arg = cleaned_args[0]
@@ -1022,7 +1022,7 @@ async def query(context, *args, **kwargs):
     would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="`%s` has no queryable Crossover Content!" % would_be_valid)
+                                        sendcontent="`%s` has no queryable Advance Content!" % would_be_valid)
 
     return await koduck.sendmessage(context["message"],
                                     sendcontent="`%s` is not a valid query!" % args[0])
@@ -1195,13 +1195,16 @@ async def element(context, *args, **kwargs):
         except ValueError:
             element_category.append(arg)
 
-    regex_search = [f"^\s*{re.escape(a)}\s*$" for a in element_category]
-    sub_element_df = element_df[element_df["category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
-    all_cats = sub_element_df["category"].unique().tolist()
-    if len(all_cats) != len(element_category): # so one of the categories isn't actually in the DB
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Invalid category provided!\n" +
-                                                    "Categories: **%s**" % ", ".join(element_category_list))
+    if element_category:
+        regex_search = [f"^\s*{re.escape(a)}\s*$" for a in element_category]
+        sub_element_df = element_df[element_df["category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
+        all_cats = sub_element_df["category"].unique().tolist()
+        if len(all_cats) != len(element_category):  # so one of the categories isn't actually in the DB
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Invalid category provided!\n" +
+                                                        "Categories: **%s**" % ", ".join(element_category_list))
+    else:
+        sub_element_df = element_df
     if element_return_number < 1:
         return await koduck.sendmessage(context["message"],
                                         sendcontent="The number of elements can't be 0 or negative!")
