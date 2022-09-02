@@ -860,5 +860,5 @@ async def autoloot(context, *args, **kwargs):
         color=cc_color_dictionary["Nyx"])
     embed.add_field(name="[%s]" % subtitle_trimmed,
                     value="_%s_" % chip_description)
-    await koduck.sendmessage(context["message"], sendembed=embed)
+    await context.koduck.send_message(receive_message=context["message"], embed=embed)
     return
