@@ -62,7 +62,7 @@ def format_hits_roll(roll_result):
 
 
 async def repeatroll(context, *args, **kwargs):
-    if "param_line" not in context:
+    if not args:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "rollhelp", suppress_notfound=True)
         if ruling_msg is None:
             return await context.koduck.send_message(receive_message=context["message"],
@@ -84,7 +84,7 @@ async def repeatroll(context, *args, **kwargs):
         return await context.koduck.send_message(receive_message=context["message"],
                                         content="Can't repeat a roll a negative or zero number of times!")
 
-    roll_line = context["param_line"].split(",", 1)[1]
+    roll_line = context.param_line.split(",", 1)[1]
 
     if ROLL_COMMENT_CHAR in roll_line:
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
@@ -145,8 +145,7 @@ async def repeatroll(context, *args, **kwargs):
 
 
 async def roll(context, *args, **kwargs):
-    #if "param_line" not in context:
-    if not hasattr("context", "param_line"):
+    if not args:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "rollhelp", suppress_notfound=True)
         if ruling_msg is None:
             return await context.koduck.send_message(receive_message=context["message"],
@@ -154,7 +153,7 @@ async def roll(context, *args, **kwargs):
         return await context.koduck.send_message(receive_message=context["message"],
                                         content=("I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!\n\n" + ruling_msg["Response"]).replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
-    roll_line = context["param_line"]
+    roll_line = context.param_line
     if ROLL_COMMENT_CHAR in roll_line:
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
     else:

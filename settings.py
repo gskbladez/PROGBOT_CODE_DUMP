@@ -44,10 +44,10 @@ masteradmin = ""
 default_user_level = 1
 max_user_level = 3
 log_format = "{timestamp}\t{type}\t{server_id}\t{server_name}\t{channel_id}\t{channel_name}\t{user_id}\t{discord_tag}\t{nickname}\t{message_content}\t{data}\t{extra}"
-channel_cooldown = 1000
+channel_cooldown = 1000  # technically unused rn
 ignore_cd_level = 2
-user_cooldown_0 = 60000  # in milliseconds
-user_cooldown_1 = 200  # in milliseconds
+user_cooldown_0 = 60000  # in milliseconds; technically unused
+user_cooldown_1 = 200  # in milliseconds; technically unused
 output_history_size = 10
 background_task = None
 background_task_interval = 10 # TODO: Figure out background tasks with new koduck
@@ -56,22 +56,7 @@ enable_run_command = False
 run_command_name = "run"
 run_command_description = "Run a prefix command"
 run_command_default_response = "Command ran successfully"
-
-#MESSAGES
-message_something_broke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
-message_unknown_command = "Command not recognized"
-message_unhandled_error = "Unhandled error ({})"
-message_result_too_long = "Sorry, the result was too long to output ({}/{} characters)"
-message_embed_too_long = "Sorry, the embed was too long to output ({} {}/{} characters)"
-message_embed_empty_field = "The output embed was invalid ({} can't be empty)"
-message_cooldown_active = "Cooldown active"
-message_restricted_access = "You do not have permission to use this command"
-message_missing_params = "Missing required parameters: {}"
-message_oops_failed = "Oops failed!"
-message_oops_success = "Oops success!"
-message_addresponse_failed = "Failed to add custom response!"
-message_removeresponse_success = "Custom response successfully removed!"
-message_removeresponse_failed = "Failed to remove custom response!"
+purge_search_limit = 100
 
 #HARDCODED LINKS
 character_sheet = r"https://docs.google.com/spreadsheets/d/158iI4LCpfS4AGjV5EshHkbKUD4GxogJCiwZCV6QzJ5s/edit#gid=295914024"
@@ -93,3 +78,48 @@ source_guild_id = 556291542206382080
 custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
                  "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901995743752106064>",
                  "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>"}
+
+#MESSAGES
+message_something_broke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
+message_unknown_command = "Command not recognized"
+message_unhandled_error = "Unhandled error ({})"
+message_result_too_long = "Sorry, the result was too long to output ({}/{} characters)"
+message_embed_too_long = "Sorry, the embed was too long to output ({} {}/{} characters)"
+message_embed_empty_field = "The output embed was invalid ({} can't be empty)"
+message_cooldown_active = "Cooldown active"
+message_restricted_access = "You do not have permission to use this command"
+message_missing_params = "Missing required parameters: {}"
+message_oops_failed = "No last output from this user to delete"
+message_oops_success = "Deleted last output from this user"
+message_addresponse_success = "Added a custom response: '{}' -> '{}'"
+message_addresponse_failed = "Failed to add custom response!"
+message_addresponse_noparam = "Missing parameters to add response"
+message_removeresponse_success = "Removed a custom response"
+message_removeresponse_failed = "'{}' doesn't seem to have a corresponding custom response"
+message_removeresponse_noparam = "Missing parameters to remove response"
+message_addsetting_success = "Successfully added setting"
+message_addsetting_failed = "That setting name already exists"
+message_updatesetting_success = "Setting updated!"
+message_updatesetting_failed = "That setting name doesn't seem to exist or you don't have permission to edit it"
+message_updatesetting_noparam = "Need parameters for setting update!"
+message_removesetting_success = "Successfully removed setting"
+message_removesetting_failed = "That setting name doesn't seem to exist or you don't have permission to edit it"
+message_removesetting_noparam = "Need parameters to remove setting"
+message_nomentioneduser = "I need exactly one mentioned user!	"
+message_addadmin_success = "<@!{}> is now an admin!"
+message_addadmin_failed = "That user is already an admin"
+message_removeadmin_success = "<@!{}> is no longer an admin"
+message_removeadmin_failed = "That user is not an admin"
+message_purge_invalidparam = "Please give me an integer number of bot messages to purge"
+message_restrict_success = "<@!{}> is now restricted from using {} commands"
+message_restrict_failed = "That user is already restricted"
+message_restrict_failed2 = "{} admins cannot be restricted"
+message_unrestrict_success = "<@!{}> is now unrestricted from using {} commands"
+message_unrestrict_failed = "That user is not restricted"
+message_nomentioneduser = "I need exactly one mentioned user!"
+message_nomentioneduser2 = "I need exactly zero or one mentioned user!"
+message_sendmessage_noparam = "Need a message to send!"
+message_refresh_commands_success = "Commands refreshed successfully"
+message_refresh_commands_errors = "There were some errors while refreshing commands:"
+bugreport_channel_id = 704684798584815636
+errorlog_channel_id	= 623686382237384707

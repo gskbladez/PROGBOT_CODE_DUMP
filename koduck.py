@@ -148,7 +148,7 @@ class Koduck:
         #If send_message was triggered by a user message, check cooldowns
         if receive_message is not None:
             if channel is None:
-                send_channel = receive_message.channel # why are you none???
+                send_channel = receive_message.channel
             else:
                 send_channel = channel
             
@@ -373,7 +373,7 @@ class Koduck:
         #calculate time since the last bot output on the given channel
         try:
             TD = datetime.datetime.now() - self.last_message_DT[channel_id]
-            #return ((TD.microseconds / 1000) + (TD.seconds * 1000) < settings.channel_cooldown)
+            #return ((TD.microseconds / 1000) + (TD.seconds * 1000) < settings.channel_cooldown) # disables channel cooldown
             return False
         except KeyError:
             return False
@@ -390,7 +390,8 @@ class Koduck:
                     user_cooldown = getattr(settings, "user_cooldown_{}".format(user_level))
                 except AttributeError:
                     user_level -= 1
-            return ((TD.microseconds / 1000) + (TD.seconds * 1000) < user_cooldown)
+            #return ((TD.microseconds / 1000) + (TD.seconds * 1000) < user_cooldown)
+            return False
         else:
             return False
 

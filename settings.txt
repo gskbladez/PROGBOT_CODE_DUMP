@@ -1,3 +1,1 @@
 HEADER	Value	Tier
-bugreport_channel_id	704684798584815636
-errorlog_channel_id	623686382237384707

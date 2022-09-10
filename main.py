@@ -2,8 +2,6 @@ import discord
 import os
 from koduck import Koduck
 import logging
-import yadon
-import settings
 import mainaprilfools
 import yadon
 import settings
@@ -124,27 +122,27 @@ async def goodnight(context, *args, **kwargs):
 
 async def sendmessage(context, *args, **kwargs):
     if len(args) < 2:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_sendmessage_noparam)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_sendmessage_noparam)
     channelid = args[0]
     THEchannel = context.koduck.client.get_channel(int(channelid))
-    THEmessagecontent = context["param_line"][context["param_line"].index(settings.paramdelim) + 1:].strip()
-    return await context.koduck.sendmessage(context["message"], sendchannel=THEchannel, sendcontent=THEmessagecontent,
-                                    ignorecd=True)
+    THEmessagecontent = context["param_line"][context["param_line"].index(settings.param_delim) + 1:].strip()
+    return await context.koduck.send_message(receive_message=context["message"], channel=THEchannel, content=THEmessagecontent,
+                                    ignore_cd=True)
 
 
 async def bugreport(context, *args, **kwargs):
     if not context['params']:
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent="Sends a bug report to the ProgBot Devs! " + \
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content="Sends a bug report to the ProgBot Devs! " + \
                                                     "Please describe the error in full. " + \
                                                     "(i.e. `{cp}bugreport Sword is listed as 3 damage when it is 2 damage.`)".replace(
-                                                        "{cp}", koduck.get_prefix(context["message"])))
+                                                        "{cp}", context.koduck.get_prefix(context["message"])))
 
     channelid = int(settings.bugreport_channel_id)
 
     progbot_bugreport_channel = context.koduck.client.get_channel(channelid)
-    message_content = context["param_line"]
-    message_author = context["message"].author
+    message_content = context.param_line
+    message_author = context.message.author
     if context["message"].channel.type is discord.ChannelType.private:
         message_guild = "Direct message"
     else:
@@ -156,8 +154,8 @@ async def bugreport(context, *args, **kwargs):
     embed.set_footer(
         text="Submitted by: {}#{} ({})".format(message_author.name, message_author.discriminator, message_guild))
     embed.set_thumbnail(url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png")
-    await context.koduck.sendmessage(context["message"], sendchannel=progbot_bugreport_channel, embed=embed, ignorecd=True)
-    return await context.koduck.sendmessage(context["message"], sendcontent="**_Bug Report Submitted!_**\nThanks for the help!")
+    await context.koduck.send_message(receive_message=context["message"], channel=progbot_bugreport_channel, embed=embed, ignore_cd=True)
+    return await context.koduck.send_message(receive_message=context["message"], content="**_Bug Report Submitted!_**\nThanks for the help!", ignore_cd=True)
 
 
 async def changestatus(context, *args, **kwargs):
@@ -176,74 +174,74 @@ async def updatesettings(context, *args, **kwargs):
 # bot name is updated in the background task, so it won't update immediately
 async def updatesetting(context, *args, **kwargs):
     if len(args) < 2:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_updatesetting_noparam)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_updatesetting_noparam)
     variable = args[0]
-    value = context["param_line"][context["param_line"].index(settings.paramdelim) + 1:].strip()
-    result = context.koduck.updatesetting(variable, value, context.koduck.getuserlevel(context["message"].author.id))
+    value = context["param_line"][context["param_line"].index(settings.param_delim) + 1:].strip()
+    result = context.koduck.updatesetting(variable, value, context.koduck.get_user_level(context["message"].author.id))
     if result is not None:
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_updatesetting_success.format(variable, result,
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_updatesetting_success.format(variable, result,
                                                                                                   value))
     else:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_updatesetting_failed)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_updatesetting_failed)
 
 
 async def addsetting(context, *args, **kwargs):
     if len(args) < 2:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_updatesetting_noparam)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_updatesetting_noparam)
     variable = args[0]
-    value = context["param_line"][context["param_line"].index(settings.paramdelim) + 1:].strip()
-    result = context.koduck.addsetting(variable, value, context.koduck.getuserlevel(context["message"].author.id))
+    value = context["param_line"][context["param_line"].index(settings.param_delim) + 1:].strip()
+    result = context.koduck.addsetting(variable, value, context.koduck.get_user_level(context["message"].author.id))
     if result is not None:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_addsetting_success)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_addsetting_success)
     else:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_addsetting_failed)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_addsetting_failed)
 
 
 async def removesetting(context, *args, **kwargs):
     if len(args) < 1:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_removesetting_noparam)
-    result = context.koduck.removesetting(args[0], context.koduck.getuserlevel(context["message"].author.id))
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_removesetting_noparam)
+    result = context.koduck.removesetting(args[0], context.koduck.get_user_level(context["message"].author.id))
     if result is not None:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_removesetting_success)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_removesetting_success)
     else:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_removesetting_failed)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_removesetting_failed)
 
 
 async def admin(context, *args, **kwargs):
     # need exactly one mentioned user (the order in the mentioned list is unreliable)
     if len(context["message"].mentions) != 1:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_nomentioneduser)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_nomentioneduser)
 
     userid = context["message"].mentions[0].id
-    userlevel = context.koduck.getuserlevel(userid)
+    userlevel = context.koduck.get_user_level(userid)
 
     # already an admin
     if userlevel == 2:
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_addadmin_failed.format(settings.botname))
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_addadmin_failed.format(settings.botname))
     else:
         context.koduck.updateuserlevel(userid, 2)
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_addadmin_success.format(userid, settings.botname))
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_addadmin_success.format(userid, settings.botname))
 
 
 async def unadmin(context, *args, **kwargs):
     # need exactly one mentioned user (the order in the mentioned list is unreliable)
     if len(context["message"].mentions) != 1:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_nomentioneduser)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_nomentioneduser)
 
     userid = context["message"].mentions[0].id
-    userlevel = context.koduck.getuserlevel(userid)
+    userlevel = context.koduck.get_user_level(userid)
 
     # not an admin
     if userlevel < 2:
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_removeadmin_failed.format(settings.botname))
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_removeadmin_failed.format(settings.botname))
     else:
         context.koduck.updateuserlevel(userid, 1)
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_removeadmin_success.format(userid,
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_removeadmin_success.format(userid,
                                                                                                 settings.botname))
 
 
@@ -252,10 +250,10 @@ async def purge(context, *args, **kwargs):
     try:
         limit = int(args[0])
     except (IndexError, ValueError):
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_purge_invalidparam)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_purge_invalidparam)
 
     counter = 0
-    async for message in context["message"].channel.history(limit=settings.purgesearchlimit):
+    async for message in context["message"].channel.history(limit=settings.purge_search_limit):
         if counter >= limit:
             break
         if message.author.id == context.koduck.client.user.id:
@@ -266,38 +264,38 @@ async def purge(context, *args, **kwargs):
 async def restrictuser(context, *args, **kwargs):
     # need exactly one mentioned user (the order in the mentioned list is unreliable)
     if len(context["message"].mentions) != 1:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_nomentioneduser)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_nomentioneduser)
 
     userid = context["message"].mentions[0].id
-    userlevel = context.koduck.getuserlevel(userid)
+    userlevel = context.koduck.get_user_level(userid)
 
     # already restricted
     if userlevel == 0:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_restrict_failed)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_restrict_failed)
     # don't restrict high level users
     elif userlevel >= 2:
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_restrict_failed2.format(settings.botname))
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_restrict_failed2.format(settings.botname))
     else:
         context.koduck.updateuserlevel(userid, 0)
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_restrict_success.format(userid, settings.botname))
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_restrict_success.format(userid, settings.botname))
 
 
 async def unrestrictuser(context, *args, **kwargs):
     # need exactly one mentioned user (the order in the mentioned list is unreliable)
     if len(context["message"].mentions) != 1:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_nomentioneduser)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_nomentioneduser)
 
     userid = context["message"].mentions[0].id
-    userlevel = context.koduck.getuserlevel(userid)
+    userlevel = context.koduck.get_user_level(userid)
 
     if userlevel != 0:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_unrestrict_failed)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_unrestrict_failed)
     else:
         context.koduck.updateuserlevel(userid, 1)
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_unrestrict_success.format(userid,
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_unrestrict_success.format(userid,
                                                                                                settings.botname))
 
 
@@ -305,7 +303,7 @@ async def unrestrictuser(context, *args, **kwargs):
 async def customresponse(context, *args, **kwargs):
     response = yadon.ReadRowFromTable(settings.customresponsestablename, context["command"])
     if response:
-        return await context.koduck.sendmessage(context["message"], sendcontent=response[0])
+        return await context.koduck.send_message(receive_message=context["message"], content=response[0])
 
 
 def export_tsv(df, filename):
@@ -315,43 +313,43 @@ def export_tsv(df, filename):
 
 async def addresponse(context, *args, **kwargs):
     if len(args) < 2:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_addresponse_noparam)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_addresponse_noparam)
     trigger = args[0]
     response = args[1]
     result = yadon.AppendRowToTable(settings.customresponsestablename, trigger, [response])
     if result == -1:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_addresponse_failed)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_addresponse_failed)
     else:
         temp_command = {'Command': trigger, "Type": "match", 'Function': 'customresponse', 'Category': 'Custom', 'Permission': '1'}
         global commands_df
         commands_df = commands_df.append(temp_command, ignore_index=True)
-        export_tsv(commands_df, settings.commandstablename)
+        export_tsv(commands_df, settings.commands_table_name)
         context.koduck.add_command(trigger, customresponse, "match", 1)
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_addresponse_success.format(trigger, response))
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_addresponse_success.format(trigger, response))
 
 
 async def removeresponse(context, *args, **kwargs):
     if len(args) < 1:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_removeresponse_noparam)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_removeresponse_noparam)
     trigger = args[0]
     result = yadon.RemoveRowFromTable(settings.customresponsestablename, trigger)
     if result == -1:
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent=settings.message_removeresponse_failed.format(trigger))
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content=settings.message_removeresponse_failed.format(trigger))
     else:
         global commands_df
         commands_df = commands_df[commands_df["Command"] != trigger]
-        export_tsv(commands_df, settings.commandstablename)
+        export_tsv(commands_df, settings.commands_table_name)
         context.koduck.removecommand(trigger)
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_removeresponse_success)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_removeresponse_success)
 
 
 async def oops(context, *args, **kwargs):
     if len(args) == 1:
         if args[0].lower().strip() == "help":
-            return await context.koduck.sendmessage(context["message"],
-                                            sendcontent="Deletes the bot message from the user's last valid command.")
+            return await context.koduck.send_message(receive_message=context["message"],
+                                            content="Deletes the bot message from the user's last valid command.")
 
     try:
         THEmessage = context.koduck.outputhistory[context["message"].author.id].pop()
@@ -366,7 +364,7 @@ async def oops(context, *args, **kwargs):
 
 async def commands(context, *args, **kwargs):
     # filter out the commands that the user doesn't have permission to run
-    currentlevel = context.koduck.getuserlevel(context["message"].author.id)
+    currentlevel = context.koduck.get_user_level(context["message"].author.id)
     availablecommands = commands_df[commands_df["Permission"] <= currentlevel].sort_values(["Function", "Command", "Permission"])
     if context["message"].channel.type is discord.ChannelType.private:
         pass
@@ -376,7 +374,7 @@ async def commands(context, *args, **kwargs):
     cmd_groups = availablecommands.groupby(["Category"])
     return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
                    name]
-    return await context.koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
+    return await context.koduck.send_message(receive_message=context["message"], content="\n\n".join(return_msgs))
 
 
 # this command is currently unused in ProgBot. lbr it's kind of creepy
@@ -389,7 +387,7 @@ async def userinfo(context, *args, **kwargs):
     elif len(context["message"].mentions) == 1:
         user = context["message"].guild.get_member(context["message"].mentions[0].id)
     else:
-        return await context.koduck.sendmessage(context["message"], sendcontent=settings.message_nomentioneduser2)
+        return await context.koduck.send_message(receive_message=context["message"], content=settings.message_nomentioneduser2)
 
     username = user.name
     discr = user.discriminator
@@ -417,12 +415,12 @@ async def userinfo(context, *args, **kwargs):
                         inline=False)
         embed.add_field(name="Server join date", value=joindate.strftime("%Y-%m-%d %H:%M:%S UTC"), inline=False)
         embed.set_thumbnail(url=avatar)
-        return await context.koduck.sendmessage(context["message"], embed=embed)
+        return await context.koduck.send_message(receive_message=context["message"], embed=embed)
     else:
         embed = discord.Embed(title="{}#{}".format(username, discr), description="Account creation date: {}".format(
             creationdate.strftime("%Y-%m-%d %H:%M:%S UTC")))
         embed.set_thumbnail(url=avatar)
-        return await context.koduck.sendmessage(context["message"], embed=embed)
+        return await context.koduck.send_message(receive_message=context["message"], embed=embed)
 
 async def invite(context, *args, **kwargs):
     invite_link = settings.invite_link
@@ -430,25 +428,25 @@ async def invite(context, *args, **kwargs):
     embed = discord.Embed(title="Just click here to invite me to one of your servers!",
                           color=color,
                           url=invite_link)
-    return await context.koduck.sendmessage(context["message"], embed=embed)
+    return await context.koduck.send_message(receive_message=context["message"], embed=embed)
 
 
 async def break_test(context, *args, **kwargs):
-    return await context.koduck.sendmessage(context["message"], sendcontent=str(0 / 0))
+    return await context.koduck.send_message(receive_message=context["message"], content=str(0 / 0))
 
 
 # UGH permissions
 async def change_prefix(context, *args, **kwargs):
     if not args:
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent="Changes the prefix that I use for this server! The default prefix is `%s`" % settings.commandprefix)
+        return await context.koduck.send_message(receive_message=context["message"],
+                                        content="Changes the prefix that I use for this server! The default prefix is `%s`" % settings.commandprefix)
     is_changed = context.koduck.change_prefix(context["message"].guild.id, args[0])
     if is_changed:
-        await context.koduck.sendmessage(context["message"],
-                                 sendcontent="Command prefix successfully changed to `%s`" % args[0])
+        await context.koduck.send_message(receive_message=context["message"],
+                                 content="Command prefix successfully changed to `%s`" % args[0])
     else:
-        await context.koduck.sendmessage(context["message"],
-                                 sendcontent="Error occurred!")
+        await context.koduck.send_message(receive_message=context["message"],
+                                 content="Error occurred!")
     return
 
 koduck = Koduck()
