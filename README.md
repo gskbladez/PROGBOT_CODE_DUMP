@@ -1,7 +1,7 @@
 # ProgBot
 A Python bot made to help with NetBattlers, a tabletop roleplaying game inspired by MegaMan Battle Network, made by Will Uhl.
 
-To add ProgBot to your server, click [this link](https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0)! https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0 
+To add ProgBot to your server, click [this link](https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0)! 
 
 ### Dependencies
 - `discord.py` (1.2+)
@@ -40,6 +40,8 @@ To add ProgBot to your server, click [this link](https://discordapp.com/oauth2/a
 
 ### Contributing
 Fork a branch from master and submit pull requests!
+
+Note: if GitHub seems to be flagging all lines in the .tsv as changed, this is likely due to cross-OS line ending discrepencies. If so, refer to [this guide](https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings) to address.
 
 ### Commands
 Default command prefix is `>`.
