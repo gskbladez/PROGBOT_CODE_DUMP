@@ -1101,7 +1101,7 @@ async def mysterydata(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll **Mystery Data** for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance.\n" + \
+                                        sendcontent="I can roll **Mystery Data** for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, Sapphire, or Sunny from NetBattlers Advance.\n" + \
                                                     "You can also ask for advice using `{cp}mysterydata advice`!".replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
 
