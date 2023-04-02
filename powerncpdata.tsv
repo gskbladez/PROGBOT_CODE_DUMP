@@ -596,3 +596,34 @@ LightTrick	Affinity	Cost	Make a fake Virus hologram. It can (pick 2): move a bit
 DanceOff	Charm	Cost	Boogie! Any Near can join. All who spend time dancing spawn their element Close to them.	-	Virus Power	Cast the Dice	
 PartyFoul	Speed	Cost	Next time you would take dmg, you zoom away instead, leaving the area entirely. [Instant]	-	Virus Power	Cast the Dice	
 HypeBeast	-	Passive	Whenever you or an ally roll 1+ hits, toss a little bit of your element at any Near target.	-	Virus Power	Cast the Dice	
+							
+Rawr	Charm	Roll	Draw attention with a loud, disarmingly cute meow.	-	Virus Power	Neko Virus	
+Glomp	Speed	Roll	Leap at a Near target, wrapping yourself around one of their limbs to immobilize them.	-	Virus Power	Neko Virus	
+Nuzzle	Affinity	Roll	Rub yourself on a Close target, replacing their element with yours & passing the plague.	-	Virus Power	Neko Virus	
+							
+BastetMajesty	Charm	Roll	A taste of divinity. Demand a tribute from an NPC with a lower Neko Virus bond; they will try.	-	Neko	Neko Virus Infection	
+ParallelLions	-	Passive	A mirror image of yourself appears. It is sworn to help you... though your Daemon is its master.	-	Neko	Neko Virus Infection	
+Lionize	Sense	Roll	Your eyes fire lasers that transform the target into a more catlike form. They will not fight you.	-	Neko	Neko Virus Infection	
+Zoomies	Speed	Roll	Move two range bands at incredible speed. Your Daemon decides where you end up.	-	Neko	Neko Virus Infection	
+ShadowClan	Charm	Roll	Become invisible while in darkness. Your eyes and teeth, however, shine brightly.	-	Neko	Neko Virus Infection	
+Curiosity	-	Passive	You can spend 4 HP to add 2 hits to any Info roll. This can stack.	-	Neko	Neko Virus Infection	
+KittenAround	Charm	Roll	Transform into an everyday, unassuming cat. (Progs are allergic to you.)	-	Neko	Neko Virus Infection	
+ScaredyCat	-	Passive	You can spend a hit on any fear-related Bravery roll to spring a range band into the air.	-	Neko	Neko Virus Infection	
+Cat&Mouse	-	Passive	Whenever you damage a target without deleting them, add +1 hit to your next roll.	-	Neko	Neko Virus Infection	
+CatBurglar	Charm	Roll	Pickpocket something off a Close target. Pickpocketing Viruses takes their chip data.	-	Neko	Neko Virus Infection	
+Chatoyancy	-	Passive	You can use your Daemon Bond as your Sense dice pool size. The Daemon sees what you see.	-	Neko	Neko Virus Infection	
+CoolCat	-	Passive	When you roll Charm, you can use your Daemon Bond as your dice pool size. 	-	Neko	Neko Virus Infection	
+Clawsome	-	Passive	When you roll to tear something up, you can use your Daemon Bond as your dice pool size. 	-	Neko	Neko Virus Infection	
+CultOfPurrsonality	-	Passive	When you win a Charm/Bravery roll against a target, they gain a bond level with the Neko Virus.	-	Neko	Neko Virus Infection	
+EleMeownt	-	Passive	Gain the element Cat. You can use your Daemon Bond as your dice pool to spawn/manipulate. 	-	Neko	Neko Virus Infection	
+CatScratchFever	-	Passive	Whenever you damage someone, they gain a bond level with the Neko Virus.	-	Neko	Neko Virus Infection	
+GotYourTongue	Charm	Roll	Curse a Near target. Their speech will become incomprehensible cutesy-babble.	-	Neko	Neko Virus Infection	
+Toxoplasmosis	-	Passive	When someone touches Element you summoned, they gain a bond level with the Neko Virus.	-	Neko	Neko Virus Infection	
+Claws&Effect	Strength	Roll	Shred a Close target, dealing damage, destroying their Guard, and wrecking their look.	-	Neko	Neko Virus Infection	
+CatCall	Charm	Roll	Telepathically communicate with a Far target as long as they also have a Neko Virus bond.	-	Neko	Neko Virus Infection	
+Catmosphere	-	Passive	For every roll, roll an extra die for every other Near Navi/Virus infected with the Neko Virus.	-	Neko	Neko Virus Infection	
+TallTail	Strength	Roll	Use your tail to grab something Near and drag it Close.	-	Neko	Neko Virus Infection	
+HelloKitty	Charm	Roll	You can communicate with real-world cats.	-	Neko	Neko Virus Infection	
+AristoCat	-	Passive	Every time you give someone a Daemon Bond level with the Neko Virus, gain 1000z.	-	Neko	Neko Virus Infection	
+UnifiedPurrspective	Charm	Roll	Telepathically communicate with all Neko Virus-bonded people on the internet.	-	Neko	Neko Virus Infection	
+Cataclysm	Daemon Bond	Roll	Project into reality. Pick 1: you are colossal; Full Synchro is endlesly active; you can infect humans.	-	Neko	Neko Virus Infection	

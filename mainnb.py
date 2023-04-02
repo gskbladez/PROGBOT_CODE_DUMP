@@ -38,16 +38,17 @@ help_categories = {"Lookups": ':mag: **Lookups**',
                   "Reminders (DarkChips)": ':smiling_imp: **Reminders (DarkChips)**',
                   "Safety Tools": ':shield: **Safety Tools**'}
 
+cc_dict = {
+    "ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard Dog": "SkateboardDog",
+    "Night Drifters": "NightDrifters", "Underground Broadcast": "UndergroundBroadcast",
+    "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
+    "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
+    "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
+    "MUDSLURP": "MUD",
+    "Tarot": "",
+    "Summer Camp": "Summber Camp, SummerCamp, Summer, Sunmer Camp",
+    "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice", "Neko Virus": "Neko Virus Infection, NekoVirus"}
 
-cc_dict = {"ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard Dog": "SkateboardDog",
-           "Night Drifters": "NightDrifters", "Underground Broadcast": "UndergroundBroadcast",
-           "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
-           "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
-           "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
-           "MUDSLURP": "MUD",
-           "Tarot": "",
-           "Summer Camp": "Summber Camp, SummerCamp, Summer, Sunmer Camp",
-           "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice"}
 cc_list = list(cc_dict.keys())
 cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 virus_colors = {"Virus": 0x7c00ff,
@@ -423,6 +424,8 @@ def find_skill_color(skill_key):
         color = skill_color_dictionary["Body"]
     elif skill_key in ["Charm", "Bravery", "Affinity"]:
         color = skill_color_dictionary["Soul"]
+    elif "Daemon" in skill_key:
+        color = cc_color_dictionary["Dark"]
     else:
         color = -1  # error code
     return color
@@ -1060,7 +1063,7 @@ async def mysterydata_master(context, args, force_reward=False):
         result_chip = roll_row_from_table(df_sub)["Value"]
 
         if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
-            results_list.append(result_chip)
+            results_list.append(result_chip + " " + roll_category.capitalize())
         else:
             results_list = [re.sub(r"\s*(\.|!|\?)+\s*$", '', result_chip)]  # removes last punctuation marks!
             break
@@ -1086,7 +1089,7 @@ async def mysterydata_master(context, args, force_reward=False):
 
     md_type = arg.capitalize()
     embed = discord.Embed(title="__{} MysteryData__".format(md_type),
-                          description="_%s accessed the MysteryData..._\n" % context["message"].author.mention +
+                          description="_%s accessed the %s MysteryData..._\n" % context["message"].author.mention +
                                       "\nGot: **%s**" % result_text,
                           color=md_color)
     embed.set_thumbnail(url=md_image_url)
@@ -1098,7 +1101,7 @@ async def mysterydata(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll **Mystery Data** for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance.\n" + \
+                                        sendcontent="I can roll **Mystery Data** for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, Sapphire, or Sunny from NetBattlers Advance.\n" + \
                                                     "You can also ask for advice using `{cp}mysterydata advice`!".replace(
                                             "{cp}", koduck.get_prefix(context["message"])))
 
