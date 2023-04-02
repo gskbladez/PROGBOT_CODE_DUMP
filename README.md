@@ -4,11 +4,12 @@ A Python bot made to help with NetBattlers, a tabletop roleplaying game inspired
 To add ProgBot to your server, click [this link](https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0)! 
 
 ### Dependencies
-- `discord.py` (1.2+)
-- `pandas` (1.1+)
-- `rply` (0.7+)
-- `python-dotenv` (0.10+)
-- `requests`
+- `discord.py` (1.6)
+- `pandas` (1.5)
+- `numpy` (1.24)
+- `rply` (0.7)
+- `python-dotenv` (0.10)
+- `requests` (2.28)
 
 ### How to Setup a Local Instance
 - Clone or fork ProgBot, downloading the files.
