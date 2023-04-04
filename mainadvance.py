@@ -595,26 +595,39 @@ async def weatherforecast(context, *args, **kwargs):
                                         "To use, enter `{cp}weatherforecast [#]` or `{cp}weatherforecast [category] [#]`! The command `{cp}randomweather` or `{cp}randomweather [category] [#]` can also be used!\n"\
                                         .replace("{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(weather_category_list))
-    if len(cleaned_args) > 2:
+    
+    if cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
+        ruling_msg = await find_value_in_table(context, help_df, "Command", "randomweather", suppress_notfound=True)
+        if ruling_msg is None:
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await koduck.sendmessage(context["message"],
-                                        sendcontent="Command is too long! Just give me `{cp}weatherforecast [#]` or `{cp}weatherforecast [category] [#]`! The command `{cp}randomweather` or `{cp}randomweather [category] [#]` can also be used!".replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
+                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
     
     weather_return_number = 1  # number of weather to return, 1 by default
-    weather_category = None
-    sub_weather_df = weather_df
+    weather_category = []
+    argDone = False
     for arg in cleaned_args:
+        if argDone:
+            await koduck.sendmessage(context["message"],
+                                     sendcontent="Extra arguments after number of elements; ignoring!")
+            break
         try:
             weather_return_number = int(arg)
+            argDone = True
         except ValueError:
-            weather_category = arg.lower().capitalize()
+            weather_category.append(arg)
             
-            sub_weather_df = weather_df[weather_df["Category"].str.fullmatch(re.escape(arg), flags=re.IGNORECASE)]
-            if sub_weather_df.shape[0] == 0:
-                return await koduck.sendmessage(context["message"],
-                                                sendcontent="Not a valid category!\n" +
+    if weather_category:
+        regex_search = [f"^\s*{re.escape(a)}\s*$" for a in weather_category]
+        sub_weather_df = weather_df[weather_df["Category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
+        all_cats = sub_weather_df["Category"].unique().tolist()
+        if len(all_cats) != len(weather_category):  # so one of the categories isn't actually in the DB
+            return await koduck.sendmessage(context["message"],
+                                            sendcontent="Invalid category provided!\n" +
                                                         "Categories: **%s**" % ", ".join(weather_category_list))
-    
+    else:
+        sub_weather_df = weather_df
     category_range_max = sub_weather_df.shape[0]
     if weather_return_number < 1:
         return await koduck.sendmessage(context["message"],
@@ -631,10 +644,11 @@ async def weatherforecast(context, *args, **kwargs):
     
     if weather_category is None:
         weather_flavor_title = "Picked {} random weather(s):".format(str(weather_return_number))
-    else:
+    elif len(all_cats) == 1:
         weather_flavor_title = "Picked {} random weather(s) from the {} category:".format(str(weather_return_number),
                                                                                             weather_category)
-    
+    else:
+        weather_flavor_title = "Picked {} random element(s) from the {} and {} categories...".format(str(weather_return_number),", ".join(all_cats[:-1]), all_cats[-1])
     weather_color = 0xd5b5f7
     if weather_category == "Basic":
         weather_color = weather_color_dictionary["Blue"]
