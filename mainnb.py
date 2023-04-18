@@ -1088,8 +1088,9 @@ async def mysterydata_master(context, args, force_reward=False):
     result_text += "!"
 
     md_type = arg.capitalize()
+
     embed = discord.Embed(title="__{} MysteryData__".format(md_type),
-                          description="_%s accessed the %s MysteryData..._\n" % context["message"].author.mention +
+                          description="_%s accessed the %s MysteryData..._\n" % (context["message"].author.mention, md_type) +
                                       "\nGot: **%s**" % result_text,
                           color=md_color)
     embed.set_thumbnail(url=md_image_url)
