@@ -23,6 +23,7 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Summber Camp": 0xffad33,
                        "Genso Network": 0xff605d,
                        "Dark": 0xB088D0,
+                       "Neko Virus": 0xa29e14,
                        "Item": 0xffffff,
                        "Chip": 0xbfbfbf,
                        "Mystery": 0x000000}
