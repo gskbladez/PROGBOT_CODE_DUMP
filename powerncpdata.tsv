@@ -116,7 +116,10 @@ ReconfigIndieNCP	Info	Cost	Instantly trade BattleChips with a Near ally. [Instan
 							
 							
 Brand	-	-	You can mark anything with your symbol. This mark acts like a hand-sized sticker.	1	NCP	Core	
+BlockPrinter	-	-	You can spend 1 Charge to make a meter-wide plastic cube Close.	1	NCP	Core	
+BondCharge	-	-	Gain 1 Charge for each Bond Point you spend.	1	NCP	Core	
 ContentAware	-	-	Spend 1 Charge to get a summary of anyone’s public social media profile.	1	NCP	Core	
+Devilish	-	-	When you roll a success with exactly three 6s, ignite the target. (No target? You ignite.)	1	NCP	Core	
 Dullahan	-	-	Your head becomes detachable, retaining all your senses.	1	NCP	Core	
 EvilMind	-	-	You give off a sinister aura; cruel people like you more, and others like you less.	1	NCP	Core	
 GeoTracker	-	-	You can be traced by your unique Navi ID. (Free to buy, 1500z to remove.)	1	NCP	Core	
@@ -125,6 +128,7 @@ HazardTimer	-	-	When using a Hazard chip, you can make it appear on a delay. Max
 ManualInput	-	-	You can roll NetOp Coding instead of Navi Coding to download Virus data.	1	NCP	Core	
 MegaFlex	-	-	On a critical Body roll, downshift your 1st Charm roll on anyone who saw it.	1	NCP	Core	
 Megaphone	-	-	Your voice projects; you can be clearly understood at Far range.	1	NCP	Core	
+MessPaint	-	-	You can spend 1 Charge to recolor and/or repattern a Close object.	1	NCP	Core	
 NowRecording	-	-	You record everything you see and hear. It’s visually obvious when recording.	1	NCP	Core	
 ProgBody	-	-	You can appear like a Mr. Prog! (Hat of your choice optional.)	1	NCP	Core	
 ProgRadar	-	-	Beeps depending on proximity to nearest Prog.	1	NCP	Core	
@@ -136,12 +140,16 @@ ZennyMiner	-	-	On sending Virus data to a Blank BattleChip, get a bonus 300z.	1	
 AutoWrite	-	-	To download Virus data, you can erase a chip in your Folder for a full success.	2	NCP	Core	
 BarrelProcessor	-	-	Shot BattleChips and Sense ranged attacks have no penalty at Far range.	2	NCP	Core	
 BladeRun	-	-	You can move a range band without rolling when attacking with a Blade chip.	2	NCP	Core	
+BurstDischarge	-	-	You can spend 5 Charge to spawn your element Close. +2 Max Charge.	2	NCP	Core	
 CashOut	-	-	Spend 600z to add one die to a roll. (Use before rolling.) Max +4 to a roll.	2	NCP	Core	
+ChipCharge	-	-	When you use a chip, gain 1 Charge. +1 Max Charge.	2	NCP	Core	
 Collect	-	-	When you download Virus data onto a Blank BattleChip, roll at least 5 dice.	2	NCP	Core	
 DataMine	-	-	Can turn Thrown chips into mines! They target whoever touches or attacks them.	2	NCP	Core	
+Destabilizer	-	-	You can spend HP to gain Charge 1-to-1. +2 Max Charge.	2	NCP	Core	
 Diffusal	-	-	When something reduces one of your skills by 1, your element appears Close to you.	2	NCP	Core	
 EjectButton	-	-	2 times per jack-in, you can spring a range band in any direction. Can still act in midair.	2	NCP	Core	
 ElemRitual	-	-	If you spend a minute concentrating, your next Affinity roll uses at least 5 dice.	2	NCP	Core	
+JackCharge	-	-	When you jack in, gain 2 Charge. +2 Max Charge.	2	NCP	Core	
 PassengerMode	-	-	When you use Rush chips, you can take a Close target with you.	2	NCP	Core	
 Pettaur	-	-	A round little buddy! It can’t attack, obeys basic orders, and vanishes for a bit if hurt.	2	NCP	Core	
 RocketFist	-	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot parry at range.	2	NCP	Core	
@@ -150,6 +158,7 @@ SetElement	-	-	On jack-in, your element appears around you; if you use it immedi
 							
 Trailblazer	-	-	When you move range bands with a chip or roll, your element trails behind you.	2	NCP	Core	
 Ventrillo	-	-	You can make your voice come from anywhere in Near range.	2	NCP	Core	
+VirusScanner	-	-	You can spend 2 Charge to learn how many Viruses are Near. +2 Max Charge.	2	NCP	Core	
 							
 							
 Custom+3	-	-	+3 maximum BattleChips in your Folder.	3	BoostNCP	Core	
@@ -160,7 +169,7 @@ ExecutionUnit	-	-	When you delete a Virus or Navi, heal 3 HP.	3	NCP	Core
 FirstArmor	-	-	On jack-in, get a 6 HP Guard. It takes dmg for you until it runs out of HP. It can’t heal.	3	NCP	Core	
 FloatShoes	-	-	You are always able to float a few inches above the ground.	3	NCP	Core	
 HP+4	-	-	+4 maximum HP. This NCP can stack.	3	BoostNCP	Core	
-KineticArmor	-	-	When you gain charge from defending, you can also instantly move a range band.	3	NCP	Core	
+KineticArmor	-	-	When you gain Charge from defending, you can also instantly move a range band.	3	NCP	Core	
 ParallelPort	-	-	When a Cost Power boosts your next attack, you can give that effect to an ally instead.	3	NCP	Core	
 Press	-	-	You can shrink to 1/10th normal size. Your attacks are upshifted when shrunk.	3	NCP	Core	
 							
