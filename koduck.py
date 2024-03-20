@@ -56,7 +56,7 @@ class Koduck:
         self.output_history = {} #userid -> list of Discord Messages sent by bot in response to the user, oldest first (only keeps track since bot startup)
         self.last_message_DT = {} #channelid -> datetime of most recent Discord Message sent
         self.interactions = {} #interactionid -> boolean indicating whether the interaction received a response
-        
+
         self.refresh_settings()
     
     #Records bot activity in the log text file, each log on one line, formatted by settings.log_format. Check log_fields below to see which fields can be formatted.
@@ -266,8 +266,9 @@ class Koduck:
     #Note: settings is a module with attributes, so removing a setting manually from the table doesn't actually remove the attribute
     #Note: number values will be converted to int/float, and string values will convert "\n"s and "\t"s (since Yadon uses these to organize data)
     def refresh_settings(self):
-        #TODO: fix yadon
         table = yadon.ReadTable(settings.settings_table_name, named_columns=True)
+        if not table:
+            return
         for key, setting in table.items():
             try:
                 value = setting["Value"]

@@ -1,9 +1,0 @@
-message_help	Hi, I'm a cool bot that's in the middle of transistioning! Try running `commands` for a list of available commands. If you give me one of those commands as a parameter for this help command you just ran, I'll tell you what it does and how to use it.
-message_help_oops	Deletes the bot message from the user's last valid command
-message_help_commands	Provides the list of commands available for the user to run
-message_help_help	wtf
-message_help_userinfo	Shows some info on the mentioned user (or yourself if there is no mentioned user)
-message_help_roll	Generate a random number between 0 and an optional given maximum (default is 100)
-message_help_requestroles	Displays a UI for the user to assign or unassign any requestable roles (if any) to themselves
-message_help_unknown_command	I don't know this command or there is no help message for this command
-message_help_ping	pong

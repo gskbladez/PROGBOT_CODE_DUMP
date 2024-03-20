@@ -57,9 +57,9 @@ async def refresh_commands(context, *args, **kwargs):
     errors = "\n".join(errors)
     if context.message is not None:
         if errors:
-            await context.koduck.send_message(context.message, content=settings.message_refresh_commands_errors + "\n" + errors)
+            await context.koduck.send_message(context.message, content="There were some errors while refreshing commands:" + "\n" + errors)
         else:
-            await context.koduck.send_message(context.message, content=settings.message_refresh_commands_success)
+            await context.koduck.send_message(context.message, content="Commands refreshed successfully")
     elif errors:
         print(errors)
 
@@ -127,7 +127,7 @@ async def ping(interaction, delay: int):
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
 
-required_files = [settings.commands_table_name, settings.settings_table_name, settings.user_levels_table_name]
+required_files = [settings.commands_table_name, settings.user_levels_table_name]
 
 bad_files = [f for f in required_files if not os.path.isfile(f)]
 if bad_files:

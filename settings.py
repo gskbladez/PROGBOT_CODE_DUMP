@@ -1,10 +1,10 @@
 #BOT FILES
 commands_table_name = "tables/commands.tsv"
-settings_table_name = "tables/settings.txt"
 user_levels_table_name = "tables/user_levels.txt"
 log_file = "log.txt"
 debug_log_file_name = "discord.log"
 prefixfile = "prefixes.json"
+settings_table_name = ""
 
 
 #BOT SETTINGS
@@ -27,7 +27,7 @@ run_command_description = "Run a prefix command"
 run_command_default_response = "Command ran successfully"
 
 #MESSAGES
-message_something_broke = "Something broke"
+message_something_broke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
 message_unknown_command = "Command not recognized"
 message_unhandled_error = "Unhandled error ({})"
 message_result_too_long = "Sorry, the result was too long to output ({}/{} characters)"
@@ -86,3 +86,5 @@ source_guild_id = 556291542206382080
 custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
                  "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901995743752106064>",
                  "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>"}
+
+#NETBATTLER CONSTANTS
