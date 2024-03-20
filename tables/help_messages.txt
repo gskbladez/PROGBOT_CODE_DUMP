@@ -1,4 +1,4 @@
-message_help	Hi, I'm a cool bot that does nothing! Try running {cp}commands for a list of available commands. If you give me one of those commands as a parameter for this help command you just ran, I'll tell you what it does and how to use it.
+message_help	Hi, I'm a cool bot that's in the middle of transistioning! Try running `commands` for a list of available commands. If you give me one of those commands as a parameter for this help command you just ran, I'll tell you what it does and how to use it.
 message_help_oops	Deletes the bot message from the user's last valid command
 message_help_commands	Provides the list of commands available for the user to run
 message_help_help	wtf

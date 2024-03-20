@@ -70,8 +70,7 @@ async def crimsonnoise(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content="I can roll **CrimsonNoise** for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
+                                        content="I can roll **CrimsonNoise** for you! Specify `crimsonnoise common`, `crimsonnoise`, or `crimsonnoise rare`!")
 
     arg = cleaned_args[0]
     crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
@@ -111,7 +110,7 @@ async def daemon(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await context.koduck.send_message(receive_message=context["message"],
                                         content="Lists the complete information of a **Daemon** for DarkChip rules. "
-                                                    + "Use `{cp}daemon all` to pull up the names of all Official Daemons!".replace("{cp}", koduck.get_prefix(context["message"])))
+                                                    + "Use `daemon all` to pull up the names of all Official Daemons!")
     is_ruling = False
     ruling_msg = None
     if arg_combined in ["all", "list"]:
@@ -138,7 +137,7 @@ async def daemon(context, *args, **kwargs):
             return await context.koduck.send_message(receive_message=context["message"],
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+                                        content=ruling_msg["Response"])
 
     daemon_info = await find_value_in_table(context, daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
@@ -203,7 +202,7 @@ async def networkmod(context, *args, **kwargs):
             return await context.koduck.send_message(receive_message=context["message"],
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+                                        content=ruling_msg["Response"])
 
     for arg in cleaned_args:
         networkmod_info = await find_value_in_table(context, networkmod_df, "Name", arg, suppress_notfound=False)
@@ -314,12 +313,12 @@ async def cheer(context, *args, **kwargs):
 
     if len(cleaned_args) >= 1:
         if cleaned_args[0] == 'help':
-            audience_help_msg = "Roll a random Cheer with `{cp}cheer!` (Up to %d at once!)\n " % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Cheers with `{cp}cheer all`.\n\n " + \
-                            "You can add Cheer Points with `{cp}cheer add 2`, remove them with `{cp}cheer spend 2`, " + \
-                            "and pull up the current Cheer points with `{cp}cheer now`.\n\n" + \
-                            "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`."
-            return await context.koduck.send_message(receive_message=context["message"], content=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
+            audience_help_msg = "Roll a random Cheer with `cheer!` (Up to %d at once!)\n " % MAX_CHEER_JEER_ROLL + \
+                            "I can also list all Cheers with `cheer all`.\n\n " + \
+                            "You can add Cheer Points with `cheer add 2`, remove them with `cheer spend 2`, " + \
+                            "and pull up the current Cheer points with `cheer now`.\n\n" + \
+                            "For more details on Audience Participation rules, try `help cheer` or `help audience`."
+            return await context.koduck.send_message(receive_message=context["message"], content=audience_help_msg)
 
         if cleaned_args[0] in ['rule', 'ruling', 'rules']:
             ruling_msg = await find_value_in_table(context, help_df, "Command", "cheerruling", suppress_notfound=True)
@@ -327,7 +326,7 @@ async def cheer(context, *args, **kwargs):
                 return await context.koduck.send_message(receive_message=context["message"],
                                                 content="Couldn't find the rules for this command! (You should probably let the devs know...)")
             return await context.koduck.send_message(receive_message=context["message"],
-                                            content=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+                                            content=ruling_msg["Response"])
     modded_arg = list(args)
     if modded_arg:
         modded_arg[0] = modded_arg[0] + " cheer"
@@ -341,12 +340,12 @@ async def jeer(context, *args, **kwargs):
     cleaned_args = clean_args(args)
     if len(cleaned_args) >= 1:
         if cleaned_args[0] == 'help':
-            audience_help_msg = "Roll a random Jeer with `{cp}jeer!` (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Jeers and MegaJeers with `{cp}jeer all`.\n\n " + \
-                            "You can add Jeer Points with `{cp}jeer add 2`, remove them with `{cp}jeer spend 2`, " + \
-                            "and pull up the current Jeer Points with `{cp}jeer now`.\n\n" + \
-                            "For more details on Audience Participation rules, try `{cp}help jeer` or `{cp}help audience`."
-            return await context.koduck.send_message(receive_message=context["message"], content=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
+            audience_help_msg = "Roll a random Jeer with `jeer!` (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
+                            "I can also list all Jeers and MegaJeers with `jeer all`.\n\n " + \
+                            "You can add Jeer Points with `jeer add 2`, remove them with `jeer spend 2`, " + \
+                            "and pull up the current Jeer Points with `jeer now`.\n\n" + \
+                            "For more details on Audience Participation rules, try `help jeer` or `help audience`."
+            return await context.koduck.send_message(receive_message=context["message"], content=audience_help_msg)
 
         if cleaned_args[0] in ['rule', 'ruling', 'rules']:
             ruling_msg = await find_value_in_table(context, help_df, "Command", "jeerruling", suppress_notfound=True)
@@ -354,7 +353,7 @@ async def jeer(context, *args, **kwargs):
                 return await context.koduck.send_message(receive_message=context["message"],
                                                 content="Couldn't find the rules for this command! (You should probably let the devs know...)")
             return await context.koduck.send_message(receive_message=context["message"],
-                                            content=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+                                            content=ruling_msg["Response"])
 
     modded_arg = list(args)
     if modded_arg:
@@ -377,13 +376,13 @@ async def audience(context, *args, **kwargs):
         msg_location = "#%s! (%s)" % (channel_name, channel_server)
     cleaned_args = clean_args(args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        audience_help_msg = "Roll a random Cheer or Jeer with `{cp}audience cheer` or `{cp}audience jeer`! (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Cheers or Jeers with `{cp}audience cheer all` or `{cp}audience jeer all`.\n\n" + \
-                            "Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
-                            "You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
-                            "and pull up the current Cheer/Jeer points with `{cp}audience now`.\n\n" + \
-                            "Once you're done, make sure to dismiss the audience with `{cp}audience end`."
-        return await context.koduck.send_message(receive_message=context["message"], content=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
+        audience_help_msg = "Roll a random Cheer or Jeer with `audience cheer` or `audience jeer`! (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
+                            "I can also list all Cheers or Jeers with `audience cheer all` or `audience jeer all`.\n\n" + \
+                            "Start up an audience tracker for this text channel with `audience start`!\n" + \
+                            "You can then add Cheers and Jeers with `audience cheer add 2`, remove them with `audience cheer spend 2`, " + \
+                            "and pull up the current Cheer/Jeer points with `audience now`.\n\n" + \
+                            "Once you're done, make sure to dismiss the audience with `audience end`."
+        return await context.koduck.send_message(receive_message=context["message"], content=audience_help_msg)
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "audienceruling", suppress_notfound=True)
@@ -391,7 +390,7 @@ async def audience(context, *args, **kwargs):
             return await context.koduck.send_message(receive_message=context["message"],
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+                                        content=ruling_msg["Response"])
 
     is_query = False
     is_spend = False
@@ -559,7 +558,7 @@ async def weather(context, *args, **kwargs):
             return await context.koduck.send_message(receive_message=context["message"],
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+                                        content=ruling_msg["Response"])
 
     for arg in cleaned_args:
         weather_info = await find_value_in_table(context, weather_df, "Name", arg, suppress_notfound=False)
@@ -591,13 +590,12 @@ async def weatherforecast(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await context.koduck.send_message(receive_message=context["message"],
                                         content="Pulls up a random set of 1-%d types of **CyberWeather**! " % MAX_WEATHER_ROLL + 
-                                        "To use, enter `{cp}weatherforecast [#]` or `{cp}weatherforecast [category] [#]`! The command `{cp}randomweather` or `{cp}randomweather [category] [#]` can also be used!\n"\
-                                        .replace("{cp}", koduck.get_prefix(context["message"])) +
+                                        "To use, enter `weatherforecast [#]` or `weatherforecast [category] [#]`! The command `randomweather` or `randomweather [category] [#]` can also be used!\n"\
+                                         +
                                                     "Categories: **%s**" % ", ".join(weather_category_list))
     if len(cleaned_args) > 2:
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Command is too long! Just give me `{cp}weatherforecast [#]` or `{cp}weatherforecast [category] [#]`! The command `{cp}randomweather` or `{cp}randomweather [category] [#]` can also be used!".replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
+                                        content="Command is too long! Just give me `weatherforecast [#]` or `weatherforecast [category] [#]`! The command `randomweather` or `randomweather [category] [#]` can also be used!")
     
     weather_return_number = 1  # number of weather to return, 1 by default
     weather_category = None
@@ -702,26 +700,26 @@ async def spotlight(context, *args, **kwargs):
 
     cleaned_args = clean_args([" ".join(args)], lowercase=False) # begone, you hecking commas
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        help_msg = "Start up a **Spotlight Checklist** for this text channel with `{cp}spotlight start`! Add people right away with `{cp}spotlight start Lan/MegaMan Mayl/Roll Dex/GutsMan`.\n" + \
-                   "Mark off people who've acted with `{cp}spotlight Lan`! The checklist will automatically refresh when everyone has acted!\n\n" + \
+        help_msg = "Start up a **Spotlight Checklist** for this text channel with `spotlight start`! Add people right away with `spotlight start Lan/MegaMan Mayl/Roll Dex/GutsMan`.\n" + \
+                   "Mark off people who've acted with `spotlight Lan`! The checklist will automatically refresh when everyone has acted!\n\n" + \
                    "**List of Commands:**\n" + \
-                   "> `{cp}spotlight start`, `{cp}spotlight start Lan/MegaMan Mayl/Roll`: Start the checklist in this text channel. You can include names too, separated by spaces or commas!\n" + \
-                   "> `{cp}spotlight Lan`: Mark off Lan/MegaMan off the checklist. Case insensitive. You don't need to type the full name!\n" + \
-                   "> `{cp}spotlight add Yai/Glyde Chaud/ProtoMan`: Add a new person to the checklist. You can add multiple people at once!\n" + \
-                   "> `{cp}spotlight remove Chaud`: Remove a person from the checklist. You can remove multiple people at once!\n" + \
-                   "> `{cp}spotlight edit Yai Yai/Glide`: Update a person's name in the checklist. One at a time!\n" + \
-                   "> `{cp}spotlight show`: Shows the current Spotlight Checklist.\n" + \
-                   "> `{cp}spotlight reset`, `{cp}spotlight reset Lan`: Unmark the entire checklist, or unmark a specific player\n" + \
-                   "> `{cp}spotlight end`: Ends the checklist. Will also automatically close after %d hours.\n" % (SPOTLIGHT_TIMEOUT.seconds/3600)
+                   "> `spotlight start`, `spotlight start Lan/MegaMan Mayl/Roll`: Start the checklist in this text channel. You can include names too, separated by spaces or commas!\n" + \
+                   "> `spotlight Lan`: Mark off Lan/MegaMan off the checklist. Case insensitive. You don't need to type the full name!\n" + \
+                   "> `spotlight add Yai/Glyde Chaud/ProtoMan`: Add a new person to the checklist. You can add multiple people at once!\n" + \
+                   "> `spotlight remove Chaud`: Remove a person from the checklist. You can remove multiple people at once!\n" + \
+                   "> `spotlight edit Yai Yai/Glide`: Update a person's name in the checklist. One at a time!\n" + \
+                   "> `spotlight show`: Shows the current Spotlight Checklist.\n" + \
+                   "> `spotlight reset`, `spotlight reset Lan`: Unmark the entire checklist, or unmark a specific player\n" + \
+                   "> `spotlight end`: Ends the checklist. Will also automatically close after %d hours.\n" % (SPOTLIGHT_TIMEOUT.seconds/3600)
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content=help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
+                                        content=help_msg)
     if cleaned_args[0].lower() in ['rules', 'rule', 'book', 'rulebook']:
         ruling_msg = await find_value_in_table(context, help_df, "Command", "flow", suppress_notfound=True)
         if ruling_msg is None:
             return await context.koduck.send_message(receive_message=context["message"],
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+                                        content=ruling_msg["Response"])
 
     notification_msg = ""
     err_msg = ""

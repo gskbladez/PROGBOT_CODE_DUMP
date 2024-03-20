@@ -69,12 +69,10 @@ async def repeatroll(context, *args, **kwargs):
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)")
 
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content=("I can repeat a roll command for you! Try `{cp}repeatroll 3, 5d6>4` or `{cp}repeatroll 3, $N5`!\n\n" + ruling_msg["Response"]).replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
+                                        content=("I can repeat a roll command for you! Try `repeatroll 3, 5d6>4` or `repeatroll 3, $N5`!\n\n" + ruling_msg["Response"]))
     if len(args) < 2:
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Must be in the format of `{cp}repeatroll [repeats], [dice roll]` (i.e. `{cp}repeatroll 3, 5d6>4`)".replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
+                                        content="Must be in the format of `repeatroll [repeats], [dice roll]` (i.e. `repeatroll 3, 5d6>4`)")
     try:
         repeat_arg = int(args[0])
     except ValueError:
@@ -151,8 +149,7 @@ async def roll(context, *args, **kwargs):
             return await context.koduck.send_message(receive_message=context["message"],
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await context.koduck.send_message(receive_message=context["message"],
-                                        content=("I can roll dice for you! Try `{cp}roll 5d6>4` or `{cp}roll $N5`!\n\n" + ruling_msg["Response"]).replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
+                                        content=("I can roll dice for you! Try `roll 5d6>4` or `roll $N5`!\n\n" + ruling_msg["Response"]))
     roll_line = context.param_line
     if ROLL_COMMENT_CHAR in roll_line:
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)

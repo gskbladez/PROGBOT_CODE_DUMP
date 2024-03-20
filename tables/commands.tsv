@@ -1,20 +1,7 @@
 Command	Function	Category	Module	Type	Description	Permission	Hidden
-changestatus	changestatus	Admin	main	prefix	Changes Progbot's status message	3	FALSE
-updatecommands	updatecommands	Admin	main	prefix	Refresh command list	3	FALSE
-goodnight	goodnight	Admin	main	prefix	Shuts down Progbot	3	FALSE
-sendmessage	sendmessage	Admin	main	prefix	Sends a message as ProgBot	3	FALSE
-updatesettings	updatesettings	Admin	main	prefix	Updates Progbot's internal settings	3	TRUE
-updatesetting	updatesetting	Admin	main	prefix	Updates Progbot's internal settings	3	FALSE
-addsetting	addsetting	Admin	main	prefix	Adds a ProgBot setting	3	FALSE
-addresponse	addresponse	Admin	main	prefix	Adds a pre-canned response	3	FALSE
-removeresponse	removeresponse	Admin	main	prefix	Removes a pre-canned response	3	FALSE
-purge	purge	Admin	main	prefix	Purges Progbot's messages in the channe;	2	FALSE
-restrict	restrictuser	Admin	main	prefix	Bans a user from using Progbot	2	FALSE
-unrestrict	unrestrictuser	Admin	main	prefix	Unbans a user from using Progbot	2	FALSE
 bugreport	bugreport	ProgBot	main	prefix	Sends a message to Progbot's bug report channel	1	FALSE
 bugfix	bugreport	ProgBot	main	prefix	Sends a message to Progbot's bug report channel	1	TRUE
 bug	bugreport	ProgBot	main	prefix	Sends a message to Progbot's bug report channel	1	TRUE
-oops	oops	ProgBot	main	prefix	Removes Progbot's last response to you	1	FALSE
 command	commands	ProgBot	main	prefix	Lists Progbot's commands	1	FALSE
 commands	commands	ProgBot	main	prefix	Lists Progbot's commands	1	TRUE
 help	help_cmd	Game Lookup	base	prefix	Ask for help and rulings	1	FALSE
@@ -102,3 +89,4 @@ veil	veil	Safety Tools	safety	prefix	Indicate you are setting a Veil	1	FALSE
 find	find_chip_ncp_power	Game Lookup	base	prefix	Find a BattleChip, NCP, or Power	1	FALSE
 search	find_chip_ncp_power	Game Lookup	base	prefix	Find a BattleChip, NCP, or Power	1	FALSE
 autoloot	autoloot	Game Rollers	fools	prefix	Generate a random autoloot chip	1	FALSE
+ping	ping	ProgBot	main	slash	Generate a random autoloot chip	1	TRUE

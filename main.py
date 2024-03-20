@@ -76,7 +76,8 @@ async def invite(context, *args, **kwargs):
     embed = discord.Embed(title="Just click here to invite me to one of your servers!",
                           color=color,
                           url=invite_link)
-    return await context.koduck.sendmessage(context["message"], embed=embed)
+
+    return await context.koduck.send_message(receive_message=context["message"], embed=embed)
 
 async def commands(context, *args, **kwargs):
     # filter out the commands that the user doesn't have permission to run
@@ -90,15 +91,14 @@ async def commands(context, *args, **kwargs):
     cmd_groups = availablecommands.groupby(["Category"])
     return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
                    name]
-    return await context.koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
+    return await context.koduck.send_message(receive_message=context["message"], content="\n\n".join(return_msgs))
 
 async def bugreport(context, *args, **kwargs):
     if not context['params']:
-        return await context.koduck.sendmessage(context["message"],
-                                        sendcontent="Sends a bug report to the ProgBot Devs! " + \
-                                                    "Please describe the error in full. " + \
-                                                    "(i.e. `{cp}bugreport Sword is listed as 3 damage when it is 2 damage.`)".replace(
-                                                        "{cp}", koduck.get_prefix(context["message"])))
+        msg = "Sends a bug report to the ProgBot Devs! " + \
+                "Please describe the error in full. " + \
+                "(i.e. `bugreport Sword is listed as 3 damage when it is 2 damage.`)"
+        return await context.koduck.send_message(receive_message=context["message"], content=msg)
 
     channelid = int(settings.bugreport_channel_id)
 
@@ -116,8 +116,8 @@ async def bugreport(context, *args, **kwargs):
     embed.set_footer(
         text="Submitted by: {}#{} ({})".format(message_author.name, message_author.discriminator, message_guild))
     embed.set_thumbnail(url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png")
-    await context.koduck.sendmessage(context["message"], sendchannel=progbot_bugreport_channel, embed=embed, ignorecd=True)
-    return await context.koduck.sendmessage(context["message"], sendcontent="**_Bug Report Submitted!_**\nThanks for the help!")
+    await context.koduck.send_message(receive_message=context["message"], channel=progbot_bugreport_channel, embed=embed)
+    return await context.koduck.send_message(receive_message=context["message"], content="**_Bug Report Submitted!_**\nThanks for the help!")
 
 async def ping(interaction, delay: int):
     await interaction.response.defer(thinking=True)
