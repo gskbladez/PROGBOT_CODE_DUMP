@@ -45,7 +45,7 @@ class Koduck:
         #command -> (function, type, tier)
         #command is a string which represents the command name
         #function is the function object to run when the command is triggered
-        #type: a string that determines the trigger type of the command, should be one of (prefix, match, contain, slash)
+        #type is a string that determines the trigger type of the command, should be one of (prefix, match, contain, slash)
         #tier is an integer which represents the user authority level required to run the command
         self.commands = {}
         self.prefix_commands = []
@@ -477,6 +477,7 @@ async def on_ready():
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
     await koduck_instance.run_command("refreshcommands")
+    await koduck_instance.run_command("refreshappcommands")
 
 #Log some events from self
 @client.event

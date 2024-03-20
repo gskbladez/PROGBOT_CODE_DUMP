@@ -797,7 +797,7 @@ async def spotlight(context, *args, **kwargs):
         if len(cleaned_args) == 1 or cleaned_args[1] == "all":
             spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
         for arg in cleaned_args[1:]:
-            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+            match_name = await find_spotlight_participant(context, arg, spotlight_db[channel_id], context, msg_location)
             if match_name is None:
                 return
             spotlight_db[channel_id][match_name] = False
@@ -808,7 +808,7 @@ async def spotlight(context, *args, **kwargs):
                                             embed=embed_spotlight_message("Please specify who you want to remove!",
                                                                               msg_location, error=True))
         for arg in cleaned_args[1:]:
-            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+            match_name = await find_spotlight_participant(context, arg, spotlight_db[channel_id], context, msg_location)
             if match_name is None:
                 continue
             del spotlight_db[channel_id][match_name]
@@ -819,13 +819,13 @@ async def spotlight(context, *args, **kwargs):
                                             embed=embed_spotlight_message("Need just the original name and the new name to change it too!",
                                                                               msg_location, error=True))
 
-        match_name = await find_spotlight_participant(cleaned_args[1], spotlight_db[channel_id], context, msg_location)
+        match_name = await find_spotlight_participant(context, cleaned_args[1], spotlight_db[channel_id], context, msg_location)
         if match_name is not None:
             spotlight_db[channel_id][cleaned_args[2]] = spotlight_db[channel_id].pop(match_name)
     elif cleaned_args[0].lower() not in ['show', "now", "display", "what"]:
         already_went_list = []
         for arg in cleaned_args:
-            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+            match_name = await find_spotlight_participant(context, arg, spotlight_db[channel_id], context, msg_location)
             if match_name is None:
                 continue
             if spotlight_db[channel_id][match_name]:
@@ -846,7 +846,7 @@ async def spotlight(context, *args, **kwargs):
     return await context.koduck.send_message(receive_message=context["message"], embed=embed)
 
 
-async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_location):
+async def find_spotlight_participant(context, arg, participant_dict, msg_cnt, message_location):
     participant_list = pd.Series(participant_dict.keys())
     participant_list = participant_list[participant_list != "Last Modified"]
     match_candidates = participant_list[participant_list.str.contains(re.escape(arg), flags=re.IGNORECASE)]

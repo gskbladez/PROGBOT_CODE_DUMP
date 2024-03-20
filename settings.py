@@ -13,10 +13,10 @@ param_delim = " "
 default_user_level = 1
 max_user_level = 3
 log_format = "{timestamp}\t{type}\t{server_id}\t{server_name}\t{channel_id}\t{channel_name}\t{user_id}\t{discord_tag}\t{nickname}\t{message_content}\t{data}\t{extra}"
-channel_cooldown = 1000
+channel_cooldown = 0
 ignore_cd_level = 2
-user_cooldown_0 = 60000
-user_cooldown_1 = 3000
+user_cooldown_0 = 0
+user_cooldown_1 = 0
 output_history_size = 10
 background_task = None
 background_task_interval = 10
@@ -36,6 +36,7 @@ message_embed_empty_field = "The output embed was invalid ({} can't be empty)"  
 log_cooldown_active = "Cooldown active"
 message_restricted_access = "You do not have permission to use this command"
 message_missing_params = "Missing required parameters: {}"
+message_refresh_app_commands_progress = "Slash commands refreshing..."
 
 #NETBATTLER DATA FILES
 chipfile = "tables/chipdata.tsv"
