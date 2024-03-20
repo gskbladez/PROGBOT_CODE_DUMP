@@ -1,66 +1,68 @@
 #BOT FILES
-commandstablename = "commands.tsv"
-settingstablename = "settings.txt"
-userlevelstablename = "userlevels.txt"
-customresponsestablename = "customresponses.txt"
-logfile = "log.txt"
-formattedlogfile = "formattedlog.txt"
+commands_table_name = "tables/commands.tsv"
+settings_table_name = "tables/settings.txt"
+user_levels_table_name = "tables/user_levels.txt"
+log_file = "log.txt"
+debug_log_file_name = "discord.log"
 prefixfile = "prefixes.json"
 
-chipfile = "chipdata.tsv"
-powerfile = "powerncpdata.tsv"
-virusfile = "virusdata.tsv"
-daemonfile = "daemondata.tsv"
-bondfile = "bonddata.tsv"
-tagfile = "tagdata.tsv"
-mysterydatafile = "mysterydata.tsv"
-networkmodfile = "networkmoddata.tsv"
-crimsonnoisefile = "crimsonnoisedata.tsv"
-audienceparticipationfile = "audiencedata.tsv"
-elementfile = "elementdata.tsv"
-helpfile = "helpresponses.tsv"
-pmc_chipfile = "playermade_chipdata.tsv"
-pmc_powerfile = "playermade_powerdata.tsv"
-pmc_virusfile = "playermade_virusdata.tsv"
-pmc_daemonfile = "playermade_daemondata.tsv"
-nyx_chipfile = "nyx_chipdata.tsv"
-nyx_ncpfile = "nyx_powerdata.tsv"
-rulebookfile = "rulebookdata.tsv"
-adventurefile = "adventuredata.tsv"
-fightfile = "fightdata.tsv"
-weatherfile = "weatherdata.tsv"
-achievementfile = "achievementdata.tsv"
-glossaryfile = "glossarydata.tsv"
-autolootfile = "autolootdata.tsv"
 
 #BOT SETTINGS
-botname = "ProgBot"
-token = ""
-commandprefix = "/"
-paramdelim = ","
-masteradmin = ""
-logformat = "%t\t%s\t%c\t%U\t%m\t%r"
-channelcooldown = 1000
-ignorecdlevel = 2
-usercooldown_0 = 60000
-usercooldown_1 = 3000
-outputhistorysize = 10
-backgroundtask = None
-backgroundtaskinterval = 10
-msg_char_limit = 2000
+command_prefix = "/"
+param_delim = " "
+default_user_level = 1
+max_user_level = 3
+log_format = "{timestamp}\t{type}\t{server_id}\t{server_name}\t{channel_id}\t{channel_name}\t{user_id}\t{discord_tag}\t{nickname}\t{message_content}\t{data}\t{extra}"
+channel_cooldown = 1000
+ignore_cd_level = 2
+user_cooldown_0 = 60000
+user_cooldown_1 = 3000
+output_history_size = 10
+background_task = None
+background_task_interval = 10
+enable_debug_logger = False
+enable_run_command = True
+run_command_name = "run"
+run_command_description = "Run a prefix command"
+run_command_default_response = "Command ran successfully"
 
 #MESSAGES
-message_somethingbroke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
-message_unknowncommand = "Command not recognized."
-message_unhandlederror = "Unhandled error."
-message_resulttoolong = "Sorry, the result was too long to output. ({}/2000 characters)"
-message_cooldownactive = "Cooldown active."
-message_restrictedaccess = "You do not have permission to use this command."
-message_oops_failed = "Oops failed!"
-message_oops_success = "Oops success!"
-message_addresponse_failed = "Failed to add custom response!"
-message_removeresponse_success = "Custom response successfully removed!"
-message_removeresponse_failed = "Failed to remove custom response!"
+message_something_broke = "Something broke"
+message_unknown_command = "Command not recognized"
+message_unhandled_error = "Unhandled error ({})"
+message_result_too_long = "Sorry, the result was too long to output ({}/{} characters)"
+message_embed_too_long = "Sorry, the embed was too long to output ({} {}/{} characters)"
+message_embed_empty_field = "The output embed was invalid ({} can't be empty)"
+message_cooldown_active = "Cooldown active"
+message_restricted_access = "You do not have permission to use this command"
+message_missing_params = "Missing required parameters: {}"
+
+#NETBATTLER DATA FILES
+chipfile = "tables/chipdata.tsv"
+powerfile = "tables/powerncpdata.tsv"
+virusfile = "tables/virusdata.tsv"
+daemonfile = "tables/daemondata.tsv"
+bondfile = "tables/bonddata.tsv"
+tagfile = "tables/tagdata.tsv"
+mysterydatafile = "tables/mysterydata.tsv"
+networkmodfile = "tables/networkmoddata.tsv"
+crimsonnoisefile = "tables/crimsonnoisedata.tsv"
+audienceparticipationfile = "tables/audiencedata.tsv"
+elementfile = "tables/elementdata.tsv"
+helpfile = "tables/helpresponses.tsv"
+pmc_chipfile = "tables/playermade_chipdata.tsv"
+pmc_powerfile = "tables/playermade_powerdata.tsv"
+pmc_virusfile = "tables/playermade_virusdata.tsv"
+pmc_daemonfile = "tables/playermade_daemondata.tsv"
+nyx_chipfile = "tables/nyx_chipdata.tsv"
+nyx_ncpfile = "tables/nyx_powerdata.tsv"
+rulebookfile = "tables/rulebookdata.tsv"
+adventurefile = "tables/adventuredata.tsv"
+fightfile = "tables/fightdata.tsv"
+weatherfile = "tables/weatherdata.tsv"
+achievementfile = "tables/achievementdata.tsv"
+glossaryfile = "tables/glossarydata.tsv"
+autolootfile = "tables/autolootdata.tsv"
 
 #HARDCODED LINKS
 character_sheet = r"https://docs.google.com/spreadsheets/d/158iI4LCpfS4AGjV5EshHkbKUD4GxogJCiwZCV6QzJ5s/edit#gid=295914024"
