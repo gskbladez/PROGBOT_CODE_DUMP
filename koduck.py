@@ -131,7 +131,11 @@ class Koduck:
     #- file: a Discord File to include in the outgoing Discord Message
     #- view: a Discord View to include in the outgoing Discord Message
     #- ignore_cd: set this to True to ignore cooldown checks
-    async def send_message(self, receive_message: Optional[Union[discord.Message, discord.Interaction]] = None, channel: Optional[discord.abc.Messageable] = None, ignore_cd: bool = False, **kwargs):
+    async def send_message(self, receive_message: Optional[Union[discord.Message, discord.Interaction]] = None,
+                           channel: Optional[discord.abc.Messageable] = None,
+                           ignore_cd: bool = False,
+                           ephemeral: bool = False,
+                           **kwargs):
         content = kwargs["content"] if "content" in kwargs else ""
         embed = kwargs["embed"] if "embed" in kwargs else None
         send_channel = channel
@@ -152,20 +156,20 @@ class Koduck:
             
             #ignore message if bot is on channel cooldown or user cooldown
             if cooldown_active and not ignore_cd:
-                self.log(type="cooldown", extra=settings.message_cooldown_active)
+                self.log(type="cooldown", extra=settings.log_cooldown_active)
                 return
         
         #send message to a "/run" interaction
         if isinstance(receive_message, SlashMessage) and channel is None:
             if not receive_message.interaction.response.is_done():
-                the_message = await receive_message.interaction.response.send_message(**kwargs)
+                the_message = await receive_message.interaction.response.send_message(ephemeral=ephemeral, **kwargs)
             else:
                 the_message = await receive_message.interaction.followup.send(**kwargs)
         #send message to an interaction
         elif isinstance(receive_message, discord.Interaction) and channel is None:
             #This is not returning the sent message for some reason, so here's a workaround to fetch it after it's sent
             if not receive_message.response.is_done():
-                await receive_message.response.send_message(**kwargs)
+                await receive_message.response.send_message(ephemeral=ephemeral, **kwargs)
                 the_message = await receive_message.original_response()
             else:
                 the_message = await receive_message.followup.send(**kwargs)
@@ -203,7 +207,7 @@ class Koduck:
             async def wrapper_function(interaction, **kwargs):
                 interaction.command.koduck.log(type="interaction_user", interaction=interaction)
                 if interaction.command.koduck.get_user_level(interaction.user.id) < interaction.command.command_tier:
-                    return await interaction.response.send_message(content=settings.message_restricted_access)
+                    return await interaction.response.send_message(content=settings.message_restricted_access, ephemeral=True)
                 try:
                     return await function(interaction, **kwargs)
                 except Exception as e:
@@ -213,8 +217,8 @@ class Koduck:
                     if interaction.response.is_done():
                         await interaction.followup.send(content=settings.message_something_broke + "\n``{}``".format(error_message))
                     else:
-                        await interaction.response.send_message(content=settings.message_something_broke + "\n``{}``".format(error_message))
-                    koduck_instance.log(type="command_error", extra=settings.message_unhandled_error.format(error_message))
+                        await interaction.response.send_message(content=settings.message_something_broke + "\n``{}``".format(error_message), ephemeral=True)
+                    koduck_instance.log(type="command_error", extra=settings.log_unhandled_error.format(error_message))
                     
             functools.update_wrapper(wrapper_function, function)
             
@@ -463,7 +467,7 @@ async def background_task():
                     exc_type, exc_value, _ = sys.exc_info()
                     error_message = "{}: {}".format(exc_type.__name__, exc_value)
                     traceback.print_exc()
-                    koduck_instance.log(type="background_task_error", extra=settings.message_unhandled_error.format(error_message))
+                    koduck_instance.log(type="background_task_error", extra=settings.log_unhandled_error.format(error_message))
             client.loop.create_task(bgt_decorator(settings.background_task, koduck_instance))
         await asyncio.sleep(settings.background_task_interval)
 
@@ -525,7 +529,7 @@ async def on_message(message):
             if context.command not in koduck_instance.prefix_commands:
                 koduck_instance.log(type=activity_type, message=message, extra=settings.message_unknown_command)
                 if isinstance(message, SlashMessage):
-                    await koduck_instance.send_message(receive_message=message, content=settings.message_unknown_command)
+                    await koduck_instance.send_message(receive_message=message, content=settings.message_unknown_command, ephemeral=True)
                 #Reset context
                 context, args, kwargs = KoduckContext(), [], {}
                 context.message = message
@@ -597,7 +601,7 @@ async def on_message(message):
             koduck_instance.log(type=activity_type, extra=settings.message_restricted_access)
             #notify user of restricted access only if it's a prefix or slash command
             if context.command in koduck_instance.prefix_commands:
-                await koduck_instance.send_message(receive_message=message, content=settings.message_restricted_access)
+                await koduck_instance.send_message(receive_message=message, content=settings.message_restricted_access, ephemeral=True)
             return
         
         koduck_instance.log(type=activity_type, message=message)
@@ -618,5 +622,5 @@ async def on_message(message):
         exc_type, exc_value, _ = sys.exc_info()
         error_message = "{}: {}".format(exc_type.__name__, exc_value)
         traceback.print_exc()
-        await koduck_instance.send_message(message, content=settings.message_something_broke + "\n``{}``".format(error_message), ignore_cd=True)
-        koduck_instance.log(type="command_error", extra=settings.message_unhandled_error.format(error_message))
+        await koduck_instance.send_message(message, content=settings.message_something_broke + "\n``{}``".format(error_message), ignore_cd=True, ephemeral=True)
+        koduck_instance.log(type="command_error", extra=settings.log_unhandled_error.format(error_message))

@@ -29,11 +29,11 @@ run_command_default_response = "Command ran successfully"
 #MESSAGES
 message_something_broke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
 message_unknown_command = "Command not recognized"
-message_unhandled_error = "Unhandled error ({})"
-message_result_too_long = "Sorry, the result was too long to output ({}/{} characters)"
-message_embed_too_long = "Sorry, the embed was too long to output ({} {}/{} characters)"
-message_embed_empty_field = "The output embed was invalid ({} can't be empty)"
-message_cooldown_active = "Cooldown active"
+log_unhandled_error = "Unhandled error ({})"
+message_result_too_long = "Sorry, the result was too long to output ({}/{} characters)"  # unused?
+message_embed_too_long = "Sorry, the embed was too long to output ({} {}/{} characters)"   # unused?
+message_embed_empty_field = "The output embed was invalid ({} can't be empty)"   # unused?
+log_cooldown_active = "Cooldown active"
 message_restricted_access = "You do not have permission to use this command"
 message_missing_params = "Missing required parameters: {}"
 
