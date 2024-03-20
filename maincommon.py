@@ -72,7 +72,7 @@ def clean_args(args, lowercase=True):
 
 
 async def send_query_msg(context, return_title, return_msg):
-    return await koduck.sendmessage(context["message"], sendcontent="**%s**\n*%s*" % (return_title, return_msg))
+    return await context.koduck.send_message(receive_message=context["message"], content="**%s**\n*%s*" % (return_title, return_msg))
 
 
 async def find_value_in_table(context, df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
@@ -82,27 +82,27 @@ async def find_value_in_table(context, df, search_col, search_arg, suppress_notf
         alias_check = df[
             df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
         if (alias_check.shape[0] > 1) and (not allow_duplicate):
-            await koduck.sendmessage(context["message"],
-                                     sendcontent="Found more than one match for %s! You should probably let the devs know...")
+            await context.koduck.send_message(receive_message=context["message"],
+                                     content="Found more than one match for %s! You should probably let the devs know...")
             return None
         if alias_check.shape[0] != 0:
             search_arg = alias_check.iloc[0][search_col]
             if alias_message:
-                await koduck.sendmessage(context["message"],
-                                         sendcontent="Found as an alternative name for **%s**!" % search_arg)
+                await context.koduck.send_message(receive_message=context["message"],
+                                         content="Found as an alternative name for **%s**!" % search_arg)
 
     search_results = df[df[search_col].str.contains("\s*^%s\s*$" % re.escape(search_arg), flags=re.IGNORECASE)]
     if search_results.shape[0] == 0:
         if not suppress_notfound:
-            await koduck.sendmessage(context["message"],
-                                     sendcontent="I can't find `%s`!" % search_arg)
+            await context.koduck.send_message(receive_message=context["message"],
+                                     content="I can't find `%s`!" % search_arg)
         return None
     elif search_results.shape[0] > 1:
         if allow_duplicate:
             return search_results.iloc[random.randrange(0, search_results.shape[0])]
         else:
-            await koduck.sendmessage(context["message"],
-                                     sendcontent="Found more than one match for %s! You should probably let the devs know..." % search_arg)
+            await context.koduck.send_message(receive_message=context["message"],
+                                     content="Found more than one match for %s! You should probably let the devs know..." % search_arg)
         return None
     return search_results.iloc[0]
 
