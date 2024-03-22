@@ -113,7 +113,7 @@ async def bugreport(interaction: discord.Interaction, message: str):
     await interaction.command.koduck.send_message(interaction, content="**_Bug Report Submitted!_**\nThanks for the help!")
 
 
-async def ping(interaction, delay: int, option:str=""):
+async def ping(interaction: discord.Interaction, delay: int, option:str=""):
     await interaction.response.defer(thinking=True)
     await asyncio.sleep(delay)
     if option:
@@ -136,8 +136,9 @@ async def change_status(context, *args, **kwargs):
         return await context.koduck.client.change_presence(activity=discord.Game(name=context.param_line))
 
 
-async def goodnight(context, *args, **kwargs):
-    return await koduck.client.logout()
+async def goodnight(interaction: discord.Interaction):
+    interaction.command.koduck.send_message(interaction, content="Goodnight!")
+    return await koduck.client.close()
 
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
