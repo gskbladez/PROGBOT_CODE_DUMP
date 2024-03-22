@@ -2,6 +2,7 @@ import asyncio
 import os
 
 import discord
+import typing
 from dotenv import load_dotenv
 
 from koduck import Koduck
@@ -53,7 +54,7 @@ async def refresh_commands(context, *args, **kwargs):
 
     if settings.enable_run_command:
         context.koduck.add_run_slash_command()
-    
+
     errors = "\n".join(errors)
     if context.message is not None:
         if errors:
@@ -93,36 +94,50 @@ async def commands(context, *args, **kwargs):
                    name]
     return await context.koduck.send_message(receive_message=context["message"], content="\n\n".join(return_msgs))
 
-async def bugreport(context, *args, **kwargs):
-    if not context['params']:
-        msg = "Sends a bug report to the ProgBot Devs! " + \
-                "Please describe the error in full. " + \
-                "(i.e. `bugreport Sword is listed as 3 damage when it is 2 damage.`)"
-        return await context.koduck.send_message(receive_message=context["message"], content=msg)
 
-    channelid = int(settings.bugreport_channel_id)
-
-    progbot_bugreport_channel = context.koduck.client.get_channel(channelid)
-    message_content = context["param_line"]
-    message_author = context["message"].author
-    if context["message"].channel.type is discord.ChannelType.private:
+async def bugreport(interaction: discord.Interaction, message: str):
+    channelid = interaction.channel
+    progbot_bugreport_channel = koduck.client.get_channel(settings.bugreport_channel_id)
+    message_author = interaction.user
+    if channelid.type is discord.ChannelType.private:
         message_guild = "Direct message"
     else:
-        message_guild = context["message"].guild.name
-    # originchannel = "<#{}>".format(context["message"].channel.id) if isinstance(context["message"].channel,
-    #                                                                            discord.TextChannel) else ""
-    embed = discord.Embed(title="**__New Bug Report!__**", description="_{}_".format(message_content),
+        message_guild = interaction.guild.name
+    embed = discord.Embed(title="**__New Bug Report!__**", description="_{}_".format(message),
                           color=0x5058a8)
     embed.set_footer(
         text="Submitted by: {}#{} ({})".format(message_author.name, message_author.discriminator, message_guild))
     embed.set_thumbnail(url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png")
-    await context.koduck.send_message(receive_message=context["message"], channel=progbot_bugreport_channel, embed=embed)
-    return await context.koduck.send_message(receive_message=context["message"], content="**_Bug Report Submitted!_**\nThanks for the help!")
+    await interaction.command.koduck.send_message(interaction, channel=progbot_bugreport_channel,
+                                      embed=embed)
+    await interaction.command.koduck.send_message(interaction, content="**_Bug Report Submitted!_**\nThanks for the help!")
 
-async def ping(interaction, delay: int):
+
+async def ping(interaction, delay: int, option:str=""):
     await interaction.response.defer(thinking=True)
     await asyncio.sleep(delay)
+    if option:
+        return await interaction.command.koduck.send_message(interaction, content="pong!")
     await interaction.command.koduck.send_message(interaction, content="pong")
+
+
+#Syncs the slash commands to Discord. This is not done automatically and should be done by running this command if changes were made to the slash commands.
+async def refresh_app_commands(context, *args, **kwargs):
+    await context.koduck.send_message(receive_message=context.message, content=settings.message_refresh_app_commands_progress)
+    # takes more than 3 seconds to refresh app commands, now...
+    await context.koduck.refresh_app_commands()
+    # TODO: followup?
+
+
+async def change_status(context, *args, **kwargs):
+    if not context.param_line:
+        return await context.koduck.client.change_presence(activity=discord.Game(name=""))
+    else:
+        return await context.koduck.client.change_presence(activity=discord.Game(name=context.param_line))
+
+
+async def goodnight(context, *args, **kwargs):
+    return await koduck.client.logout()
 
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')

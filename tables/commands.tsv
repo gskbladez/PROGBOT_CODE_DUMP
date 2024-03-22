@@ -1,17 +1,11 @@
 Command	Function	Category	Module	Type	Description	Permission	Hidden
-bugreport	bugreport	ProgBot	main	prefix	Sends a message to Progbot's bug report channel	1	FALSE
-bugfix	bugreport	ProgBot	main	prefix	Sends a message to Progbot's bug report channel	1	TRUE
-bug	bugreport	ProgBot	main	prefix	Sends a message to Progbot's bug report channel	1	TRUE
+changestatus	change_status	Admin	main	prefix	Changes Progbot's status message	3	FALSE
+goodnight	goodnight	Admin	main	prefix	Shuts down Progbot	3	FALSE
+bugreport	bugreport	ProgBot	main	slash	Sends a message to Progbot's bug report channel	1	FALSE
 command	commands	ProgBot	main	prefix	Lists Progbot's commands	1	FALSE
-commands	commands	ProgBot	main	prefix	Lists Progbot's commands	1	TRUE
 help	help_cmd	Game Lookup	base	prefix	Ask for help and rulings	1	FALSE
 invite	invite	ProgBot	main	prefix	Get an invite link!	1	FALSE
-roll	roll	Rollers	roll	prefix	Roll a NetBattlers dice roll	1	FALSE
-r	roll	Rollers	roll	prefix	Roll a NetBattlers dice roll	1	FALSE
-repeatroll	repeatroll	Rollers	roll	prefix	Roll a NetBattlers dice roll multiple times at once	1	FALSE
-repeatr	repeatroll	Rollers	roll	prefix	Roll a NetBattlers dice roll multiple times at once	1	TRUE
-rr	repeatroll	Rollers	roll	prefix	Roll a NetBattlers dice roll multiple times at once	1	FALSE
-rroll	repeatroll	Rollers	roll	prefix	Roll a NetBattlers dice roll multiple times at once	1	TRUE
+roll	roll	Rollers	roll	slash	Normal: 5d6>4, N5; Comment: #, Keep highest/lowest: 2d6h1, 2d6l1, Explode: 5d6!6>4	1	FALSE
 chip	chip	Game Lookup	base	prefix	Look up a BattleChip	1	FALSE
 chips	chip	Game Lookup	base	prefix	Look up a BattleChip	1	TRUE
 power	power	Game Lookup	base	prefix	Look up a Power	1	FALSE
@@ -25,31 +19,27 @@ query	query	Info	base	prefix	Lookup a category of stuff!	1	FALSE
 bond	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	FALSE
 bondpower	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	FALSE
 bondpowers	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	TRUE
-mysterydata	mysterydata	Rollers	base	prefix	Roll Mystery Data	1	FALSE
-md	mysterydata	Rollers	base	prefix	Roll Mystery Data	1	FALSE
-mysteryreward	mysteryreward	Rollers	base	prefix	Roll Mystery Data (minus Zenny and Narrative)	1	FALSE
+mysterydata	mysterydata	Rollers	base	slash	Roll Mystery Data	1	FALSE
 rulebook	rulebook	Info	base	prefix	Return rulebook links	1	FALSE
 book	rulebook	Info	base	prefix	Return rulebook links	1	TRUE
 books	rulebook	Info	base	prefix	Return rulebook links	1	TRUE
-element	element	Rollers	base	prefix	Roll random elements	1	FALSE
+element	element	Rollers	base	slash	Roll random elements	1	FALSE
 daemon	daemon	Game Lookup	advance	prefix	Pull up Daemon info	1	FALSE
 upgrade	upgrade	Game Lookup	base	prefix	Look up Navi Power Upgrade info	1	TRUE
 npu	upgrade	Game Lookup	base	prefix	Look up Navi Power Upgrade info	1	FALSE
-crimsonnoise	crimsonnoise	Rollers	advance	prefix	Roll Crimson Noise Mystery Data (Genso Network)	1	FALSE
+crimsonnoise	crimsonnoise	Rollers	advance	slash	Roll Crimson Noise Mystery Data (Genso Network)	1	FALSE
 mod	networkmod	Game Lookup	advance	prefix	Pull up Network Mod info	1	FALSE
 networkmod	networkmod	Game Lookup	advance	prefix	Pull up Network Mod info	1	TRUE
 audience	audience	Assistant	advance	prefix	Start up an Audience tracker	1	FALSE
 cheer	cheer	Assistant	advance	prefix	Spend a Cheer power	1	FALSE
 jeer	jeer	Assistant	advance	prefix	Spend a Jeer power	1	FALSE
-virusrandom	virusr	Rollers	base	prefix	Randomly select Viruses	1	FALSE
-virusr	virusr	Rollers	base	prefix	Randomly select Viruses	1	TRUE
-changeprefix	change_prefix	Admin	base	prefix	Change Progbot's prefix for your server	4	FALSE
+virusrandom	virusr	Rollers	base	slash	Randomly select Viruses	1	FALSE
 repo	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	FALSE
 pmr	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	TRUE
 playermade	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	TRUE
 pmc	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	TRUE
-adventure	adventure	Rollers	base	prefix	Roll a random adventure prompt!	1	FALSE
-fight	fight	Rollers	base	prefix	Roll a random boss fight prompt!	1	FALSE
+adventure	adventure	Rollers	base	slash	Roll a random adventure prompt!	1	FALSE
+fight	fight	Rollers	base	slash	Roll a random boss fight prompt!	1	FALSE
 sheet	sheet	Info	base	prefix	Pull up character sheet links	1	FALSE
 spot	spotlight	Assistant	advance	prefix	Manage a Spotlight Tracker	1	FALSE
 spotlight	spotlight	Assistant	advance	prefix	Manage a Spotlight Tracker	1	FALSE
@@ -62,31 +52,22 @@ achievement	achievement	Game Lookup	advance	prefix	Pull up achievement info	1	FA
 achievements	achievement	Game Lookup	advance	prefix	Pull up achievement info	1	TRUE
 achieve	achievement	Game Lookup	advance	prefix	Pull up achievement info	1	FALSE
 glossary	glossary	Game Lookup	base	prefix	Pull up a glossary definition	1	FALSE
-xcard	xcard	Safety Tools	safety	prefix	Set down an X-Card	1	FALSE
-x	xcard	Safety Tools	safety	prefix	Set down an X-Card	1	TRUE
-ocard	ocard	Safety Tools	safety	prefix	Set down an O-Card	1	FALSE
-o	ocard	Safety Tools	safety	prefix	Set down an O-Card	1	TRUE
-ncard	ncard	Safety Tools	safety	prefix	Set down an N-Card	1	FALSE
-n	ncard	Safety Tools	safety	prefix	Set down an N-Card	1	TRUE
-rewind	rewind	Safety Tools	safety	prefix	Request a Rewind	1	FALSE
-rwd	rewind	Safety Tools	safety	prefix	Request a Rewind	1	TRUE
-rw	rewind	Safety Tools	safety	prefix	Request a Rewind	1	FALSE
-ffwd	ffwd	Safety Tools	safety	prefix	Request a Fast-Forward	1	TRUE
-fastforward	ffwd	Safety Tools	safety	prefix	Request a Fast-Forward	1	FALSE
-fwd	ffwd	Safety Tools	safety	prefix	Request a Fast-Forward	1	TRUE
-ff	ffwd	Safety Tools	safety	prefix	Request a Fast-Forward	1	TRUE
-pause	pause	Safety Tools	safety	prefix	Request a Pause	1	FALSE
-break	pause	Safety Tools	safety	prefix	Request a Pause	1	TRUE
-resume	resume	Safety Tools	safety	prefix	Indicate a Play	1	TRUE
-play	resume	Safety Tools	safety	prefix	Indicate a Play	1	FALSE
-fbf	fbf	Safety Tools	safety	prefix	Request a Frame-by-Frame	1	TRUE
-slow	fbf	Safety Tools	safety	prefix	Request a Frame-by-Frame	1	TRUE
-framebyframe	fbf	Safety Tools	safety	prefix	Request a Frame-by-Frame	1	FALSE
-opendoor	opendoor	Safety Tools	safety	prefix	Indicate you are using the Open Door policy	1	FALSE
-luxton	luxton	Safety Tools	safety	prefix	Pull up info about Luxton	1	FALSE
-line	line	Safety Tools	safety	prefix	Indicate you are setting a Line	1	FALSE
-veil	veil	Safety Tools	safety	prefix	Indicate you are setting a Veil	1	FALSE
+xcard	xcard	Safety Tools	safety	slash	Set down an X-Card	1	FALSE
+ocard	ocard	Safety Tools	safety	slash	Set down an O-Card	1	FALSE
+ncard	ncard	Safety Tools	safety	slash	Set down an N-Card	1	FALSE
+rewind	rewind	Safety Tools	safety	slash	Request a Rewind	1	FALSE
+rw	rewind	Safety Tools	safety	slash	Request a Rewind	1	FALSE
+fastforward	ffwd	Safety Tools	safety	slash	Request a Fast-Forward	1	FALSE
+pause	pause	Safety Tools	safety	slash	Request a Pause	1	FALSE
+resume	resume	Safety Tools	safety	prefix	Indicate a Play	1	FALSE
+play	resume	Safety Tools	safety	slash	Indicate a Play	1	FALSE
+slow	fbf	Safety Tools	safety	prefix	Request a Frame-by-Frame	1	FALSE
+framebyframe	fbf	Safety Tools	safety	slash	Request a Frame-by-Frame	1	FALSE
+opendoor	opendoor	Safety Tools	safety	slash	Indicate you are using the Open Door policy	1	FALSE
+luxton	luxton	Safety Tools	safety	slash	Pull up info about Luxton	1	FALSE
+line	line	Safety Tools	safety	slash	Indicate you are setting a Line	1	FALSE
+veil	veil	Safety Tools	safety	slash	Indicate you are setting a Veil	1	FALSE
 find	find_chip_ncp_power	Game Lookup	base	prefix	Find a BattleChip, NCP, or Power	1	FALSE
-search	find_chip_ncp_power	Game Lookup	base	prefix	Find a BattleChip, NCP, or Power	1	FALSE
-autoloot	autoloot	Game Rollers	fools	prefix	Generate a random autoloot chip	1	FALSE
-ping	ping	ProgBot	main	slash	Generate a random autoloot chip	1	TRUE
+autoloot	autoloot	Game Rollers	fools	slash	Generate a random autoloot chip	1	FALSE
+ping	ping	ProgBot	main	slash	Generate a random autoloot chip	3	TRUE
+refreshappcommands	refresh_app_commands	ProgBot	main	prefix	Refresh slash commands	3	TRUE

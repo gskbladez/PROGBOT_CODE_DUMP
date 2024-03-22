@@ -139,26 +139,31 @@ class Koduck:
         content = kwargs["content"] if "content" in kwargs else ""
         embed = kwargs["embed"] if "embed" in kwargs else None
         send_channel = channel
-        
-        if isinstance(receive_message, discord.Interaction):
+
+        user_id = receive_message.user.id if isinstance(receive_message, discord.Interaction) else receive_message.author.id
+
+        # not sure what this does
+        if send_channel is None and isinstance(receive_message, discord.Interaction):
             send_channel = receive_message.channel
-        #If send_message was triggered by a user message, check cooldowns
-        elif receive_message is not None:
-            if channel is None:
+
+        # If send_message was triggered by a user message, check cooldowns
+        if receive_message is not None:
+            if send_channel is None:
                 send_channel = receive_message.channel
             
             #Check cooldowns
             cooldown_active = False
-            user_level = self.get_user_level(receive_message.author.id)
+            # oops breaks on interactions
+            user_level = self.get_user_level(user_id)
             if user_level < settings.ignore_cd_level:
                 cooldown_active = self.check_channel_cooldown(send_channel.id)
-                cooldown_active = cooldown_active or self.check_user_cooldown(receive_message.author.id)
+                cooldown_active = cooldown_active or self.check_user_cooldown(user_id)
             
             #ignore message if bot is on channel cooldown or user cooldown
             if cooldown_active and not ignore_cd:
                 self.log(type="cooldown", extra=settings.log_cooldown_active)
                 return
-        
+
         #send message to a "/run" interaction
         if isinstance(receive_message, SlashMessage) and channel is None:
             if not receive_message.interaction.response.is_done():
@@ -179,7 +184,6 @@ class Koduck:
         
         #track user outputs
         if receive_message is not None and the_message is not None:
-            user_id = receive_message.user.id if isinstance(receive_message, discord.Interaction) else receive_message.author.id
             user_last_outputs = self.get_user_last_outputs(user_id)
             user_last_outputs.append(the_message)
             self.output_history[user_id] = user_last_outputs[max(0,len(user_last_outputs)-settings.output_history_size):]

@@ -61,28 +61,11 @@ def format_hits_roll(roll_result):
     return result_str
 
 
-async def repeatroll(context, *args, **kwargs):
-    if not args:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "rollhelp", suppress_notfound=True)
-        if ruling_msg is None:
-            return await context.koduck.send_message(receive_message=context["message"],
-                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)")
+async def roll(interaction: discord.Interaction, roll_cmd: str, repeat: int = 1):
+    if repeat <= 0:
+        await interaction.command.koduck.send_message(interaction, content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
 
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content=("I can repeat a roll command for you! Try `repeatroll 3, 5d6>4` or `repeatroll 3, $N5`!\n\n" + ruling_msg["Response"]))
-    if len(args) < 2:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Must be in the format of `repeatroll [repeats], [dice roll]` (i.e. `repeatroll 3, 5d6>4`)")
-    try:
-        repeat_arg = int(args[0])
-    except ValueError:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="First argument needs to be the number of times you want to repeat the roll!")
-    if repeat_arg <= 0:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Can't repeat a roll a negative or zero number of times!")
-
-    roll_line = context.param_line.split(",", 1)[1]
+    roll_line = roll_cmd.split(",", 1)[1]
 
     if ROLL_COMMENT_CHAR in roll_line:
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
@@ -91,8 +74,7 @@ async def repeatroll(context, *args, **kwargs):
 
     roll_line = re.sub("\s+", "", roll_line).lower()
     if not roll_line:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="No roll given!")
+        await interaction.command.koduck.send_message(interaction, content="No roll command given!", ephemeral=True)
 
     dice_size = re.search('d(\d+)', roll_line)
     if not dice_size:
@@ -101,39 +83,41 @@ async def repeatroll(context, *args, **kwargs):
     if dice_size:
         reroll_size = int(dice_size.group(1))
 
-        if repeat_arg > MAX_REROLL_QUERY:
-            return await context.koduck.send_message(receive_message=context["message"],
-                                            content="Too many small rerolls in one query! Maximum of %d for dice sizes under %d!" % (MAX_REROLL_QUERY, REROLL_DICE_SIZE_THRESHOLD))
-        if repeat_arg > MAX_REROLL_QUERY_LARGE and reroll_size > REROLL_DICE_SIZE_THRESHOLD:
-            return await context.koduck.send_message(receive_message=context["message"],
-                                            content="Too many large rerolls in one query! Maximum of %d for dice sizes over %d!" % (MAX_REROLL_QUERY_LARGE, REROLL_DICE_SIZE_THRESHOLD))
+        if repeat > MAX_REROLL_QUERY:
+            return await interaction.command.koduck.send_message(interaction,
+                                                                 content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
+                                                                 ephemeral=True)
+
+        if repeat > MAX_REROLL_QUERY_LARGE and reroll_size > REROLL_DICE_SIZE_THRESHOLD:
+            return await interaction.command.koduck.send_message(interaction,
+                                                                 content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY_LARGE} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
+                                                                 ephemeral=True)
 
     try:
-        roll_heck = [roll_master(roll_line, format_limit=(FORMAT_LIMIT/repeat_arg)) for i in range(0, repeat_arg)]
+        roll_heck = [roll_master(roll_line, format_limit=int(FORMAT_LIMIT/repeat)) for i in range(0, repeat)]
+        err_msg = ""
         roll_results, is_underflow_list = list(zip(*roll_heck))
     except rply.errors.LexingError:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Unexpected characters found! Did you type out the roll correctly?")
+        err_msg = "Unexpected characters found! Did you type out the roll correctly?"
     except AttributeError:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Sorry, I can't understand the roll. Try writing it out differently!")
+        err_msg = "Sorry, I can't understand the roll. Try writing it out differently!"
     except dice_algebra.DiceError:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="The dice algebra is incorrect! Did you type out the roll correctly?")
+        err_msg = "The dice algebra is incorrect! Did you type out the roll correctly?"
     except dice_algebra.OutOfDiceBounds as e:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content=str(e))
+        err_msg = str(e)
     except dice_algebra.BadArgument as e:
-        return await context.koduck.send_message(receive_message=context["message"], content="Bad argument! " + str(e))
+        err_msg = "Bad argument! " + str(e)
 
+    if err_msg:
+        return await interaction.command.koduck.send_message(interaction, content=err_msg, ephemeral=True)
 
     roll_outputs = [format_hits_roll(result) for result in roll_results]
-    progroll_output = "{} *rolls...*".format(context["message"].author.mention)
+    progroll_output = f"{interaction.user.mention} *rolls...*"
     if roll_comment:
-        progroll_output += " #{}".format(roll_comment.rstrip())
+        progroll_output += f" #{roll_comment.rstrip()}"
     progroll_output = "{}\n>>> {}".format(progroll_output,"\n".join(roll_outputs))
 
-    progmsg = await context.koduck.send_message(receive_message=context["message"], content=progroll_output)
+    progmsg = await interaction.command.koduck.send_message(interaction, content=progroll_output)
     if not any(is_underflow_list):
         return
     try:
@@ -141,51 +125,3 @@ async def repeatroll(context, *args, **kwargs):
     except discord.errors.HTTPException:
         return
 
-
-async def roll(context, *args, **kwargs):
-    if not args:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "rollhelp", suppress_notfound=True)
-        if ruling_msg is None:
-            return await context.koduck.send_message(receive_message=context["message"],
-                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content=("I can roll dice for you! Try `roll 5d6>4` or `roll $N5`!\n\n" + ruling_msg["Response"]))
-    roll_line = context.param_line
-    if ROLL_COMMENT_CHAR in roll_line:
-        roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
-    else:
-        roll_comment = ""
-
-    roll_line = re.sub("\s+", "", roll_line).lower()
-    if not roll_line:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="No roll given!")
-
-    try:
-        roll_results, is_underflow = roll_master(roll_line)
-    except rply.errors.LexingError:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Unexpected characters found! Did you type out the roll correctly?")
-    except AttributeError:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Sorry, I can't understand the roll. Try writing it out differently!")
-    except dice_algebra.DiceError:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="The dice algebra is incorrect! Did you type out the roll correctly?")
-    except dice_algebra.OutOfDiceBounds:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Too many dice were rolled! No more than %d!" % dice_algebra.DICE_NUM_LIMIT)
-    except dice_algebra.BadArgument as e:
-        return await context.koduck.send_message(receive_message=context["message"], content="Bad argument! " + str(e))
-
-    progroll_output = "{} *rolls...* {}".format(context["message"].author.mention, format_hits_roll(roll_results))
-    if roll_comment:
-        progroll_output += " #{}".format(roll_comment.rstrip())
-
-    progmsg = await context.koduck.send_message(receive_message=context["message"], content=progroll_output)
-    if not is_underflow:
-        return
-    try:
-        await progmsg.add_reaction(settings.custom_emojis["underflow"])
-    except discord.errors.HTTPException:
-        return

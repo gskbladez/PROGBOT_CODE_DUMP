@@ -66,18 +66,16 @@ def clean_spotlight():
     #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
     return
 
-async def crimsonnoise(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+async def crimsonnoise(interaction: discord.Interaction, md_type: str):
+    cleaned_args = clean_args(md_type)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="I can roll **CrimsonNoise** for you! Specify `crimsonnoise common`, `crimsonnoise`, or `crimsonnoise rare`!")
+        return await interaction.command.koduck.send_message(interaction, content="I can roll **CrimsonNoise** for you! Specify `crimsonnoise common`, `crimsonnoise`, or `crimsonnoise rare`!")
 
     arg = cleaned_args[0]
     crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
 
     if crimsonnoise_type.shape[0] == 0:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Please specify either Common, Uncommon, or Rare CrimsonNoise.")
+        return await interaction.command.koduck.send_message(interaction, content="Please specify either Common, Uncommon, or Rare CrimsonNoise.")
     firstroll = random.randint(1, 6)
     if firstroll != 6:
         reward_type = "Chip"
@@ -93,11 +91,11 @@ async def crimsonnoise(context, *args, **kwargs):
     cn_type = arg.capitalize()
 
     embed = discord.Embed(title="__{} CrimsonNoise__".format(cn_type),
-                          description="_%s accessed the CrimsonNoise..._\n" % context["message"].author.mention +
+                          description="_%s accessed the CrimsonNoise..._\n" % interaction.user.mention +
                                       "\nGot: **%s**" % result_text,
                           color=cn_color)
 
-    return await context.koduck.send_message(receive_message=context["message"], embed=embed)
+    return interaction.command.koduck.send_message(interaction, embed=embed)
 
 def query_daemon():
     result_title = "Listing all Daemons (excluding Player Made Content)..."
