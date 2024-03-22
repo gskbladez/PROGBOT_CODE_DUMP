@@ -25,6 +25,7 @@ enable_run_command = True
 run_command_name = "run"
 run_command_description = "Run a prefix command"
 run_command_default_response = "Command ran successfully"
+default_status = "NetBattlers RPG"
 
 #MESSAGES
 message_something_broke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
