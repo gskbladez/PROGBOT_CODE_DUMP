@@ -44,8 +44,7 @@ help_df = pd.read_csv(settings.helpfile, sep="\t").fillna('')
 help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
 help_cmd_list = [i for i in help_df["Command"] if i]
 help_df["Type"] = help_df["Type"].astype("category")
-help_df["Type"].cat.rename_categories(help_categories, inplace=True)
-help_df["Type"].cat.reorder_categories(list(help_categories.values())+[""], inplace=True)
+help_df["Type"] = help_df["Type"].cat.rename_categories(help_categories).cat.reorder_categories(list(help_categories.values())+[""])
 
 rulebook_df = pd.read_csv(settings.rulebookfile, sep="\t",  converters = {'Version': str}).fillna('')
 pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]

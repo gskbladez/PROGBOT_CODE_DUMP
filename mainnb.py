@@ -124,7 +124,7 @@ async def help_cmd(context, *args, **kwargs):
     # Default message if no parameter is given
     if len(args) == 0:
         message_help = "Hi, I'm **ProgBot**, a bot made for *NetBattlers*, the Unofficial MMBN RPG! \n" + \
-                       "My prefix for commands here is ``. You can also DM me using my default prefix `%s`! \n" % settings.commandprefix + \
+                       "My prefix for commands here is ``. You can also DM me using slash commands!" + \
                        "To see a list of all commands you can use, type `commands`. " + \
                        "You can type `help` and any other command for more info on that command!\n" + \
                        "I can also pull up info on some rules and descriptions! Check `help all` for the list of details I can help with!"
@@ -1160,8 +1160,8 @@ async def bond(context, *args, **kwargs):
 
 async def element(interaction: discord.Interaction, number: int, category: str=""):
     element_return_number = number
-    element_category = category.strip()
-
+    element_category = [category.strip()]
+    
     all_cats = []
     if element_category:
         regex_search = [f"^\s*{re.escape(a)}\s*$" for a in element_category]
@@ -1169,13 +1169,13 @@ async def element(interaction: discord.Interaction, number: int, category: str="
         all_cats = sub_element_df["category"].unique().tolist()
         if len(all_cats) != len(element_category):  # so one of the categories isn't actually in the DB
             return await interaction.command.koduck.send_message(interaction, content="Invalid category provided!\n" +
-                                                        "Categories: **%s**" % ", ".join(element_category_list))
+                                                        "Categories: **%s**" % ", ".join(element_category_list), ephemeral=True)
     else:
         sub_element_df = element_df
     if element_return_number < 1:
-        return await interaction.command.koduck.send_message(interaction, content="The number of elements can't be 0 or negative!")
+        return await interaction.command.koduck.send_message(interaction, content="The number of elements can't be 0 or negative!", ephemeral=True)
     if element_return_number > MAX_ELEMENT_QUERY:
-        return await interaction.command.koduck.send_message(interaction, content="That's too many elements! Are you sure you need more than %d?" % MAX_ELEMENT_ROLL)
+        return await interaction.command.koduck.send_message(interaction, content=f"That's too many elements! Are you sure you need more than {MAX_ELEMENT_ROLL}?", ephemeral=True)
 
     elements_selected = random.sample(range(sub_element_df.shape[0]), element_return_number)
     elements_name = [sub_element_df.iloc[i]["element"] for i in elements_selected]
@@ -1425,25 +1425,6 @@ async def virusr(interaction: discord.Interaction, encounter: str):
     return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def break_test(context, *args, **kwargs):
-    return await context.koduck.send_message(receive_message=context["message"], content=str(0 / 0))
-
-
-# UGH permissions
-async def change_prefix(context, *args, **kwargs):
-    if not args:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Changes the prefix that I use for this server! The default prefix is `%s`" % settings.commandprefix)
-    is_changed = context.koduck.change_prefix(context["message"].guild.id, args[0])
-    if is_changed:
-        await context.koduck.send_message(receive_message=context["message"],
-                                 content="Command prefix successfully changed to `%s`" % args[0])
-    else:
-        await context.koduck.send_message(receive_message=context["message"],
-                                 content="Error occurred!")
-    return
-
-
 async def adventure(interaction: discord.Interaction, adv_type: str="core"):
     cleaned_args = clean_args(adv_type)
     if len(cleaned_args) < 1:
@@ -1451,7 +1432,7 @@ async def adventure(interaction: discord.Interaction, adv_type: str="core"):
     if cleaned_args[0] == 'help':
         adventure_help_msg = "I can generate an adventure for you! Specify `adventure` with the type of story you'd like!\n" + \
                              "*Core, Chaos*"
-        return await interaction.command.koduck.send_message(interaction, content=adventure_help_msg.replace("", settings.commandprefix))
+        return await interaction.command.koduck.send_message(interaction, content=adventure_help_msg)
     if len(cleaned_args) > 1:
         return await interaction.command.koduck.send_message(interaction, content="I can only generate one adventure at a time!")
 
