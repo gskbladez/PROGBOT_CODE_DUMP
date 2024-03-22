@@ -120,13 +120,16 @@ async def ping(interaction: discord.Interaction, delay: int, option:str=""):
         return await interaction.command.koduck.send_message(interaction, content="pong!")
     await interaction.command.koduck.send_message(interaction, content="pong")
 
+    
+async def break_test(context, *args, **kwargs):
+    return await context.koduck.send_message(receive_message=context["message"], content=str(0 / 0))
+
 
 #Syncs the slash commands to Discord. This is not done automatically and should be done by running this command if changes were made to the slash commands.
 async def refresh_app_commands(context, *args, **kwargs):
     await context.koduck.send_message(receive_message=context.message, content=settings.message_refresh_app_commands_progress)
     # takes more than 3 seconds to refresh app commands, now...
     await context.koduck.refresh_app_commands()
-    # TODO: followup?
 
 
 async def change_status(context, *args, **kwargs):

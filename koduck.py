@@ -25,7 +25,10 @@ intents.members = True
 intents.presences = True
 intents.message_content = True
 intents.guilds = True
-client = ClientWithBackgroundTask(intents=intents)
+client = ClientWithBackgroundTask(
+    activity=discord.Game(name=settings.default_status),
+    intents=intents
+    )
 koduck_instance = None
 
 class Koduck:
@@ -480,7 +483,6 @@ async def on_ready():
     print("Bot online!")
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
-    await client.change_presence(activity=discord.Game(name=settings.default_status))
     await koduck_instance.run_command("refreshcommands")
     await koduck_instance.run_command("refreshappcommands")
 
