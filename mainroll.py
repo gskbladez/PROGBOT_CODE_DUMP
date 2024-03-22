@@ -61,17 +61,17 @@ def format_hits_roll(roll_result):
     return result_str
 
 
-async def roll(interaction: discord.Interaction, roll_cmd: str, repeat: int = 1):
+async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
     if repeat <= 0:
         await interaction.command.koduck.send_message(interaction, content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
 
-    roll_line = roll_cmd.split(",", 1)[1]
+    roll_line = cmd
 
     if ROLL_COMMENT_CHAR in roll_line:
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
     else:
         roll_comment = ""
-
+    orig_roll_line = roll_line
     roll_line = re.sub("\s+", "", roll_line).lower()
     if not roll_line:
         await interaction.command.koduck.send_message(interaction, content="No roll command given!", ephemeral=True)
@@ -92,7 +92,7 @@ async def roll(interaction: discord.Interaction, roll_cmd: str, repeat: int = 1)
             return await interaction.command.koduck.send_message(interaction,
                                                                  content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY_LARGE} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
                                                                  ephemeral=True)
-
+    is_underflow_list = False
     try:
         roll_heck = [roll_master(roll_line, format_limit=int(FORMAT_LIMIT/repeat)) for i in range(0, repeat)]
         err_msg = ""
@@ -112,10 +112,16 @@ async def roll(interaction: discord.Interaction, roll_cmd: str, repeat: int = 1)
         return await interaction.command.koduck.send_message(interaction, content=err_msg, ephemeral=True)
 
     roll_outputs = [format_hits_roll(result) for result in roll_results]
-    progroll_output = f"{interaction.user.mention} *rolls...*"
-    if roll_comment:
-        progroll_output += f" #{roll_comment.rstrip()}"
-    progroll_output = "{}\n>>> {}".format(progroll_output,"\n".join(roll_outputs))
+
+    if repeat == 1:
+        progroll_output = f"{interaction.user.mention} *rolls `{orig_roll_line}` for...* {roll_outputs[0]}"
+        if roll_comment:
+            progroll_output += f" #{roll_comment.rstrip()}"
+    else:
+        progroll_output = f"{interaction.user.mention} *rolls `{orig_roll_line}` {repeat} times...*"
+        if roll_comment:
+            progroll_output += f" #{roll_comment.rstrip()}"
+        progroll_output = "{}\n>>> {}".format(progroll_output, "\n".join(roll_outputs))
 
     progmsg = await interaction.command.koduck.send_message(interaction, content=progroll_output)
     if not any(is_underflow_list):
