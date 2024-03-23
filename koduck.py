@@ -170,14 +170,14 @@ class Koduck:
         #send message to a "/run" interaction
         if isinstance(receive_message, SlashMessage) and channel is None:
             if not receive_message.interaction.response.is_done():
-                the_message = await receive_message.interaction.response.send_message(ephemeral=ephemeral, **kwargs)
+                the_message = await receive_message.interaction.response.send_message(**kwargs)
             else:
                 the_message = await receive_message.interaction.followup.send(**kwargs)
         #send message to an interaction
         elif isinstance(receive_message, discord.Interaction) and channel is None:
             #This is not returning the sent message for some reason, so here's a workaround to fetch it after it's sent
             if not receive_message.response.is_done():
-                await receive_message.response.send_message(ephemeral=ephemeral, **kwargs)
+                await receive_message.response.send_message(**kwargs)
                 the_message = await receive_message.original_response()
             else:
                 the_message = await receive_message.followup.send(**kwargs)
