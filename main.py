@@ -83,7 +83,7 @@ async def invite(context, *args, **kwargs):
 
 async def commands(context, *args, **kwargs):
     # filter out the commands that the user doesn't have permission to run
-    currentlevel = context.koduck.getuserlevel(context["message"].author.id)
+    currentlevel = context.koduck.get_user_level(context["message"].author.id)
     availablecommands = commands_df[commands_df["Permission"] <= currentlevel].sort_values(["Function", "Command", "Permission"])
     if context["message"].channel.type is discord.ChannelType.private:
         pass

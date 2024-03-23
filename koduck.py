@@ -484,7 +484,7 @@ async def on_ready():
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
     await koduck_instance.run_command("refreshcommands")
-    await koduck_instance.run_command("refreshappcommands")
+    await koduck_instance.run_command("refreshappcommands")  # doesn't work most the time, so you'll want to /run command:refreshappcommands ...
 
 #Log some events from self
 @client.event
