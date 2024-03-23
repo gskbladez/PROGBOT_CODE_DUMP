@@ -64,6 +64,7 @@ async def refresh_commands(context, *args, **kwargs):
     elif errors:
         print(errors)
 
+
 #Background task is run every set interval while bot is running (by default every 10 seconds)
 async def background_task(koduck_instance):
     pass
@@ -120,7 +121,7 @@ async def ping(interaction: discord.Interaction, delay: int, option:str=""):
         return await interaction.command.koduck.send_message(interaction, content="pong!")
     await interaction.command.koduck.send_message(interaction, content="pong")
 
-    
+
 async def break_test(context, *args, **kwargs):
     return await context.koduck.send_message(receive_message=context["message"], content=str(0 / 0))
 

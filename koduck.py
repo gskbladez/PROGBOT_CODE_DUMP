@@ -480,7 +480,7 @@ async def background_task():
 
 @client.event
 async def on_ready():
-    print("Bot online!")
+    print("Jacking In!")
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
     await koduck_instance.run_command("refreshcommands")
