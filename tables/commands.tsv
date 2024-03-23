@@ -1,11 +1,10 @@
 Command	Function	Category	Module	Type	Description	Permission	Hidden
 changestatus	change_status	Admin	main	prefix	Changes Progbot's status message	3	FALSE
-goodnight	goodnight	Admin	main	prefix	Shuts down Progbot	3	FALSE
 bugreport	bugreport	ProgBot	main	slash	Sends a message to Progbot's bug report channel	1	FALSE
 command	commands	ProgBot	main	prefix	Lists Progbot's commands	1	FALSE
 help	help_cmd	Game Lookup	base	prefix	Ask for help and rulings	1	FALSE
 invite	invite	ProgBot	main	prefix	Get an invite link!	1	FALSE
-roll	roll	Rollers	roll	slash	Normal: 5d6>4, N5; Comment: #, Keep highest/lowest: 2d6h1, 2d6l1, Explode: 5d6!6>4	1	FALSE
+roll	roll	Rollers	roll	slash	Normal: 5d6>4 or N5; Comment: #, Keep highest/lowest: 2d6h1 / 2d6l1, Explode: 5d6!6>4 (opt: repeat X times)	1	FALSE
 chip	chip	Game Lookup	base	prefix	Look up a BattleChip	1	FALSE
 chips	chip	Game Lookup	base	prefix	Look up a BattleChip	1	TRUE
 power	power	Game Lookup	base	prefix	Look up a Power	1	FALSE
@@ -19,7 +18,7 @@ query	query	Info	base	prefix	Lookup a category of stuff!	1	FALSE
 bond	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	FALSE
 bondpower	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	FALSE
 bondpowers	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	TRUE
-mysterydata	mysterydata	Rollers	base	slash	Roll Mystery Data	1	FALSE
+mysterydata	mysterydata	Rollers	base	slash	Roll Mystery Data (opt: chips_ncp_only for Mystery Rewards!)	1	FALSE
 rulebook	rulebook	Info	base	prefix	Return rulebook links	1	FALSE
 book	rulebook	Info	base	prefix	Return rulebook links	1	TRUE
 books	rulebook	Info	base	prefix	Return rulebook links	1	TRUE
@@ -33,13 +32,13 @@ networkmod	networkmod	Game Lookup	advance	prefix	Pull up Network Mod info	1	TRUE
 audience	audience	Assistant	advance	prefix	Start up an Audience tracker	1	FALSE
 cheer	cheer	Assistant	advance	prefix	Spend a Cheer power	1	FALSE
 jeer	jeer	Assistant	advance	prefix	Spend a Jeer power	1	FALSE
-virusrandom	virusr	Rollers	base	slash	Randomly select Viruses	1	FALSE
+virus random	virusr	Rollers	base	slash	Select random Viruses (opt: number of strikers, artillery, etc. to roll, or enable Mega/Omega Viruses)	1	FALSE
 repo	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	FALSE
 pmr	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	TRUE
 playermade	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	TRUE
 pmc	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	TRUE
-adventure	adventure	Rollers	base	slash	Roll a random adventure prompt!	1	FALSE
-fight	fight	Rollers	base	slash	Roll a random boss fight prompt!	1	FALSE
+adventure	adventure	Rollers	base	slash	Generate a randomized adventure scenario prompt! (opt: chaos for a longer prompt)	1	FALSE
+fight	fight	Rollers	base	slash	Generate a randomized Navi boss fight prompt!	1	FALSE
 sheet	sheet	Info	base	prefix	Pull up character sheet links	1	FALSE
 spot	spotlight	Assistant	advance	prefix	Manage a Spotlight Tracker	1	FALSE
 spotlight	spotlight	Assistant	advance	prefix	Manage a Spotlight Tracker	1	FALSE
@@ -56,12 +55,11 @@ xcard	xcard	Safety Tools	safety	slash	Set down an X-Card	1	FALSE
 ocard	ocard	Safety Tools	safety	slash	Set down an O-Card	1	FALSE
 ncard	ncard	Safety Tools	safety	slash	Set down an N-Card	1	FALSE
 rewind	rewind	Safety Tools	safety	slash	Request a Rewind	1	FALSE
-rw	rewind	Safety Tools	safety	slash	Request a Rewind	1	FALSE
 fastforward	ffwd	Safety Tools	safety	slash	Request a Fast-Forward	1	FALSE
 pause	pause	Safety Tools	safety	slash	Request a Pause	1	FALSE
-resume	resume	Safety Tools	safety	prefix	Indicate a Play	1	FALSE
+resume	resume	Safety Tools	safety	slash	Indicate a Play	1	FALSE
 play	resume	Safety Tools	safety	slash	Indicate a Play	1	FALSE
-slow	fbf	Safety Tools	safety	prefix	Request a Frame-by-Frame	1	FALSE
+slow	fbf	Safety Tools	safety	slash	Request a Frame-by-Frame	1	FALSE
 framebyframe	fbf	Safety Tools	safety	slash	Request a Frame-by-Frame	1	FALSE
 opendoor	opendoor	Safety Tools	safety	slash	Indicate you are using the Open Door policy	1	FALSE
 luxton	luxton	Safety Tools	safety	slash	Pull up info about Luxton	1	FALSE

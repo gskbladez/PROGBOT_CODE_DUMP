@@ -1,3 +1,4 @@
+import typing
 import discord
 import random
 import settings
@@ -1028,13 +1029,16 @@ async def query(context, *args, **kwargs):
                                     content="`%s` is not a valid query!" % args[0])
 
 
+async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal["Common", "Uncommon", "Rare", "Gold", "Violet", "Sapphire"], chip_ncps_only: bool = False):
+    arg = md_type.lower().strip()
+    force_reward = chip_ncps_only
 
-async def mysterydata_master(interaction: discord.Interaction, args, force_reward=False):
-    arg = args[0]
     mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
 
     if mysterydata_type.shape[0] == 0:
-        return await interaction.command.koduck.send_message(interaction, content="Please specify either Common, Uncommon, or Rare MysteryData. Also accepts Gold, Violet, or Sapphire.", ephemeral=True)
+        return await interaction.command.koduck.send_message(interaction, 
+                                                             content=f"{md_type} isn't a valid type of Mystery Data!", 
+                                                             ephemeral=True)
 
     bonus_count = 0
     bonus_limit = 1
@@ -1059,7 +1063,7 @@ async def mysterydata_master(interaction: discord.Interaction, args, force_rewar
         result_chip = roll_row_from_table(df_sub)["Value"]
 
         if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
-            results_list.append(result_chip + " " + roll_category.capitalize())
+            results_list.append(result_chip + " " + roll_category)
         else:
             results_list = [re.sub(r"\s*(\.|!|\?)+\s*$", '', result_chip)]  # removes last punctuation marks!
             break
@@ -1083,40 +1087,12 @@ async def mysterydata_master(interaction: discord.Interaction, args, force_rewar
         result_text = results_list[0]
     result_text += "!"
 
-    md_type = arg.capitalize()
-    embed = discord.Embed(title="__{} MysteryData__".format(md_type),
-                          description="_%s accessed the %s MysteryData..._\n" % interaction.user.mention +
-                                      "\nGot: **%s**" % result_text,
+    arg = arg.capitalize()
+    embed = discord.Embed(title=f"__{arg} MysteryData__",
+                          description=f"_{interaction.user.mention} accessed the {arg} MysteryData..._\n\nGot: **{result_text}**",
                           color=md_color)
     embed.set_thumbnail(url=md_image_url)
-
     return await interaction.command.koduck.send_message(interaction, embed=embed)
-
-# TODO: add types as choice option
-async def mysterydata(interaction: discord.Interaction, md_type: str, chip_ncps_only: bool = False):
-    cleaned_args = clean_args(md_type)
-    context=None
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.command.koduck.send_message(interaction, content="I can roll **Mystery Data** for you! Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, Sapphire, or Sunny from NetBattlers Advance.\n" + \
-                                                    "You can also ask for advice using `mysterydata advice`!")
-
-    if cleaned_args[0] in ['advice', 'rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "mysterydataruling", suppress_notfound=True)
-        if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction, content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
-    await mysterydata_master(interaction, cleaned_args, force_reward=chip_ncps_only)
-
-
-async def mysteryreward(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="I can roll **Mystery Data** for you, keeping it to the BattleChips and NCPs! " +
-                                                    "Specify Common, Uncommon, or Rare! You can also roll for Gold, Violet, or Sapphire from NetBattlers Advance!")
-
-    await mysterydata_master(context, cleaned_args, force_reward=True)
-    return
 
 
 async def bond(context, *args, **kwargs):
@@ -1320,70 +1296,20 @@ async def rulebook(context, *args, **kwargs):
                                         content="Couldn't find any rulebooks for `%s`!" % " ".join(args))
     return await context.koduck.send_message(receive_message=context["message"],  content="\n".join(book_names))
 
+# TODO: Test after slash refresh
+async def virusr(interaction: discord.Interaction, number: int, 
+                 artillery:int=0, disruption:int=0, striker: int=0, support:int=0, wrecker:int=0, 
+                 mega:bool=False, omega:bool=False):
 
-async def virusr(interaction: discord.Interaction, encounter: str):
-    mod_args = []
-    args = clean_args(encounter)
-    for arg in args:
-        test_match = re.match(r"^(?P<word1>[^0-9]*)\s*(?P<word2>[^0-9]*)\s*(?P<num>[\d]*)$", arg)
-        if test_match is None:
-            mod_args = args
-            break
-        if not test_match.group("num"):
-            mod_args.append(arg + " 1")
-        else:
-            mod_args.append(arg)
-    arg_string = " ".join(mod_args)
+    virus_nums = [number, artillery, disruption, striker, support, wrecker]
+    virus_pairs = zip(["any", "artillery", "disruption", "striker", "support", "wrecker"], virus_nums)
 
-    cleaned_args = clean_args([arg_string])
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        audience_help_msg = "I can roll 1-%d random **Viruses**!\n" % MAX_RANDOM_VIRUSES + \
-                            "You can also give me the **Categories** and **number of Viruses** you want to roll too! (i.e. `virusr support 1, artillery 2`)\n" + \
-                            "You can specify Mega or Omega Viruses too! (Otherwise, they will not be rolled.)\n\n" + \
-                            "**Available Virus Categories:** %s" % ", ".join(["Any"] + virus_category_list)
-        return await interaction.command.koduck.send_message(interaction, content=audience_help_msg)
-    virus_roll_list = []
-    virus_roll = ["any", 1, "normal"]
-    virus_category_lower = [i.lower() for i in virus_category_list] + ["any"]
-    total_v = 0
-    in_progress = False
-    for arg in cleaned_args:
-        try:
-            virus_roll[1] = int(arg)
-            virus_roll_list.append(virus_roll)
-            total_v += virus_roll[1]
-            virus_roll = ["any", 1, "normal"]
-            in_progress = False
-            continue
-        except ValueError:
-            pass
-        if arg in ['virus', 'any', 'random']:
-            continue
-        elif arg in ['mega', 'megavirus']:
-            virus_roll[2] = "mega"
-            in_progress = True
-        elif arg in ['omega', 'omegavirus']:
-            virus_roll[2] = "omega"
-            in_progress = True
-        elif arg in virus_category_lower:
-            if virus_roll[0] not in ["any", "random"]:
-                virus_roll_list.append(virus_roll)
-                total_v += virus_roll[1]
-                virus_roll = ["any", 1, "normal"]
-                in_progress = False
-            virus_roll[0] = arg
-            in_progress = True
-        else:
-            return await interaction.command.koduck.send_message(interaction, content="I don't recognize `%s`!" % arg)
-
-    if in_progress:
-        virus_roll_list.append(virus_roll)
-        total_v += virus_roll[1]
-
+    total_v = sum(virus_nums)
+   
     if total_v > MAX_RANDOM_VIRUSES:
-        return await interaction.command.koduck.send_message(interaction, content=f"Rolling too many Viruses! (Only up to {MAX_RANDOM_VIRUSES}!)")
+        return await interaction.command.koduck.send_message(interaction, content=f"Rolling too many Viruses! (Only up to {MAX_RANDOM_VIRUSES}!)", ephemeral=True)
     elif total_v == 0:
-        return await interaction.command.koduck.send_message(interaction, content="Rolling... no Viruses? Huh?")
+        return await interaction.command.koduck.send_message(interaction, content="Rolling... no Viruses? Huh?", ephemeral=True)
     elif total_v == 1:
         virus_keyword = "Virus"
     else:
@@ -1391,29 +1317,30 @@ async def virusr(interaction: discord.Interaction, encounter: str):
 
     virus_roll_titles = []
     viruses_names = []
-    for virus_type, virus_num, virus_tier in virus_roll_list:
+
+    df_filt = np.zeroes(virus_df.shape[0], dtype=bool)
+    if not mega:
+        df_filt = df_filt | virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & ~virus_df["Name"].str.contains(r"Ω")
+    if not omega:
+        df_filt = df_filt | virus_df["Name"].str.contains(r"Ω")
+
+    v_df = virus_df[df_filt]
+
+    for virus_type, virus_num in virus_pairs:
         if virus_num == 0:
             continue
-        if virus_tier == 'mega':
-            sub_df = virus_df[virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & ~virus_df["Name"].str.contains(r"Ω")]
-            virus_cat = "Mega "
-        elif virus_tier == 'omega':
-            sub_df = virus_df[virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & virus_df["Name"].str.contains(r"Ω")]
-            virus_cat = "Omega "
-        else:
-            sub_df = virus_df[~virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE)]
-            virus_cat = ""
         if virus_type != "any":
-            sub_df = sub_df[sub_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
-            virus_cat += sub_df["Category"].iloc[0]
+            sub_df = v_df[v_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
+            virus_cat += v_df["Category"].iloc[0]
         else:
             virus_cat += "Random"
         if sub_df.shape[0] < virus_num:
             search_query = " ".join([virus_type, virus_tier])
-            await interaction.command.koduck.send_message(interaction, content="There's only %d `%s` Viruses! Limiting it to %d..." % (sub_df.shape[0], search_query, sub_df.shape[0]))
+            await interaction.command.koduck.send_message(interaction, 
+                                                          content=f"There's only {sub_df} `{search_query}` Viruses! Limiting it to {sub_df.shape[0]}...")
             virus_num = sub_df.shape[0]
 
-        virus_roll_titles.append("%d %s" % (virus_num, virus_cat))
+        virus_roll_titles.append(f"{virus_num} {virus_cat}")
         viruses_rolled = random.sample(range(sub_df.shape[0]), virus_num)
         viruses_names += [sub_df.iloc[i]["Name"] for i in viruses_rolled]
 
@@ -1425,18 +1352,13 @@ async def virusr(interaction: discord.Interaction, encounter: str):
     return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def adventure(interaction: discord.Interaction, adv_type: str="core"):
-    cleaned_args = clean_args(adv_type)
-    if len(cleaned_args) < 1:
-        cleaned_args.append("core")
-    if cleaned_args[0] == 'help':
-        adventure_help_msg = "I can generate an adventure for you! Specify `adventure` with the type of story you'd like!\n" + \
-                             "*Core, Chaos*"
-        return await interaction.command.koduck.send_message(interaction, content=adventure_help_msg)
-    if len(cleaned_args) > 1:
-        return await interaction.command.koduck.send_message(interaction, content="I can only generate one adventure at a time!")
+async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
+    if not adv_type:
+        arg = "core"
+    else:
+        arg = adv_type.lower().strip()
 
-    if adv_type == 'core':
+    if arg == 'core':
         adventure_df_use = adventure_df[adventure_df["Sort"] == "Core"]
     else:
         adventure_df_use = adventure_df
@@ -1488,7 +1410,7 @@ async def adventure(interaction: discord.Interaction, adv_type: str="core"):
     npc_occupation = roll_row_from_table(adventure_df_use, df_filters={"Type": "Occupation"})["Result"]
     npc_feature = roll_row_from_table(adventure_df_use, df_filters={"Type": "Feature"})["Result"]
 
-    if adv_type == 'core':
+    if arg == 'core':
         generated_msg = f"The adventure starts with the kids {adv_header} {header_result} " + \
                         f"But an evildoer is there to {conflict_result} " + \
                         f"Their name is **{npc_firstname}**, and they are {npc_personality} {npc_occupation}, notable for {npc_feature}. " + \
@@ -1511,9 +1433,8 @@ async def adventure(interaction: discord.Interaction, adv_type: str="core"):
     # Extended generator tables.
     conflict_type = roll_row_from_table(adventure_df_use, df_filters={"Type": "ConflictType"})["Result"]
 
-#   TODO:
-#    if (args[0] == 'extended'):
-    if adv_type == 'chaos':
+#   TODO: if (arg == 'extended'):
+    if arg == 'chaos':
         generated_msg = f"The adventure starts with {class_header} {adv_header} {header_result} " + \
                         f"But {conflict_header} {conflict_result} Their vulnerability is {vuln_result}\n" + \
                         f"**{npc_firstname}** is {npc_personality} {npc_occupation}, notable for {npc_feature}.\n" + \
@@ -1522,6 +1443,7 @@ async def adventure(interaction: discord.Interaction, adv_type: str="core"):
         return await interaction.command.koduck.send_message(interaction, content=generated_msg)
     else:
         return await interaction.command.koduck.send_message(interaction, content="Please specify either Core or Chaos.")
+
 
 async def fight(interaction: discord.Interaction):
     # element

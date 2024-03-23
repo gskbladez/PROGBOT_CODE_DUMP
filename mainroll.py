@@ -60,7 +60,7 @@ def format_hits_roll(roll_result):
         result_str = "{} = **__{}__**".format(str_result, roll_result.eval())
     return result_str
 
-
+#TODO: why you no work??
 async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
     if repeat <= 0:
         await interaction.command.koduck.send_message(interaction, content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
