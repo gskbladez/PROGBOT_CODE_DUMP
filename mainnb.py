@@ -1287,7 +1287,7 @@ async def rulebook(context, *args, **kwargs):
     return await context.koduck.send_message(receive_message=context["message"], content="\n".join(book_names))
 
 # TODO: Test after slash refresh
-async def virusr(interaction: discord.Interaction, number: int, 
+async def virusr(interaction: discord.Interaction, number: int=1, 
                  artillery:int=0, disruption:int=0, striker: int=0, support:int=0, wrecker:int=0, 
                  mega:bool=False, omega:bool=False):
 
@@ -1308,22 +1308,23 @@ async def virusr(interaction: discord.Interaction, number: int,
     virus_roll_titles = []
     viruses_names = []
 
-    df_filt = np.zeroes(virus_df.shape[0], dtype=bool)
+    df_filt = np.zeros(virus_df.shape[0], dtype=bool)
     if not mega:
-        df_filt = df_filt | virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & ~virus_df["Name"].str.contains(r"Ω")
+        df_filt = df_filt | (virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & ~virus_df["Name"].str.contains(r"Ω"))
     if not omega:
-        df_filt = df_filt | virus_df["Name"].str.contains(r"Ω")
+        df_filt = df_filt | (virus_df["Tags"].str.contains(r"Mega", flags=re.IGNORECASE) & virus_df["Name"].str.contains(r"Ω")) # MettaurOmega, pls
 
-    v_df = virus_df[df_filt]
-
+    v_df = virus_df[~df_filt]
+    
     for virus_type, virus_num in virus_pairs:
+        sub_df = v_df
         if virus_num == 0:
             continue
         if virus_type != "any":
-            sub_df = v_df[v_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
-            virus_cat += v_df["Category"].iloc[0]
+            sub_df = sub_df[sub_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
+            virus_cat = sub_df["Category"].iloc[0]
         else:
-            virus_cat += "Random"
+            virus_cat = "Random"
         if sub_df.shape[0] < virus_num:
             search_query = virus_type
             await interaction.command.koduck.send_message(interaction, 
