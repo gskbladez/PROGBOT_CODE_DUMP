@@ -101,7 +101,7 @@ def query_daemon():
     return True, result_title, result_msg
 
 async def daemon(interaction: discord.Interaction, name: str):
-    cleaned_args = clean_args([args])
+    cleaned_args = clean_args([name])
     arg_combined = " ".join(cleaned_args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await interaction.command.koduck.send_message(interaction, 

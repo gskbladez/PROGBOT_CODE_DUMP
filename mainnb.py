@@ -1473,6 +1473,7 @@ async def sheet(context, *args, **kwargs):
     return await context.koduck.send_message(receive_message=context["message"],  content=msg_txt)
 
 
+# why you bad
 async def glossary(interaction: discord.Interaction, term: str):
     if not term:
         return await interaction.command.koduck.send_message(interaction, 
@@ -1489,12 +1490,17 @@ async def glossary(interaction: discord.Interaction, term: str):
         if match_candidates.shape[0] > 1:
             progbot_list = ["> **%s**: `%s`" % (nam, cmd)
                             for nam, cmd in zip(match_candidates['Name'], match_candidates['ProgBot Command'])]
-            return await interaction.command.koduck.send_message(interaction,  content="Found multiple matches under `%s` in the glossary!\n%s" %
-                                                                            (term, "\n".join(progbot_list)))
+            return await interaction.command.koduck.send_message(interaction, content="Found multiple matches under `%s` in the glossary!\n%s" %
+                                                                            (term, "\n".join(progbot_list)), ephemeral=True)
         glossary_info = match_candidates.iloc[0]
+        
+    if glossary_info["ProgBot Function"] not in globals():
+        return await  interaction.command.koduck.send_message(interaction,
+                                        content="Don't recognize the function `%s`! (You should probably let the devs know...)" % glossary_info["ProgBot Function"], ephemeral=True)
 
-    return await interaction.command.koduck.send_message(interaction, 
-                                        content=f"Don't recognize the term {term}!", ephemeral=True)
+    #spotlight needs to be moved to interaction...
+    progbot_func = globals()[glossary_info["ProgBot Function"]]
+    return await progbot_func(interaction, glossary_info["ProgBot Argument"])
 
     
 
