@@ -2,37 +2,30 @@ Command	Function	Category	Module	Type	Description	Permission	Hidden
 changestatus	change_status	Admin	main	prefix	Changes Progbot's status message	3	FALSE
 bugreport	bugreport	ProgBot	main	slash	Sends a message to Progbot's bug report channel	1	FALSE
 command	commands	ProgBot	main	prefix	Lists Progbot's commands	1	FALSE
-help	help_cmd	Game Lookup	base	prefix	Ask for help and rulings	1	FALSE
+help	help_cmd	Game Lookup	base	slash	Ask for help and rulings	1	FALSE
 invite	invite	ProgBot	main	prefix	Get an invite link!	1	FALSE
-roll	roll	Rollers	roll	slash	Normal: 5d6>4 or N5; Comment: #, Keep highest/lowest: 2d6h1 / 2d6l1, Explode: 5d6!6>4 (opt: repeat X times)	1	FALSE
-chip	chip	Game Lookup	base	prefix	Look up a BattleChip	1	FALSE
-chips	chip	Game Lookup	base	prefix	Look up a BattleChip	1	TRUE
-power	power	Game Lookup	base	prefix	Look up a Power	1	FALSE
-powers	power	Game Lookup	base	prefix	Look up a Power	1	TRUE
-ncp	ncp	Game Lookup	base	prefix	Look up an NCP	1	FALSE
-virus	virus	Game Lookup	base	prefix	Look up a Virus's description	1	FALSE
-virusx	virusx	Game Lookup	base	prefix	Look up a Virus's statblock	1	FALSE
-tag	tag	Game Lookup	base	prefix	Lookup a BattleChip or Power tag	1	FALSE
-category	tag	Game Lookup	base	prefix	Lookup a BattleChip or Power tag	1	TRUE
-query	query	Info	base	prefix	Lookup a category of stuff!	1	FALSE
-bond	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	FALSE
-bondpower	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	FALSE
-bondpowers	bond	Game Lookup	base	prefix	Pull up a Bond Power 	1	TRUE
+roll	roll	Rollers	roll	slash	Normal: 5d6>4 or N5; Comment: #, Keep high/low: 2d6h1/2d6l1, Explode: 5d6!6 (opt: repeat X times)	1	FALSE
+chip	chip	Game Lookup	base	slash	Look up a BattleChip	1	FALSE
+power	power	Game Lookup	base	slash	Look up a Power	1	FALSE
+ncp	ncp	Game Lookup	base	slash	Look up an NCP	1	FALSE
+virus	virus	Game Lookup	base	slash	Look up Viruses' descriptions	1	FALSE
+virusx	virusx	Game Lookup	base	slash	Look up a Virus's statblock	1	FALSE
+tag	tag	Game Lookup	base	slash	Lookup a BattleChip or Power tag	1	FALSE
+query	query_func	Info	base	slash	Lookup a category of stuff!	1	FALSE
+bondpower	bond	Game Lookup	base	slash	Pull up a Bond Power 	1	FALSE
 mysterydata	mysterydata	Rollers	base	slash	Roll Mystery Data (opt: chips_ncp_only for Mystery Rewards!)	1	FALSE
 rulebook	rulebook	Info	base	prefix	Return rulebook links	1	FALSE
 book	rulebook	Info	base	prefix	Return rulebook links	1	TRUE
 books	rulebook	Info	base	prefix	Return rulebook links	1	TRUE
 element	element	Rollers	base	slash	Roll random elements	1	FALSE
-daemon	daemon	Game Lookup	advance	prefix	Pull up Daemon info	1	FALSE
-upgrade	upgrade	Game Lookup	base	prefix	Look up Navi Power Upgrade info	1	TRUE
-npu	upgrade	Game Lookup	base	prefix	Look up Navi Power Upgrade info	1	FALSE
+daemon	daemon	Game Lookup	advance	slash	Pull up Daemon info	1	FALSE
+npu	upgrade	Game Lookup	base	slash	Look up Navi Power Upgrade info	1	FALSE
 crimsonnoise	crimsonnoise	Rollers	advance	slash	Roll Crimson Noise Mystery Data (Genso Network)	1	FALSE
-mod	networkmod	Game Lookup	advance	prefix	Pull up Network Mod info	1	FALSE
-networkmod	networkmod	Game Lookup	advance	prefix	Pull up Network Mod info	1	TRUE
+networkmod	networkmod	Game Lookup	advance	slash	Pull up Network Mod info	1	FALSE
 audience	audience	Assistant	advance	prefix	Start up an Audience tracker	1	FALSE
 cheer	cheer	Assistant	advance	prefix	Spend a Cheer power	1	FALSE
 jeer	jeer	Assistant	advance	prefix	Spend a Jeer power	1	FALSE
-virus random	virusr	Rollers	base	slash	Select random Viruses (opt: number of strikers, artillery, etc. to roll, or enable Mega/Omega Viruses)	1	FALSE
+virusrandom	virusr	Rollers	base	slash	Select random Viruses (opt: # of strikers, artillery, etc. to roll, enable Mega/Omega Viruses)	1	FALSE
 repo	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	FALSE
 pmr	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	TRUE
 playermade	repo	Info	advance	prefix	Pull up the Player-Made Repository Link	1	TRUE
@@ -50,7 +43,7 @@ randomweather	weatherforecast	Game Lookup	advance	prefix	Pull up CyberWeather in
 achievement	achievement	Game Lookup	advance	prefix	Pull up achievement info	1	FALSE
 achievements	achievement	Game Lookup	advance	prefix	Pull up achievement info	1	TRUE
 achieve	achievement	Game Lookup	advance	prefix	Pull up achievement info	1	FALSE
-glossary	glossary	Game Lookup	base	prefix	Pull up a glossary definition	1	FALSE
+glossary	glossary	Game Lookup	base	slash	Pull up a glossary definition	1	FALSE
 xcard	xcard	Safety Tools	safety	slash	Set down an X-Card	1	FALSE
 ocard	ocard	Safety Tools	safety	slash	Set down an O-Card	1	FALSE
 ncard	ncard	Safety Tools	safety	slash	Set down an N-Card	1	FALSE
@@ -65,7 +58,7 @@ opendoor	opendoor	Safety Tools	safety	slash	Indicate you are using the Open Door
 luxton	luxton	Safety Tools	safety	slash	Pull up info about Luxton	1	FALSE
 line	line	Safety Tools	safety	slash	Indicate you are setting a Line	1	FALSE
 veil	veil	Safety Tools	safety	slash	Indicate you are setting a Veil	1	FALSE
-find	find_chip_ncp_power	Game Lookup	base	prefix	Find a BattleChip, NCP, or Power	1	FALSE
+find	find_chip_ncp_power	Game Lookup	base	slash	Find a BattleChip, NCP, or Power	1	FALSE
 autoloot	autoloot	Game Rollers	fools	slash	Generate a random autoloot chip	1	FALSE
 ping	ping	ProgBot	main	slash	Generate a random autoloot chip	3	TRUE
 refreshappcommands	refresh_app_commands	ProgBot	main	prefix	Refresh slash commands	3	TRUE

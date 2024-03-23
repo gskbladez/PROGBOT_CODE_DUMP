@@ -100,44 +100,44 @@ def query_daemon():
     result_msg = ", ".join(daemon_df["Name"])
     return True, result_title, result_msg
 
-async def daemon(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+async def daemon(interaction: discord.Interaction, name: str):
+    cleaned_args = clean_args([args])
     arg_combined = " ".join(cleaned_args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await context.koduck.send_message(receive_message=context["message"],
+        return await interaction.command.koduck.send_message(interaction, 
                                         content="Lists the complete information of a **Daemon** for DarkChip rules. "
                                                     + "Use `daemon all` to pull up the names of all Official Daemons!")
     is_ruling = False
     ruling_msg = None
     if arg_combined in ["all", "list"]:
         _, result_title, result_msg = query_daemon()
-        return await send_query_msg(context, result_title, result_msg)
+        return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonruling", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "daemonruling", suppress_notfound=True)
     elif cleaned_args[0] in ['darkchip', 'dark', 'darkchips', 'chip', 'chips']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "darkchip", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "darkchip", suppress_notfound=True)
     elif cleaned_args[0] in ['tribute', 'tributes']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "tribute", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "tribute", suppress_notfound=True)
     elif cleaned_args[0] in ['chaosunison', 'chaos', 'chaosunion']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "domain", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "domain", suppress_notfound=True)
     elif cleaned_args[0] in ['daemonbond', 'bond']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonbond", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "daemonbond", suppress_notfound=True)
 
     if is_ruling:
         if ruling_msg is None:
-            return await context.koduck.send_message(receive_message=context["message"],
-                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await context.koduck.send_message(receive_message=context["message"],
+            return await interaction.command.koduck.send_message(interaction, 
+                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await interaction.command.koduck.send_message(interaction, 
                                         content=ruling_msg["Response"])
 
-    daemon_info = await find_value_in_table(context, daemon_df, "Name", arg_combined, suppress_notfound=True)
+    daemon_info = await find_value_in_table(interaction, daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
-        daemon_info = await find_value_in_table(context, pmc_daemon_df, "Name", arg_combined)
+        daemon_info = await find_value_in_table(interaction, pmc_daemon_df, "Name", arg_combined)
         if daemon_info is None:
             return
 
@@ -166,7 +166,8 @@ async def daemon(context, *args, **kwargs):
     embed.set_thumbnail(url=daemon_image)
     embed.add_field(name="***''{}''***".format(daemon_quote),
                     value=daemon_description)
-    return await context.koduck.send_message(receive_message=context["message"], embed=embed)
+    return await interaction.command.koduck.send_message(interaction,  embed=embed)
+
 
 def query_network():
     result_title = "Listing all Network Modifiers from the `New Connections` crossover content..."
@@ -179,29 +180,29 @@ def query_weather():
     result_msg = ", ".join(weather_df["Name"])
     return True, result_title, result_msg
 
-async def networkmod(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+
+async def networkmod(interaction: discord.Interaction, query: str):
+    cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await context.koduck.send_message(receive_message=context["message"],
+        return await interaction.command.koduck.send_message(interaction, 
                                         content="Pulls up info for 1-%d **Network Modifiers**! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY)
 
     if len(cleaned_args) > MAX_MOD_QUERY:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Can't pull up more than %d Network Mods!" % MAX_MOD_QUERY)
+        return await interaction.command.koduck.send_message(interaction, 
+                                        content="Can't pull up more than %d Network Mods!" % MAX_MOD_QUERY, ephemeral=True)
 
     if cleaned_args[0] in ["list", "all"]:
         _, result_title, result_msg = query_network()
-        return await send_query_msg(context, result_title, result_msg)
+        return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "networkmodruling", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "networkmodruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await context.koduck.send_message(receive_message=context["message"],
-                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content=ruling_msg["Response"])
+            return await interaction.command.koduck.send_message(interaction, 
+                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await interaction.command.koduck.send_message(interaction,  content=ruling_msg["Response"])
 
     for arg in cleaned_args:
-        networkmod_info = await find_value_in_table(context, networkmod_df, "Name", arg, suppress_notfound=False)
+        networkmod_info = await find_value_in_table(interaction, networkmod_df, "Name", arg, suppress_notfound=False)
         if networkmod_info is None:
             continue
 
@@ -215,7 +216,7 @@ async def networkmod(context, *args, **kwargs):
                               color=networkmod_color)
         embed.add_field(name="**[{}]**".format(networkmod_field),
                         value="_{}_".format(networkmod_description))
-        await context.koduck.send_message(receive_message=context["message"], embed=embed)
+        await interaction.command.koduck.send_message(interaction,  embed=embed)
 
     return
 

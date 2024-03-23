@@ -90,4 +90,9 @@ custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:8
                  "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901995743752106064>",
                  "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>"}
 
+
+custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
+                 "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901981520321998849>",
+                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>"}
+
 #NETBATTLER CONSTANTS

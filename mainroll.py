@@ -4,8 +4,6 @@ import settings
 import re
 import dice_algebra
 import rply
-from maincommon import find_value_in_table
-from maincommon import help_df
 
 REROLL_DICE_SIZE_THRESHOLD = 1000000000
 MAX_REROLL_QUERY = 20
