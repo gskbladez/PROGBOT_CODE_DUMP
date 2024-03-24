@@ -921,18 +921,19 @@ async def virus(interaction: discord.Interaction, query:str, detailed:bool=False
     for arg in cleaned_args:
         if not arg:
             continue
-        virus_name, virus_title, virus_description, virus_footer, virus_image, virus_color = await virus_master(interaction, arg,
-                                                                                                      simplified=~detailed)
+        virus_name, virus_hp, virus_description, virus_footer, virus_image, virus_color = await virus_master(interaction, arg, simplified=not detailed)
         if virus_name is None:
             continue
-
-        embed = discord.Embed(title=virus_name,
-                              description=virus_description,
-                              color=virus_color)
+        if detailed:
+            embed = discord.Embed(title=virus_name, color=virus_color)
+            embed.add_field(name=virus_hp,
+                            value=virus_description, inline=True)
+        else:
+            embed = discord.Embed(title=virus_name,
+                                description=virus_description,
+                                color=virus_color)
         embed.set_thumbnail(url=virus_image)
         embed.set_footer(text=virus_footer)
-        if detailed:
-            embed.add_field(name=virus_title, value=virus_description, inline=True)
         await interaction.command.koduck.send_message(interaction, embed=embed)
 
     return
@@ -1064,7 +1065,7 @@ async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal[
 
 
 async def bond(interaction: discord.Interaction, query: str):
-    cleaned_args = clean_args([query])
+    cleaned_args = [q.strip().lower() for q in query.split(",") if q]
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await interaction.command.koduck.send_message(interaction, 
                                         content="Give me a **Bond Power** and I can pull up its info for you!\nFor a list of all Bond Powers, use `bond all`!")
@@ -1138,15 +1139,15 @@ async def element(interaction: discord.Interaction, number: int, category: str="
     return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def rulebook(interaction: discord.Interaction, query:str):
+async def rulebook(interaction: discord.Interaction, query:str=""):
+    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", query, flags=re.IGNORECASE)]
+    cleaned_args = clean_args([" ".join(split_args)])
+    errmsg = []
+
     if query:
         is_get_latest = cleaned_args[0] in ["all", "latest", "new"]
     else:
         is_get_latest = True
-
-    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", query, flags=re.IGNORECASE)]
-    cleaned_args = clean_args([" ".join(split_args)])
-    errmsg = []
 
     if is_get_latest:
         rulebook_df["BiggNumber"] = pd.to_numeric(rulebook_df["Version"])
@@ -1441,7 +1442,7 @@ async def fight(interaction: discord.Interaction):
 
 
 async def sheet(interaction: discord.Interaction):
-    msg_txt = f"**Official NetBattlers Character Sheet:** <{settings.character_sheet}>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `repo character sheet`!"
+    msg_txt = f"**Official NetBattlers Character Sheet:** <{settings.character_sheet}>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `playermaderepo character sheet`!"
     return await interaction.command.koduck.send_message(interaction, content=msg_txt)
 
 

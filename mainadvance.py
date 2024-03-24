@@ -1,3 +1,4 @@
+import json
 import typing
 import discord
 import requests
@@ -23,7 +24,7 @@ MAX_WEATHER_ROLL = 14
 
 pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
-cj_colors = {"Cheer": 0xffe657, "Jeer": 0xff605d}
+cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 achievement_color_dictionary = {"Gold": 0xffe852}
 weather_color_dictionary = {"Blue": 0x8ae2ff,
                             "Yellow": 0xffff5e,
@@ -296,58 +297,60 @@ def end_audience(channel_id):
         return -1
 
 
-async def cheer(interaction: discord.Interaction, command:typing.Literal['list', 'spend', 'add'], num:int=0):
+async def cheer(interaction: discord.Interaction, command:typing.Literal['spend', 'add', 'list'], num:int=1):
     arg = command.lower().strip()
-    return await cheer_jeer_master("Cheer", arg, num)
+    return await cheer_jeer_master(interaction, "cheer", arg, num)
 
 
-async def jeer(interaction: discord.Interaction, command:typing.Literal['list', 'spend', 'add'], num:int=0):
+async def jeer(interaction: discord.Interaction, command:typing.Literal['spend', 'add', 'list'], num:int=1):
     arg = command.lower().strip()
-    return await cheer_jeer_master("Jeer", arg, num)
+    return await cheer_jeer_master(interaction, "jeer", arg, num)
     
 
-async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:str, num:int=0):
+async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:str, num:int):
     channel_id = interaction.channel.id
 
     if arg == 'list':
-        embed_msg = f"**Listing {cj_type}s from the Audience Participation rules...**\n"
+        embed_msg = f"**Listing {cj_type.capitalize()}s from the Audience Participation rules...**\n"
         sub_df = audience_df[audience_df["Type"].str.contains(re.escape(cj_type), flags=re.IGNORECASE)]
         embed_bits = []
         for cj_type in sub_df["Type"].unique():
             subsub_df = sub_df[sub_df["Type"] == cj_type]
             subsub_index = range(1, subsub_df.shape[0] + 1)
             line_items = ["> *%d. %s*"%(i, val) for i, val in zip(subsub_index, subsub_df["Option"].values)]
-            embed_submsg = "> **%s**\n" % cj_type + "\n".join(line_items)
+            embed_submsg = "> **%s**" % cj_type.capitalize() + "\n".join(line_items)
             embed_bits.append(embed_submsg)
         embed_msg += "\n\n".join(embed_bits)
         return await interaction.command.koduck.send_message(interaction, content=embed_msg)
     
+    embed_descript = ""
     if num > MAX_CHEER_JEER_ROLL:
-        return await interaction.command.koduck.send_message(interaction, content=f"Rolling too many {cj_type}s! Up to {MAX_CHEER_JEER_ROLL}!")
+        return await interaction.command.koduck.send_message(interaction, content=f"Rolling too many {cj_type.capitalize()}s! Up to {MAX_CHEER_JEER_ROLL}!")
     if num <= 0:
-        embed_descript = f"{interaction.user.mention} rolled ... {num} {cj_type}s! Huh?!\n\n"
-    else:
+        embed_descript = f"{interaction.user.mention} rolled ... {num} {cj_type.capitalize()}s! Huh?!\n\n"
+    elif arg == 'add':
+        num = -1 * num
+    elif arg=='spend' and num == 1:
         sub_df = audience_df[audience_df["Type"].str.contains(f"^{re.escape(cj_type)}$", flags=re.IGNORECASE)]
-        random_roll = [random.randrange(sub_df.shape[0]) for i in range(num)]
-        cj_roll = ["*%s*" % sub_df["Option"].iloc[i] for i in random_roll]
+        random_roll = random.randrange(sub_df.shape[0])
+        cj_roll = "*%s*" % sub_df["Option"].iloc[random_roll]
 
-        if len(cj_roll) == 1:
-            noun_term = f"a {cj_type}"
-        else:
-            noun_term = f"{num} {cj_type}s" 
-        embed_descript = f"{interaction.user.mention} rolled {noun_term}!\n\n" + "\n".join(cj_roll)
-
+        embed_descript = f"{interaction.user.mention} rolled a {cj_type.capitalize()}!\n\n{cj_roll}\n"
+    
+    embed_footer = ""
     retval = get_audience(channel_id)
-    if retval[0] == 0:
+    if retval[0] == 0: # success code
         c_val = retval[1][0]
         j_val = retval[1][1]
-        if ('C' in cj_type and (num > c_val)) or ('J' in cj_type and (num > j_val)):
-            embed_descript = f"Not enough {cj_type}!"
+        # error: number would go into negatives
+        if ('c' in cj_type and (num > c_val)) or ('j' in cj_type and (num > j_val)):
+            embed_descript = f"Not enough {cj_type.capitalize()}!"
             embed_footer = "Cheer Points: %d, Jeer Points: %d" % retval[1]
         else:
-            _, _, embed_footer = change_audience(channel_id, cj_type, -1 * num)
-    else:
-        embed_footer = ""
+            _, aud_term, embed_footer = change_audience(channel_id, cj_type, -1 * num)
+            embed_descript += f"({aud_term})" 
+    elif not embed_descript:
+        return await interaction.command.koduck.send_message(interaction, content="An audience hasn't been started for this channel yet!", ephemeral=True)
 
     embed = discord.Embed(title="__Audience Participation__",
                             description=embed_descript,
@@ -358,7 +361,7 @@ async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:
     return await  interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def audience(interaction: discord.Interaction, command:typing.Literal['help', 'start', 'view', 'end']):
+async def audience(interaction: discord.Interaction, command:typing.Literal['start', 'view', 'end', 'help']):
     if interaction.channel.type is discord.ChannelType.private:
         channel_id = interaction.channel.id
         channel_name = interaction.user.name
@@ -374,7 +377,6 @@ async def audience(interaction: discord.Interaction, command:typing.Literal['hel
         if ruling_msg is None:
             return await interaction.command.koduck.send_message(interaction, content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
-
     if arg == 'start':
         retvalue = start_audience(channel_id)
         if retvalue[0] == -1:
@@ -393,12 +395,12 @@ async def audience(interaction: discord.Interaction, command:typing.Literal['hel
     elif arg == 'end':
         ret_val = end_audience(channel_id)
         if ret_val == -1:
-            return await interaction.command.koduck.send_message(interaction, content="An audience hasn't been started for this channel yet", ephemeral=True)
+            return await interaction.command.koduck.send_message(interaction, content="An audience hasn't been started for this channel yet!", ephemeral=True)
         embed = discord.Embed(title="__Audience Participation__",
                               description="Ending the audience session for %s\nGoodnight!" % msg_location,
                               color=cj_colors["jeer"])
         return await interaction.command.koduck.send_message(interaction, embed=embed)
-    elif arg == 'now':
+    elif arg == 'view':
         retval = get_audience(channel_id)
         if retval[0] == -1:
             return await interaction.command.koduck.send_message(interaction,
@@ -459,12 +461,12 @@ async def weather(interaction: discord.Interaction, query:str):
                               color=weather_color)
         embed.add_field(name="**[{} CyberWeather]**".format(weather_type),
                         value="_{}_".format(weather_description))
-        await find_value_in_table(interaction, embed=embed)
+        await interaction.command.koduck.send_message(interaction, embed=embed)
 
     return
 
 
-async def weatherforecast(interaction: discord.Interaction, num:int, category:typing.Literal['All', 'Basic', 'Glitched', 'Error']):
+async def weatherforecast(interaction: discord.Interaction, num:int=1, category:typing.Literal['All', 'Basic', 'Glitched', 'Error']='All'):
     # most of this was borrowed from the element code god bless you whoever worked on it
     weather_return_number = num  # number of weather to return, 1 by default
     weather_category = None if category=='All' else category.strip()
@@ -473,7 +475,7 @@ async def weatherforecast(interaction: discord.Interaction, num:int, category:ty
     if not weather_category:
         sub_weather_df = weather_df
     else:
-        sub_weather_df = weather_df[weather_df["Category"].str.fullmatch(re.escape(arg), flags=re.IGNORECASE)]
+        sub_weather_df = weather_df[weather_df["Category"].str.fullmatch(re.escape(weather_category), flags=re.IGNORECASE)]
         if sub_weather_df.shape[0] == 0:
             return await interaction.command.koduck.send_message(interaction, 
                                             content="Not a valid category!\n" +
@@ -524,11 +526,10 @@ async def achievement(interaction: discord.Interaction, query:str):
 
     match_candidates = achievement_df[achievement_df["Name"].str.contains(re.escape(cleaned_args), flags=re.IGNORECASE)]
     if match_candidates.shape[0] < 1:
-        return await interaction.command.koduck.send_message(interaction, content="Didn't find any matches for `%s`!" % arg)
+        return await interaction.command.koduck.send_message(interaction, content="Didn't find any matches for `%s`!" % query)
     if match_candidates.shape[0] > 1:
         return await interaction.command.koduck.send_message(interaction, content="Found multiple matches for `%s`:\n*%s*" %
-                                                                        (arg,
-                                                                         ", ".join(match_candidates["Name"].to_list())))
+                                                                        (query, ", ".join(match_candidates["Name"].to_list())))
     achievement_info = match_candidates.iloc[0]
     achievement_name = achievement_info["Name"]
     achievement_description = achievement_info["Description"]
@@ -543,7 +544,7 @@ async def achievement(interaction: discord.Interaction, query:str):
     return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def spotlight(interaction:discord.Interaction, names:str="", command:typing.Literal['help', 'start', 'mark', 'remove', 'view', 'edit', 'reset', 'end']='mark'):
+async def spotlight(interaction:discord.Interaction, names:str="", command:typing.Literal['start', 'mark', 'remove', 'view', 'edit', 'reset', 'end', 'help']='mark'):
     if interaction.channel.type is discord.ChannelType.private:
         channel_id = interaction.channel.id
         channel_name = interaction.user.name
@@ -555,7 +556,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         msg_location = f"#{channel_name} ({channel_server})"
     
     arg = command.strip().lower()
-    name_list = names.split(',')
+    name_list = [n.strip().lower() for n in name_list.split(",") if n]
 
     if arg == 'help':
         ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
@@ -572,21 +573,24 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         if len(name_list) == 0:
             return await interaction.command.koduck.send_message(interaction, 
                                         embed=embed_spotlight_message("Spotlight Tracker not yet started in this channel!",
-                                                                            msg_location, error=True))
+                                                                            msg_location, error=True),
+                                                                            epheremal=True)
         is_start = True
 
     if is_start:
         if channel_id in spotlight_db:
             spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             return await interaction.command.koduck.send_message(interaction, embed=embed_spotlight_message("Spotlight Tracker already started in this channel!",
-                                                                              msg_location, error=True))
+                                                                              msg_location, error=True), epheremal=True)
         if (len(spotlight_db)+1) > MAX_SPOTLIGHTS:
             return await interaction.command.koduck.send_message(interaction, content="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.", epheremal=True)
         if len(name_list) > (MAX_CHECKLIST_SIZE + 1):
             return await interaction.command.koduck.send_message(interaction, 
-                                            embed=embed_spotlight_message(f"Max of {MAX_CHECKLIST_SIZE} participants in a checklist!", msg_location, error=True))
+                                            embed=embed_spotlight_message(f"Max of {MAX_CHECKLIST_SIZE} participants in a checklist!", msg_location, error=True), epheremal=True)
         participants={}
         nl = pd.Series("", index=range(len(name_list)))
+        i=0
+        dups = []
         for n in name_list:
             if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
                 dups.append(n)
@@ -609,16 +613,16 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         return await interaction.command.koduck.send_message(interaction, 
                                         embed=embed_spotlight_message("Shutting down this Spotlight Tracker! Goodnight!",
                                                                           msg_location))
-    if arg == 'add':
+    elif arg == 'add':
         if not name_list:
             return await interaction.command.koduck.send_message(interaction, 
                                             embed=embed_spotlight_message("Please list who you want to add!",
-                                                                              msg_location, error=True))
+                                                                              msg_location, error=True), epheremal=True)
         if (len(spotlight_db[channel_id]) + len(name_list) - 1) > MAX_CHECKLIST_SIZE:
             return await interaction.command.koduck.send_message(interaction, 
                                             embed=embed_spotlight_message("Max of %d participants in a checklist!" %
                                                                               MAX_CHECKLIST_SIZE,
-                                                                              msg_location, error=True))
+                                                                              msg_location, error=True), epheremal=True)
         dups = []
         n = len(name_list) # max number of new entries
         nl = pd.Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
@@ -647,7 +651,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         if reset_all:
             return await interaction.command.koduck.send_message(interaction, 
                                             embed=embed_spotlight_message("Please specify who you want to remove!",
-                                                                              msg_location, error=True))
+                                                                              msg_location, error=True), epheremal=True)
         for n in name_list:
             match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
             if match_name is None:
@@ -657,13 +661,13 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
     elif arg =='edit':
         if len(name_list) != 2:
             return await interaction.command.koduck.send_message(interaction, 
-                                            embed=embed_spotlight_message("Need just the original name and the new name to change it too!",
-                                                                              msg_location, error=True))
+                                            embed=embed_spotlight_message("Need the original name and the new name to change it to!",
+                                                                              msg_location, error=True), epheremal=True)
 
         match_name = await find_spotlight_participant(interaction, name_list[0], spotlight_db[channel_id], msg_location)
         if match_name is not None:
             spotlight_db[channel_id][name_list[1]] = spotlight_db[channel_id].pop(match_name)
-    elif arg=='view':
+    elif arg=='mark' and name_list:
         already_went_list = []
         for n in name_list:
             match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
@@ -681,6 +685,8 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
 
             if already_went_list:
                 err_msg = "(%s already went!)" % ", ".join(already_went_list)
+    elif arg=='view':
+        pass
 
     notify_str = "\n".join([i for i in (notification_msg, err_msg) if i])
     embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
@@ -707,12 +713,14 @@ async def find_spotlight_participant(interaction, arg, participant_dict, message
 def embed_spotlight_message(err_msg, location, error=False):
     if error:
         embed = discord.Embed(description=err_msg,
-                              color=cj_colors["jeer"])
+                              color=cj_colors["Jeer"])
     else:
         embed = discord.Embed(description=err_msg,
-                              color=cj_colors["cheer"])
+                              color=cj_colors["Cheer"])
     embed.set_footer(text=location)
     return embed
+
+
 def embed_spotlight_tracker(dict_line, location, notification=""):
     participants = dict_line.copy()
     del participants["Last Modified"]
@@ -727,19 +735,13 @@ def embed_spotlight_tracker(dict_line, location, notification=""):
         embed_descript = notification + "\n\n" + embed_descript
     embed = discord.Embed(title="__Spotlight Checklist__",
                           description=embed_descript,
-                          color=cj_colors["cheer"])
+                          color=cj_colors["Cheer"])
     embed.set_footer(text=location)
     return embed
 
 # TODO: help notion's query doesn't work again
-async def repo(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        message_help =  "Give me the name of custom game content and I can look them up on the official **repository** for you! " + \
-                        "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
-        return await context.koduck.send_message(receive_message=context["message"],
-                                    content=message_help.format(pmc_link))
-    user_query = context["param_line"]
+async def repo(interaction: discord.Interaction, query:str):
+    user_query = str
 
     # api change @ 10/24/21:
     # major change is that "query" is no longer a thing and "type" no longer accepts table searching in favor of "reducers".
@@ -748,7 +750,9 @@ async def repo(context, *args, **kwargs):
     # UTZ has been moved to "sort" as well.
     # collectionId and collectionViewId appear to have been deprecated in favor of "collection" and "collectionView" sub-parameters.
     # now requires id and separate "spaceId" values, though what the usecase for the latter is unknown to me.
-
+    # api change @ 3/24/24:
+    # I think queries are back?? You need Filter Objects, and it kind of looks like the Notion site
+    
     data = {
         "collection": {
             "id": settings.notion_collection_id, "spaceId": settings.notion_collection_space_id
@@ -756,29 +760,18 @@ async def repo(context, *args, **kwargs):
         "collectionView": {
             "id": settings.notion_collection_view_id, "spaceId": settings.notion_collection_space_id
         },
-        "loader": {
-            "type": "reducer",
-            "reducers": {
-                "collection_group_results": {
-                    "type": "results",
-                    "limit": 50
-                },
-                "table:uncategorized:title:count": {
-                    "type": "aggregation",
-                    "aggregation":
-                        {"property":"title",
-                         "aggregator":"count"}
-                }
-            },
+        "filter": {
+            "property": "Name:",
+            "contains": query
+        },
         "sort":
             [{"property":"g=]<","direction":"ascending"},
-             {"property":"title","direction":"ascending"},
-             {"property":"UjPS","direction":"descending"}],
-            "searchQuery": user_query,
-            "userTimeZone": "America/Chicago"
-        }
+            {"property":"title","direction":"ascending"},
+            {"property":"UjPS","direction":"descending"}],
+        "searchQuery": user_query,
+        "userTimeZone": "America/Chicago"
     }
-
+    
     r = requests.post(settings.notion_query_link, json=data)
 
     # R:200 - all good
@@ -786,21 +779,21 @@ async def repo(context, *args, **kwargs):
     # R:4xx - bad request, wrong api endpoint, notion changed the api again, scrape the new fields (i.e.: our problem)
     # R:5xx - notion's down (i.e.: not our problem)
     if r.status_code != 200:
-        #print(r.status_code, r.reason)
-        #print("Response:", r.content)
-        return await context.koduck.send_message(receive_message=context["message"],
+        print(r.status_code, r.reason)
+        print("Response:", r.content)
+        interaction.command.koduck.send_message(interaction,
                                  content="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
 
     # just leaving this here for the next time i need to work on this again..
-    #parse = json.loads(r.content)
-    #print(json.dumps(parse, indent=4, sort_keys=True))
+    parse = json.loads(r.content)
+    print(json.dumps(parse, indent=4, sort_keys=True))
 
     # iza helped me rewrite the overwhelming bulk of this.
     # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.
     repo_results_dict = {}
     blockmap = r.json()["recordMap"]
     if "block" not in blockmap:
-        return await context.koduck.send_message(receive_message=context["message"],
+        return await interaction.command.koduck.send_message(interaction,
                                  content="I can't find anything with that query, sorry!")
     else:
         blockmap = r.json()["recordMap"]["block"]
@@ -820,7 +813,7 @@ async def repo(context, *args, **kwargs):
 
     size = repo_results_df.shape[0]
     if not size:
-        await context.koduck.send_message(receive_message=context["message"],
+        await interaction.command.koduck.send_message(interaction,
                                  content="I can't find anything with that query, sorry!")
     else:
         repo_results_df['Link'] = repo_results_df['Link'].explode().apply(lambda x: x[0])
@@ -828,13 +821,13 @@ async def repo(context, *args, **kwargs):
     if size == 1:
         generated_msg = "**Found {} entry for _'{}'_..** \n" + \
                         "**_`{}`_** by __*{}*__:\n __<{}>__"
-        return await context.koduck.send_message(receive_message=context["message"],
+        return await interaction.command.koduck.send_message(interaction,
                                     content=generated_msg.format(size, user_query, repo_result_row["Name"], repo_result_row["Author"], repo_result_row["Link"]))
     if size > 1:
         repo_results = "', '".join(repo_results_df["Name"])
         generated_msg = "**Found {} entries for _'{}'_..** \n" + \
                         "*'%s'*" % repo_results
-        return await context.koduck.send_message(receive_message=context["message"],
+        return await interaction.command.koduck.send_message(interaction,
                                         content=generated_msg.format(size, user_query))
 
 
