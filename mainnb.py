@@ -887,11 +887,11 @@ def query_virus(arg_lower):
     return True, result_title, result_msg
 
 
-async def virus(interaction: discord.Interaction, query:str):
+async def virus(interaction: discord.Interaction, query:str, detailed:bool=False):
     cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await interaction.command.koduck.send_message(interaction,
-                                        content="Give me the name of 1-%d **Viruses** and I can pull up their info for you!\n\n" % MAX_VIRUS_QUERY +
+                                        content=f"Give me the name of 1-{MAX_VIRUS_QUERY} **Viruses** and I can pull up their info for you!\n\n" +
                                                     "I can query Viruses by **Category**, **Tag**, or **Advance Content**, and pull up the list of Virus categories with `virus category`!\n" +
                                                     "For a list of all Virus categories, use `virus category`, and all current Virus tags with `virus tag`. To pull up details on a specific Category or Tag, use `tag` instead. (i.e. `tag artillery`)")
     elif cleaned_args[0] in ['category', 'categories']:
@@ -911,7 +911,7 @@ async def virus(interaction: discord.Interaction, query:str):
                                     content=ruling_msg["Response"])
     elif len(cleaned_args) > MAX_VIRUS_QUERY:
         return await interaction.command.koduck.send_message(interaction,
-                                        content="Too many viruses, no more than %d!" % MAX_VIRUS_QUERY, ephemeral=True)
+                                        content=f"Too many viruses, no more than {MAX_VIRUS_QUERY}!", ephemeral=True)
 
     arg_combined = " ".join(cleaned_args)
     is_query, result_title, result_msg = query_virus(arg_combined)
@@ -921,8 +921,8 @@ async def virus(interaction: discord.Interaction, query:str):
     for arg in cleaned_args:
         if not arg:
             continue
-        virus_name, _, virus_description, virus_footer, virus_image, virus_color = await virus_master(interaction, arg,
-                                                                                                      simplified=True)
+        virus_name, virus_title, virus_description, virus_footer, virus_image, virus_color = await virus_master(interaction, arg,
+                                                                                                      simplified=~detailed)
         if virus_name is None:
             continue
 
@@ -931,33 +931,11 @@ async def virus(interaction: discord.Interaction, query:str):
                               color=virus_color)
         embed.set_thumbnail(url=virus_image)
         embed.set_footer(text=virus_footer)
+        if detailed:
+            embed.add_field(name=virus_title, value=virus_description, inline=True)
         await interaction.command.koduck.send_message(interaction, embed=embed)
 
-
-async def virusx(interaction: discord.Interaction, name: str):
-    cleaned_args = name.lower().strip()
-    if cleaned_args == 'help':
-        return await interaction.command.koduck.send_message(interaction,
-                                        content="Give me the name of a **Virus** and I can pull up its full info for you!")
-
-    if cleaned_args in ['category', 'categories']:
-        result_title = "Displaying all known Virus Categories..."
-        result_text = ", ".join(virus_category_list)
-        return await send_query_msg(interaction, result_title, result_text)
-
-    virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color = await virus_master(interaction,
-                                                                                                               name,
-                                                                                                               simplified=False)
-    if virus_name is None:
-        return
-
-    embed = discord.Embed(title=virus_name, color=virus_color)
-
-    embed.set_thumbnail(url=virus_image)
-    embed.add_field(name=virus_title,
-                    value=virus_descript_block, inline=True)
-    embed.set_footer(text=virus_footer)
-    return await interaction.command.koduck.send_message(interaction, embed=embed)
+    return
 
 
 async def query_func(interaction: discord.Interaction, query: str):
@@ -1160,14 +1138,15 @@ async def element(interaction: discord.Interaction, number: int, category: str="
     return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def rulebook(context, *args, **kwargs):
-    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", arg, flags=re.IGNORECASE) for arg in args]
-    cleaned_args = clean_args([" ".join(split_args)])
-    errmsg = []
-    if args:
+async def rulebook(interaction: discord.Interaction, query:str):
+    if query:
         is_get_latest = cleaned_args[0] in ["all", "latest", "new"]
     else:
         is_get_latest = True
+
+    split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", query, flags=re.IGNORECASE)]
+    cleaned_args = clean_args([" ".join(split_args)])
+    errmsg = []
 
     if is_get_latest:
         rulebook_df["BiggNumber"] = pd.to_numeric(rulebook_df["Version"])
@@ -1175,10 +1154,8 @@ async def rulebook(context, *args, **kwargs):
         book_names = ["**%s %s %s**: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
                       ret_books.iterrows()]
     elif cleaned_args[0] == "help":
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Links the **rulebooks** for NetBattlers! " +
-                                                    "You can also look for a specific rulebook version! (i.e. `rulebook beta 7 adv 6`) \n"
-                                                    )
+        return await interaction.command.koduck.send_message(interaction, 
+                                        content="Links the **rulebooks** for NetBattlers! You can also look for a specific rulebook version! (i.e. `rulebook beta 7 adv 6`)")
     elif cleaned_args[0] in ['nyx', 'cc', 'crossover']:
         book_names = ["**Nyx Crossover Content**(?): <%s>" % nyx_link]
     elif cleaned_args[0] in ['grid', 'gridbased', 'grid-based', 'gridbasedcombat', 'grid-basedcombat']:
@@ -1197,7 +1174,7 @@ async def rulebook(context, *args, **kwargs):
                 float(arg)
                 version_str = arg
                 if book_query["Version"] is not None:
-                    await context.koduck.send_message(receive_message=context["message"], content="Going with Version `%s`!" % version_str)
+                    await interaction.command.koduck.send_message(interaction, content="Going with Version `%s`!" % version_str)
                 book_query["Version"] = version_str
                 continue
             except ValueError:
@@ -1220,9 +1197,6 @@ async def rulebook(context, *args, **kwargs):
                 in_progress = True
 
             if arg in ['all', 'list']:
-                if book_query["Version"] is None:
-                    await context.koduck.send_message(receive_message=context["message"],
-                                             content="Going with all versions!")
                 book_query["Version"] = "All"
                 in_progress = True
 
@@ -1244,8 +1218,8 @@ async def rulebook(context, *args, **kwargs):
             book_release = book_query["Release"]
 
             if not bookname:
-                await context.koduck.send_message(receive_message=context["message"],
-                                         content="Don't know which book you want! Please specify either 'Beta', 'Advance', or 'Alpha'!'")
+                await interaction.command.koduck.send_message(interaction, 
+                                         content="Don't know which book you want! Please specify either 'Beta', 'Advance', or 'Alpha'!'", ephemeral=True)
                 continue
             elif bookname == 'Unknown':
                 continue
@@ -1282,11 +1256,10 @@ async def rulebook(context, *args, **kwargs):
 
     book_names += errmsg
     if not book_names:
-        return await context.koduck.send_message(receive_message=context["message"],
-                                        content="Couldn't find any rulebooks for `%s`!" % " ".join(args))
-    return await context.koduck.send_message(receive_message=context["message"], content="\n".join(book_names))
+        return await interaction.command.koduck.send_message(interaction, content=f"Couldn't find any rulebooks for `{query}`!")
+    return await interaction.command.koduck.send_message(interaction, content="\n".join(book_names))
 
-# TODO: Test after slash refresh
+
 async def virusr(interaction: discord.Interaction, number: int=1, 
                  artillery:int=0, disruption:int=0, striker: int=0, support:int=0, wrecker:int=0, 
                  mega:bool=False, omega:bool=False):
@@ -1342,7 +1315,7 @@ async def virusr(interaction: discord.Interaction, number: int=1,
                           description=virus_list)
     return await interaction.command.koduck.send_message(interaction, embed=embed)
 
-
+# TODO: merge with the fight generator?
 async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
     if not adv_type:
         arg = "core"
@@ -1467,13 +1440,11 @@ async def fight(interaction: discord.Interaction):
     return await interaction.command.koduck.send_message(interaction, content=generated_msg)
 
 
+async def sheet(interaction: discord.Interaction):
+    msg_txt = f"**Official NetBattlers Character Sheet:** <{settings.character_sheet}>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `repo character sheet`!"
+    return await interaction.command.koduck.send_message(interaction, content=msg_txt)
 
-async def sheet(context, *args, **kwargs):
-    msg_txt = ("**Official NetBattlers Character Sheet:** <%s>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `repo character sheet`!" % settings.character_sheet)
-    return await context.koduck.send_message(receive_message=context["message"],  content=msg_txt)
 
-
-# why you bad
 async def glossary(interaction: discord.Interaction, term: str):
     if not term:
         return await interaction.command.koduck.send_message(interaction, 
@@ -1501,8 +1472,6 @@ async def glossary(interaction: discord.Interaction, term: str):
     #spotlight needs to be moved to interaction...
     progbot_func = globals()[glossary_info["ProgBot Function"]]
     return await progbot_func(interaction, glossary_info["ProgBot Argument"])
-
-    
 
 
 async def find_chip_ncp_power(interaction: discord.Interaction, query: str):

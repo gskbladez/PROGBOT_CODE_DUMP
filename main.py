@@ -72,28 +72,29 @@ settings.background_task = background_task
 
 
 # PROGBOTBOTTER
-async def invite(context, *args, **kwargs):
+async def invite(interaction: discord.Interaction):
     invite_link = settings.invite_link
     color = 0x71c142
-    embed = discord.Embed(title="Just click here to invite me to one of your servers!",
+    embed = discord.Embed(title="Click here to invite me to one of your servers!",
                           color=color,
                           url=invite_link)
 
-    return await context.koduck.send_message(receive_message=context["message"], embed=embed)
+    return await interaction.command.koduck.send_message(interaction, embed=embed)
 
-async def commands(context, *args, **kwargs):
+
+async def commands(interaction: discord.Interaction):
     # filter out the commands that the user doesn't have permission to run
-    currentlevel = context.koduck.get_user_level(context["message"].author.id)
+    currentlevel = koduck.get_user_level(interaction.user.id)
     availablecommands = commands_df[commands_df["Permission"] <= currentlevel].sort_values(["Function", "Command", "Permission"])
-    if context["message"].channel.type is discord.ChannelType.private:
+    if interaction.channel.type is discord.ChannelType.private:
         pass
-    elif (context["message"].author.id == context["message"].guild.owner_id):
+    elif (interaction.user.id == interaction.guild.owner_id):
         availablecommands = availablecommands.append(commands_df[commands_df["Permission"] == 4])
+        
     availablecommands = availablecommands[~availablecommands["Hidden"]]
     cmd_groups = availablecommands.groupby(["Category"])
-    return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if
-                   name]
-    return await context.koduck.send_message(receive_message=context["message"], content="\n\n".join(return_msgs))
+    return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if name]
+    return await interaction.command.koduck.send_message(interaction, content="\n\n".join(return_msgs))
 
 
 async def bugreport(interaction: discord.Interaction, message: str):
