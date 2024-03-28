@@ -459,6 +459,7 @@ Shakedown	-	Passive	When you hit a target, they drop 100z per point of damage.	-
 HypnoShot	Charm	Cost	Your next attack makes the target (pick 1): very sleepy; see illusions; upshift next Mind roll.	-	Virus Power	Mystic Lilies	
 Sublimation	Speed	Cost	Summons mist. If you roll 3 times while in the mist, you can warp two range bands away.	-	Virus Power	Mystic Lilies	
 CrystalEyes	-	Passive	When you cover something with your element, gain +1 Sense. This can stack.	-	Virus Power	Mystic Lilies	
+Foresight	Info	Roll	You can use Info to defend against attacks from enemies you can see.	-	Virus Power	Mystic Lilies	
 SpadeCurse	-	Passive	On hit, targets are unable to lie unless they make a Hard Bravery roll or jack out.	-	Virus Power	Mystic Lilies	
 Trojan	Coding	Cost	Message a Near Navi’s PET with a link. If they open it, it makes a secret backdoor.	-	Virus Power	Mystic Lilies	
 RedLetter	Affinity	Cost	Curse Near writing, changing the text and installing a secret PET backdoor on touch.	-	Virus Power	Mystic Lilies	
@@ -502,7 +503,7 @@ Law	Coding	Roll	Pick a Close target; all of their present summoned element is sc
 Order	Affinity	Roll	Rewind a Near object’s damage, movement, and modifications from the past minute.	-	Virus Power	Underground Broadcast	
 Us	Bravery	Roll	Fling all Close allies at a Near target, sending them arcing through the air to Close range.	-	Virus Power	Underground Broadcast	
 Them	Affinity	Cost	Call a spotlight down on a Near target, briefly deactivating invisibility and Guards.	-	Virus Power	Underground Broadcast	
-Allegiance	Bravery	Cost	Mind-control a Near NPC, forcing them to aggressively assist you for one action. [Instant]	-	Virus Power	Underground Broadcast	
+Allegiance	Affinity	Cost	Mind-control a Near NPC, forcing them to aggressively assist you for one action. [Instant]	-	Virus Power	Underground Broadcast	
 							
 GapingAbyss	Affinity	Roll	Create your element inside of you. It gradually pulls all Near targets into Close range.	-	Virus Power	The Walls Will Swallow You	
 Primordial	-	Passive	You cannot die from HP loss; dmg pushes you away. Upshift rolls to move range bands.	-	Virus Power	The Walls Will Swallow You	
