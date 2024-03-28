@@ -37,3 +37,4 @@ find	find_chip_ncp_power	Game Lookup	base	slash	Find a BattleChip, NCP, or Power
 autoloot	autoloot	Rollers	fools	slash	Generate a random autoloot chip	1	FALSE
 ping	ping	ProgBot	main	slash	Test slash command via a ping	3	TRUE
 refreshappcommands	refresh_app_commands	ProgBot	main	prefix	Refresh slash commands	3	TRUE
+entropy	entropy	ProgBot	roll	slash	Test ProgBot's randomness! (256 is normal, 200+ is good!)	1	TRUE

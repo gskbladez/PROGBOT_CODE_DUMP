@@ -1,3 +1,5 @@
+import datetime
+import subprocess
 import discord
 import koduck
 import settings
@@ -10,12 +12,13 @@ MAX_REROLL_QUERY = 20
 MAX_REROLL_QUERY_LARGE = 5
 ROLL_COMMENT_CHAR = '#'
 FORMAT_LIMIT = 175 # technically actually 198 or so, buuuuut
+ENTROPY_TIMEOUT = datetime.timedelta(days=0, minutes=15, seconds=10)
 
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
 parser = dice_algebra.parser
 lexer = dice_algebra.lexer
-
+last_entropy = None
 
 def get_roll_from_macro(diff, dicenum):
     roll_difficulty = roll_difficulty_dict[diff.upper()]
@@ -58,7 +61,7 @@ def format_hits_roll(roll_result):
         result_str = "{} = **__{}__**".format(str_result, roll_result.eval())
     return result_str
 
-#TODO: why you no work??
+
 async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
     if repeat <= 0:
         await interaction.command.koduck.send_message(interaction, content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
@@ -129,3 +132,21 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
     except discord.errors.HTTPException:
         return
 
+
+async def entropy(interaction: discord.Interaction):
+    if last_entropy is not None:
+        entropy_check = datetime.datetime.now() - last_entropy
+        if entropy_check < ENTROPY_TIMEOUT:
+            return await interaction.command.koduck.send_message(interaction, 
+                                                                content=f"Resting the divination rods... please try again in {entropy_check.strftime('%M')} minutes!", 
+                                                                ephemeral=True)
+    try:
+       cmd = ['cat', '/dev/random', '|', 'rngtest', '-c', '1000']
+       completedproc = subprocess.run(cmd, timeout=1, encoding='ascii')
+       entropy_check = datetime.datetime.now()
+       return await interaction.command.koduck.send_message(interaction, content=f"Randomization quantum: **{completedproc.stdout}**!")
+    except subprocess.TimeoutExpired:
+       return await interaction.command.koduck.send_message(interaction, content="Orb did not respond... ask again later!", ephemeral=True)
+    except Exception:
+       return await interaction.command.koduck.send_message(interaction, content="Randomization quantum: **???**", ephemeral=True)
+    

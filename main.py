@@ -67,7 +67,10 @@ async def refresh_commands(context, *args, **kwargs):
 
 #Background task is run every set interval while bot is running (by default every 10 seconds)
 async def background_task(koduck_instance):
+    mainadvance.clean_audience() # cleans up audience_data if it hasn't been used in AUDIENCE_TIMEOUT
+    mainadvance.clean_spotlight() # cleans up spotlight_db if it hasn't been used in SPOTLIGHT_TIMEOUT
     pass
+
 settings.background_task = background_task
 
 
