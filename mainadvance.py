@@ -592,7 +592,7 @@ async def weatherforecast(context, *args, **kwargs):
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await koduck.sendmessage(context["message"],
                                         sendcontent="Pulls up a random set of 1-%d types of **CyberWeather**! " % MAX_WEATHER_ROLL + 
-                                        "To use, enter `{cp}weatherforecast [#]` or `{cp}weatherforecast [category] [#]`! The command `{cp}randomweather` or `{cp}randomweather [category] [#]` can also be used!\n"\
+                                        "To use, enter `{cp}weatherforecast [#]` or `{cp}weatherforecast [category] [#]`! The command `{cp}randomweather [#]` or `{cp}randomweather [category] [#]` can also be used!\n"\
                                         .replace("{cp}", koduck.get_prefix(context["message"])) +
                                                     "Categories: **%s**" % ", ".join(weather_category_list))
     
@@ -617,7 +617,7 @@ async def weatherforecast(context, *args, **kwargs):
             argDone = True
         except ValueError:
             weather_category.append(arg)
-            
+    
     if weather_category:
         regex_search = [f"^\s*{re.escape(a)}\s*$" for a in weather_category]
         sub_weather_df = weather_df[weather_df["Category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
@@ -628,6 +628,7 @@ async def weatherforecast(context, *args, **kwargs):
                                                         "Categories: **%s**" % ", ".join(weather_category_list))
     else:
         sub_weather_df = weather_df
+    all_cats = sub_weather_df["Category"].unique().tolist() # progbot throws an error otherwise
     category_range_max = sub_weather_df.shape[0]
     if weather_return_number < 1:
         return await koduck.sendmessage(context["message"],
@@ -649,6 +650,7 @@ async def weatherforecast(context, *args, **kwargs):
                                                                                             weather_category)
     else:
         weather_flavor_title = "Picked {} random element(s) from the {} and {} categories...".format(str(weather_return_number),", ".join(all_cats[:-1]), all_cats[-1])
+    
     weather_color = 0xd5b5f7
     if weather_category == "Basic":
         weather_color = weather_color_dictionary["Blue"]
