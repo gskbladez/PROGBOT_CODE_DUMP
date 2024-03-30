@@ -761,7 +761,7 @@ async def upgrade(interaction: discord.Interaction, query: str):
             await send_query_msg(interaction, result_title, result_msg)
             continue
         if any((power_df["Type"] == "Upgrade") & power_df["Power/NCP"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)):
-            await ncp(interaction, arg, [])
+            await ncp(interaction, arg)
             continue
         await interaction.command.koduck.send_message(interaction, 
                                  content="Couldn't find any Navi Power Upgrades for `%s`!" % arg, ephemeral=True)

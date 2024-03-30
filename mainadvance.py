@@ -335,7 +335,7 @@ async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:
         random_roll = random.randrange(sub_df.shape[0])
         cj_roll = "*%s*" % sub_df["Option"].iloc[random_roll]
 
-        embed_descript = f"{interaction.user.mention} rolled a {cj_type.capitalize()}!\n\n{cj_roll}\n"
+        embed_descript = f"{interaction.user.mention} rolled a {cj_type.capitalize()}!\n\n{cj_roll}\n\n"
     
     embed_footer = ""
     retval = get_audience(channel_id)
