@@ -12,7 +12,6 @@ MAX_REROLL_QUERY = 20
 MAX_REROLL_QUERY_LARGE = 5
 ROLL_COMMENT_CHAR = '#'
 FORMAT_LIMIT = 175 # technically actually 198 or so, buuuuut
-ENTROPY_TIMEOUT = datetime.timedelta(days=0, minutes=15, seconds=10)
 
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
@@ -134,19 +133,8 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
 
 
 async def entropy(interaction: discord.Interaction):
-    if last_entropy is not None:
-        entropy_check = datetime.datetime.now() - last_entropy
-        if entropy_check < ENTROPY_TIMEOUT:
-            return await interaction.command.koduck.send_message(interaction, 
-                                                                content=f"Resting the divination rods... please try again in {entropy_check.strftime('%M')} minutes!", 
-                                                                ephemeral=True)
     try:
-        ps = subprocess.run(['cat', '/dev/random'], check=True, capture_output=True, timeout=1)
-        completedproc = subprocess.run(['rngtest','-c','1000'],
-                                    input=ps.stdout, capture_output=True, timeout=1,encoding='ascii')
-        entropy_check = datetime.datetime.now()
-        if completedproc.returncode > 0:
-            return await interaction.command.koduck.send_message(interaction, content="Orb was displeased... You should let the devs know!", ephemeral=True)
+        completedproc = subprocess.run(['cat','/proc/sys/kernel/random/entropy_avail'], timeout=1,encoding='ascii')
         return await interaction.command.koduck.send_message(interaction, content=f"Randomization quantum: **{completedproc.stdout}**!")
     except subprocess.TimeoutExpired:
         return await interaction.command.koduck.send_message(interaction, content="Orb did not respond... ask again later!", ephemeral=True)
