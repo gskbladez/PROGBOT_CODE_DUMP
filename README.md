@@ -26,13 +26,20 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
 - In Command Line, change directory to location of ProgBot Code Dump with: `cd [filepath_to_progbot]`
 - In Command Line, install all dependencies using pip: `python -m pip install -r dependencies.txt`. 
     - You may need additional flags. If so, try `python -3 -m pip install -Iv [package]==[version]`
-- Generate a bot token via the [Discord Developer Portal](https://discordapp.com/developers/applications/)
+- Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) and generate a bot token
      - [Link to Guide](https://www.writebots.com/discord-bot-token/)
 - Create a new file called `.env` in the ProgBot code repository, and add the text below:
     ``` bash
     # env
     DISCORD_TOKEN=[PASTE TOKEN HERE, REPLACING BRACKETS AS WELL]
     ```
+- Go back to the [Discord Developer Portal](https://discordapp.com/developers/applications/), then go to the **Oauth2** tab and generate an invite link by: 
+    - Check `bot`, then under Bot Permissions, check:
+        - `Send Messages`
+        - `Send Messages in Threads`
+        - `Use External Emojis`
+        - `Add Reactions`
+- Paste the invite link into your browser and invite bot to a server (probably a test one)
 - Start the bot using: `python main.py`
     - If successful, it will output the following after a few seconds, in the command line:
      ```
@@ -41,12 +48,9 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
      ID: [Bot ID]
      ```
     - If there's other errors... Godspeed. All errors will be printed out in the Command Line.
-- In the [Discord Dev portal](https://discordapp.com/developers/applications/), go to **Oauth2** and generate an invite link by checking `bot`, then under Bot Permissions, `Send Messages`, `Send Messages in Threads`, `Use External Emojis`, `Add Reactions`!
-    - For prefix commands, you need to enable `Privileged Gateway Intent` in the Bot tab of the Developer portal
-- Go to that link and invite bot to a server (probably a test one)
-- Run `/run command:refreshappcommands` to get your bot to register the new slash commands
+- Run `/run command:refreshappcommands` in the server to get your bot to register the new slash commands
 - Wait a few minutes (or an hour) for the slash commands to sync across Discord, and...
-- You should be able to see slash commands in the server!
+- You should be able to see slash commands in the server and start using them!
 
 ### Contributing
 Fork a branch from master and submit pull requests!
