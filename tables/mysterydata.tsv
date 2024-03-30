@@ -49,7 +49,7 @@ Common	NCP	EvilMind
 Common	NCP	ExposedFrequency
 Common	NCP	GeoTracker
 Common	NCP	ManualInput
-Common	NCP	Harmonizer
+Common	NCP	BondCharge
 Common	NCP	HazardTimer
 Common	NCP	MegaFlex
 Common	NCP	Megaphone
@@ -161,7 +161,7 @@ Uncommon	NCP	Sneakrun
 Uncommon	NCP	Clear
 Uncommon	NCP	ModelEdit
 Uncommon	NCP	Playback
-Uncommon	NCP	Vengeance
+Uncommon	NCP	CommandLine
 Uncommon	NCP	SystemCall
 Uncommon	NCP	CodeInjection
 Uncommon	Misc Table	The Navi finds a helpful bit of advice.
