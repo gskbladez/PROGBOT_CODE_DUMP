@@ -480,6 +480,7 @@ async def weatherforecast(interaction: discord.Interaction, num:int=1, category:
             return await interaction.command.koduck.send_message(interaction, 
                                             content="Not a valid category!\n" +
                                                     "Categories: **%s**" % ", ".join(weather_category_list), epheremal=True)
+
     category_range_max = sub_weather_df.shape[0]
     if weather_return_number < 1:
         return await interaction.command.koduck.send_message(interaction, 
@@ -498,7 +499,7 @@ async def weatherforecast(interaction: discord.Interaction, num:int=1, category:
         weather_flavor_title = f"Picked {weather_return_number} random weather(s):"
     else:
         weather_flavor_title = f"Picked {weather_return_number} random weather(s) from the {weather_category} category:"
-    
+
     weather_color = 0xd5b5f7
     if weather_category == "Basic":
         weather_color = weather_color_dictionary["Blue"]
