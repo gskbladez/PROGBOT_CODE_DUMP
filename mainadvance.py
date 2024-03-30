@@ -557,7 +557,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         msg_location = f"#{channel_name} ({channel_server})"
     
     arg = command.strip().lower()
-    name_list = [n.strip().lower() for n in name_list.split(",") if n]
+    name_list = [n.strip() for n in names.split(",") if n]
 
     if arg == 'help':
         ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
@@ -714,10 +714,10 @@ async def find_spotlight_participant(interaction, arg, participant_dict, message
 def embed_spotlight_message(err_msg, location, error=False):
     if error:
         embed = discord.Embed(description=err_msg,
-                              color=cj_colors["Jeer"])
+                              color=cj_colors["jeer"])
     else:
         embed = discord.Embed(description=err_msg,
-                              color=cj_colors["Cheer"])
+                              color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
 
@@ -736,7 +736,7 @@ def embed_spotlight_tracker(dict_line, location, notification=""):
         embed_descript = notification + "\n\n" + embed_descript
     embed = discord.Embed(title="__Spotlight Checklist__",
                           description=embed_descript,
-                          color=cj_colors["Cheer"])
+                          color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
 

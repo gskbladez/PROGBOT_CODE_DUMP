@@ -178,7 +178,7 @@ class Koduck:
             #This is not returning the sent message for some reason, so here's a workaround to fetch it after it's sent
             if not receive_message.response.is_done():
                 await receive_message.response.send_message(**kwargs)
-                the_message = await receive_message.original_response()
+                the_message = await receive_message.original_response() # you seem get stuck on other errors, esp. spotlight...
             else:
                 the_message = await receive_message.followup.send(**kwargs)
         #send message normally
