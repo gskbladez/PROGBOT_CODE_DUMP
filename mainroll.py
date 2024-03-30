@@ -141,14 +141,15 @@ async def entropy(interaction: discord.Interaction):
                                                                 content=f"Resting the divination rods... please try again in {entropy_check.strftime('%M')} minutes!", 
                                                                 ephemeral=True)
     try:
-        cmd = ['cat', '/dev/random', '|', 'rngtest', '-c', '1000']
-        completedproc = subprocess.run(cmd, timeout=1, encoding='ascii')
+        ps = subprocess.run(['cat', '/dev/random'], check=True, capture_output=True, timeout=1)
+        completedproc = subprocess.run(['rngtest','-c','1000'],
+                                    input=ps.stdout, capture_output=True, timeout=1,encoding='ascii')
         entropy_check = datetime.datetime.now()
-        if completedproc is None:
-            return await interaction.command.koduck.send_message(interaction, content="Randomization quantum: **???**", ephemeral=True)
+        if completedproc.returncode > 0:
+            return await interaction.command.koduck.send_message(interaction, content="Orb was displeased... You should let the devs know!", ephemeral=True)
         return await interaction.command.koduck.send_message(interaction, content=f"Randomization quantum: **{completedproc.stdout}**!")
     except subprocess.TimeoutExpired:
         return await interaction.command.koduck.send_message(interaction, content="Orb did not respond... ask again later!", ephemeral=True)
     except Exception:
-        return await interaction.command.koduck.send_message(interaction, content="Randomization quantum: **???**", ephemeral=True)
+        return await interaction.command.koduck.send_message(interaction, content="Orb was cracked... You should let the devs know!", ephemeral=True)
     
