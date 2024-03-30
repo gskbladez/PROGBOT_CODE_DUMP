@@ -41,25 +41,24 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
      ID: [Bot ID]
      ```
     - If there's other errors... Godspeed. All errors will be printed out in the Command Line.
-- In the [Discord Dev portal](https://discordapp.com/developers/applications/), go to **Oauth2** and generate an invite link by checking Bot and Send Messages
+- In the [Discord Dev portal](https://discordapp.com/developers/applications/), go to **Oauth2** and generate an invite link by checking `bot`, then under Bot Permissions, `Send Messages`, `Send Messages in Threads`, `Use External Emojis`, `Add Reactions`!
+    - For prefix commands, you need to enable `Privileged Gateway Intent` in the Bot tab of the Developer portal
 - Go to that link and invite bot to a server (probably a test one)
-- The bot will now respond to commands in the server!
+- Run `/run command:refreshappcommands` to get your bot to register the new slash commands
+- Wait a few minutes (or an hour) for the slash commands to sync across Discord, and...
+- You should be able to see slash commands in the server!
 
 ### Contributing
 Fork a branch from master and submit pull requests!
 
 Note: if GitHub seems to be flagging all lines in the .tsv as changed, this is likely due to cross-OS line ending discrepencies. If so, refer to [this guide](https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings) to address.
 
-### Commands
-Default command prefix is `>`.
-
-`oops`
-Undoes the last bot output from the user.
+### Slash Commands
 
 `changeprefix`
 Changes the prefix of the bot (server owner only)
 
-`command`/`commands`
+`commands`
 Displays all known commands.
 
 `help`
@@ -68,16 +67,13 @@ Outputs help messages for commands or various rule tidbits. Can pull up a list o
 `invite`
 Generates an invite link for ProgBot.
 
-`roll`/`r`
+`roll`
 Rolls dice. Supports comments and basic NetBattlers macros.
 
-`repeatroll`/`repeatr`/`repeat`/`rr`
-Repeats a roll command. Supports comments and basic NetBattlers macros.
-
-`chip`/`chips`
+`chip`
 Pulls up chip information. Can also be used to query chips by Category, Tag, or Source (i.e. ChitChat).
 
-`power`/`powers`
+`power`
 Pulls up Power information. Can also be used to query powers by Skill, Type, and Navi/Virus.
 
 `ncp`
@@ -86,20 +82,17 @@ Pulls up NaviCust Part information. Can also be used to query NCPs by EB.
 `virus`
 Pulls up basic Virus information: Name, Description, Image (if present), or Source. Can also be used to query by Category, Tag, and Source (i.e. ChitChat). 
 
-`virusx`
-Pulls up detailed Virus information, including statblocks and powers. 
-
 `tag`
 Pulls up information on Categories and Tags for Viruses and Chips.
 
 `query`
 Queries for information. (Goes through Chip, Power, NCP, Virus, NPUs, and Daemons.)
 
-`bond`/`bondpower`
+`bondpower`
 Pulls up information on Bond Powers. 
 
-`mysterydata`/`md`/`mysteryreward`
-Rolls Mystery Data. `mysteyreward` only includes Chips and NCPs.
+`mysterydata`
+Rolls Mystery Data. 
 
 `rulebook`
 Shows rulebook links.
@@ -107,10 +100,10 @@ Shows rulebook links.
 `element`
 Rolls on the Element Generation table.
 
-`virusr`/`virusrandom`
+`virusrandom`
 Rolls random viruses. Can specify the number and categories you want to roll.
 
-`repo`/`playermade`/`pmc`/`pmr`
+`playermaderepo`
 Searches and pulls up download links from the player-made content on Notion.
 
 `adventure`
@@ -122,50 +115,47 @@ Creates a randomized enemy Navi fight.
 `sheet`
 Pulls up the link to the blank, official character sheet.
 
-`spotlight`/`spot`/`checklist`
+`spotlight`
 Starts a Spotlight Tracker in the current text channel.
 
 `glossary`
 Searches and pulls up the ProgBot output for a Glossary term.
 
-`find`/`search`
+`find`
 Searches through Chips, NPCs, and Powers for information all at once.
 
 `daemon`
 (NetBattlers Advance) Pulls up Daemon information.
 
-`upgrade`/`npu`
+`npu`
 (NetBattlers Advance) Searches for a Navi Power's upgrades.
 
-`networkmod`/`mod`
+`networkmod`
 (NetBattlers Advance) Pulls up information on a NetWork Mod. 
 
-`audience`/`cheer`/`jeer`
+`audience`/`audiencecheer`/`audiencejeer`
 (NetBattlers Advance) Rolls Cheers/Jeers. Can also track Cheer/Jeer Points for a text channel.
 
-`weather`/`cyberweather`
+`weather`
 (NetBattlers Advance content) Pulls up information for CyberWeather.
 
-`achievement`/`achievements`/`achieve`
+`weatherforecast`
+(NetBattlers Advance content) Rolls random CyberWeather.
+
+`achievement`
 (NetBattlers Advance content) Pulls up information for an Achievement.
 
 `crimsonnoise`
 (Unofficial content from Genso Network) Rolls CrimsonNoise. 
 
-`xcard`/`x`/`ocard`/`o`/`ncard`/`n`
-Use the X, N, or O card. (TTRPG Safety Tools)
+`safety`
+Pull up information on a recognized safety tool. (TTRPG Safety Tools)
 
-`rewind`/`fastforward`/`ffwd`/`fwd`/`pause`/`break`/`fbf`/`slow`
-Use one of the Script Change tools: Rewind, Fast Forward, Pause, Frame-by-Frame. (TTRPG Safety Tools)
+`bugreport`
+Submit a bugreport to ProgBot's bugreport channel.
 
-`line`/`veil`
-Notify that a Line or Veil has been crossed. (TTRPG Safety Tools)
-
-`luxton`
-Request a Luxton Technique discussion. (TTRPG Safety Tools)
-
-`opendoor`
-Notify that you are utilizing the Open Door Policy. (TTRPG Safety Tools)
+`entropy`
+Test Progbot's randomness. (Only works on prod machine)
 
 ### Custom Emoji Support
 Some commands (mostly `ncp` and `power`, maybe more in the future?) have support for custom emoji displays. To set this up, there's a couple of emojis included in the `/emoji` directory that you can use and upload to your own Discord server. You only need to set them up in one place, afterwards ProgBot can use them in any server it's invited to in addition to the storage server.

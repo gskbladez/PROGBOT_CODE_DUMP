@@ -21,10 +21,6 @@ class ClientWithBackgroundTask(discord.Client):
         self.loop.create_task(background_task())
 
 intents = discord.Intents.default()
-intents.members = True
-intents.presences = True
-intents.message_content = True
-intents.guilds = True
 client = ClientWithBackgroundTask(
     activity=discord.Game(name=settings.default_status),
     intents=intents
