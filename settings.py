@@ -82,17 +82,12 @@ notion_collection_view_id = "085a4095-0668-4722-a8ec-91ae6f56640c"
 notion_collection_space_id = "678b1442-260b-497a-9bf3-0d6ab3938e0d"
 notion_query_link = "https://www.notion.so/api/v3/queryCollection"
 bugreport_image = "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png"
-bugreport_channel_id = 796498229872820314
+bugreport_channel_id = 704684798584815636
 
 #CUSTOM EMOJI SUPPORT
 source_guild_id = 556291542206382080
 custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
                  "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901995743752106064>",
-                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>"}
-
-
-custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
-                 "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901981520321998849>",
                  "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>"}
 
 #NETBATTLER CONSTANTS
