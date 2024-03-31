@@ -12,7 +12,7 @@ virus	virus	Game Lookup	base	slash	Lookup Viruses' descriptions (opt: detailed f
 tag	tag	Game Lookup	base	slash	Lookup a BattleChip or Power tag	1	FALSE
 query	query_func	Info	base	slash	Lookup a category of stuff!	1	FALSE
 bondpower	bond	Game Lookup	base	slash	Lookup a Bond Power, help, or rule	1	FALSE
-mysterydata	mysterydata	Rollers	base	slash	Roll Mystery Data (opt: chips_ncp_only for Mystery Rewards!)	1	FALSE
+mysterydata	mysterydata	Rollers	base	slash	Roll Mystery Data (opt: chips_ncp_only for MysteryRewards!)	1	FALSE
 rulebook	rulebook	Info	base	slash	Post rulebook links	1	FALSE
 element	element	Rollers	base	slash	Roll random elements	1	FALSE
 daemon	daemon	Game Lookup	advance	slash	Lookup Daemon info	1	FALSE
@@ -27,7 +27,7 @@ playermaderepo	repo	Info	advance	slash	Pull up the Player-Made Repository Link	1
 adventure	adventure	Rollers	base	slash	Generate a randomized adventure scenario prompt! (opt: chaos for a longer prompt)	1	FALSE
 fight	fight	Rollers	base	slash	Generate a randomized Navi boss fight prompt!	1	FALSE
 sheet	sheet	Info	base	slash	Pull up character sheet links	1	FALSE
-spotlight	spotlight	Assistant	advance	slash	Manage Spotlight Tracker (opt: names to mark/add/etc, command is 'mark' by default)	1	FALSE
+spotlight	spotlight	Assistant	advance	slash	Manage Spotlight Tracker (opt: names separated by commas, command is 'mark' by default)	1	FALSE
 weather	weather	Game Lookup	advance	slash	Lookup CyberWeather info	1	FALSE
 weatherforecast	weatherforecast	Game Lookup	advance	slash	Roll a random CyberWeather!	1	FALSE
 achievement	achievement	Game Lookup	advance	slash	Pull up achievement info	1	FALSE

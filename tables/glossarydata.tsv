@@ -10,7 +10,7 @@ Critical Success	Crit	TRUE	help difficulty	help_cmd	difficulty
 Dangerous	Dngr., Dngr	TRUE	tag dangerous	tag	dangerous
 Downshift		TRUE	help downshift	help_cmd	downshift
 Easy		TRUE	help difficulty	help_cmd	difficulty
-Element		TRUE	element rule	element	rule
+Element		TRUE	element rule	help_cmd	elementruling
 Enemy	Enemies	TRUE	help target	help_cmd	target
 Failure		TRUE	help difficulty	help_cmd	difficulty
 Folder		TRUE	help folder	help_cmd	folder
@@ -28,7 +28,7 @@ Mystery Data	MysteryData	TRUE	mysterydata rule	mysterydata	rule
 Navi	NetNavi, NetNavigator, Internet Navigator	TRUE	help navi	help_cmd	navi
 Navi Customizer	NaviCust, NaviCustomizer	TRUE	help navicust	help_cmd	navicust
 Navi Customizer Programs	NCP, NCPs	TRUE	ncp rule	ncp	rule
-Navi Power	NaviPower	TRUE	power rule	power	rule
+Navi Power	NaviPower, Power	TRUE	power rule	power	rule
 NetOp		TRUE	help netop	help_cmd	netop
 Normal		TRUE	help difficulty	help_cmd	difficulty
 Jack in	Jack-In, Jackin	TRUE	help pet	help_cmd	pet

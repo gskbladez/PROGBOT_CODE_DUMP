@@ -1103,20 +1103,20 @@ async def bond(interaction: discord.Interaction, query: str):
     return
 
 
-async def element(interaction: discord.Interaction, number: int, category: str=""):
+async def element(interaction: discord.Interaction, number: int, category: typing.Literal['All','Nature','Fantasy','Science','Actions','Art','???']='All'):
     element_return_number = number
-    element_category = [category.strip()]
+    element_category = category
     
-    all_cats = []
-    if element_category:
-        regex_search = [f"^\s*{re.escape(a)}\s*$" for a in element_category]
-        sub_element_df = element_df[element_df["category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
-        all_cats = sub_element_df["category"].unique().tolist()
-        if len(all_cats) != len(element_category):  # so one of the categories isn't actually in the DB
-            return await interaction.command.koduck.send_message(interaction, content="Invalid category provided!\n" +
+    if element_category != 'All':
+        sub_element_df = element_df[element_df["category"].str.contains(f"^\s*{category}\s*$", flags=re.IGNORECASE)]
+        if sub_element_df.shape[0] == 0:
+          return await interaction.command.koduck.send_message(interaction, content="Invalid category provided!\n" +
                                                         "Categories: **%s**" % ", ".join(element_category_list), ephemeral=True)
+        
+        element_flavor_title = f"Picked {element_return_number} random element(s) from the {element_category} category..."
     else:
         sub_element_df = element_df
+        element_flavor_title = f"Picked {element_return_number} random element(s)..."
     if element_return_number < 1:
         return await interaction.command.koduck.send_message(interaction, content="The number of elements can't be 0 or negative!", ephemeral=True)
     if element_return_number > MAX_ELEMENT_QUERY:
@@ -1124,11 +1124,6 @@ async def element(interaction: discord.Interaction, number: int, category: str="
 
     elements_selected = random.sample(range(sub_element_df.shape[0]), element_return_number)
     elements_name = [sub_element_df.iloc[i]["element"] for i in elements_selected]
-
-    if not element_category:
-        element_flavor_title = f"Picked {element_return_number} random element(s)..."
-    else:
-        element_flavor_title = f"Picked {element_return_number} random element(s) from the {all_cats[0]} category..."
 
     element_color = 0x48C800
     elements_list = ", ".join(elements_name)

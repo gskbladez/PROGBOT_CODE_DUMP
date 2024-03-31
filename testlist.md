@@ -24,7 +24,7 @@
   - audience: view, end
 - virusrandom: send, roll 4, roll number=1, artillery=1, disruption=1, disruption=1, striker=1
 - playermaderepo: net agent, shared universe
-- adventure: send
+- adventure: send, adv_type=Chaos, Core
 - fight: send
 - sheet: send
 - spotlight: start w/ 4 names, edit one name to another, submit just one name, submit the name again, submit two other names, reset, view, help, remove a name, add another name, end, view

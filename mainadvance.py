@@ -20,7 +20,7 @@ MAX_SPOTLIGHTS = 100
 MAX_CHECKLIST_SIZE = 10
 SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=3, seconds=10)
 MAX_WEATHER_QUERY = 6
-MAX_WEATHER_ROLL = 14
+MAX_WEATHER_ROLL = 6
 
 pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
@@ -317,8 +317,8 @@ async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:
         for cj_type in sub_df["Type"].unique():
             subsub_df = sub_df[sub_df["Type"] == cj_type]
             subsub_index = range(1, subsub_df.shape[0] + 1)
-            line_items = ["> *%d. %s*"%(i, val) for i, val in zip(subsub_index, subsub_df["Option"].values)]
-            embed_submsg = "> **%s**" % cj_type.capitalize() + "\n".join(line_items)
+            line_items = ["> %d. *%s*"%(i, val) for i, val in zip(subsub_index, subsub_df["Option"].values)]
+            embed_submsg = "**%s:**\n" % cj_type.capitalize() + "\n".join([l.strip() for l in line_items])
             embed_bits.append(embed_submsg)
         embed_msg += "\n\n".join(embed_bits)
         return await interaction.command.koduck.send_message(interaction, content=embed_msg)
@@ -479,18 +479,18 @@ async def weatherforecast(interaction: discord.Interaction, num:int=1, category:
         if sub_weather_df.shape[0] == 0:
             return await interaction.command.koduck.send_message(interaction, 
                                             content="Not a valid category!\n" +
-                                                    "Categories: **%s**" % ", ".join(weather_category_list), epheremal=True)
+                                                    "Categories: **%s**" % ", ".join(weather_category_list), ephemeral=True)
 
     category_range_max = sub_weather_df.shape[0]
     if weather_return_number < 1:
         return await interaction.command.koduck.send_message(interaction, 
-                                    content="The number of weather can't be 0 or negative!", epheremal=True)
+                                    content="The number of weather can't be 0 or negative!", ephemeral=True)
     if weather_return_number > MAX_WEATHER_ROLL:
         return await interaction.command.koduck.send_message(interaction, 
-                                    content=f"That's too many weathers! Are you sure you need more than {MAX_WEATHER_ROLL}?", epheremal=True)
+                                    content=f"That's too many weathers! Are you sure you need more than {MAX_WEATHER_ROLL}?", ephemeral=True)
     if weather_category and weather_return_number > category_range_max:
         return await interaction.command.koduck.send_message(interaction, 
-                                    content=f"That's too many weathers for this category! Are you sure you need more than {category_range_max}?", epheremal=True)
+                                    content=f"That's too many weathers for this category! Are you sure you need more than {category_range_max}?", ephemeral=True)
     
     weather_selected = random.sample(range(sub_weather_df.shape[0]), weather_return_number)
     weather_name = [sub_weather_df.iloc[i]["Name"] for i in weather_selected]
@@ -545,7 +545,7 @@ async def achievement(interaction: discord.Interaction, query:str):
     return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def spotlight(interaction:discord.Interaction, names:str="", command:typing.Literal['start', 'mark', 'remove', 'view', 'edit', 'reset', 'end', 'help']='mark'):
+async def spotlight(interaction:discord.Interaction, names:str="", command:typing.Literal['start', 'mark', 'add', 'remove', 'view', 'edit', 'reset', 'end', 'help']='mark'):
     if interaction.channel.type is discord.ChannelType.private:
         channel_id = interaction.channel.id
         channel_name = interaction.user.name
@@ -563,7 +563,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.command.koduck.send_message(interaction, 
-                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", epheremal=True)
+                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
 
     notification_msg = ""
@@ -575,19 +575,19 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
             return await interaction.command.koduck.send_message(interaction, 
                                         embed=embed_spotlight_message("Spotlight Tracker not yet started in this channel!",
                                                                             msg_location, error=True),
-                                                                            epheremal=True)
+                                                                            ephemeral=True)
         is_start = True
 
     if is_start:
         if channel_id in spotlight_db:
             spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             return await interaction.command.koduck.send_message(interaction, embed=embed_spotlight_message("Spotlight Tracker already started in this channel!",
-                                                                              msg_location, error=True), epheremal=True)
+                                                                              msg_location, error=True), ephemeral=True)
         if (len(spotlight_db)+1) > MAX_SPOTLIGHTS:
-            return await interaction.command.koduck.send_message(interaction, content="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.", epheremal=True)
+            return await interaction.command.koduck.send_message(interaction, content="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.", ephemeral=True)
         if len(name_list) > (MAX_CHECKLIST_SIZE + 1):
             return await interaction.command.koduck.send_message(interaction, 
-                                            embed=embed_spotlight_message(f"Max of {MAX_CHECKLIST_SIZE} participants in a checklist!", msg_location, error=True), epheremal=True)
+                                            embed=embed_spotlight_message(f"Max of {MAX_CHECKLIST_SIZE} participants in a checklist!", msg_location, error=True), ephemeral=True)
         participants={}
         nl = pd.Series("", index=range(len(name_list)))
         i=0
@@ -618,12 +618,12 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         if not name_list:
             return await interaction.command.koduck.send_message(interaction, 
                                             embed=embed_spotlight_message("Please list who you want to add!",
-                                                                              msg_location, error=True), epheremal=True)
+                                                                              msg_location, error=True), ephemeral=True)
         if (len(spotlight_db[channel_id]) + len(name_list) - 1) > MAX_CHECKLIST_SIZE:
             return await interaction.command.koduck.send_message(interaction, 
                                             embed=embed_spotlight_message("Max of %d participants in a checklist!" %
                                                                               MAX_CHECKLIST_SIZE,
-                                                                              msg_location, error=True), epheremal=True)
+                                                                              msg_location, error=True), ephemeral=True)
         dups = []
         n = len(name_list) # max number of new entries
         nl = pd.Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
@@ -652,7 +652,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         if reset_all:
             return await interaction.command.koduck.send_message(interaction, 
                                             embed=embed_spotlight_message("Please specify who you want to remove!",
-                                                                              msg_location, error=True), epheremal=True)
+                                                                              msg_location, error=True), ephemeral=True)
         for n in name_list:
             match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
             if match_name is None:
@@ -663,7 +663,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         if len(name_list) != 2:
             return await interaction.command.koduck.send_message(interaction, 
                                             embed=embed_spotlight_message("Need the original name and the new name to change it to!",
-                                                                              msg_location, error=True), epheremal=True)
+                                                                              msg_location, error=True), ephemeral=True)
 
         match_name = await find_spotlight_participant(interaction, name_list[0], spotlight_db[channel_id], msg_location)
         if match_name is not None:
@@ -801,8 +801,8 @@ async def repo(interaction: discord.Interaction, query:str):
                                  content="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
 
     # just leaving this here for the next time i need to work on this again..
-    parse = json.loads(r.content)
-    print(json.dumps(parse, indent=4, sort_keys=True))
+    #parse = json.loads(r.content)
+    #print(json.dumps(parse, indent=4, sort_keys=True))
 
     # iza helped me rewrite the overwhelming bulk of this.
     # she's amazing, she's wonderful, and if you're not thankful for her presence in mmg i'll bite your kneecaps off.

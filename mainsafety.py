@@ -24,7 +24,7 @@ async def safety(interaction: discord.Interaction,
     elif arg == 'rewind':
         msg = ":rewind: A participant would like to rewind certain details of a scene."
     elif arg == 'pause':
-        msg = ":x: **A participant has used an X-card.** Stop the scene and talk it out."
+        msg = ":pause_button: A participant would like to take a break."
     elif arg == 'resume' or arg == 'play':
         msg = ":arrow_forward: A participant is ready to resume play."
     elif arg == 'frame-by-frame':
