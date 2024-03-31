@@ -23,14 +23,14 @@
   - audiencejeer: list, add 5, add 5, spend, spend 2, spend 5
   - audience: view, end
 - virusrandom: send, roll 4, roll number=1, artillery=1, disruption=1, disruption=1, striker=1
-- playermaderepo
+- playermaderepo: net agent, shared universe
 - adventure: send
 - fight: send
 - sheet: send
-- spotlight
-- weather
-- weatherforecast
-- achievement
-- glossary
-- safety
+- spotlight: start w/ 4 names, edit one name to another, submit just one name, submit the name again, submit two other names, reset, view, help, remove a name, add another name, end, view
+- weather: rule, help, list, lookup 4 LiquidTime DiamondDust ChromaticFlux MementoBorealis
+- weatherforecast: send, roll 6, roll 6 glitch weathers 
+- achievement: list, hello, perfectionist
+- glossary: target, accurate, bond, virus, spotlight, element, ncp, navipower, blank chip
+- safety: pause
 - find: lookup chip and power at same time
