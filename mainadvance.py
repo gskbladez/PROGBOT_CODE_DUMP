@@ -740,9 +740,9 @@ def embed_spotlight_tracker(dict_line, location, notification=""):
     embed.set_footer(text=location)
     return embed
 
-# TODO: help notion's query doesn't work again
+
 async def repo(interaction: discord.Interaction, query:str):
-    user_query = str
+    user_query = query
 
     # api change @ 10/24/21:
     # major change is that "query" is no longer a thing and "type" no longer accepts table searching in favor of "reducers".
@@ -752,7 +752,8 @@ async def repo(interaction: discord.Interaction, query:str):
     # collectionId and collectionViewId appear to have been deprecated in favor of "collection" and "collectionView" sub-parameters.
     # now requires id and separate "spaceId" values, though what the usecase for the latter is unknown to me.
     # api change @ 3/24/24:
-    # I think queries are back?? You need Filter Objects, and it kind of looks like the Notion site
+    # I have no idea how to use the new api, especially since it seems you need to generate an integration token?
+    # So filtering it the hard way! Adding "filters" almost seems like it could work...
     
     data = {
         "collection": {
@@ -761,16 +762,30 @@ async def repo(interaction: discord.Interaction, query:str):
         "collectionView": {
             "id": settings.notion_collection_view_id, "spaceId": settings.notion_collection_space_id
         },
-        "filter": {
-            "property": "Name:",
-            "contains": query
-        },
-        "sort":
-            [{"property":"g=]<","direction":"ascending"},
-            {"property":"title","direction":"ascending"},
-            {"property":"UjPS","direction":"descending"}],
-        "searchQuery": user_query,
-        "userTimeZone": "America/Chicago"
+        "loader": {
+            "type": "reducer",
+            "reducers": {
+                "collection_group_results": {
+                    "type": "results",
+                    "limit": 100,
+                },
+                "table:uncategorized:title:count": {
+                    "type": "aggregation",
+                    "aggregation":{
+                            "property":"title",
+                            "aggregator":"count",
+                    },
+                },
+            },
+            "sort":
+                [
+                    {"property":"g=]<","direction":"ascending"},
+                    {"property":"title","direction":"ascending"},
+                    {"property":"UjPS","direction":"descending"}
+                ],
+                "userTimeZone": "America/Chicago",
+        }
+
     }
     
     r = requests.post(settings.notion_query_link, json=data)
@@ -811,24 +826,24 @@ async def repo(interaction: discord.Interaction, query:str):
 
     repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='columns',how='any')
     repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game', 'Contents'] else x)
-
-    size = repo_results_df.shape[0]
-    if not size:
+    repo_results_df = repo_results_df[repo_results_df["Name"].str.contains(user_query, flags=re.IGNORECASE)]
+    num_results = repo_results_df.shape[0]
+    if not num_results:
         await interaction.command.koduck.send_message(interaction,
                                  content="I can't find anything with that query, sorry!")
     else:
         repo_results_df['Link'] = repo_results_df['Link'].explode().apply(lambda x: x[0])
         repo_result_row = repo_results_df.iloc[0]
-    if size == 1:
+    if num_results == 1:
         generated_msg = "**Found {} entry for _'{}'_..** \n" + \
                         "**_`{}`_** by __*{}*__:\n __<{}>__"
         return await interaction.command.koduck.send_message(interaction,
-                                    content=generated_msg.format(size, user_query, repo_result_row["Name"], repo_result_row["Author"], repo_result_row["Link"]))
-    if size > 1:
+                                    content=generated_msg.format(num_results, user_query, repo_result_row["Name"], repo_result_row["Author"], repo_result_row["Link"]))
+    if num_results > 1:
         repo_results = "', '".join(repo_results_df["Name"])
         generated_msg = "**Found {} entries for _'{}'_..** \n" + \
                         "*'%s'*" % repo_results
         return await interaction.command.koduck.send_message(interaction,
-                                        content=generated_msg.format(size, user_query))
+                                        content=generated_msg.format(num_results, user_query))
 
 

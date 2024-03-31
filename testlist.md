@@ -17,11 +17,12 @@
 - daemon: list all, list a name
 - npu: query a power for its NPUs, lookup npus
 - crimsonnoise: roll uncommon, common, rare
-- networkmod
-- audience
-- audience cheer
-- audiencejeer
-- virusrandom
+- networkmod: help, list, lookup multiple
+- audience: start, view
+  - audiencecheer: list, add 5, add 5, spend, spend 2, spend 5
+  - audiencejeer: list, add 5, add 5, spend, spend 2, spend 5
+  - audience: view, end
+- virusrandom: send, roll 4, roll number=1, artillery=1, disruption=1, disruption=1, striker=1
 - playermaderepo
 - adventure: send
 - fight: send
