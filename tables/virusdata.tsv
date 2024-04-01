@@ -15,7 +15,7 @@ InstallWizard	1	1	5	0	5	0	0	0	0	0	0	0	3	None	Magic	CurtainFire	Firecracker	Hypno
 KillerEye	2	1	1	3	0	0	0	0	0	0	0	2	3	Hovering	Lasers	NOBeam	Sensor	BlindMode	LockOn	Zapper		KillerEye Viruses are deadly sentries that fire paralyzing lasers from their eye.	Artillery	Core		https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/killereye_small.png	Will (Provided)
 Metrid	2	1	1	0	0	0	0	0	0	0	0	4	2	None	Meteors	Meteors		Skyfall				A faceless wizard in a white and red robe. It hides from sight and summons meteor storms over enemies with its magical staff.	Artillery	Core			
 Needler	2	2	1	2	0	0	0	2	0	0	0	0	4	Inanimate	Needles	NeedleCannon		Volley	SuctionCups			Needlers are robotic Viruses that scoot around on four suction-cupped legs, skittering up walls and across ceilings.	Artillery	Core			
-NinJoy	2	2	1	2	0	0	2	2	0	0	0	0	4	None	Ninjutsu	Kunai		Warp	Sneakrun	ShadowStrike		NinJoy Viruses are short and stout. They sneak up on targets, raining kunai on them or warping behind them for a slice.	Artillery	Core		https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/ninjoy.png	GSK Bladez
+NinJoy	2	2	1	2	0	0	2	2	0	0	0	0	3	None	Ninjutsu	Kunai		Warp	Sneakrun	ShadowStrike		NinJoy Viruses are short and stout. They sneak up on targets, raining kunai on them or warping behind them for a slice.	Artillery	Core		https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/ninjoy.png	GSK Bladez
 																											
 Pengi	2	2	2	2	0	0	0	0	0	0	0	3	4	None	Ice	IceWave	IcicleSpears	CodeInjection	IceBlocker			Pengi Viruses slide around on their bellies and fire massive snowflake attacks from their beaks.	Artillery	Core			
 Piranha	2	2	1	3	0	0	0	1	0	0	0	0	4	Hovering	Harpoons	HomingTorpedo	VesselBomb	LockOn	AddOn			Piranhas are floating fish-like Viruses that attack with burst-fire harpoons from their mouths.	Artillery	Core			
@@ -47,7 +47,7 @@ UFO	2	2	1	0	2	0	0	0	0	0	0	2	3	Flying	Aliens	Catcher	FolderRewind	Lookup	Catch			
 VoxUnpopuli	1	1	1	0	0	0	0	0	0	5	0	3	2	None	Voices	Pulsar	SnakeCharmer	Playback	Ventrillo			The snake-like VoxUnpopuli hides from sight and uses vocal trickery to make Navis “say” embarrassing/confusing/antagonistic things.	Disruption	Core			
 YeeHopper	2	2	2	0	0	0	0	2	0	4	4	0	3	None	Wild West	FlamingLasso	Grappler	SaddleUp	GiddyUp	Hoedown		YeeHoppers are cute frog Viruses in cowboy hats. They ride Navis around like bucking broncos. They also ribbit “howdy.”	Disruption	Core			
 																											
-Cactikil	1	3	3	0	0	0	1	0	0	0	0	0	4	Immobile	Cacti	Cactiball		Rollout	Dullahan	Treehugger		Cactikil Viruses are rooted in place. They toss their rolling, spikey heads at enemies.	Striker	Core	Cactikill	https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/cactikil_small.png	Will (Provided)
+Cactikil	1	3	3	0	0	0	1	0	0	0	0	0	4	Immobile	Cacti	Cactiball		Rollout	Dullahan	Pincushion		Cactikil Viruses are rooted in place. They toss their rolling, spikey heads at enemies.	Striker	Core	Cactikill	https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/cactikil_small.png	Will (Provided)
 Champy	1	2	2	0	0	0	2	1	0	0	0	3	5	Hovering	Fire	FireHit	GutPunch	Warp	CodeInjection	OneTwo		Champy Viruses are speedy, blazing boxers with a nasty sucker punch.	Striker	Core		https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/champy.png	GSK Bladez
 Cragger	1	1	2	0	0	0	4	0	4	0	0	0	5	None	Stone	BronzeFist	DizzyHit	BreakCharge	Gutsy	Meld		Colossal golem Viruses, Craggers hide in stone formations, breaking out to bash some heads. Rumors say they eat Mystery Data.	Striker	Core			
 Draggin	1	1	4	0	0	0	0	3	0	0	0	0	2	None	Fire	FireBurner	FireTower	Blast	HeatSync			Draggins are spritely draconic Viruses that dash into groups of enemies and burn them all with their bursts of flames.	Striker	Core		https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/draggin.png	GSK Bladez
@@ -206,7 +206,10 @@ LostSolΩ	1	1	4	0	0	5	0	0	1	0	3	0	20	Mega; Hovering	The Sun	PyrrhicSun		Redshift
 Pseudomain	3	1	1	0	0	3	0	0	2	0	0	5	8	Mega; Immobile	Architecture	MapView	Redecorator	Backdoor	Redecorate	Domain		A room-shaped Virus that tricks Navis into entering false doors. It can manipulate the shape and contents of the rooms within its body.	Wrecker	Mega Viruses	Psuedomain, PseudoDomain		
 PseudomainΩ	3	1	1	0	0	6	0	0	2	0	0	9	20	Mega; Immobile	Architecture	XXI-TheWorld		Backdoor	Redecorate	Domain	Populate	A room-shaped Virus that tricks Navis into entering false doors. It can manipulate the shape and contents of the rooms within its body.	Wrecker	Mega Viruses	PseudomainOmega, PsuedomainOmega, PsuedomainΩ		
 																											
-HatTrick	1	1	1	0	0	5	0	0	0	0	2	3	3	None	Magic	HoloHost	PrankZapper	Shift	Knockoff	LightTrick		A wizard hat with lanky legs, it fills servers with fake objects and scares Navis with images of Viruses. What a nuisance!	Wrecker	Cast the Dice			
-PartyAnimal	1	1	3	0	0	0	0	3	0	4	0	4	2	None	Parties	GlitterBomb	PartyPopper	DanceOff	PartyFoul	HypeBeast		PartyAnimal Viruses look like cartoon cats with big party hats. More chaotic than dangerous, they cover servers in party decorations.	Wrecker	Cast the Dice			
+																											
+																											
 																											
 Pwaygebwingew	1	2	4	0	0	0	0	3	0	0	0	0	2	None	Cat	GlowStick	WirelessMouse	Rawr	Glomp	Nuzzle		A glow-in-the-dark feline Virus with an endless reserve of friendly energy. They’re popular pets... until their owners start to resemble them.	OwO	Neko Virus			
+																											
+HatTrick	1	1	1	0	0	5	0	0	0	0	2	3	3	None	Magic	HoloHost	PrankZapper	Shift	Knockoff	LightTrick		A wizard hat with lanky legs, it fills servers with fake objects and scares Navis with images of Viruses. What a nuisance!	Wrecker	Cast The Dice			
+PartyAnimal	1	1	3	0	0	0	0	3	0	4	0	4	2	None	Parties	GlitterBomb	PartyPopper	DanceOff	PartyFoul	HypeBeast		PartyAnimal Viruses look like cartoon cats with big party hats. More chaotic than dangerous, they cover servers in party decorations.	Wrecker	Cast The Dice			
