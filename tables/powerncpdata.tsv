@@ -280,7 +280,7 @@ Overheal	Regenerate	Upgrade	All healing can exceed Max HP. While over Max and no
 Incognito	Harmless	Upgrade	On a success, targets will not remember your identity if you choose.	1	NPU	Navi Power Upgrades	
 Mascot	Harmless	Upgrade	You can also avert hostile attention from X Close allies. X=hits-1.	1	NPU	Navi Power Upgrades	
 HypnoFlash	Hypnotize	Upgrade	Hypnotize works on humans if you are on a large screen. [Often illegal.]	3	NPU	Navi Power Upgrades	
-Intrusive	Hypnotize	Upgrade	You can give Hypnotized targets a oneword order. They will think it’s their idea.	2	NPU	Navi Power Upgrades	
+Intrusive	Hypnotize	Upgrade	You can give Hypnotized targets a one-word order. They will think it’s their idea.	2	NPU	Navi Power Upgrades	
 Soundboard	Playback	Upgrade	Playback can generate any noise you’ve heard before or can find online.	1	NPU	Navi Power Upgrades	
 SurroundSound	Playback	Upgrade	Your voice can come from any real-world speaker Near your physical jack-in point.	1	NPU	Navi Power Upgrades	
 Designer	ModelEdit	Upgrade	You can apply ModelEdit to a Close target.	1	NPU	Navi Power Upgrades	
