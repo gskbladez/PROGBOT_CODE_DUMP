@@ -1,4 +1,4 @@
-### Test List (WIP)
+### Test List
 - bugreport: send a message
 - commands: send
 - help: send a query
@@ -9,7 +9,7 @@
 - ncp: help, rule, query by 1EB, query by crossover content, query by Genso Minus Cust, lookup multiple NCPs
 - virus: help, rule, query category, query virus tags, lookup multiple viruses (simple), lookup multiple viruses (detailed), lookup omega virus, lookup mega virus
 - tag: lookup battlechip tag, lookup virus category, lookup virus tag, lookup chip category
-- query: crossover content with chips+ncps, crossover content with viruses, chip category, ncp EB, npu, power category, daemon, network mod, weather, bond powers, CC content with no NCP/chips/viruses
+- query: mystic lilies (chips + ncps), night drifters (virus only), chip category, ncp EB, npu, powers by skill, daemon, network mod, weather, bond powers, heart home (no chips, NCPs, or viruses)
 - bondpower: help, rule, lookup multiple bond powers
 - mysterydata: roll common, uncommon, rare, sunny, violet, sapphire, mystery reward
 - rulebook: send, lookup beta 4 advance 3, lookup beta 7 mobile
