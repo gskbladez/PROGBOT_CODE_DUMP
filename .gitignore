@@ -1,6 +1,8 @@
 .env
 .idea
 __pycache__
+.vscode
+.venv
 log
 formattedlog
 channel_id_notes
@@ -10,3 +12,4 @@ log.txt
 prefixes.json
 userlevels.txt
 musicbot.py
+token.txt

@@ -1,7 +1,8 @@
+import json
+import typing
 import discord
 import requests
 import random
-import koduck
 import settings
 import pandas as pd
 import re
@@ -19,7 +20,7 @@ MAX_SPOTLIGHTS = 100
 MAX_CHECKLIST_SIZE = 10
 SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=3, seconds=10)
 MAX_WEATHER_QUERY = 6
-MAX_WEATHER_ROLL = 14
+MAX_WEATHER_ROLL = 6
 
 pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
@@ -67,19 +68,14 @@ def clean_spotlight():
     #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
     return
 
-async def crimsonnoise(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="I can roll **CrimsonNoise** for you! Specify `{cp}crimsonnoise common`, `{cp}crimsonnoise`, or `{cp}crimsonnoise rare`!".replace(
-                                            "{cp}", koduck.get_prefix(context["message"])))
-
-    arg = cleaned_args[0]
+async def crimsonnoise(interaction: discord.Interaction, md_type: typing.Literal["Common", "Uncommon", "Rare"]):
+    arg = md_type.lower().strip()
     crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
 
     if crimsonnoise_type.shape[0] == 0:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Please specify either Common, Uncommon, or Rare CrimsonNoise.")
+        return await interaction.command.koduck.send_message(interaction, 
+                                                             content=f"You typed {md_type}! Please specify either Common, Uncommon, or Rare CrimsonNoise.", 
+                                                             ephemeral=True)
     firstroll = random.randint(1, 6)
     if firstroll != 6:
         reward_type = "Chip"
@@ -90,60 +86,59 @@ async def crimsonnoise(context, *args, **kwargs):
 
     result_chip = roll_row_from_table(crimsonnoise_type, df_filters={"Type": reward_type})["Value"]
 
-    result_text = "%s%s" % (result_chip, result_text)  # replaces any periods with exclamation marks!
+    result_text = result_chip + result_text 
     cn_color = cc_color_dictionary["Genso Network"]
     cn_type = arg.capitalize()
 
-    embed = discord.Embed(title="__{} CrimsonNoise__".format(cn_type),
-                          description="_%s accessed the CrimsonNoise..._\n" % context["message"].author.mention +
-                                      "\nGot: **%s**" % result_text,
+    embed = discord.Embed(title=f"__{cn_type} CrimsonNoise__",
+                          description=f"_{interaction.user.mention} accessed the {cn_type} CrimsonNoise..._\n\nGot: **{result_text}**",
                           color=cn_color)
 
-    return await koduck.sendmessage(context["message"], sendembed=embed)
+    return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 def query_daemon():
     result_title = "Listing all Daemons (excluding Player Made Content)..."
     result_msg = ", ".join(daemon_df["Name"])
     return True, result_title, result_msg
 
-async def daemon(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+async def daemon(interaction: discord.Interaction, name: str):
+    cleaned_args = clean_args([name])
     arg_combined = " ".join(cleaned_args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Lists the complete information of a **Daemon** for DarkChip rules. "
-                                                    + "Use `{cp}daemon all` to pull up the names of all Official Daemons!".replace("{cp}", koduck.get_prefix(context["message"])))
+        return await interaction.command.koduck.send_message(interaction, 
+                                        content="Lists the complete information of a **Daemon** for DarkChip rules. "
+                                                    + "Use `daemon all` to pull up the names of all Official Daemons!")
     is_ruling = False
     ruling_msg = None
     if arg_combined in ["all", "list"]:
         _, result_title, result_msg = query_daemon()
-        return await send_query_msg(context, result_title, result_msg)
+        return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonruling", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "daemonruling", suppress_notfound=True)
     elif cleaned_args[0] in ['darkchip', 'dark', 'darkchips', 'chip', 'chips']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "darkchip", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "darkchip", suppress_notfound=True)
     elif cleaned_args[0] in ['tribute', 'tributes']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "tribute", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "tribute", suppress_notfound=True)
     elif cleaned_args[0] in ['chaosunison', 'chaos', 'chaosunion']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "domain", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "domain", suppress_notfound=True)
     elif cleaned_args[0] in ['daemonbond', 'bond']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "daemonbond", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "daemonbond", suppress_notfound=True)
 
     if is_ruling:
         if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+            return await interaction.command.koduck.send_message(interaction, 
+                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await interaction.command.koduck.send_message(interaction, 
+                                        content=ruling_msg["Response"])
 
-    daemon_info = await find_value_in_table(context, daemon_df, "Name", arg_combined, suppress_notfound=True)
+    daemon_info = await find_value_in_table(interaction, daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
-        daemon_info = await find_value_in_table(context, pmc_daemon_df, "Name", arg_combined)
+        daemon_info = await find_value_in_table(interaction, pmc_daemon_df, "Name", arg_combined)
         if daemon_info is None:
             return
 
@@ -172,7 +167,8 @@ async def daemon(context, *args, **kwargs):
     embed.set_thumbnail(url=daemon_image)
     embed.add_field(name="***''{}''***".format(daemon_quote),
                     value=daemon_description)
-    return await koduck.sendmessage(context["message"], sendembed=embed)
+    return await interaction.command.koduck.send_message(interaction,  embed=embed)
+
 
 def query_network():
     result_title = "Listing all Network Modifiers from the `New Connections` crossover content..."
@@ -185,29 +181,29 @@ def query_weather():
     result_msg = ", ".join(weather_df["Name"])
     return True, result_title, result_msg
 
-async def networkmod(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+
+async def networkmod(interaction: discord.Interaction, query: str):
+    cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Pulls up info for 1-%d **Network Modifiers**! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY)
+        return await interaction.command.koduck.send_message(interaction, 
+                                        content="Pulls up info for 1-%d **Network Modifiers**! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY)
 
     if len(cleaned_args) > MAX_MOD_QUERY:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Can't pull up more than %d Network Mods!" % MAX_MOD_QUERY)
+        return await interaction.command.koduck.send_message(interaction, 
+                                        content="Can't pull up more than %d Network Mods!" % MAX_MOD_QUERY, ephemeral=True)
 
     if cleaned_args[0] in ["list", "all"]:
         _, result_title, result_msg = query_network()
-        return await send_query_msg(context, result_title, result_msg)
+        return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "networkmodruling", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "networkmodruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+            return await interaction.command.koduck.send_message(interaction, 
+                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await interaction.command.koduck.send_message(interaction,  content=ruling_msg["Response"])
 
     for arg in cleaned_args:
-        networkmod_info = await find_value_in_table(context, networkmod_df, "Name", arg, suppress_notfound=False)
+        networkmod_info = await find_value_in_table(interaction, networkmod_df, "Name", arg, suppress_notfound=False)
         if networkmod_info is None:
             continue
 
@@ -221,18 +217,9 @@ async def networkmod(context, *args, **kwargs):
                               color=networkmod_color)
         embed.add_field(name="**[{}]**".format(networkmod_field),
                         value="_{}_".format(networkmod_description))
-        await koduck.sendmessage(context["message"], sendembed=embed)
+        await interaction.command.koduck.send_message(interaction,  embed=embed)
 
     return
-
-
-async def invite(context, *args, **kwargs):
-    invite_link = settings.invite_link
-    color = 0x71c142
-    embed = discord.Embed(title="Just click here to invite me to one of your servers!",
-                          color=color,
-                          url=invite_link)
-    return await koduck.sendmessage(context["message"], sendembed=embed)
 
 
 def change_audience(channel_id, cj_type, amount):
@@ -310,102 +297,93 @@ def end_audience(channel_id):
         return -1
 
 
-async def cheer(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+async def cheer(interaction: discord.Interaction, command:typing.Literal['spend', 'add', 'list'], num:int=1):
+    arg = command.lower().strip()
+    return await cheer_jeer_master(interaction, "cheer", arg, num)
 
-    if len(cleaned_args) >= 1:
-        if cleaned_args[0] == 'help':
-            audience_help_msg = "Roll a random Cheer with `{cp}cheer!` (Up to %d at once!)\n " % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Cheers with `{cp}cheer all`.\n\n " + \
-                            "You can add Cheer Points with `{cp}cheer add 2`, remove them with `{cp}cheer spend 2`, " + \
-                            "and pull up the current Cheer points with `{cp}cheer now`.\n\n" + \
-                            "For more details on Audience Participation rules, try `{cp}help cheer` or `{cp}help audience`."
-            return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
 
-        if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-            ruling_msg = await find_value_in_table(context, help_df, "Command", "cheerruling", suppress_notfound=True)
-            if ruling_msg is None:
-                return await koduck.sendmessage(context["message"],
-                                                sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
-    modded_arg = list(args)
-    if modded_arg:
-        modded_arg[0] = modded_arg[0] + " cheer"
+async def jeer(interaction: discord.Interaction, command:typing.Literal['spend', 'add', 'list'], num:int=1):
+    arg = command.lower().strip()
+    return await cheer_jeer_master(interaction, "jeer", arg, num)
+    
+
+async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:str, num:int):
+    channel_id = interaction.channel.id
+
+    if arg == 'list':
+        embed_msg = f"**Listing {cj_type.capitalize()}s from the Audience Participation rules...**\n"
+        sub_df = audience_df[audience_df["Type"].str.contains(re.escape(cj_type), flags=re.IGNORECASE)]
+        embed_bits = []
+        for cj_type in sub_df["Type"].unique():
+            subsub_df = sub_df[sub_df["Type"] == cj_type]
+            subsub_index = range(1, subsub_df.shape[0] + 1)
+            line_items = ["> %d. *%s*"%(i, val) for i, val in zip(subsub_index, subsub_df["Option"].values)]
+            embed_submsg = "**%s:**\n" % cj_type.capitalize() + "\n".join([l.strip() for l in line_items])
+            embed_bits.append(embed_submsg)
+        embed_msg += "\n\n".join(embed_bits)
+        return await interaction.command.koduck.send_message(interaction, content=embed_msg)
+    
+    embed_descript = ""
+    if num > MAX_CHEER_JEER_ROLL:
+        return await interaction.command.koduck.send_message(interaction, content=f"Rolling too many {cj_type.capitalize()}s! Up to {MAX_CHEER_JEER_ROLL}!")
+    if num <= 0:
+        embed_descript = f"{interaction.user.mention} rolled ... {num} {cj_type.capitalize()}s! Huh?!\n\n"
+    elif arg == 'add':
+        num = -1 * num
+    elif arg=='spend' and num == 1:
+        sub_df = audience_df[audience_df["Type"].str.contains(f"^{re.escape(cj_type)}$", flags=re.IGNORECASE)]
+        random_roll = random.randrange(sub_df.shape[0])
+        cj_roll = "*%s*" % sub_df["Option"].iloc[random_roll]
+
+        embed_descript = f"{interaction.user.mention} rolled a {cj_type.capitalize()}!\n\n{cj_roll}\n\n"
+    
+    embed_footer = ""
+    retval = get_audience(channel_id)
+    if retval[0] == 0: # success code
+        c_val = retval[1][0]
+        j_val = retval[1][1]
+        # error: number would go into negatives
+        if ('c' in cj_type and (num > c_val)) or ('j' in cj_type and (num > j_val)):
+            embed_descript = f"Not enough {cj_type.capitalize()}!"
+            embed_footer = "Cheer Points: %d, Jeer Points: %d" % retval[1]
+        else:
+            _, aud_term, embed_footer = change_audience(channel_id, cj_type, -1 * num)
+            embed_descript += f"({aud_term})" 
+    elif not embed_descript:
+        return await interaction.command.koduck.send_message(interaction, content="An audience hasn't been started for this channel yet!", ephemeral=True)
+
+    embed = discord.Embed(title="__Audience Participation__",
+                            description=embed_descript,
+                            color=cj_colors[cj_type])
+    if embed_footer:
+        embed.set_footer(text=embed_footer)
+
+    return await  interaction.command.koduck.send_message(interaction, embed=embed)
+
+
+async def audience(interaction: discord.Interaction, command:typing.Literal['start', 'view', 'end', 'help']):
+    if interaction.channel.type is discord.ChannelType.private:
+        channel_id = interaction.channel.id
+        channel_name = interaction.user.name
+        msg_location = f"{channel_name}! (Direct messages)" 
     else:
-        modded_arg = ["cheer"]
-    await audience(context, *modded_arg, **kwargs)
-    return
-
-
-async def jeer(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
-    if len(cleaned_args) >= 1:
-        if cleaned_args[0] == 'help':
-            audience_help_msg = "Roll a random Jeer with `{cp}jeer!` (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Jeers and MegaJeers with `{cp}jeer all`.\n\n " + \
-                            "You can add Jeer Points with `{cp}jeer add 2`, remove them with `{cp}jeer spend 2`, " + \
-                            "and pull up the current Jeer Points with `{cp}jeer now`.\n\n" + \
-                            "For more details on Audience Participation rules, try `{cp}help jeer` or `{cp}help audience`."
-            return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
-
-        if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-            ruling_msg = await find_value_in_table(context, help_df, "Command", "jeerruling", suppress_notfound=True)
-            if ruling_msg is None:
-                return await koduck.sendmessage(context["message"],
-                                                sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
-
-    modded_arg = list(args)
-    if modded_arg:
-        modded_arg[0] = modded_arg[0] + " jeer"
-    else:
-        modded_arg = ["jeer"]
-    await audience(context, *modded_arg, **kwargs)
-    return
-
-
-async def audience(context, *args, **kwargs):
-    if context["message"].channel.type is discord.ChannelType.private:
-        channel_id = context["message"].channel.id
-        channel_name = context["message"].author.name
-        msg_location = "%s! (Direct messages)" % channel_name
-    else:
-        channel_id = context["message"].channel.id
-        channel_name = context["message"].channel.name
-        channel_server = context["message"].channel.guild
-        msg_location = "#%s! (%s)" % (channel_name, channel_server)
-    cleaned_args = clean_args(args)
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        audience_help_msg = "Roll a random Cheer or Jeer with `{cp}audience cheer` or `{cp}audience jeer`! (Up to %d at once!)\n" % MAX_CHEER_JEER_ROLL + \
-                            "I can also list all Cheers or Jeers with `{cp}audience cheer all` or `{cp}audience jeer all`.\n\n" + \
-                            "Start up an audience tracker for this text channel with `{cp}audience start`!\n" + \
-                            "You can then add Cheers and Jeers with `{cp}audience cheer add 2`, remove them with `{cp}audience cheer spend 2`, " + \
-                            "and pull up the current Cheer/Jeer points with `{cp}audience now`.\n\n" + \
-                            "Once you're done, make sure to dismiss the audience with `{cp}audience end`."
-        return await koduck.sendmessage(context["message"], sendcontent=audience_help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
-
-    if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "audienceruling", suppress_notfound=True)
+        channel_id = interaction.channel.id
+        channel_name = interaction.channel.name
+        channel_server = interaction.channel.guild
+        msg_location = f"#{channel_name}! ({channel_server})"
+    arg = command.lower().strip()
+    if arg == 'help':
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "audienceruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
-
-    is_query = False
-    is_spend = False
-    is_pullup = False
-    query_details = ["", 1, ""]
-
-    if cleaned_args[0] == 'start':
+            return await interaction.command.koduck.send_message(interaction, content="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
+    if arg == 'start':
         retvalue = start_audience(channel_id)
         if retvalue[0] == -1:
             embed_descript = retvalue[1]
             embed_foot = retvalue[2]
         elif retvalue[0] == -2:
-            return await koduck.sendmessage(context["message"], sendcontent=retvalue[1])
+            return await interaction.command.koduck.send_message(interaction, content=retvalue[1])
         else:
             embed_descript = "Starting up the audience for %s" % msg_location
             embed_foot = "Cheer Points: 0, Jeer Points: 0"
@@ -413,48 +391,20 @@ async def audience(context, *args, **kwargs):
                               description=embed_descript,
                               color=cj_colors["cheer"])
         embed.set_footer(text=embed_foot)
-        return await koduck.sendmessage(context["message"], sendembed=embed)
-    elif cleaned_args[0] == 'end':
+        return await interaction.command.koduck.send_message(interaction, embed=embed)
+    elif arg == 'end':
         ret_val = end_audience(channel_id)
         if ret_val == -1:
-            return await koduck.sendmessage(context["message"], sendcontent="An audience hasn't been started for this channel yet")
+            return await interaction.command.koduck.send_message(interaction, content="An audience hasn't been started for this channel yet!", ephemeral=True)
         embed = discord.Embed(title="__Audience Participation__",
                               description="Ending the audience session for %s\nGoodnight!" % msg_location,
                               color=cj_colors["jeer"])
-        return await koduck.sendmessage(context["message"], sendembed=embed)
-
-    for arg in cleaned_args:
-        if arg in ["mega", "megacheer", "megajeer"]:
-            is_query = True
-            query_details[0] = arg
-            break
-        elif arg in ["add", "subtract", "spend", "gain", "remove"]:
-            is_spend = True
-            if arg in ["add", "gain"]:
-                query_details[2] = "+"
-            else:
-                query_details[2] = "-"
-        elif arg in ["all", "list", "option", "options"]:
-            is_query = True
-        elif arg in ["cheer", "jeer", "cheers", "jeers", "c", "j"]:
-            if query_details[0]:
-                return await koduck.sendmessage(context["message"], sendcontent="Sorry, you can't ask for both Cheers and Jeers!")
-            if "c" in arg:
-                query_details[0] = "cheer"
-            else:
-                query_details[0] = "jeer"
-        elif arg.isnumeric():
-            query_details[1] = int(arg)
-        elif arg in ["now", "current", "show"]:
-            is_pullup = True
-        else:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Sorry, I'm not sure what `%s` means here!" % arg)
-    if is_pullup:
+        return await interaction.command.koduck.send_message(interaction, embed=embed)
+    elif arg == 'view':
         retval = get_audience(channel_id)
         if retval[0] == -1:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Audience Participation hasn't been started in this channel!")
+            return await interaction.command.koduck.send_message(interaction,
+                                            content="Audience Participation hasn't been started in this channel!", ephemeral=True)
         c_val = retval[1][0]
         j_val = retval[1][1]
         if c_val >= j_val:
@@ -462,108 +412,38 @@ async def audience(context, *args, **kwargs):
         else:
             embed_color = cj_colors["jeer"]
         embed = discord.Embed(title="__Audience Participation__",
-                              description="Pulling up the audience for %s" % msg_location,
+                              description=f"Pulling up the audience for {msg_location}",
                               color=embed_color)
-        embed.set_footer(text="Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
-        return await koduck.sendmessage(context["message"], sendembed=embed)
+        embed.set_footer(text=f"Cheer Points: {c_val}, Jeer Points: {j_val}")
+        return await interaction.command.koduck.send_message(interaction, embed=embed)
 
-    if is_spend:
-        if not query_details[0]:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Did not specify Cheer or Jeer!")
-        if query_details[2] == '-':
-            change_amount = -1 * query_details[1]
-        else:
-            change_amount = query_details[1]
-        retval = change_audience(channel_id, query_details[0], change_amount)
-        if retval[0] == -1:
-            return await koduck.sendmessage(context["message"], sendcontent=retval[1])
-        embed = discord.Embed(title="__Audience Participation__",
-                              description=retval[1],
-                              color=cj_colors[query_details[0]])
-        embed.set_footer(text=retval[2])
-        return await koduck.sendmessage(context["message"], sendembed=embed)
-
-    elif is_query:
-        if not query_details[0]:
-            query_details[0] = "eer"
-            embed_msg = "**Listing all Cheers/Jeers from the Audience Participation rules...**\n"
-        else:
-            embed_msg = "**Listing `%s`(s) from the Audience Participation rules...**\n" % query_details[0]
-        sub_df = audience_df[audience_df["Type"].str.contains(re.escape(query_details[0]), flags=re.IGNORECASE)]
-        embed_bits = []
-        for cj_type in sub_df["Type"].unique():
-            subsub_df = sub_df[sub_df["Type"] == cj_type]
-            subsub_index = range(1, subsub_df.shape[0] + 1)
-            line_items = ["> *%d. %s*"%(i, val) for i, val in zip(subsub_index, subsub_df["Option"].values)]
-            embed_submsg = "> **%s**\n" % cj_type + "\n".join(line_items)
-            embed_bits.append(embed_submsg)
-        embed_msg += "\n\n".join(embed_bits)
-        return await koduck.sendmessage(context["message"], sendcontent=embed_msg)
     else:
-        if query_details[1] > MAX_CHEER_JEER_ROLL:
-            return await koduck.sendmessage(context["message"], sendcontent="Rolling too many Cheers or Jeers! Up to %d!" % MAX_CHEER_JEER_ROLL)
-        if not query_details[0]:
-            return await koduck.sendmessage(context["message"], sendcontent="Please specify either Cheer or Jeer!")
-        if query_details[1] <= 0:
-            embed_descript = "%s rolled ... %d %ss! Huh?!\n\n" % (context["message"].author.mention, query_details[1], query_details[0].capitalize())
-        else:
-            sub_df = audience_df[audience_df["Type"].str.contains("^%s$" % re.escape(query_details[0]), flags=re.IGNORECASE)]
-            random_roll = [random.randrange(sub_df.shape[0]) for i in range(query_details[1])]
-            cj_roll = ["*%s*" % sub_df["Option"].iloc[i] for i in random_roll]
-
-            if len(cj_roll) == 1:
-                noun_term = "a %s" % query_details[0].capitalize()
-            else:
-                noun_term = "%d %ss" % (query_details[1], query_details[0].capitalize())
-            embed_descript = "%s rolled %s!\n\n" % (context["message"].author.mention, noun_term) + "\n".join(cj_roll)
-
-        retval = get_audience(channel_id)
-        if retval[0] == 0:
-            c_val = retval[1][0]
-            j_val = retval[1][1]
-            if ('c' in query_details[0] and (query_details[1] > c_val)) or (
-                    'j' in query_details[0] and (query_details[1] > j_val)):
-                embed_descript = "Not enough %s!" % query_details[0].capitalize()
-                embed_footer = "Cheer Points: %d, Jeer Points: %d" % retval[1]
-            else:
-                _, _, embed_footer = change_audience(channel_id, query_details[0], -1 * query_details[1])
-        else:
-            embed_footer = ""
-
-        embed = discord.Embed(title="__Audience Participation__",
-                              description=embed_descript,
-                              color=cj_colors[query_details[0]])
-        if embed_footer:
-            embed.set_footer(text=embed_footer)
-
-        return await koduck.sendmessage(context["message"], sendembed=embed)
+        return await interaction.command.koduck.send_message(interaction, content="Sorry, don't recognize the audience command!", ephemeral=True)
 
 
-async def weather(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
+async def weather(interaction: discord.Interaction, query:str):
+    cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Pulls up info for 1-%d types of **CyberWeather**! I can also list all types of CyberWeather if you tell me `list` or `all`!" % MAX_WEATHER_QUERY)
+        return await interaction.command.koduck.send_message(interaction,
+                                        content="Pulls up info for 1-%d types of **CyberWeather**! I can also list all types of CyberWeather if you tell me `list` or `all`!" % MAX_WEATHER_QUERY)
 
     if len(cleaned_args) > MAX_WEATHER_QUERY:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Can't pull up more than %d types of CyberWeather!" % MAX_WEATHER_QUERY)
+        return await interaction.command.koduck.send_message(interaction, 
+                                        content="Can't pull up more than %d types of CyberWeather!" % MAX_WEATHER_QUERY)
 
     if cleaned_args[0] in ["list", "all"]:
         _, result_title, result_msg = query_weather()
-        return await send_query_msg(context, result_title, result_msg)
+        return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "weather",
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "weather",
                                                suppress_notfound=True)
         if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+            return await interaction.command.koduck.send_message(interaction, 
+                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)")
+        return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
 
     for arg in cleaned_args:
-        weather_info = await find_value_in_table(context, weather_df, "Name", arg, suppress_notfound=False)
+        weather_info = await find_value_in_table(interaction, weather_df, "Name", arg, suppress_notfound=False)
         if weather_info is None:
             continue
 
@@ -581,74 +461,45 @@ async def weather(context, *args, **kwargs):
                               color=weather_color)
         embed.add_field(name="**[{} CyberWeather]**".format(weather_type),
                         value="_{}_".format(weather_description))
-        await koduck.sendmessage(context["message"], sendembed=embed)
+        await interaction.command.koduck.send_message(interaction, embed=embed)
 
     return
 
 
-async def weatherforecast(context, *args, **kwargs):
+async def weatherforecast(interaction: discord.Interaction, num:int=1, category:typing.Literal['All', 'Basic', 'Glitched', 'Error']='All'):
     # most of this was borrowed from the element code god bless you whoever worked on it
-    cleaned_args = clean_args(args)
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Pulls up a random set of 1-%d types of **CyberWeather**! " % MAX_WEATHER_ROLL + 
-                                        "To use, enter `{cp}weatherforecast [#]` or `{cp}weatherforecast [category] [#]`! The command `{cp}randomweather` or `{cp}randomweather [category] [#]` can also be used!\n"\
-                                        .replace("{cp}", koduck.get_prefix(context["message"])) +
-                                                    "Categories: **%s**" % ", ".join(weather_category_list))
-    
-    if cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "randomweather", suppress_notfound=True)
-        if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
-    
-    weather_return_number = 1  # number of weather to return, 1 by default
-    weather_category = []
-    argDone = False
-    for arg in cleaned_args:
-        if argDone:
-            await koduck.sendmessage(context["message"],
-                                     sendcontent="Extra arguments after number of elements; ignoring!")
-            break
-        try:
-            weather_return_number = int(arg)
-            argDone = True
-        except ValueError:
-            weather_category.append(arg)
-            
-    if weather_category:
-        regex_search = [f"^\s*{re.escape(a)}\s*$" for a in weather_category]
-        sub_weather_df = weather_df[weather_df["Category"].str.contains("|".join(regex_search), flags=re.IGNORECASE)]
-        all_cats = sub_weather_df["Category"].unique().tolist()
-        if len(all_cats) != len(weather_category):  # so one of the categories isn't actually in the DB
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Invalid category provided!\n" +
-                                                        "Categories: **%s**" % ", ".join(weather_category_list))
-    else:
+    weather_return_number = num  # number of weather to return, 1 by default
+    weather_category = None if category=='All' else category.strip()
+    sub_weather_df = weather_df
+
+    if not weather_category:
         sub_weather_df = weather_df
+    else:
+        sub_weather_df = weather_df[weather_df["Category"].str.fullmatch(re.escape(weather_category), flags=re.IGNORECASE)]
+        if sub_weather_df.shape[0] == 0:
+            return await interaction.command.koduck.send_message(interaction, 
+                                            content="Not a valid category!\n" +
+                                                    "Categories: **%s**" % ", ".join(weather_category_list), ephemeral=True)
+
     category_range_max = sub_weather_df.shape[0]
     if weather_return_number < 1:
-        return await koduck.sendmessage(context["message"],
-                                    sendcontent="The number of weather can't be 0 or negative!")
+        return await interaction.command.koduck.send_message(interaction, 
+                                    content="The number of weather can't be 0 or negative!", ephemeral=True)
     if weather_return_number > MAX_WEATHER_ROLL:
-        return await koduck.sendmessage(context["message"],
-                                    sendcontent="That's too many weathers! Are you sure you need more than %d?" % MAX_WEATHER_ROLL)
+        return await interaction.command.koduck.send_message(interaction, 
+                                    content=f"That's too many weathers! Are you sure you need more than {MAX_WEATHER_ROLL}?", ephemeral=True)
     if weather_category and weather_return_number > category_range_max:
-        return await koduck.sendmessage(context["message"],
-                                    sendcontent="That's too many weathers for this category! Are you sure you need more than %d?" % category_range_max)
+        return await interaction.command.koduck.send_message(interaction, 
+                                    content=f"That's too many weathers for this category! Are you sure you need more than {category_range_max}?", ephemeral=True)
     
     weather_selected = random.sample(range(sub_weather_df.shape[0]), weather_return_number)
     weather_name = [sub_weather_df.iloc[i]["Name"] for i in weather_selected]
     
     if weather_category is None:
-        weather_flavor_title = "Picked {} random weather(s):".format(str(weather_return_number))
-    elif len(all_cats) == 1:
-        weather_flavor_title = "Picked {} random weather(s) from the {} category:".format(str(weather_return_number),
-                                                                                            weather_category)
+        weather_flavor_title = f"Picked {weather_return_number} random weather(s):"
     else:
-        weather_flavor_title = "Picked {} random element(s) from the {} and {} categories...".format(str(weather_return_number),", ".join(all_cats[:-1]), all_cats[-1])
+        weather_flavor_title = f"Picked {weather_return_number} random weather(s) from the {weather_category} category:"
+
     weather_color = 0xd5b5f7
     if weather_category == "Basic":
         weather_color = weather_color_dictionary["Blue"]
@@ -662,34 +513,24 @@ async def weatherforecast(context, *args, **kwargs):
                           color=weather_color,
                           description=weather_list)
     # weather_message = "`{} {}`".format(weather_flavor_title,weather_list) # no embed method
-    return await koduck.sendmessage(context["message"], sendembed=embed)
+    return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def achievement(context, *args, **kwargs):
-    if context["params"]:
-        help_msg = context["paramline"].strip().lower() == "help"
-    else:
-        help_msg = True
-    if help_msg:
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent="Pulls up info for a NetBattlers Advance **Achievement**! I can also list all the Achievements if you tell me `list` or `all`!")
-
-    arg = context["paramline"]
-    cleaned_args = arg.lower()
+async def achievement(interaction: discord.Interaction, query:str):
+    cleaned_args = query.lower()
 
     if cleaned_args in ["list", "all"]:
         achieve_groups = achievement_df.groupby(["Category"])
         return_msgs = ["**%s:**\n*%s*" % (name, ", ".join(achieve_group["Name"].values)) for name, achieve_group in achieve_groups
                        if name]
-        return await koduck.sendmessage(context["message"], sendcontent="\n\n".join(return_msgs))
+        return await interaction.command.koduck.send_message(interaction, content="\n\n".join(return_msgs))
 
     match_candidates = achievement_df[achievement_df["Name"].str.contains(re.escape(cleaned_args), flags=re.IGNORECASE)]
     if match_candidates.shape[0] < 1:
-        return await koduck.sendmessage(context["message"], sendcontent="Didn't find any matches for `%s`!" % arg)
+        return await interaction.command.koduck.send_message(interaction, content="Didn't find any matches for `%s`!" % query)
     if match_candidates.shape[0] > 1:
-        return await koduck.sendmessage(context["message"], sendcontent="Found multiple matches for `%s`:\n*%s*" %
-                                                                        (arg,
-                                                                         ", ".join(match_candidates["Name"].to_list())))
+        return await interaction.command.koduck.send_message(interaction, content="Found multiple matches for `%s`:\n*%s*" %
+                                                                        (query, ", ".join(match_candidates["Name"].to_list())))
     achievement_info = match_candidates.iloc[0]
     achievement_name = achievement_info["Name"]
     achievement_description = achievement_info["Description"]
@@ -701,148 +542,136 @@ async def achievement(context, *args, **kwargs):
     embed.add_field(name="**[{} Achievement]**".format(achievement_type),
                     value="_{}_".format(achievement_description))
 
-    return await koduck.sendmessage(context["message"], sendembed=embed)
+    return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def spotlight(context, *args, **kwargs):
-    if context["message"].channel.type is discord.ChannelType.private:
-        channel_id = context["message"].channel.id
-        channel_name = context["message"].author.name
-        msg_location = "%s (Direct messages)" % channel_name
+async def spotlight(interaction:discord.Interaction, names:str="", command:typing.Literal['start', 'mark', 'add', 'remove', 'view', 'edit', 'reset', 'end', 'help']='mark'):
+    if interaction.channel.type is discord.ChannelType.private:
+        channel_id = interaction.channel.id
+        channel_name = interaction.user.name
+        msg_location = f"{channel_name} (Direct messages)"
     else:
-        channel_id = context["message"].channel.id
-        channel_name = context["message"].channel.name
-        channel_server = context["message"].channel.guild
-        msg_location = "#%s (%s)" % (channel_name, channel_server)
+        channel_id = interaction.channel.id
+        channel_name = interaction.channel.name
+        channel_server = interaction.channel.guild
+        msg_location = f"#{channel_name} ({channel_server})"
+    
+    arg = command.strip().lower()
+    name_list = [n.strip() for n in names.split(",") if n]
 
-    cleaned_args = clean_args([" ".join(args)], lowercase=False) # begone, you hecking commas
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        help_msg = "Start up a **Spotlight Checklist** for this text channel with `{cp}spotlight start`! Add people right away with `{cp}spotlight start Lan/MegaMan Mayl/Roll Dex/GutsMan`.\n" + \
-                   "Mark off people who've acted with `{cp}spotlight Lan`! The checklist will automatically refresh when everyone has acted!\n\n" + \
-                   "**List of Commands:**\n" + \
-                   "> `{cp}spotlight start`, `{cp}spotlight start Lan/MegaMan Mayl/Roll`: Start the checklist in this text channel. You can include names too, separated by spaces or commas!\n" + \
-                   "> `{cp}spotlight Lan`: Mark off Lan/MegaMan off the checklist. Case insensitive. You don't need to type the full name!\n" + \
-                   "> `{cp}spotlight add Yai/Glyde Chaud/ProtoMan`: Add a new person to the checklist. You can add multiple people at once!\n" + \
-                   "> `{cp}spotlight remove Chaud`: Remove a person from the checklist. You can remove multiple people at once!\n" + \
-                   "> `{cp}spotlight edit Yai Yai/Glide`: Update a person's name in the checklist. One at a time!\n" + \
-                   "> `{cp}spotlight show`: Shows the current Spotlight Checklist.\n" + \
-                   "> `{cp}spotlight reset`, `{cp}spotlight reset Lan`: Unmark the entire checklist, or unmark a specific player\n" + \
-                   "> `{cp}spotlight end`: Ends the checklist. Will also automatically close after %d hours.\n" % (SPOTLIGHT_TIMEOUT.seconds/3600)
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=help_msg.replace("{cp}", koduck.get_prefix(context["message"])))
-    if cleaned_args[0].lower() in ['rules', 'rule', 'book', 'rulebook']:
-        ruling_msg = await find_value_in_table(context, help_df, "Command", "flow", suppress_notfound=True)
+    if arg == 'help':
+        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
         if ruling_msg is None:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Couldn't find the rules for this command! (You should probably let the devs know...)")
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=ruling_msg["Response"].replace("{cp}", koduck.get_prefix(context["message"])))
+            return await interaction.command.koduck.send_message(interaction, 
+                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
 
     notification_msg = ""
     err_msg = ""
-    if cleaned_args[0].lower() in ['start', 'begin', 'on']:
+
+    is_start = arg == 'start'
+    if channel_id not in spotlight_db:
+        if len(name_list) == 0:
+            return await interaction.command.koduck.send_message(interaction, 
+                                        embed=embed_spotlight_message("Spotlight Tracker not yet started in this channel!",
+                                                                            msg_location, error=True),
+                                                                            ephemeral=True)
+        is_start = True
+
+    if is_start:
         if channel_id in spotlight_db:
             spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            return await koduck.sendmessage(context["message"],
-                                            sendembed=embed_spotlight_message("Spotlight Tracker already started in this channel!",
-                                                                              msg_location, error=True))
+            return await interaction.command.koduck.send_message(interaction, embed=embed_spotlight_message("Spotlight Tracker already started in this channel!",
+                                                                              msg_location, error=True), ephemeral=True)
         if (len(spotlight_db)+1) > MAX_SPOTLIGHTS:
-            return await koduck.sendmessage(context["message"],
-                                            sendcontent="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.")
-        if len(cleaned_args) > (MAX_CHECKLIST_SIZE + 1):
-            return await koduck.sendmessage(context["message"],
-                                            sendembed=embed_spotlight_message("Max of %d participants in a checklist!" %
-                                                                              MAX_CHECKLIST_SIZE,
-                                                                              msg_location, error=True))
-        if len(cleaned_args) > 1:
-            participants = {}
-            dups = []
-            i = 0
-            name_list = pd.Series("", index=range(len(cleaned_args)-1))
-            for arg in cleaned_args[1:]:
-                if any(name_list.str.contains(re.escape(arg), flags=re.IGNORECASE)):
-                    dups.append(arg)
-                else:
-                    name_list.iloc[i] = arg
-                    participants[arg] = False
-                    i += 1
-            if dups:
-                err_msg = "(Note: %s are duplicates!)" % ", ".join(dups)
-        else:
-            participants = {}
+            return await interaction.command.koduck.send_message(interaction, content="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.", ephemeral=True)
+        if len(name_list) > (MAX_CHECKLIST_SIZE + 1):
+            return await interaction.command.koduck.send_message(interaction, 
+                                            embed=embed_spotlight_message(f"Max of {MAX_CHECKLIST_SIZE} participants in a checklist!", msg_location, error=True), ephemeral=True)
+        participants={}
+        nl = pd.Series("", index=range(len(name_list)))
+        i=0
+        dups = []
+        for n in name_list:
+            if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
+                dups.append(n)
+            else:
+                nl.iloc[i] = n
+                participants[n] = False
+                i += 1
+        if dups:
+            err_msg = "(Note: %s are duplicates!)" % ", ".join(dups)
+        
         spotlight_db[channel_id] = participants
         spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=err_msg)
-        return await koduck.sendmessage(context["message"], sendembed=embed)
-
-    if channel_id not in spotlight_db:
-            return await koduck.sendmessage(context["message"],
-                                            sendembed=embed_spotlight_message("Spotlight Tracker not yet started in this channel!",
-                                                                              msg_location, error=True))
+        return await interaction.command.koduck.send_message(interaction, embed=embed)
 
     spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    if cleaned_args[0].lower() in ['close', 'shutdown', 'end', 'stop', 'finish']:
+    if arg == 'end':
         del spotlight_db[channel_id]
-        return await koduck.sendmessage(context["message"],
-                                        sendembed=embed_spotlight_message("Shutting down this Spotlight Tracker! Goodnight!",
+        return await interaction.command.koduck.send_message(interaction, 
+                                        embed=embed_spotlight_message("Shutting down this Spotlight Tracker! Goodnight!",
                                                                           msg_location))
-    if cleaned_args[0].lower() == 'add':
-        if len(cleaned_args) == 1:
-            return await koduck.sendmessage(context["message"],
-                                            sendembed=embed_spotlight_message("Please list who you want to add!",
-                                                                              msg_location, error=True))
-        if (len(spotlight_db[channel_id]) + len(cleaned_args) - 2) > MAX_CHECKLIST_SIZE:
-            return await koduck.sendmessage(context["message"],
-                                            sendembed=embed_spotlight_message("Max of %d participants in a checklist!" %
+    elif arg == 'add':
+        if not name_list:
+            return await interaction.command.koduck.send_message(interaction, 
+                                            embed=embed_spotlight_message("Please list who you want to add!",
+                                                                              msg_location, error=True), ephemeral=True)
+        if (len(spotlight_db[channel_id]) + len(name_list) - 1) > MAX_CHECKLIST_SIZE:
+            return await interaction.command.koduck.send_message(interaction, 
+                                            embed=embed_spotlight_message("Max of %d participants in a checklist!" %
                                                                               MAX_CHECKLIST_SIZE,
-                                                                              msg_location, error=True))
+                                                                              msg_location, error=True), ephemeral=True)
         dups = []
-        n = len(cleaned_args)-1 # max number of new entries
-        name_list = pd.Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
+        n = len(name_list) # max number of new entries
+        nl = pd.Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
         i = len(spotlight_db[channel_id]) # end of the array
-        for arg in cleaned_args[1:]:
-            if any(name_list.str.contains(re.escape(arg), flags=re.IGNORECASE)):
-                dups.append(arg)
+        for n in name_list:
+            if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
+                dups.append(n)
             else:
-                name_list.iloc[i] = arg
-                spotlight_db[channel_id][arg] = False
+                nl.iloc[i] = n
+                spotlight_db[channel_id][n] = False
                 i += 1
             if dups:
                 err_msg = "(%s already in the checklist!)" % ", ".join(dups)
-    elif cleaned_args[0].lower() in ['reset', 'clear']:
-        if len(cleaned_args) == 1 or cleaned_args[1] == "all":
+    elif arg == 'reset':
+        reset_all = name_list[0] if name_list else True
+        if reset_all:
             spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
-        for arg in cleaned_args[1:]:
-            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+        for n in name_list:
+            match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
             if match_name is None:
                 return
             spotlight_db[channel_id][match_name] = False
             continue
-    elif cleaned_args[0].lower() in ['remove', 'delete', 'kick']:
-        if len(cleaned_args) == 1:
-            return await koduck.sendmessage(context["message"],
-                                            sendembed=embed_spotlight_message("Please specify who you want to remove!",
-                                                                              msg_location, error=True))
-        for arg in cleaned_args[1:]:
-            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+    elif arg == 'remove':
+        reset_all = name_list[0] if name_list else True
+        if reset_all:
+            return await interaction.command.koduck.send_message(interaction, 
+                                            embed=embed_spotlight_message("Please specify who you want to remove!",
+                                                                              msg_location, error=True), ephemeral=True)
+        for n in name_list:
+            match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
             if match_name is None:
                 continue
             del spotlight_db[channel_id][match_name]
             continue
-    elif cleaned_args[0].lower() in ['edit', 'change', 'update', 'rename']:
-        if len(cleaned_args) != 3:
-            return await koduck.sendmessage(context["message"],
-                                            sendembed=embed_spotlight_message("Need just the original name and the new name to change it too!",
-                                                                              msg_location, error=True))
+    elif arg =='edit':
+        if len(name_list) != 2:
+            return await interaction.command.koduck.send_message(interaction, 
+                                            embed=embed_spotlight_message("Need the original name and the new name to change it to!",
+                                                                              msg_location, error=True), ephemeral=True)
 
-        match_name = await find_spotlight_participant(cleaned_args[1], spotlight_db[channel_id], context, msg_location)
+        match_name = await find_spotlight_participant(interaction, name_list[0], spotlight_db[channel_id], msg_location)
         if match_name is not None:
-            spotlight_db[channel_id][cleaned_args[2]] = spotlight_db[channel_id].pop(match_name)
-    elif cleaned_args[0].lower() not in ['show', "now", "display", "what"]:
+            spotlight_db[channel_id][name_list[1]] = spotlight_db[channel_id].pop(match_name)
+    elif arg=='mark' and name_list:
         already_went_list = []
-        for arg in cleaned_args:
-            match_name = await find_spotlight_participant(arg, spotlight_db[channel_id], context, msg_location)
+        for n in name_list:
+            match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
             if match_name is None:
                 continue
             if spotlight_db[channel_id][match_name]:
@@ -857,27 +686,31 @@ async def spotlight(context, *args, **kwargs):
 
             if already_went_list:
                 err_msg = "(%s already went!)" % ", ".join(already_went_list)
+    elif arg=='view':
+        pass
 
     notify_str = "\n".join([i for i in (notification_msg, err_msg) if i])
     embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
-    return await koduck.sendmessage(context["message"], sendembed=embed)
+    return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def find_spotlight_participant(arg, participant_dict, msg_cnt, message_location):
+async def find_spotlight_participant(interaction, arg, participant_dict, message_location):
     participant_list = pd.Series(participant_dict.keys())
     participant_list = participant_list[participant_list != "Last Modified"]
     match_candidates = participant_list[participant_list.str.contains(re.escape(arg), flags=re.IGNORECASE)]
     if match_candidates.shape[0] == 0:
-        await koduck.sendmessage(msg_cnt["message"],
-                                 sendembed=embed_spotlight_message("Unable to find `%s` as a participant!" % arg,
+        await interaction.command.koduck.send_message(interaction,
+                                 embed=embed_spotlight_message("Unable to find `%s` as a participant!" % arg,
                                                                    message_location, error=True))
         return None
     if match_candidates.shape[0] > 1:
-        await koduck.sendmessage(msg_cnt["message"],
-                                 sendembed=embed_spotlight_message("For `%s`, did you mean: %s?" % (arg, ", ".join(match_candidates.to_list())),
+        await interaction.command.koduck.send_message(interaction,
+                                 embed=embed_spotlight_message("For `%s`, did you mean: %s?" % (arg, ", ".join(match_candidates.to_list())),
                                                                    message_location, error=True))
         return None
     return match_candidates.iloc[0]
+
+
 def embed_spotlight_message(err_msg, location, error=False):
     if error:
         embed = discord.Embed(description=err_msg,
@@ -887,6 +720,8 @@ def embed_spotlight_message(err_msg, location, error=False):
                               color=cj_colors["cheer"])
     embed.set_footer(text=location)
     return embed
+
+
 def embed_spotlight_tracker(dict_line, location, notification=""):
     participants = dict_line.copy()
     del participants["Last Modified"]
@@ -905,14 +740,9 @@ def embed_spotlight_tracker(dict_line, location, notification=""):
     embed.set_footer(text=location)
     return embed
 
-async def repo(context, *args, **kwargs):
-    cleaned_args = clean_args(args)
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        message_help =  "Give me the name of custom game content and I can look them up on the official **repository** for you! " + \
-                        "Want to submit something? You can access the full Player-Made Repository here! \n__<{}>__"
-        return await koduck.sendmessage(context["message"],
-                                    sendcontent=message_help.format(pmc_link))
-    user_query = context["paramline"]
+
+async def repo(interaction: discord.Interaction, query:str):
+    user_query = query
 
     # api change @ 10/24/21:
     # major change is that "query" is no longer a thing and "type" no longer accepts table searching in favor of "reducers".
@@ -921,7 +751,10 @@ async def repo(context, *args, **kwargs):
     # UTZ has been moved to "sort" as well.
     # collectionId and collectionViewId appear to have been deprecated in favor of "collection" and "collectionView" sub-parameters.
     # now requires id and separate "spaceId" values, though what the usecase for the latter is unknown to me.
-
+    # api change @ 3/24/24:
+    # I have no idea how to use the new api, especially since it seems you need to generate an integration token?
+    # So filtering it the hard way! Adding "filters" almost seems like it could work...
+    
     data = {
         "collection": {
             "id": settings.notion_collection_id, "spaceId": settings.notion_collection_space_id
@@ -934,24 +767,27 @@ async def repo(context, *args, **kwargs):
             "reducers": {
                 "collection_group_results": {
                     "type": "results",
-                    "limit": 50
+                    "limit": 100,
                 },
                 "table:uncategorized:title:count": {
                     "type": "aggregation",
-                    "aggregation":
-                        {"property":"title",
-                         "aggregator":"count"}
-                }
+                    "aggregation":{
+                            "property":"title",
+                            "aggregator":"count",
+                    },
+                },
             },
-        "sort":
-            [{"property":"g=]<","direction":"ascending"},
-             {"property":"title","direction":"ascending"},
-             {"property":"UjPS","direction":"descending"}],
-            "searchQuery": user_query,
-            "userTimeZone": "America/Chicago"
+            "sort":
+                [
+                    {"property":"g=]<","direction":"ascending"},
+                    {"property":"title","direction":"ascending"},
+                    {"property":"UjPS","direction":"descending"}
+                ],
+                "userTimeZone": "America/Chicago",
         }
-    }
 
+    }
+    
     r = requests.post(settings.notion_query_link, json=data)
 
     # R:200 - all good
@@ -959,10 +795,10 @@ async def repo(context, *args, **kwargs):
     # R:4xx - bad request, wrong api endpoint, notion changed the api again, scrape the new fields (i.e.: our problem)
     # R:5xx - notion's down (i.e.: not our problem)
     if r.status_code != 200:
-        #print(r.status_code, r.reason)
-        #print("Response:", r.content)
-        return await koduck.sendmessage(context["message"],
-                                 sendcontent="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
+        print(r.status_code, r.reason)
+        print("Response:", r.content)
+        interaction.command.koduck.send_message(interaction,
+                                 content="Sorry, I got an unexpected response from Notion! Please try again later! (If this persists, let the devs know!)")
 
     # just leaving this here for the next time i need to work on this again..
     #parse = json.loads(r.content)
@@ -973,8 +809,8 @@ async def repo(context, *args, **kwargs):
     repo_results_dict = {}
     blockmap = r.json()["recordMap"]
     if "block" not in blockmap:
-        return await koduck.sendmessage(context["message"],
-                                 sendcontent="I can't find anything with that query, sorry!")
+        return await interaction.command.koduck.send_message(interaction,
+                                 content="I can't find anything with that query, sorry!")
     else:
         blockmap = r.json()["recordMap"]["block"]
 
@@ -990,24 +826,24 @@ async def repo(context, *args, **kwargs):
 
     repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='columns',how='any')
     repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game', 'Contents'] else x)
-
-    size = repo_results_df.shape[0]
-    if not size:
-        await koduck.sendmessage(context["message"],
-                                 sendcontent="I can't find anything with that query, sorry!")
+    repo_results_df = repo_results_df[repo_results_df["Name"].str.contains(user_query, flags=re.IGNORECASE)]
+    num_results = repo_results_df.shape[0]
+    if not num_results:
+        await interaction.command.koduck.send_message(interaction,
+                                 content="I can't find anything with that query, sorry!")
     else:
         repo_results_df['Link'] = repo_results_df['Link'].explode().apply(lambda x: x[0])
         repo_result_row = repo_results_df.iloc[0]
-    if size == 1:
+    if num_results == 1:
         generated_msg = "**Found {} entry for _'{}'_..** \n" + \
                         "**_`{}`_** by __*{}*__:\n __<{}>__"
-        return await koduck.sendmessage(context["message"],
-                                    sendcontent=generated_msg.format(size, user_query, repo_result_row["Name"], repo_result_row["Author"], repo_result_row["Link"]))
-    if size > 1:
+        return await interaction.command.koduck.send_message(interaction,
+                                    content=generated_msg.format(num_results, user_query, repo_result_row["Name"], repo_result_row["Author"], repo_result_row["Link"]))
+    if num_results > 1:
         repo_results = "', '".join(repo_results_df["Name"])
         generated_msg = "**Found {} entries for _'{}'_..** \n" + \
                         "*'%s'*" % repo_results
-        return await koduck.sendmessage(context["message"],
-                                        sendcontent=generated_msg.format(size, user_query))
+        return await interaction.command.koduck.send_message(interaction,
+                                        content=generated_msg.format(num_results, user_query))
 
 
