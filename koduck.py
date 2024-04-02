@@ -15,13 +15,10 @@ import settings, yadon
 import sys, re
 import datetime, functools, traceback
 from typing import Optional, Union
-
-class ClientWithBackgroundTask(discord.Client):
-    async def setup_hook(self):
-        self.loop.create_task(background_task())
+from discord.ext import tasks
 
 intents = discord.Intents.default()
-client = ClientWithBackgroundTask(
+client = discord.Client(
     activity=discord.Game(name=settings.default_status),
     intents=intents
     )
@@ -459,28 +456,24 @@ class SlashMessage():
 
 #background task is run every set interval while bot is running
 #this method is added to the event loop automatically on bot setup
+@tasks.loop(minutes=10)
 async def background_task():
-    await client.wait_until_ready()
-    while not client.is_closed():
-        if callable(settings.background_task):
-            async def bgt_decorator(bgt, koduck_instance):
-                try:
-                    await bgt(koduck_instance)
-                except Exception as e:
-                    exc_type, exc_value, _ = sys.exc_info()
-                    error_message = "{}: {}".format(exc_type.__name__, exc_value)
-                    traceback.print_exc()
-                    koduck_instance.log(type="background_task_error", extra=settings.log_unhandled_error.format(error_message))
-            client.loop.create_task(bgt_decorator(settings.background_task, koduck_instance))
-        await asyncio.sleep(settings.background_task_interval)
+    if callable(settings.background_task):
+        try:
+            await settings.background_task()
+        except Exception as e:
+            exc_type, exc_value, _ = sys.exc_info()
+            error_message = "{}: {}".format(exc_type.__name__, exc_value)
+            traceback.print_exc()
+            koduck_instance.log(type="background_task_error", extra=settings.log_unhandled_error.format(error_message))
 
 @client.event
 async def on_ready():
     print("Jacking In!")
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
+    background_task.start()
     await koduck_instance.run_command("refreshcommands")
-    await koduck_instance.run_command("refreshappcommands")  # doesn't work most the time, so you'll want to /run command:refreshappcommands ...
 
 #Log some events from self
 @client.event
