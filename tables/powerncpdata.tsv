@@ -9,7 +9,7 @@ Refresh	Info	Cost	Pick a used BattleChip in your Folder. It is now usable again 
 Analyze	Info	Roll	Learn what makes the target (pick 1): dangerous; happy; valuable; vulnerable.	-	Power	Core	
 CloneTool	Info	Roll	Copy a Close object. You can store it in an empty Folder slot. Expires on jack-out.	-	Power	Core	
 MemoryScan	Info	Roll	Scan a Close Virus/object to reveal the target’s recent memories/interactions.	-	Power	Core	
-PropHunt	Coding	Cost	Disguise yourself or a Close ally as a similarly-sized object. Movement ends it. [Instant]	-	Power	Core	
+PropHunt	Coding	Cost	Disguise yourself or a Close ally as a similarly-sized object. Movement ends it.	-	Power	Core	
 MapEdit	Coding	Cost	Generate a Near simple structure that is either hard, large, or hidden.	-	Power	Core	
 Disruption	Coding	Roll	Pick a Near target; disables their last used power/NCP until they roll 3 times.	-	Power	Core	
 Firewall	Coding	Roll	Put a temporary door on a Near entrance that blocks known enemies.	-	Power	Core	
@@ -20,7 +20,7 @@ Followthrough	Strength	Cost	Your next melee or Strength roll hits any number of 
 Gutsy	Strength	Roll	Launch a Close target one range band in any direction.	-	Power	Core	
 Shatter	Strength	Roll	Destroy a Close structure or piece of terrain.	-	Power	Core	
 Shockwave	Strength	Roll	A ranged attack that only moves through surfaces. It can hit one Near target.	-	Power	Core	
-Afterimages	Speed	Cost	Reroll your next 3 defense rolls twice, taking the best outcome each time. [Instant]	-	Power	Core	
+Afterimages	Speed	Cost	Reroll your next 3 defense rolls, taking the best outcome each time. [Instant]	-	Power	Core	
 Warp	Speed	Cost	Instantly move up to one range band. [Instant]	-	Power	Core	
 FlowState	Speed	Roll	Reshape your body to fit in tight or oddly-shaped spaces. (Not a disguise.)	-	Power	Core	
 JumpJets	Speed	Roll	Launch a range band in any direction off of a surface.	-	Power	Core	
@@ -38,7 +38,7 @@ Hypnotize	Charm	Roll	For 3 rolls, a calm Close target is (pick 1): drowsy; forge
 Playback	Charm	Roll	Imitate someone else’s voice.	-	Power	Core	
 Bodyguard	Bravery	Cost	Pick an ally. Next time they’re attacked & Near, step in to take the attack instead. [Instant]	-	Power	Core	
 Rally	Bravery	Cost	Add two dice to someone else’s Soul roll (before they roll). [Instant]	-	Power	Core	
-Glare	Bravery	Roll	Momentarily stun a Near target, once per target (until jack-out).	-	Power	Core	
+Glare	Bravery	Roll	Momentarily stun a Near target (once per target until jack-out).	-	Power	Core	
 SystemCall	Bravery	Roll	Convince one or more Near targets to focus their hostile attention on you.	-	Power	Core	
 CommandLine	Bravery	Roll	Create a minion with one purpose. (One at a time; it has no stats/skills.)	-	Power	Core	
 CodeInjection	Affinity	Cost	Your next rolled attack covers the target with your element. [Instant]	-	Power	Core	
@@ -73,7 +73,7 @@ RefreshNCP	Info	Cost	Pick a used BattleChip in your Folder. It is now usable aga
 AnalyzeNCP	Info	Roll	Learn what makes the target (pick 1): dangerous; happy; valuable; vulnerable.	3	PowerNCP	Core	
 CloneToolNCP	Info	Roll	Copy a Close object. You can store it in an empty Folder slot. Expires on jack-out.	3	PowerNCP	Core	
 MemoryScanNCP	Info	Roll	Scan a Close Virus/object to reveal the target’s recent memories/interactions.	3	PowerNCP	Core	
-PropHuntNCP	Coding	Cost	Disguise yourself or a Close ally as a similarly-sized object. Movement ends it. [Instant]	3	PowerNCP	Core	
+PropHuntNCP	Coding	Cost	Disguise yourself or a Close ally as a similarly-sized object. Movement ends it.	3	PowerNCP	Core	
 MapEditNCP	Coding	Cost	Generate a Near simple structure that is either hard, large, or hidden.	3	PowerNCP	Core	
 DisruptionNCP	Coding	Roll	Pick a Near target; disables their last used power/NCP until they roll 3 times.	3	PowerNCP	Core	
 FirewallNCP	Coding	Roll	Put a temporary door on a Near entrance that blocks known enemies.	3	PowerNCP	Core	
@@ -84,7 +84,7 @@ FollowthroughNCP	Strength	Cost	Your next melee or Strength roll hits any number 
 GutsyNCP	Strength	Roll	Launch a Close target one range band in any direction.	3	PowerNCP	Core	
 ShatterNCP	Strength	Roll	Destroy a Close structure or piece of terrain.	3	PowerNCP	Core	
 ShockwaveNCP	Strength	Roll	A ranged attack that only moves through surfaces. It can hit one Near target.	3	PowerNCP	Core	
-AfterimagesNCP	Speed	Cost	Reroll your next 3 defense rolls twice, taking the best outcome each time. [Instant]	3	PowerNCP	Core	
+AfterimagesNCP	Speed	Cost	Reroll your next 3 defense rolls, taking the best outcome each time. [Instant]	3	PowerNCP	Core	
 WarpNCP	Speed	Cost	Instantly move up to one range band. [Instant]	3	PowerNCP	Core	
 FlowStateNCP	Speed	Roll	Reshape your body to fit in tight or oddly-shaped spaces. (Not a disguise.)	3	PowerNCP	Core	
 JumpJetsNCP	Speed	Roll	Launch a range band in any direction off of a surface.	3	PowerNCP	Core	
@@ -102,7 +102,7 @@ HypnotizeNCP	Charm	Roll	For 3 rolls, a calm Close target is (pick 1): drowsy; fo
 PlaybackNCP	Charm	Roll	Imitate someone else’s voice.	3	PowerNCP	Core	
 BodyguardNCP	Bravery	Cost	Pick an ally. Next time they’re attacked & Near, step in to take the attack instead. [Instant]	3	PowerNCP	Core	
 RallyNCP	Bravery	Cost	Add two dice to someone else’s Soul roll (before they roll). [Instant]	3	PowerNCP	Core	
-GlareNCP	Bravery	Roll	Momentarily stun a Near target, once per target (until jack-out).	3	PowerNCP	Core	
+GlareNCP	Bravery	Roll	Momentarily stun a Near target (once per target until jack-out).	3	PowerNCP	Core	
 SystemCallNCP	Bravery	Roll	Convince one or more Near targets to focus their hostile attention on you.	3	PowerNCP	Core	
 CommandLineNCP	Bravery	Roll	Create a minion with one purpose. (One at a time; it has no stats/skills.)	3	PowerNCP	Core	
 CodeInjectionNCP	Affinity	Cost	Your next rolled attack covers the target with your element. [Instant]	3	PowerNCP	Core	
@@ -116,10 +116,7 @@ ReconfigIndieNCP	Info	Cost	Instantly trade BattleChips with a Near ally. [Instan
 							
 							
 Brand	-	-	You can mark anything with your symbol. This mark acts like a hand-sized sticker.	1	NCP	Core	
-BlockPrinter	-	-	You can spend 1 Charge to make a meter-wide plastic cube Close.	1	NCP	Core	
-BondCharge	-	-	Gain 1 Charge for each Bond Point you spend.	1	NCP	Core	
 ContentAware	-	-	Spend 1 Charge to get a summary of anyone’s public social media profile.	1	NCP	Core	
-Devilish	-	-	When you roll a success with exactly three 6s, ignite the target. (No target? You ignite.)	1	NCP	Core	
 Dullahan	-	-	Your head becomes detachable, retaining all your senses.	1	NCP	Core	
 EvilMind	-	-	You give off a sinister aura; cruel people like you more, and others like you less.	1	NCP	Core	
 GeoTracker	-	-	You can be traced by your unique Navi ID. (Free to buy, 1500z to remove.)	1	NCP	Core	
@@ -128,7 +125,6 @@ HazardTimer	-	-	When using a Hazard chip, you can make it appear on a delay. Max
 ManualInput	-	-	You can roll NetOp Coding instead of Navi Coding to download Virus data.	1	NCP	Core	
 MegaFlex	-	-	On a critical Body roll, downshift your 1st Charm roll on anyone who saw it.	1	NCP	Core	
 Megaphone	-	-	Your voice projects; you can be clearly understood at Far range.	1	NCP	Core	
-MessPaint	-	-	You can spend 1 Charge to recolor and/or repattern a Close object.	1	NCP	Core	
 NowRecording	-	-	You record everything you see and hear. It’s visually obvious when recording.	1	NCP	Core	
 ProgBody	-	-	You can appear like a Mr. Prog! (Hat of your choice optional.)	1	NCP	Core	
 ProgRadar	-	-	Beeps depending on proximity to nearest Prog.	1	NCP	Core	
@@ -136,29 +132,33 @@ SignPost	-	-	You can leave a sign, similar to a BBS post, anywhere online.	1	NCP
 ThemeSong	-	-	On your first critical success per jack-in, a celebratory fanfare blares around you.	1	NCP	Core	
 Underflow	-	-	If you roll and get zero hits with three or more 1’s, count it as two hits instead.	1	NCP	Core	
 ZennyMiner	-	-	On sending Virus data to a Blank BattleChip, get a bonus 300z.	1	NCP	Core	
+BondCharge	-	-	Gain 1 Charge for each Bond Point you spend.	1	NCP	Core	
+BlockPrinter	-	-	You can spend 1 Charge to make a meter-wide plastic cube Close.	1	NCP	Core	
+Devilish	-	-	When you roll a success with exactly three 6s, ignite the target. (No target? You ignite.)	1	NCP	Core	
+MessPaint	-	-	You can spend 1 Charge to recolor and/or repattern a Close object. It’s not subtle.	1	NCP	Core	
 							
 AutoWrite	-	-	To download Virus data, you can erase a chip in your Folder for a full success.	2	NCP	Core	
 BarrelProcessor	-	-	Shot BattleChips and Sense ranged attacks have no penalty at Far range.	2	NCP	Core	
 BladeRun	-	-	You can move a range band without rolling when attacking with a Blade chip.	2	NCP	Core	
-BurstDischarge	-	-	You can spend 5 Charge to spawn your element Close. +2 Max Charge.	2	NCP	Core	
 CashOut	-	-	Spend 600z to add one die to a roll. (Use before rolling.) Max +4 to a roll.	2	NCP	Core	
-ChipCharge	-	-	When you use a chip, gain 1 Charge. +1 Max Charge.	2	NCP	Core	
 Collect	-	-	When you download Virus data onto a Blank BattleChip, roll at least 5 dice.	2	NCP	Core	
 DataMine	-	-	Can turn Thrown chips into mines! They target whoever touches or attacks them.	2	NCP	Core	
-Destabilizer	-	-	You can spend HP to gain Charge 1-to-1. +2 Max Charge.	2	NCP	Core	
 Diffusal	-	-	When something reduces one of your skills by 1, your element appears Close to you.	2	NCP	Core	
 EjectButton	-	-	2 times per jack-in, you can spring a range band in any direction. Can still act in midair.	2	NCP	Core	
 ElemRitual	-	-	If you spend a minute concentrating, your next Affinity roll uses at least 5 dice.	2	NCP	Core	
-JackCharge	-	-	When you jack in, gain 2 Charge. +2 Max Charge.	2	NCP	Core	
 PassengerMode	-	-	When you use Rush chips, you can take a Close target with you.	2	NCP	Core	
 Pettaur	-	-	A round little buddy! It can’t attack, obeys basic orders, and vanishes for a bit if hurt.	2	NCP	Core	
 RocketFist	-	-	You can use Impact chips at Near. Makes chips Dangerous. Cannot parry at range.	2	NCP	Core	
 SearchOptimized	-	-	Pick a descriptor - NPCs will associate you with that word unless they know better.	2	NCP	Core	
 SetElement	-	-	On jack-in, your element appears around you; if you use it immediately, downshift.	2	NCP	Core	
+BurstDischarge	-	-	You can spend 5 Charge to spawn your element Close. +2 Max Charge.	2	NCP	Core	
+ChipCharge	-	-	When you use a chip, gain 1 Charge. +1 Max Charge.	2	NCP	Core	
+Destabilizer	-	-	You can spend HP to gain Charge 1-to-1. +2 Max Charge.	2	NCP	Core	
+JackCharge	-	-	When you jack in, gain 2 Charge. +2 Max Charge.	2	NCP	Core	
+VirusScanner	-	-	You can spend 2 Charge to learn how many Viruses are Near. +2 Max Charge.	2	NCP	Core	
 							
 Trailblazer	-	-	When you move range bands with a chip or roll, your element trails behind you.	2	NCP	Core	
 Ventrillo	-	-	You can make your voice come from anywhere in Near range.	2	NCP	Core	
-VirusScanner	-	-	You can spend 2 Charge to learn how many Viruses are Near. +2 Max Charge.	2	NCP	Core	
 							
 							
 Custom+3	-	-	+3 maximum BattleChips in your Folder.	3	BoostNCP	Core	
@@ -225,7 +225,7 @@ AsOne	Volley	Upgrade	Volley can instead let all Near allies roll with you to att
 Virologist	Analyze	Upgrade	Analyzing a Virus can instead list its stats, skills, powers, HP, and element.	2	NPU	Navi Power Upgrades	
 Exploit	Analyze	Upgrade	Add +2 dice to the first 2 allied rolls vs. the target. Once per target.	2	NPU	Navi Power Upgrades	
 EleMatch	CloneTool	Upgrade	When you clone summoned element, CloneTool can manipulate it for 3 rolls.	2	NPU	Navi Power Upgrades	
-PalPocket	CloneTool	Upgrade	You can put non-Navi allies in Folder  slots (e.g. Progs, ally Viruses). 1 per slot.	1	NPU	Navi Power Upgrades	
+PalPocket	CloneTool	Upgrade	You can put non-Navi allies in Folder slots (e.g. Progs, ally Viruses). 1 per slot.	1	NPU	Navi Power Upgrades	
 SearchIndex	MemoryScan	Upgrade	You can find distant memories if you give a specific date/time.	2	NPU	Navi Power Upgrades	
 StorageViolation	MemoryScan	Upgrade	MemoryScan can also scan Navis. [Often illegal.]	3	NPU	Navi Power Upgrades	
 FolderOverload	Reconfig	Upgrade	You can spend an unused chip in your Folder to activate Reconfig.	2	NPU	Navi Power Upgrades	
@@ -280,7 +280,7 @@ Overheal	Regenerate	Upgrade	All healing can exceed Max HP. While over Max and no
 Incognito	Harmless	Upgrade	On a success, targets will not remember your identity if you choose.	1	NPU	Navi Power Upgrades	
 Mascot	Harmless	Upgrade	You can also avert hostile attention from X Close allies. X=hits-1.	1	NPU	Navi Power Upgrades	
 HypnoFlash	Hypnotize	Upgrade	Hypnotize works on humans if you are on a large screen. [Often illegal.]	3	NPU	Navi Power Upgrades	
-Intrusive	Hypnotize	Upgrade	You can give hypnotized targets a one-word order. They will think it’s their idea.	1	NPU	Navi Power Upgrades	
+Intrusive	Hypnotize	Upgrade	You can give Hypnotized targets a one-word order. They will think it’s their idea.	2	NPU	Navi Power Upgrades	
 Soundboard	Playback	Upgrade	Playback can generate any noise you’ve heard before or can find online.	1	NPU	Navi Power Upgrades	
 SurroundSound	Playback	Upgrade	Your voice can come from any real-world speaker Near your physical jack-in point.	1	NPU	Navi Power Upgrades	
 Designer	ModelEdit	Upgrade	You can apply ModelEdit to a Close target.	1	NPU	Navi Power Upgrades	
@@ -293,7 +293,7 @@ VeilPiercer	Glare	Upgrade	When you Glare a target, you can tell exactly how they
 Arena	SystemCall	Upgrade	On success, an elemental ring shuts others out and you and the targets in.	2	NPU	Navi Power Upgrades	
 Gladiator	SystemCall	Upgrade	When parrying a SystemCall target, you can turn one failure into an escalation.	2	NPU	Navi Power Upgrades	
 UserInterface	CommandLine	Upgrade	You can make any roll via your minion instead, including Navi Powers.	3	NPU	Navi Power Upgrades	
-Search+Destroy	CommandLine	Upgrade	This can act as a ranged attack on a Near target, even if out of line-of-sight.	2	NPU	Navi Power Upgrades	
+Search+Destroy	CommandLine	Upgrade	This can act as a ranged attack on a Near target, even if out of line-of-sight.	2	NPU	Navi Power Upgrades	SearchDestroy, SearchAndDestroy, Search&Destroy
 Daredevil	Bodyguard	Upgrade	If you defend by parrying, the cost is refunded.	2	NPU	Navi Power Upgrades	
 Protector	Bodyguard	Upgrade	You can defend all Close allies at once from a multitarget attack.	1	NPU	Navi Power Upgrades	
 Inspire	Rally	Upgrade	Rally can instead let an ally reroll two dice on a Soul roll.	1	NPU	Navi Power Upgrades	
@@ -310,11 +310,9 @@ Universal	CodeInjection	Upgrade	Non-attack rolls can use CodeInjection as long a
 ElemenTango	Save	Upgrade	Save also gives the target an elemental barrier (Guard) that negates 1 attack.	2	NPU	Navi Power Upgrades	
 SaveAs	Save	Upgrade	Save also gives the target control over your element for one roll.	1	NPU	Navi Power Upgrades	
 							
-HighCalibur	-	Passive	You can spend 1 HP to make your next attack ignite targets & ignore Guards.	-	Virus Power	Core	
 Boomerang	-	Passive	Can attack up to 3 targets in one roll.	-	Virus Power	Core	
 Collateral	-	Passive	When you miss an attack, a structure nearby the target is destroyed.	-	Virus Power	Core	
 Seeking	-	Passive	Every time you miss an attack, downshift your next attack roll.	-	Virus Power	Core	
-ThinArmor	-	Passive	Each time you roll a hit on Stamina, reduce your Stamina by 1.	-	Virus Power	Core	
 Eject	-	Passive	Whenever you take damage, instantly teleport up to one range band.	-	Virus Power	Core	
 Handout	Speed	Roll	Disappear into a Close surface and reappear seconds later somewhere Near with your element.	-	Virus Power	Core	
 AmmoSwap	Affinity	Cost	Set your element to Ice, Lava, Smoke, or Tar. [Instant]	-	Virus Power	Core	
@@ -336,7 +334,7 @@ ShrimpKiss	Charm	Cost	Seal a Close target in a bouncy, floating bubble.	-	Virus 
 							
 DataCorrupt	Affinity	Cost	Your next attack glitches the target for 3 rolls; roll 1d6 to determine the effects. They... 1: have zero-gravity. 2: can’t speak or gesture. 3: lose their PET link. 4: swap elements with you. 5: spin uncontrollably. 6: gain 1 Charge every roll.	-	Virus Power	Core	
 Chuckster	-	Passive	Cannot attack directly; attacks by launching objects at targets.	-	Virus Power	Core	
-JackRabbit	Charm	Cost	Force a Close target to reroll a single die. [Instant]	-	Virus Power	Core	
+Cutie	-	Passive	Downshift Charm rolls for Close allies.	-	Virus Power	Core	
 Dimmer	Coding	Roll	Suck up Near lights, plunging the area into darkness.	-	Virus Power	Core	
 FlashBlind	Affinity	Cost	Flash bright lights, briefly blinding anyone Near.	-	Virus Power	Core	
 BlindingFlash	-	Passive	Attacks blind, upshifting target’s next Sense roll.	-	Virus Power	Core	
@@ -355,15 +353,13 @@ Spoof	Coding	Roll	Change any number’s appearance (no actual effect); like Navi
 Haunt	Coding	Roll	Turn invisible and able to pass through walls for 3 rolls.	-	Virus Power	Core	
 Startle	Bravery	Roll	Upshift a Close target’s next 3 Mind rolls.	-	Virus Power	Core	
 Touché	Coding	Roll	Knocks the alphabetically first BattleChip out of the target’s Folder.	-	Virus Power	Core	
-Lookup	Info	Roll	Learn 1 per hit: the target’s stats+skills, Folder, Powers, NCPs, and element.	-	Virus Power	Core	
 Catch	Info	Roll	Copy & use a chip of your choice from a Near target’s Folder.	-	Virus Power	Core	
 SaddleUp	Speed	Roll	Lasso a Near target into Close range and hop on their back.	-	Virus Power	Core	
 GiddyUp	Bravery	Cost	Make a Close target move a range band.	-	Virus Power	Core	
 Hoedown	-	Passive	When riding a target, you can make them help you, rolling their skill dice instead of yours.	-	Virus Power	Core	
 							
 Rollout	Strength	Roll	Move Close to a Near grounded target and attack.	-	Virus Power	Core	
-Pincushion	-	Passive	On taking dmg, cover all Close in your element.	-	Virus Power	Core	
-HeatSync	-	Passive	Your attacks briefly overheat Navis’ PETs, burning NetOps’ hands if they try to use them.	-	Virus Power	Core	
+Treehugger	-	Passive	When you roll while Close to your element, heal 1 HP.	-	Virus Power	Core	
 OneTwo	-	Passive	You can spend 1 HP to reroll one of your attacks.	-	Virus Power	Core	
 Blast	Affinity	Roll	Attack everything Close with your element.	-	Virus Power	Core	
 DrillOut	Speed	Roll	Make a hole leading anywhere in Near range.	-	Virus Power	Core	
@@ -379,11 +375,6 @@ Lifesucker	-	Passive	Heal HP equal to each point of damage you deal.	-	Virus Pow
 Earthshaker	-	Passive	Briefly stun anyone you land Close to.	-	Virus Power	Core	
 Paste	Affinity	Roll	Turn all your Near element into armor for +1 HP per hit. Can go over Max HP. Doesn’t stack.	-	Virus Power	Core	
 Cut	-	Passive	When you damage a target, steal their element for 3 rolls. Only you can use it.	-	Virus Power	Core	
-ShellGame	Strength	Roll	Use a Close object as your shell. It takes dmg for you; HP = hits rolled.	-	Virus Power	Core	
-Shellraiser	Coding	Cost	Use a Close Virus as your shell. It takes dmg for you; you can use their stats to roll.	-	Virus Power	Core	
-ShellCrash	-	Passive	You can make any attack Piercing; if it does not damage the target, take 1 damage.	-	Virus Power	Core	
-Gatekeep	Bravery	Cost	Pick a Close target — iron bars emerge to block their escape. [Instant]	-	Virus Power	Core	
-Knightmare	-	Passive	Gain 1 Bravery every time you or a Near ally lose HP.	-	Virus Power	Core	
 Blademaster	-	Passive	Downshifts all of your attacks when parrying.	-	Virus Power	Core	
 							
 GetEquipped	Affinity	Cost	Give a Near ally a huge weapon. Next time they attack, they roll at least 5 dice.	-	Virus Power	Core	
@@ -399,12 +390,9 @@ Reinforce	Affinity	Roll	Add +1 to an ally’s Stamina per hit. One ally at a tim
 							
 Ingredients	Affinity	Roll	Consume somebody else’s Near element to produce your element.	-	Virus Power	Core	
 SweetTreat	Affinity	Cost	Consume your element to heal a Close ally 2 HP.	-	Virus Power	Core	
-BurnedBuns	-	Passive	When you have no Affinity, change your element to Fire and gain +3 Sense.	-	Virus Power	Core	
 Poser	Affinity	Roll	Pose, downshifting all Near allies’ next Soul roll.	-	Virus Power	Core	
 Shy	-	Passive	You are immobilized when Near Navis look at you.	-	Virus Power	Core	
-Limelight	Affinity	Roll	Pick a Near ally — enemies focus on them.	-	Virus Power	Core	
 Backup	-	Passive	When you attack with an ally, add your dice to an ally’s attack.	-	Virus Power	Core	
-ScarySpice	Bravery	Roll	Zest someone Close, sending them a range band away and making their element Fire for 3 rolls.	-	Virus Power	Core	
 Seasoning	Affinity	Cost	Downshift a Near ally’s next roll to attack and infuse it with your element. [Instant]	-	Virus Power	Core	
 Aftertaste	-	Passive	On deletion, burst into a cloud of your element.	-	Virus Power	Core	
 Unshakeable	Charm	Cost	Ignore damage from the last attack received. [Instant]	-	Virus Power	Core	
@@ -415,7 +403,6 @@ Crescendo	Affinity	Roll	A tune makes Near allies invincible for their next roll.
 Fortissimo	Charm	Roll	A melody heals all Near allies 1 HP per hit.	-	Virus Power	Core	
 Sforzando	Bravery	Cost	A flourish for an ally. On their next roll, they reroll all failed dice once.	-	Virus Power	Core	
 Abracadabra	Affinity	Roll	Disguises Viruses as similarly-proportioned mundane objects.	-	Virus Power	Core	
-Alakazam	Affinity	Roll	Reshape a mundane, unimportant object so it looks like a Virus.	-	Virus Power	Core	
 ArtfulDodger	Speed	Roll	Distract a group of enemies with quick movement.	-	Virus Power	Core	
 Networking	-	Passive	When you succeed a Speed roll, all Near allies get +2 dice to their next Speed roll.	-	Virus Power	Core	
 							
@@ -436,9 +423,7 @@ DataMiner	Coding	Roll	Break a Close object, stealing data held within.	-	Virus P
 BreakAttack	-	Passive	Attacks and parries shatter nearby surfaces.	-	Virus Power	Core	
 Copycat	Coding	Cost	Change your element to a Near target’s. [Instant]	-	Virus Power	Core	
 							
-MineStatic	Coding	Cost	Print a Close mine that expels a static cloud when touched. Static jams PET connections.	-	Virus Power	Core	
-MineLink	Charm	Cost	Print a Close mine that explosively spreads a Near ally’s element when touched.	-	Virus Power	Core	
-MineBomb	Affinity	Cost	Print a Close mine that explodes for 3 damage when touched.	-	Virus Power	Core	
+Minelayer	Affinity	Cost	Creates a Close mine that explodes for 4 damage when something touches it.	-	Virus Power	Core	
 Cozy	Affinity	Cost	Don your element! Next time you’re hit, ignore damage and spread your element everywhere Near.	-	Virus Power	Core	
 Smother	-	Passive	When your element touches someone else’s, they can’t manipulate it.	-	Virus Power	Core	
 HolyMoly	Strength	Roll	Attack by flinging a Close object at someone Near.	-	Virus Power	Core	
@@ -446,8 +431,6 @@ NetTunnel	Speed	Roll	Tunnel through an object to somewhere Near.	-	Virus Power	C
 Pitfall!	Affinity	Cost	Dig a hidden pitfall trap. Depth: 1 range band.	-	Virus Power	Core	
 Overrun	-	Passive	Every time you roll, all of your Near element spreads a little bit more.	-	Virus Power	Core	
 Anchored	-	Passive	Downshift rolls to prevent being moved.	-	Virus Power	Core	
-Backdraft	Affinity	Roll	Parry a Near ranged attack, blowing it back at the attacker. (This can parry attacks on allies.)	-	Virus Power	Core	
-Turbulence	-	Passive	When a target fails to defend against your element, they lose any Guard they had active.	-	Virus Power	Core	
 							
 Telltale	-	Passive	Always leave a trail of your element behind you.	-	Virus Power	ChitChat	
 							
@@ -459,7 +442,6 @@ Shakedown	-	Passive	When you hit a target, they drop 100z per point of damage.	-
 HypnoShot	Charm	Cost	Your next attack makes the target (pick 1): very sleepy; see illusions; upshift next Mind roll.	-	Virus Power	Mystic Lilies	
 Sublimation	Speed	Cost	Summons mist. If you roll 3 times while in the mist, you can warp two range bands away.	-	Virus Power	Mystic Lilies	
 CrystalEyes	-	Passive	When you cover something with your element, gain +1 Sense. This can stack.	-	Virus Power	Mystic Lilies	
-Foresight	Info	Roll	You can use Info to defend against attacks from enemies you can see.	-	Virus Power	Mystic Lilies	
 SpadeCurse	-	Passive	On hit, targets are unable to lie unless they make a Hard Bravery roll or jack out.	-	Virus Power	Mystic Lilies	
 Trojan	Coding	Cost	Message a Near Navi’s PET with a link. If they open it, it makes a secret backdoor.	-	Virus Power	Mystic Lilies	
 RedLetter	Affinity	Cost	Curse Near writing, changing the text and installing a secret PET backdoor on touch.	-	Virus Power	Mystic Lilies	
@@ -618,12 +600,6 @@ StandTogether	-	-	If you’re safe, bonded allies can teleport you Close to them
 RingOut	Affinity	Roll	Warp a Near target touching your element to another Near instance of your element.	-	Virus Power	Core	
 Predictor	Info	Roll	You can defend against an attack with Info if you’ve seen this enemy use it before.	-	Virus Power	Core	
 							
-Knockoff	Coding	Roll	Make a forgery of a Near object. It briefly stuns whoever touches it first other than you.	-	Virus Power	Cast the Dice	
-LightTrick	Affinity	Cost	Make a fake Virus hologram. It can (pick 2): move a bit; look convincing; fake an attack	-	Virus Power	Cast the Dice	
-DanceOff	Charm	Cost	Boogie! Any Near can join. All who spend time dancing spawn their element Close to them.	-	Virus Power	Cast the Dice	
-PartyFoul	Speed	Cost	Next time you would take dmg, you zoom away instead, leaving the area entirely. [Instant]	-	Virus Power	Cast the Dice	
-HypeBeast	-	Passive	Whenever you or an ally roll 1+ hits, toss a little bit of your element at any Near target.	-	Virus Power	Cast the Dice	
-							
 Rawr	Charm	Roll	Draw attention with a loud, disarmingly cute meow.	-	Virus Power	Neko Virus	
 Glomp	Speed	Roll	Leap at a Near target, wrapping yourself around one of their limbs to immobilize them.	-	Virus Power	Neko Virus	
 Nuzzle	Affinity	Roll	Rub yourself on a Close target, replacing their element with yours & passing the plague.	-	Virus Power	Neko Virus	
@@ -654,3 +630,31 @@ HelloKitty	Charm	Roll	You can communicate with real-world cats.	-	Neko	Neko Viru
 AristoCat	-	Passive	Every time you give someone a Daemon Bond level with the Neko Virus, gain 1000z.	-	Neko	Neko Virus Infection	
 UnifiedPurrspective	Charm	Roll	Telepathically communicate with all Neko Virus-bonded people on the internet.	-	Neko	Neko Virus Infection	
 Cataclysm	Daemon Bond	Roll	Project into reality. Pick 1: you are colossal; Full Synchro is endlesly active; you can infect humans.	-	Neko	Neko Virus Infection	
+							
+HighCalibur	-	Passive	You can spend 1 HP to make your next attack ignite targets & ignore Guards.	-	Virus Power	Core	
+ThinArmor	-	Passive	Each time you roll a hit on Stamina, reduce your Stamina by 1.	-	Virus Power	Core	
+JackRabbit	Charm	Cost	Force a Close target to reroll a single die. [Instant]	-	Virus Power	Core	
+Lookup	Info	Roll	Learn 1 per hit: the target’s stats+skills, Folder, Powers, NCPs, and element.	-	Virus Power	Core	
+Pincushion	-	Passive	On taking dmg, cover all Close in your element.	-	Virus Power	Core	
+HeatSync	-	Passive	Your attacks briefly overheat Navis’ PETs, burning NetOps’ hands if they try to use them.	-	Virus Power	Core	
+ShellGame	Strength	Roll	Use a Close object as your shell. It takes dmg for you; HP = hits rolled.	-	Virus Power	Core	
+Shellraiser	Coding	Cost	Use a Close Virus as your shell. It takes dmg for you; you can use their stats to roll.	-	Virus Power	Core	
+ShellCrash	-	Passive	You can make any attack Piercing; if it does not damage the target, take 1 damage.	-	Virus Power	Core	
+Gatekeep	Bravery	Cost	Pick a Close target — iron bars emerge to block their escape. [Instant]	-	Virus Power	Core	
+Knightmare	-	Passive	Gain 1 Bravery every time you or a Near ally lose HP.	-	Virus Power	Core	
+BurnedBuns	-	Passive	When you have no Affinity, change your element to Fire and gain +3 Sense.	-	Virus Power	Core	
+Limelight	Affinity	Roll	Pick a Near ally — enemies focus on them.	-	Virus Power	Core	
+ScarySpice	Bravery	Roll	Zest someone Close, sending them a range band away and making their element Fire for 3 rolls.	-	Virus Power	Core	
+Alakazam	Affinity	Roll	Reshape a mundane, unimportant object so it looks like a Virus.	-	Virus Power	Core	
+MineStatic	Coding	Cost	Print a Close mine that expels a static cloud when touched. Static jams PET connections.	-	Virus Power	Core	
+MineLink	Charm	Cost	Print a Close mine that explosively spreads a Near ally’s element when touched.	-	Virus Power	Core	
+MineBomb	Affinity	Cost	Print a Close mine that explodes for 3 damage when touched.	-	Virus Power	Core	
+Backdraft	Affinity	Roll	Parry a Near ranged attack, blowing it back at the attacker. (This can parry attacks on allies.)	-	Virus Power	Core	
+Turbulence	-	Passive	When a target fails to defend against your element, they lose any Guard they had active.	-	Virus Power	Core	
+							
+Knockoff	Coding	Roll	Make a forgery of a Near object. It briefly stuns whoever touches it first other than you.	-	Virus Power	Cast The Dice	
+LightTrick	Affinity	Cost	Make a fake Virus hologram. It can (pick 2): move a bit; look convincing; fake an attack.	-	Virus Power	Cast The Dice	
+DanceOff	Charm	Cost	Boogie! Any Near can join. All who spend time dancing spawn their element Close to them.	-	Virus Power	Cast The Dice	
+PartyFoul	Speed	Cost	Next time you would take dmg, you zoom away instead, leaving the area entirely. [Instant]	-	Virus Power	Cast The Dice	
+HypeBeast	-	Passive	Whenever you or an ally roll 1+ hits, toss a little bit of your element at any Near target.	-	Virus Power	Cast The Dice	
+Foresight	Info	Roll	You can use Info to defend against attacks from enemies you can see.	-	Virus Power	Mystic Lilies	

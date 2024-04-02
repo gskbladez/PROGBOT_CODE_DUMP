@@ -31,6 +31,6 @@
 - weather: rule, help, list, lookup 4 LiquidTime DiamondDust ChromaticFlux MementoBorealis
 - weatherforecast: send, roll 6, roll 6 glitch weathers 
 - achievement: list, hello, perfectionist
-- glossary: target, accurate, bond, virus, spotlight, element, ncp, navipower, blank chip
+- glossary: target, accurate, bond, virus, spotlight, ncp, navipower, blank chip
 - safety: pause
 - find: lookup chip and power at same time

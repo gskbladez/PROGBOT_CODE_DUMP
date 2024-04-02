@@ -1,11 +1,11 @@
 Tag	Alias	AltName	Description
 Accurate	Accu	Accu.	Defending against this with **Speed** is upshifted. 
-Awkward	Awkd	Awkd.	Doing something else at the same time is difficult or impossible.\n*Example: These chips aren’t usable while moving or multitasking.*
+Awkward	Awkd	Awkd.	These chips require undivided attention to use.
 Dangerous	Dngr	Dngr.	This chip tends to cause collateral damage.\n*Example: This can break objects and injure or impede those nearby, including allies. Be careful when using them to avoid more trouble.*
 Guard			Only **one Guard** can passively benefit the user at a time.\nWhen a Navi has a Guard active and tries to gain a new one, **they pick which to keep**. The Guard not kept loses all its effects.
 Piercing	Prcn	Prcn.	Defending against this with **Stamina** is upshifted.
 Simple	Simp	Simp.	The chip’s effects happen instantly, and can be used while performing other actions.
-Slow			It takes extra time for this to activate. Using it at a moment’s notice is difficult or impossible.\n*Example: This can’t be used as a reaction to someone’s attack without preparing it ahead of time, or without sufficient time to prepare. (I.e. An attacker failing a Speed to get close may give enough time to prepare and use a Slow chip against them.)*
+Slow			It takes extra time for this to activate. Using it at a moment’s notice is difficult or impossible. Plan ahead!
 			
 Blade	BladeChip, BladeC, BladeBattleChip, BladeChips, BladeBattleChips,  Blade(C), (C)Blade, Blade(BattleChip), Blade(Chip)		Razor-sharp, hard-hitting attacks with a focus on melee weapons.\n**Navis can parry with these chips.**
 Hazard	HazardChip, HazardC, HazardBattleChip, HazardChips, HazardBattleChips,  Hazard(C), (C)Hazard, Hazard(BattleChip), Hazard(Chip)		These chips alter the environment, either by creating new terrain or destroying what’s already there.
