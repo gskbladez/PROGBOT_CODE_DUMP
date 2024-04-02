@@ -9,19 +9,17 @@
 #--- Settings read from the settings table will replace any initialized settings
 #--- If a setting is removed from the settings table and refresh_settings() is called, the setting will still be active (to be fixed)
 
+import aiohttp
 import discord
 import asyncio
 import settings, yadon
 import sys, re
 import datetime, functools, traceback
 from typing import Optional, Union
-
-class ClientWithBackgroundTask(discord.Client):
-    async def setup_hook(self):
-        self.loop.create_task(background_task())
+from discord.ext import tasks
 
 intents = discord.Intents.default()
-client = ClientWithBackgroundTask(
+client = discord.Client(
     activity=discord.Game(name=settings.default_status),
     intents=intents
     )
@@ -162,33 +160,36 @@ class Koduck:
             if cooldown_active and not ignore_cd:
                 self.log(type="cooldown", extra=settings.log_cooldown_active)
                 return
-
-        #send message to a "/run" interaction
-        if isinstance(receive_message, SlashMessage) and channel is None:
-            if not receive_message.interaction.response.is_done():
-                the_message = await receive_message.interaction.response.send_message(**kwargs)
+        try:
+            #send message to a "/run" interaction
+            if isinstance(receive_message, SlashMessage) and channel is None:
+                if not receive_message.interaction.response.is_done():
+                    the_message = await receive_message.interaction.response.send_message(**kwargs)
+                else:
+                    the_message = await receive_message.interaction.followup.send(**kwargs)
+            #send message to an interaction
+            elif isinstance(receive_message, discord.Interaction) and channel is None:
+                #This is not returning the sent message for some reason, so here's a workaround to fetch it after it's sent
+                if not receive_message.response.is_done():
+                    await receive_message.response.send_message(**kwargs)
+                    the_message = await receive_message.original_response() # you seem get stuck on other errors, esp. spotlight...
+                else:
+                    the_message = await receive_message.followup.send(**kwargs)
+            #send message normally
             else:
-                the_message = await receive_message.interaction.followup.send(**kwargs)
-        #send message to an interaction
-        elif isinstance(receive_message, discord.Interaction) and channel is None:
-            #This is not returning the sent message for some reason, so here's a workaround to fetch it after it's sent
-            if not receive_message.response.is_done():
-                await receive_message.response.send_message(**kwargs)
-                the_message = await receive_message.original_response() # you seem get stuck on other errors, esp. spotlight...
-            else:
-                the_message = await receive_message.followup.send(**kwargs)
-        #send message normally
-        else:
-            the_message = await send_channel.send(**kwargs)
-        
-        #track user outputs
-        if receive_message is not None and the_message is not None:
-            user_last_outputs = self.get_user_last_outputs(user_id)
-            user_last_outputs.append(the_message)
-            self.output_history[user_id] = user_last_outputs[max(0,len(user_last_outputs)-settings.output_history_size):]
-        self.last_message_DT[send_channel.id] = datetime.datetime.now()
-        
-        return the_message
+                the_message = await send_channel.send(**kwargs)
+            
+            #track user outputs
+            if receive_message is not None and the_message is not None:
+                user_last_outputs = self.get_user_last_outputs(user_id)
+                user_last_outputs.append(the_message)
+                self.output_history[user_id] = user_last_outputs[max(0,len(user_last_outputs)-settings.output_history_size):]
+            self.last_message_DT[send_channel.id] = datetime.datetime.now()
+            
+            return the_message
+        except aiohttp.client_exceptions.ClientConnectorError as e:
+            print("Lost connection with Discord! Exiting ProgBot", e)
+            sys.exit(111)
     
     #Assciates a String to a Function.
     #- command_name: a string which represents the command name (will be converted to lowercase)
@@ -459,28 +460,24 @@ class SlashMessage():
 
 #background task is run every set interval while bot is running
 #this method is added to the event loop automatically on bot setup
+@tasks.loop(minutes=10)
 async def background_task():
-    await client.wait_until_ready()
-    while not client.is_closed():
-        if callable(settings.background_task):
-            async def bgt_decorator(bgt, koduck_instance):
-                try:
-                    await bgt(koduck_instance)
-                except Exception as e:
-                    exc_type, exc_value, _ = sys.exc_info()
-                    error_message = "{}: {}".format(exc_type.__name__, exc_value)
-                    traceback.print_exc()
-                    koduck_instance.log(type="background_task_error", extra=settings.log_unhandled_error.format(error_message))
-            client.loop.create_task(bgt_decorator(settings.background_task, koduck_instance))
-        await asyncio.sleep(settings.background_task_interval)
+    if callable(settings.background_task):
+        try:
+            await settings.background_task()
+        except Exception as e:
+            exc_type, exc_value, _ = sys.exc_info()
+            error_message = "{}: {}".format(exc_type.__name__, exc_value)
+            traceback.print_exc()
+            koduck_instance.log(type="background_task_error", extra=settings.log_unhandled_error.format(error_message))
 
 @client.event
 async def on_ready():
     print("Jacking In!")
     print("Name: {}".format(client.user.name))
     print("ID: {}".format(client.user.id))
+    background_task.start()
     await koduck_instance.run_command("refreshcommands")
-    await koduck_instance.run_command("refreshappcommands")  # doesn't work most the time, so you'll want to /run command:refreshappcommands ...
 
 #Log some events from self
 @client.event
