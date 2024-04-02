@@ -16,12 +16,13 @@
 - Update OmegaVirus vs MegaVirus color
 - `>repo` could use some improved fuzzy search cases (i.e. not freaking out over commas)
 - Add emojis to commands
+- tape on like 4 or 5 more flashlights for the spotlight command
 
 ### New Features
+- Add City, Villian random rollers (add to adventure alongside fight? improv?)
 - query and similar commands really should have some simple stuff like boolean joins.
 - Chip or queries: simple+guard, support+guard
 - Random weather (and other?) rollers
-- tape on like 4 or 5 more flashlights for the spotlight command
 - reset RNG seed?
 
 ### Potential Ideas

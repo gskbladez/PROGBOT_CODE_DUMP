@@ -12,6 +12,8 @@ MAX_REROLL_QUERY = 20
 MAX_REROLL_QUERY_LARGE = 5
 ROLL_COMMENT_CHAR = '#'
 FORMAT_LIMIT = 175 # technically actually 198 or so, buuuuut
+IS_UNDERFLOW = 1
+IS_DEVILISH = 2
 
 roll_difficulty_dict = {'E': 3, 'N': 4, 'H': 5}
 
@@ -26,6 +28,7 @@ def get_roll_from_macro(diff, dicenum):
 
 
 def roll_master(roll_line, format_limit=FORMAT_LIMIT):
+    retcode = 0
     # subs out the macros
     macro_regex = r"\$?(E|N|H)(\d+)"
     roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
@@ -43,9 +46,13 @@ def roll_master(roll_line, format_limit=FORMAT_LIMIT):
         if sum(roll_results.results) == 0:
             results_bare_str = roll_results.modifications[0][1]
             num_ones = len(re.findall(r'(\D*1\D*)', results_bare_str))
-            roll_is_underflow = num_ones >= 3
+            retcode = IS_UNDERFLOW if num_ones >= 3 else 0
+        else:
+            results_bare_str = roll_results.modifications[0][1]
+            num_six = len(re.findall(r'(\D*6\D*)', results_bare_str))
+            retcode = IS_DEVILISH if num_six == 3 else 0
 
-    return roll_results, roll_is_underflow
+    return roll_results, retcode
 
 
 def format_hits_roll(roll_result):
@@ -92,11 +99,10 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
             return await interaction.command.koduck.send_message(interaction,
                                                                  content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY_LARGE} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
                                                                  ephemeral=True)
-    is_underflow_list = False
     try:
         roll_heck = [roll_master(roll_line, format_limit=int(FORMAT_LIMIT/repeat)) for i in range(0, repeat)]
         err_msg = ""
-        roll_results, is_underflow_list = list(zip(*roll_heck))
+        roll_results, retcodes = list(zip(*roll_heck))
     except rply.errors.LexingError:
         err_msg = "Unexpected characters found! Did you type out the roll correctly?"
     except AttributeError:
@@ -124,20 +130,23 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         progroll_output = "{}\n>>> {}".format(progroll_output, "\n".join(roll_outputs))
 
     progmsg = await interaction.command.koduck.send_message(interaction, content=progroll_output)
-    if not any(is_underflow_list):
-        return
+    
     try:
-        await progmsg.add_reaction(settings.custom_emojis["underflow"])
-    except discord.errors.HTTPException:
+        if IS_UNDERFLOW in retcodes:
+            await progmsg.add_reaction(settings.custom_emojis["underflow"])
+        if IS_DEVILISH in retcodes:
+            await progmsg.add_reaction(settings.custom_emojis["devilish"])
+    except discord.errors.HTTPException as e:
+        print(e)
         return
 
 
 async def entropy(interaction: discord.Interaction):
     try:
-        completedproc = subprocess.run(['cat','/proc/sys/kernel/random/entropy_avail'], timeout=1,encoding='ascii')
+        completedproc = subprocess.run(['cat','/proc/sys/kernel/random/entropy_avail'], stdout = subprocess.PIPE, timeout=1, encoding='ascii')
         return await interaction.command.koduck.send_message(interaction, content=f"Randomization quantum: **{completedproc.stdout}**!")
     except subprocess.TimeoutExpired:
         return await interaction.command.koduck.send_message(interaction, content="Orb did not respond... ask again later!", ephemeral=True)
-    except Exception:
+    except Exception as e:
         return await interaction.command.koduck.send_message(interaction, content="Orb was cracked... You should let the devs know!", ephemeral=True)
     
