@@ -378,7 +378,7 @@ async def chipfinder(interaction: discord.Interaction, arg, suppress_err_msg=Fal
         chip_title_sub = chip_license
 
     if chip_crossover == "Nyx":
-        msg_time = interaction["message"].created_at
+        msg_time = interaction.created_at
         if msg_time.month == 4 and msg_time.day == 1:
             chip_title_sub = "%s Legal!! Crossover " % chip_crossover
         else:
@@ -998,7 +998,7 @@ async def query_func(interaction: discord.Interaction, query: str):
                                     content="`%s` is not a valid query!" % query, ephemeral=True)
 
 
-async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal["Common", "Uncommon", "Rare", "Gold", "Violet", "Sapphire"], chip_ncps_only: bool = False):
+async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal["Common", "Uncommon", "Rare", "Gold", "Violet", "Sapphire", "Sunny"], chip_ncps_only: bool = False):
     arg = md_type.lower().strip()
     force_reward = chip_ncps_only
 
