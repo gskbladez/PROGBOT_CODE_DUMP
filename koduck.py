@@ -33,11 +33,15 @@ class Koduck:
         else:
             return super(Koduck, cls).__new__(cls)
     
+    def get_exit_code(self):
+        return self.exit_code
+
     def __init__(self):
         self.client = client
         global koduck_instance
         koduck_instance = self
         self.command_tree = discord.app_commands.CommandTree(self.client)
+        self.exit_code = 0
         
         #command -> (function, type, tier)
         #command is a string which represents the command name
@@ -188,8 +192,10 @@ class Koduck:
             
             return the_message
         except aiohttp.client_exceptions.ClientConnectorError as e:
-            print("Lost connection with Discord! Exiting ProgBot", e)
-            sys.exit(111)
+            print("Lost connection with Discord! Closing ProgBot", e)
+            koduck_instance.log(type="clientconnectorerror", extra="ClientConnectorError on message send")
+            self.exit_code = 111
+            await self.close()
     
     #Assciates a String to a Function.
     #- command_name: a string which represents the command name (will be converted to lowercase)
