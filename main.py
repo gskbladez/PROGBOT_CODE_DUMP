@@ -143,9 +143,8 @@ async def change_status(context, *args, **kwargs):
     else:
         return await context.koduck.client.change_presence(activity=discord.Game(name=context.param_line))
 
-
-async def goodnight(interaction: discord.Interaction):
-    interaction.command.koduck.send_message(interaction, content="Goodnight!")
+async def goodnight(context, *args, **kwargs):
+    await context.koduck.send_message(receive_message=context["message"], content="Goodnight!")
     return await koduck.client.close()
 
 load_dotenv()
@@ -164,3 +163,7 @@ if settings.enable_debug_logger:
     koduck.client.run(bot_token, log_handler=log_handler, log_level=logging.DEBUG)
 else:
     koduck.client.run(bot_token, log_handler=None)
+
+if koduck.exit_code == 111:
+    sys.exit(111)
+sys.exit(0)
