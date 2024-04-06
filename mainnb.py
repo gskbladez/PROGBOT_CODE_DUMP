@@ -2,8 +2,8 @@ import typing
 import discord
 import random
 import settings
-import pandas as pd
-import numpy as np
+import pandas_sqlite_mapping as pd
+import numpy_stub as np
 import re
 import mainadvance
 from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table

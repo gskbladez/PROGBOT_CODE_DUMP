@@ -2,9 +2,9 @@ import re
 
 import discord
 import koduck
-import pandas as pd
 import settings
 import random
+import sqlite3
 
 cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "ChitChat": 0xff8000,
@@ -39,24 +39,17 @@ help_categories = {"Lookups": ':mag: **Lookups**',
                   "Reminders (DarkChips)": ':smiling_imp: **Reminders (DarkChips)**',
                   "Safety Tools": ':shield: **Safety Tools**'}
 
-element_df = pd.read_csv(settings.elementfile, sep="\t").fillna('')
-element_category_list = pd.unique(element_df["category"].dropna())
+data_tables = sqlite3.connect(settings.data_tables)
+data_tables.row_factory = sqlite3.Row
+element_category_list = data_tables.execute("SELECT DISTINCT category FROM element").fetchall()
+element_category_list = [row["category"] for row in element_category_list]
 
-help_df = pd.read_csv(settings.helpfile, sep="\t").fillna('')
-help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
-help_cmd_list = [i for i in help_df["Command"] if i]
-help_df["Type"] = help_df["Type"].astype("category")
-help_df["Type"] = help_df["Type"].cat.rename_categories(help_categories).cat.reorder_categories(list(help_categories.values())+[""])
+help_cmd_list = data_tables.execute("SELECT DISTINCT command FROM commands").fetchall()
+help_cmd_list = [row["command"] for row in help_cmd_list]
 
-rulebook_df = pd.read_csv(settings.rulebookfile, sep="\t",  converters = {'Version': str}).fillna('')
-pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
-nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
-grid_link = rulebook_df[rulebook_df["Name"] == "Grid-Based Combat"]["Link"].iloc[0]
-rulebook_df = rulebook_df[(rulebook_df["Name"] == "NetBattlers") | (rulebook_df["Name"] == "NetBattlers Advance")]
-# these might start complaining; double check that the labels in the rulebook are exact: captilization and whitespace matter!
-rulebook_df["Type"] = rulebook_df["Type"].astype('category').cat.reorder_categories(["Mobile", "Full Res", "Bonus BattleChips"])
-rulebook_df["Release"] = rulebook_df["Release"].astype('category').cat.reorder_categories(["Beta", "Alpha", "Pre-Alpha", "Version"])
-rulebook_df = rulebook_df.sort_values(["Name", "Release", "Version", "Type"])
+pmc_link = data_tables.execute("SELECT link from rulebook WHERE name = 'Player-Made Repository'").fetchone()["link"]
+nyx_link = data_tables.execute("SELECT link from rulebook WHERE name = 'Nyx'").fetchone()["link"]
+grid_link = data_tables.execute("SELECT link from rulebook WHERE name = 'Grid-Based Combat'").fetchone()["link"]
 
 playermade_list = ["Genso Network"]
 
@@ -79,31 +72,44 @@ async def send_query_msg(interaction, return_title, return_msg):
 async def find_value_in_table(interaction: discord.Interaction, df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
     if not search_arg:
         return None
-    if "Alias" in df:
-        alias_check = df[
-            df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
-        if (alias_check.shape[0] > 1) and (not allow_duplicate):
-            await interaction.command.koduck.send_message(interaction, 
-                                                          content=f"Found more than one match for {search_arg}! You should probably let the devs know...", ephemeral=True)
-            return None
-        if alias_check.shape[0] != 0:
-            search_arg = alias_check.iloc[0][search_col]
-            if alias_message:
-                await interaction.command.koduck.send_message(interaction, 
-                                                              content=f"Found as an alternative name for **{search_arg}**!")
+    search_arg = str.strip(search_arg)
+    search_results = data_tables.execute(f"select * from {df} where {search_col} LIKE '{search_arg}'").fetchall()
+    search_len = len(search_results)
 
-    search_results = df[df[search_col].str.contains("\s*^%s\s*$" % re.escape(search_arg), flags=re.IGNORECASE)]
-    if search_results.shape[0] == 0:
-        if not suppress_notfound:
-            await interaction.command.koduck.send_message(interaction, content="I can't find `%s`!" % search_arg, ephemeral=True)
-        return None
-    elif search_results.shape[0] > 1:
+    if search_len == 0:
+        has_alias = data_tables.execute(f"select count(1) as count from pragma_table_info('{str.lower(df)}') where name='Alias'").fetchone()["count"] > 0
+        alias_count = 0
+        if has_alias:
+            alias_row = data_tables.execute(f"select {search_col}, count(1) as count from {df} where Alias LIKE '%{search_arg}%'").fetchone()
+
+            alias_count = alias_row["count"]
+            # SQLITE's "LIKE" command is case insensitive
+
+            if (alias_count > 1) and (not allow_duplicate):
+                if(not allow_duplicate):
+                    await interaction.command.koduck.send_message(interaction,
+                                                                content=f"Found more than one match for {search_arg}! You should probably let the devs know...", ephemeral=True)
+                    return None
+
+            if (alias_count == 1):
+                search_arg = alias_row[search_col]
+                search_results = data_tables.execute(f"select * from {df} where {search_col} LIKE '{search_arg}'").fetchall()
+                search_len = len(search_results)
+                if alias_message:
+                    await interaction.command.koduck.send_message(interaction,
+                                                                    content=f"Found as an alternative name for **{search_arg}**!")
+        if alias_count == 0:
+            if not suppress_notfound:
+                await interaction.command.koduck.send_message(interaction, content="I can't find `%s`!" % search_arg, ephemeral=True)
+            return None
+
+    elif search_len > 1:
         if allow_duplicate:
-            return search_results.iloc[random.randrange(0, search_results.shape[0])]
+            return random.sample(search_results)
         else:
             await interaction.command.koduck.send_message(interaction, content=f"Found more than one match for {search_arg}! You should probably let the devs know...", ephemeral=True)
         return None
-    return search_results.iloc[0]
+    return search_results[0]
 
 
 def roll_row_from_table(roll_df, df_filters={}):

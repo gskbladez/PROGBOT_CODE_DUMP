@@ -4,7 +4,7 @@ import discord
 import requests
 import random
 import settings
-import pandas as pd
+import pandas_sqlite_mapping as pd
 import re
 import datetime
 from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table

@@ -40,6 +40,7 @@ message_missing_params = "Missing required parameters: {}"
 message_refresh_app_commands_progress = "Slash commands refreshing..."
 
 #NETBATTLER DATA FILES
+data_tables = "tables/sqlite/data_tables.sqlite3"
 chipfile = "tables/chipdata.tsv"
 powerfile = "tables/powerncpdata.tsv"
 virusfile = "tables/virusdata.tsv"
