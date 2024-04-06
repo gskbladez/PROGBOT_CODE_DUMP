@@ -28,7 +28,7 @@ async def test_help_with_query():
     test_interaction.command.koduck.send_message = AsyncMock()
     await mainnb.help_cmd(test_interaction, "you")
     
-    expected = help_objs / 'no_category.txt'
+    expected = help_objs / 'you.txt'
     expected = expected.read_text().encode('unicode_escape').decode('utf8')
 
     test_interaction.command.koduck.send_message.assert_awaited_with(test_interaction, content=expected)
