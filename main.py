@@ -9,7 +9,7 @@ from koduck import Koduck
 import sys, logging
 import yadon
 import settings
-import pandas as pd
+import sqlite3
 
 import mainadvance
 import mainroll
