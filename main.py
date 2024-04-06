@@ -10,16 +10,15 @@ import sys, logging
 import yadon
 import settings
 
+from maincommon import data_tables
 import mainadvance
 import mainroll
 import mainsafety
 import mainnb
 import mainaprilfools
 
-commands_df = pd.read_csv(settings.commands_table_name, sep="\t").fillna('')
-
 #Required method to setup Koduck. Can also be run as a comamnd after startup to update any manual changes to the commands table.
-async def refresh_commands(context, *args, **kwargs):
+async def refresh_commands(context, test_mode = False, *args, **kwargs):
     errors = []
 
     def cmd_func(row):
@@ -42,13 +41,22 @@ async def refresh_commands(context, *args, **kwargs):
             context.koduck.add_command(row['Command'], globals()[row['Function']], row['Type'], int(row['Permission']), row["Description"])
         return
 
-    if commands_df.shape[0] == 0:
+    command_count = data_tables.execute('select count(1) as Count from commands').fetchone()['Count']
+    if command_count == 0:
         return
-    if commands_df.shape[0] > 0:
+    if command_count > 0:
         context.koduck.clear_commands()
         try:
-            commands_df.apply(cmd_func, axis=1)
+            commands_list = data_tables.execute('select * from commands').fetchall()
+            
+            for command_row in commands_list:
+                if(test_mode):
+                    command_row = dict(command_row)
+                    command_row['Type'] = 'prefix'
+                cmd_func(command_row)
+                
         except Exception as e:
+            print(str(e))
             errors.append(f"Failed to import commands, starting with: `{str(e)}`")
 
     if settings.enable_run_command:
@@ -146,23 +154,24 @@ async def goodnight(context, *args, **kwargs):
     await context.koduck.send_message(receive_message=context["message"], content="Goodnight!")
     return await koduck.client.close()
 
-load_dotenv()
-bot_token = os.getenv('DISCORD_TOKEN')
+if __name__ == "__main__":
+    load_dotenv()
+    bot_token = os.getenv('DISCORD_TOKEN')
 
-required_files = [settings.commands_table_name, settings.user_levels_table_name]
+    required_files = [settings.commands_table_name, settings.user_levels_table_name]
 
-bad_files = [f for f in required_files if not os.path.isfile(f)]
-if bad_files:
-    raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
+    bad_files = [f for f in required_files if not os.path.isfile(f)]
+    if bad_files:
+        raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
 
-koduck = Koduck()
-koduck.add_command("refreshcommands", refresh_commands, "prefix", 3)
-if settings.enable_debug_logger:
-    log_handler = logging.FileHandler(filename=settings.debug_log_file_name, encoding='utf-8', mode='w')
-    koduck.client.run(bot_token, log_handler=log_handler, log_level=logging.DEBUG)
-else:
-    koduck.client.run(bot_token, log_handler=None)
+    koduck = Koduck()
+    koduck.add_command("refreshcommands", refresh_commands, "prefix", 3)
+    if settings.enable_debug_logger:
+        log_handler = logging.FileHandler(filename=settings.debug_log_file_name, encoding='utf-8', mode='w')
+        koduck.client.run(bot_token, log_handler=log_handler, log_level=logging.DEBUG)
+    else:
+        koduck.client.run(bot_token, log_handler=None)
 
-if koduck.exit_code == 111:
-    sys.exit(111)
-sys.exit(0)
+    if koduck.exit_code == 111:
+        sys.exit(111)
+    sys.exit(0)

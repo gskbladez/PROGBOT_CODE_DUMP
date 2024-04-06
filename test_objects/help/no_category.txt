@@ -1,0 +1,2 @@
+ProgBot is open-source and open to community suggestions! If you'd like to help out, you can contribute to the GitHub repo at: https://github.com/gskbladez/PROGBOT_CODE_DUMP. Just create a fork from master and submit pull requests once you're ready!
+Even if you can't contribute to the code, you can still help us by suggesting features or reporting issues! Use bugreport to send us a message, or contact the ProgBot development team directly!

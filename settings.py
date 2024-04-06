@@ -8,7 +8,7 @@ settings_table_name = ""
 
 
 #BOT SETTINGS
-command_prefix = "/"
+command_prefix = "!"
 param_delim = " "
 default_user_level = 1
 max_user_level = 3

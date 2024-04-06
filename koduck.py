@@ -508,6 +508,7 @@ async def on_interaction(interaction):
 #Note: don't use " \ or = as command prefix or param delim, since they are used in parsing, it'll mess stuff up.
 @client.event
 async def on_message(message):
+    print("received message via test")
     #log messages from self
     if message.author.id == koduck_instance.client.user.id:
         koduck_instance.log(type="message_send", message=message)

@@ -36,7 +36,8 @@ def test_roll_row_from_table():
         "BattleChip",
         "NCP",
         "Misc Table",
-        "NPU"
+        "NPU",
+        ""
         ]
     result = roll_row_from_table(roll_df, df_filters)
     assert result["Type"] in possibilities
