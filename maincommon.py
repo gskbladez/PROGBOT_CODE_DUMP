@@ -53,6 +53,8 @@ grid_link = data_tables.execute("SELECT link from rulebook WHERE name = 'Grid-Ba
 
 playermade_list = ["Genso Network"]
 
+help_df = 'helpresponses'
+rulebook_df = 'rulebook'
 
 def clean_args(args, lowercase=True):
     if len(args) == 1:

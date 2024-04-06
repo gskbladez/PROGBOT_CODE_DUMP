@@ -2,11 +2,9 @@ import typing
 import discord
 import random
 import settings
-import pandas_sqlite_mapping as pd
-import numpy_stub as np
 import re
 import mainadvance
-from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table
+from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table, data_tables, element_category_list
 from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
 from maincommon import nyx_link, grid_link
 import koduck
@@ -52,7 +50,6 @@ cc_dict = {
     "Summer Camp": "Summber Camp, SummerCamp, Summer, Sunmer Camp",
     "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice", "Neko Virus": "Neko Virus Infection, NekoVirus"}
 cc_list = list(cc_dict.keys())
-cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xA8E8E8,
@@ -73,53 +70,29 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                     "sunny": {"color": cc_color_dictionary["Summber Camp"],
                               "image": settings.sunny_md_image}}
 
-chip_df = pd.read_csv(settings.chipfile, sep="\t").fillna('')
-chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
-chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
-    .stack() \
-    .str.strip() \
-    .str.lower() \
-    .unique()
-chip_tag_list = [i for i in chip_tag_list if i]
-chip_category_list = pd.unique(chip_df["Category"])
-chip_category_list = [i for i in chip_category_list if i]
-chip_license_list = pd.unique(chip_df["License"].str.lower())
-chip_from_list = pd.unique(chip_df["From?"].str.lower())
+chip_known_aliases = data_tables.execute("select alias from chip where alias not like ''").fetchall()
+chip_known_aliases = [row["alias"] for row in chip_known_aliases]
 
-power_df = pd.read_csv(settings.powerfile, sep="\t").fillna('')
-virus_df = pd.read_csv(settings.virusfile, sep="\t").fillna('')
-virus_df = virus_df[virus_df["Name"] != ""]
-virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
-    .stack() \
-    .str.strip() \
-    .str.lower() \
-    .unique()
-virus_tag_list = [i for i in virus_tag_list if i]
-[virus_tag_list.remove(i) for i in ["none", "None"] if i in virus_tag_list]
-virus_category_list = pd.unique(virus_df["Category"].str.strip())
-virus_category_list = [i for i in virus_category_list if i]
+# See the "convert_tsv_to_sqlite3.sh" file to better understand where this is coming from
+chip_tag_list = data_tables.execute("select tag from chip_tags").fetchall()
+chip_tag_list = [row["tag"] for row in chip_tag_list]
 
-bond_df = pd.read_csv(settings.bondfile, sep="\t").fillna('').dropna(subset=['BondPower'])
-tag_df = pd.read_csv(settings.tagfile, sep="\t").fillna('')
-mysterydata_df = pd.read_csv(settings.mysterydatafile, sep="\t").fillna('')
+chip_category_list = data_tables.execute("select distinct Category from chip where Category != ''").fetchall()
+chip_category_list = [row["Category"] for row in chip_category_list]
 
-element_df = pd.read_csv(settings.elementfile, sep="\t").fillna('')
-element_category_list = pd.unique(element_df["category"].dropna())
+chip_license_list = data_tables.execute("select distinct lower(License) AS License from chip where License != ''").fetchall()
+chip_license_list = [row["License"] for row in chip_license_list]
 
-adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
-fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
-glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
+chip_from_list = data_tables.execute("select distinct lower(Source) AS Source from chip where Source != ''").fetchall()
+chip_from_list = [row["Source"] for row in chip_from_list]
 
-nyx_chip_df = pd.read_csv(settings.nyx_chipfile, sep="\t").fillna('')
-nyx_power_df = pd.read_csv(settings.nyx_ncpfile, sep="\t").fillna('')
-pmc_chip_df = pd.read_csv(settings.pmc_chipfile, sep="\t").fillna('')
-pmc_power_df = pd.read_csv(settings.pmc_powerfile, sep="\t").fillna('')
-pmc_virus_df = pd.read_csv(settings.pmc_virusfile, sep="\t").fillna('')
+virus_tag_list = data_tables.execute("select tag from virus_tags").fetchall()
+virus_tag_list = [row["tag"] for row in virus_tag_list]
 
-chip_drops = chip_df.merge(virus_df[["Name", "Drops1"]], left_on="Chip", right_on="Drops1", how="left")
-chip_drops = chip_drops.merge(virus_df[["Name", "Drops2"]], left_on="Chip", right_on="Drops2", how="left")
-chip_drops["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y'])
-chip_df["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y']).fillna('')
+virus_category_list = data_tables.execute("select distinct Category from virus where Category != ''").fetchall()
+virus_category_list = [row["Category"] for row in virus_category_list]
+
+# There was a merge table here that added a Dropped By Column to the Chips table
 
 async def help_cmd(interaction: discord.Interaction, query: str):
     # Default message if no parameter is given

@@ -4,11 +4,10 @@ import discord
 import requests
 import random
 import settings
-import pandas_sqlite_mapping as pd
 import re
 import datetime
 from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table
-from maincommon import help_df, cc_color_dictionary, pmc_link
+from maincommon import help_df, cc_color_dictionary, pmc_link, data_tables
 
 MAX_MOD_QUERY = 5
 ROLL_COMMENT_CHAR = '#'
@@ -22,30 +21,14 @@ SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=3, seconds=10)
 MAX_WEATHER_QUERY = 6
 MAX_WEATHER_ROLL = 6
 
-pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
-
 cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 achievement_color_dictionary = {"Gold": 0xffe852}
 weather_color_dictionary = {"Blue": 0x8ae2ff,
                             "Yellow": 0xffff5e,
                             "Red": 0xff524d}
 
-daemon_df = pd.read_csv(settings.daemonfile, sep="\t").fillna('').dropna(subset=['Name'])
-networkmod_df = pd.read_csv(settings.networkmodfile, sep="\t").fillna('')
-crimsonnoise_df = pd.read_csv(settings.crimsonnoisefile, sep="\t").fillna('')
-audience_df = pd.read_csv(settings.audienceparticipationfile, sep="\t").fillna('')
-
-achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
-achievement_df["Category"] = achievement_df["Category"].astype('category').cat.reorder_categories(["First Steps", "Admin Privileges", "Tricky Bits", "Smooth Operation", "Milestones"])
-achievement_df = achievement_df.sort_values(["Category", "Name"])
-adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
-fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
-weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
-weather_category_list = pd.unique(weather_df["Category"].dropna())
-
-glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
-
-pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
+weather_category_list = data_tables.execute('SELECT DISTINCT category FROM weather').fetchall()
+weather_category_list = [row["category"] for row in weather_category_list]
 
 audience_data = {}
 spotlight_db = {}
