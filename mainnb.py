@@ -95,10 +95,11 @@ virus_category_list = [row["Category"] for row in virus_category_list]
 # There was a merge table here that added a Dropped By Column to the Chips table
 
 async def help_cmd(interaction: discord.Interaction, query: str):
+    print('help_cmd')
     # Default message if no parameter is given
     if query is None:
         message_help = "Hi, I'm **ProgBot**, a bot made for *NetBattlers*, the Unofficial MMBN RPG! \n" + \
-                       "My prefix for commands here is ``. You can also DM me using slash commands!" + \
+                       "My prefix for commands here is ``. You can also DM me using slash commands! " + \
                        "To see a list of all commands you can use, type `commands`. " + \
                        "You can type `help` and any other command for more info on that command!\n" + \
                        "I can also pull up info on some rules and descriptions! Check `help all` for the list of details I can help with!"
@@ -127,13 +128,16 @@ async def help_cmd(interaction: discord.Interaction, query: str):
             help_response = help_response + "\n\n" + ruling_msg["Response"]
 
         # determines custom emojis
-        unique_emojis = np.unique(np.array(re.findall(r"<:(\S+):>", help_response)))
+        unique_emojis = re.findall(r"<:(\S+):>", help_response)
+        unique_emojis = set(unique_emojis)
         for cust_emoji in unique_emojis:
             if (koduck.client.get_guild(settings.source_guild_id)) and (cust_emoji in settings.custom_emojis):
                 help_response = re.sub(r"<:%s:>" % cust_emoji, settings.custom_emojis[cust_emoji], help_response)
             else:
                 help_response = re.sub(r"(^\s*)?<:%s:>(\s*$|\s)?" % cust_emoji, "", help_response)
 
+    print(interaction)
+    print(interaction.command)
     return await interaction.command.koduck.send_message(interaction, content=help_response)
 
 

@@ -18,7 +18,7 @@ import mainnb
 import mainaprilfools
 
 #Required method to setup Koduck. Can also be run as a comamnd after startup to update any manual changes to the commands table.
-async def refresh_commands(context, test_mode = False, *args, **kwargs):
+async def refresh_commands(context, *args, **kwargs):
     errors = []
 
     def cmd_func(row):
@@ -50,9 +50,6 @@ async def refresh_commands(context, test_mode = False, *args, **kwargs):
             commands_list = data_tables.execute('select * from commands').fetchall()
             
             for command_row in commands_list:
-                if(test_mode):
-                    command_row = dict(command_row)
-                    command_row['Type'] = 'prefix'
                 cmd_func(command_row)
                 
         except Exception as e:

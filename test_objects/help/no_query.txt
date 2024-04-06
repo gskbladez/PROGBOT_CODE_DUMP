@@ -1,0 +1,3 @@
+Hi, I'm **ProgBot**, a bot made for *NetBattlers*, the Unofficial MMBN RPG! 
+My prefix for commands here is ``. You can also DM me using slash commands! To see a list of all commands you can use, type `commands`. You can type `help` and any other command for more info on that command!
+I can also pull up info on some rules and descriptions! Check `help all` for the list of details I can help with!
