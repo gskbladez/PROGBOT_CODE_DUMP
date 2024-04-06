@@ -9,7 +9,6 @@ from koduck import Koduck
 import sys, logging
 import yadon
 import settings
-import pandas_sqlite_mapping as pd
 
 import mainadvance
 import mainroll
