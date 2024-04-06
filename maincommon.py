@@ -113,15 +113,10 @@ async def find_value_in_table(interaction: discord.Interaction, df, search_col, 
 
 
 def roll_row_from_table(roll_df, df_filters={}):
-    bool_filt = None
+    filter_str = ''
     if df_filters:
-        for k, v in df_filters.items():
-            if bool_filt is None:
-                bool_filt = (roll_df[k] == v)
-            else:
-                bool_filt = bool_filt & (roll_df[k] == v)
-        sub_df = roll_df[bool_filt]
-    else:
-        sub_df = roll_df
-    row_num = random.randint(1, sub_df.shape[0]) - 1
-    return sub_df.iloc[row_num]
+        filter_str += 'WHERE '
+        filter_str += ' AND '.join([f"{key} = '{value}'" for key, value in df_filters.items()])
+    search_query = f'SELECT * FROM {roll_df} {filter_str} ORDER BY RANDOM() LIMIT 1'
+    search_result = data_tables.execute(search_query).fetchone()
+    return search_result

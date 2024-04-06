@@ -1,4 +1,4 @@
-from maincommon import find_value_in_table
+from maincommon import find_value_in_table, roll_row_from_table
 import pytest
 from unittest.mock import MagicMock, AsyncMock
 
@@ -26,3 +26,29 @@ async def test_find_value_in_table_fail():
 
     expected = "I can't find `KillRoyWasHere`!"
     mock_send_message.assert_called_once_with(mock_interaction, content=expected, ephemeral=True)
+
+def test_roll_row_from_table():
+    df_filters = {}
+    roll_df = 'mystery'
+    possibilities = [
+        "Info",
+        "Zenny",
+        "BattleChip",
+        "NCP",
+        "Misc Table",
+        "NPU"
+        ]
+    result = roll_row_from_table(roll_df, df_filters)
+    assert result["Type"] in possibilities
+
+def test_roll_row_from_table_filtered():
+    df_filters = {"Type": "GuardTriggerRoll"}
+    roll_df = 'autoloot'
+    possibilities = [
+        "at least",
+        "up to",
+        "exactly",
+        "anything but"
+        ]
+    result = roll_row_from_table(roll_df, df_filters)
+    assert result["Result"] in possibilities
