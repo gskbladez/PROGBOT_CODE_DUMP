@@ -143,7 +143,8 @@ async def test_chip_license(test_interaction, category_str):
     assert result == expected
 
 @pytest.mark.parametrize("category_str, category_txt", [
-    ['Chit Chat', 'chip_chit-chat.txt']
+    ['Chit Chat', 'chip_chit-chat.txt'],
+    ['Genso Network', 'chip_genso.txt'] # Treating PMC like CC for simplicity in testing
     ]) # I personally don't want to do every Crossover Content but if someone wants to its here
 @pytest.mark.asyncio
 async def test_chip_crossover(test_interaction, category_str, category_txt):
@@ -154,8 +155,20 @@ async def test_chip_crossover(test_interaction, category_str, category_txt):
 
     result = get_msg_kwarg(test_interaction, 'content')
     assert result == expected
+
+@pytest.mark.parametrize("category_str", ['rule', 'folder', 'category','tag','navi']) # I personally don't want to do every tag but if someone wants to its here
+@pytest.mark.asyncio
+async def test_chip_helps(test_interaction, category_str):
+    # skipping blank and qq because they're hard coded embeds that worked fine in manual testing
+    await mainnb.chip(test_interaction, category_str)
     
-# rule, folder, ??, blank, category, tag, navi, lookup multiple, query by crossover content, query by Genso Network
+    expected = test_objs / f'chip_{category_str}.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+
+    assert result == expected
+    
 # - power: help, rule, query by virus passive powers, query by cost powers, query by speed powers, query by sense roll powers, lookup multiple powers
 # - ncp: help, rule, query by 1EB, query by crossover content, query by Genso Minus Cust, lookup multiple NCPs
 # - virus: help, rule, query category, query virus tags, lookup multiple viruses (simple), lookup multiple viruses (detailed), lookup omega virus, lookup mega virus

@@ -244,11 +244,14 @@ def query_chip(args):
         chip_list = [subdf["Chip"] for subdf in chip_rows]
         return_msg = ", ".join(chip_list)
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_chip_df[pmc_chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        if subdf.shape[0] == 0:
+        chip_rows = data_tables.execute(r"""
+        select Chip, Source from playermade_chip where source LIKE :source
+        """, {'source': arg_lower}).fetchall()
+        if len(chip_rows) == 0:
             return False, "", ""
-        return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
-        return_msg = ", ".join(subdf["Chip"])
+        return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % chip_rows[0]["Source"]
+        chip_list = [subdf["Chip"] for subdf in chip_rows]
+        return_msg = ", ".join(chip_list)
     else:
         return False, "", ""
 

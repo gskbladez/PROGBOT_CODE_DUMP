@@ -14,6 +14,7 @@ DROP TABLE virus_tag_strings;
 
 /* Improve compatability with sqlite3 */
 ALTER TABLE chip RENAME COLUMN 'From?' TO 'Source';
+ALTER TABLE playermade_chip RENAME COLUMN 'From?' TO 'Source';
 
 /* Simplify Virus Drops */
 
