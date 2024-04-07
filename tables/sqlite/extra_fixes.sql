@@ -33,3 +33,12 @@ update chip_category set count = (select count(1) as Count from chip where chip.
 chip_drops = chip_drops.merge(virus_df[["Name", "Drops2"]], left_on="Chip", right_on="Drops2", how="left")
 chip_drops["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y'])
 chip_df["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y']).fillna('') */
+
+CREATE TABLE alias (Item, Alias, Source);
+
+/* Create Chip Aliases */
+CREATE TEMP TABLE chip_alias_strings AS SELECT DISTINCT Chip, alias FROM chip WHERE alias != '';
+UPDATE chip_alias_strings SET alias = REPLACE(alias, ',', '", "');
+UPDATE chip_alias_strings SET alias = '["' || alias || '"]';
+INSERT INTO Alias SELECT Chip, trim(json_each.value) as alias, 'Chip' FROM chip_alias_strings, json_each(alias);
+DROP TABLE chip_alias_strings;

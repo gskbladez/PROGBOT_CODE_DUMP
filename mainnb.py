@@ -8,6 +8,7 @@ from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row
 from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
 from maincommon import nyx_link, grid_link
 import koduck
+import asyncio
 
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
@@ -226,11 +227,14 @@ def query_chip(args):
         chip_list = [subdf["Chip"] for subdf in chip_rows]
         return_msg = ", ".join(chip_list)
     elif arg_lower in chip_license_list:
-        subdf = chip_df[chip_df["License"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        if subdf.shape[0] == 0:
+        chip_rows = data_tables.execute(r"""
+        select Chip, License from chip where license LIKE :license
+        """, {'license': arg_lower}).fetchall()
+        if len(chip_rows) == 0:
             return False, "", ""
-        return_title = "Pulling up all `%s` BattleChips..." % subdf.iloc[0]["License"]
-        return_msg = ", ".join(subdf["Chip"])
+        return_title = "Pulling up all `%s` BattleChips..." % chip_rows[0]["License"]
+        chip_list = [subdf["Chip"] for subdf in chip_rows]
+        return_msg = ", ".join(chip_list)
     elif arg_lower in ["nyx"]:
         subdf = nyx_chip_df
         if subdf.shape[0] == 0:
@@ -281,9 +285,38 @@ def pity_cc_check(arg):
     except StopIteration:
         return None
 
+def replace_alias(arg, source):
+    alias = data_tables.execute('SELECT Item from alias WHERE Alias=:alias AND Source=:source',{
+        'alias': arg,
+        'source': source
+    }).fetchone()
+    if alias:
+        return alias['Item']
+    return arg
 
 async def chip(interaction: discord.Interaction, query: str):
+    # If a chip matches the query, return it immediately
     cleaned_args = clean_args([query])
+    msgs_to_send = []
+    for arg in cleaned_args:
+        arg = replace_alias(arg, 'Chip')
+        chip_title, subtitle_trimmed, chip_description, color, _ = await chipfinder(interaction, arg)
+        if chip_title is None:
+            continue
+
+        embed = discord.Embed(
+            title="__%s__" % chip_title,
+            color=color)
+        embed.add_field(name="[%s]" % subtitle_trimmed,
+                        value="_%s_" % chip_description)
+        msgs_to_send.append(
+            interaction.command.koduck.send_message(interaction, embed=embed)
+        )
+
+    if len(msgs_to_send) > 0:
+        await asyncio.gather(*msgs_to_send) # Expand list of promises into function arguments, then wait for all of them to complete
+        return # We returned the response so we don't continue
+
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await interaction.command.koduck.send_message(interaction, content=
                                                              f"Give me the name of 1-{MAX_CHIP_QUERY} **BattleChips** and I can pull up their info for you!\n\n" +
@@ -346,15 +379,6 @@ async def chip(interaction: discord.Interaction, query: str):
     for arg in cleaned_args:
         if not arg:
             continue
-        chip_title, subtitle_trimmed, chip_description, color, _ = await chipfinder(interaction, arg)
-        if chip_title is None:
-            continue
-        embed = discord.Embed(
-            title="__%s__" % chip_title,
-            color=color)
-        embed.add_field(name="[%s]" % subtitle_trimmed,
-                        value="_%s_" % chip_description)
-        await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
 async def chipfinder(interaction: discord.Interaction, arg, suppress_err_msg=False):
