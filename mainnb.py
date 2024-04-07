@@ -40,17 +40,10 @@ help_categories = {
     "Reminders (DarkChips)": ':smiling_imp: **Reminders (DarkChips)**',
     "Safety Tools": ':shield: **Safety Tools**'}
 
-cc_dict = {
-    "ChitChat": "Chit Chat", "Radical Spin": "RadicalSpin", "Skateboard Dog": "SkateboardDog",
-    "Night Drifters": "NightDrifters", "Underground Broadcast": "UndergroundBroadcast",
-    "Mystic Lilies": "MysticLilies", "Genso Network": "GensoNetwork, Genso", "Leximancy": "",
-    "New Connections": "NewConnections", "Silicon Skin": "SiliconSkin",
-    "The Walls Will Swallow You": "TWWSY, TheWallsWillSwallowYou, The Walls, TheWalls, Walls",
-    "MUDSLURP": "MUD",
-    "Tarot": "",
-    "Summer Camp": "Summber Camp, SummerCamp, Summer, Sunmer Camp",
-    "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice", "Neko Virus": "Neko Virus Infection, NekoVirus"}
-cc_list = list(cc_dict.keys())
+# This list was getting messy, so it was moved into sqlite
+# To update it further, update insert_cc_aliases.sql
+cc_list = data_tables.execute("SELECT DISTINCT Item from Alias where Source='Adv Content'").fetchall()
+cc_list = [row["Item"] for row in cc_list]
 
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xA8E8E8,
@@ -242,11 +235,14 @@ def query_chip(args):
         return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower not in ["core"] and arg_lower in chip_from_list:
-        subdf = chip_df[chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        if subdf.shape[0] == 0:
+        chip_rows = data_tables.execute(r"""
+        select Chip, Source from chip where source LIKE :source
+        """, {'source': arg_lower}).fetchall()
+        if len(chip_rows) == 0:
             return False, "", ""
-        return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
-        return_msg = ", ".join(subdf["Chip"])
+        return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % chip_rows[0]["Source"]
+        chip_list = [subdf["Chip"] for subdf in chip_rows]
+        return_msg = ", ".join(chip_list)
     elif arg_lower in [i.lower() for i in playermade_list]:
         subdf = pmc_chip_df[pmc_chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
         if subdf.shape[0] == 0:
@@ -294,10 +290,19 @@ def replace_alias(arg, source):
         return alias['Item']
     return arg
 
+def replace_query_alias(query):
+    query = replace_alias(query, 'Adv Content')
+    return query
+
 async def chip(interaction: discord.Interaction, query: str):
-    # If a chip matches the query, return it immediately
+    # Handle alias fixing early
+    query = replace_query_alias(query)
     cleaned_args = clean_args([query])
+
+    # Best to not wait on async unless necessary
     msgs_to_send = []
+
+    # If a chip matches the query, return it immediately
     for arg in cleaned_args:
         arg = replace_alias(arg, 'Chip')
         chip_title, subtitle_trimmed, chip_description, color, _ = await chipfinder(interaction, arg)

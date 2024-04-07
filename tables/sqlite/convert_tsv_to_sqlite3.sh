@@ -13,4 +13,5 @@ done
 rm -f "$DATA_TABLE"
 sqlite3 $DATA_TABLE < "$I_SCRIPT"
 sqlite3 $DATA_TABLE < "extra_fixes.sql"
+sqlite3 $DATA_TABLE < "insert_cc_aliases.sql"
 rm -f "$I_SCRIPT"
