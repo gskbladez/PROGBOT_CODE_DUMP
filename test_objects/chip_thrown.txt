@@ -1,0 +1,2 @@
+**Pulling up all chips in the `Thrown` category (excluding MegaChips)...**
+*AirBomb, AirSpin, AirStrike, BlackBomb, Cactiball, ChainBlast, DiceBomb, Firecracker, FlamingLasso, FlashBomb, GutsShoot, IceBall, Kunai, LastOut, LavaBall, LightningRod, LogicBomb, MagBomb, Magnum, MiniBomb, QuickRound, RollingShield, SeekBomb, ShieldBoomerang, StickyStick, SwapRing, TreeBomb, VesselBomb, ZapNet, AlphaStrike, ChaosSwap, 0-TheFool, X-WheelOfFortune, XVIII-TheMoon, DirectMessage, WarpBomb, Lookout, Uplink*

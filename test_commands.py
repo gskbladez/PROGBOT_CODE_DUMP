@@ -62,7 +62,8 @@ async def test_chip_none(test_interaction):
 @pytest.mark.parametrize("chip_name, chip_title", [
     ['Cannon', '__Cannon (Starter Chip)__'], #Basic Query
     ['StatiCannon', '__StatiCannon (Summer Camp Chip)__'], #Confusable Query
-    ['StaticCannon', '__StatiCannon (Summer Camp Chip)__'] #Alias
+    ['StaticCannon', '__StatiCannon (Summer Camp Chip)__'], #Alias
+    ['Zapring, Cannon', '__Cannon (Starter Chip)__'], #Multiple Chips Query
     ])
 @pytest.mark.asyncio
 async def test_chip_with_query(test_interaction, chip_name, chip_title):
@@ -73,19 +74,64 @@ async def test_chip_with_query(test_interaction, chip_name, chip_title):
     result = get_msg_kwarg(test_interaction, 'embed')
     assert result.title == expected_title
 
-# rule, folder, ??, blank, category, tag, navi, lookup multiple, query a tag, query a category, query megachips, query incident chips, query by license, query by crossover content, query by Genso Network
-## query a category
-@pytest.mark.parametrize("dark_str", ['dark', 'darkchip', 'darkchips'])
+
+## query the categories
+@pytest.mark.parametrize("category_str", ['dark', 'darkchip', 'darkchips'])
 @pytest.mark.asyncio
-async def test_chip_darkchips(test_interaction, dark_str):
-    await mainnb.chip(test_interaction, dark_str)
+async def test_chip_darkchips(test_interaction, category_str):
+    await mainnb.chip(test_interaction, category_str)
     
     expected = test_objs / 'chip_dark.txt'
     expected = expected.read_text()
 
     result = get_msg_kwarg(test_interaction, 'content')
     assert result == expected
+
+@pytest.mark.parametrize("category_str", ['mega', 'megachip', 'megachips'])
+@pytest.mark.asyncio
+async def test_chip_megachips(test_interaction, category_str):
+    await mainnb.chip(test_interaction, category_str)
     
+    expected = test_objs / 'chip_mega.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+    assert result == expected
+
+@pytest.mark.parametrize("category_str", ['incident', 'incident chip', 'incident chips'])
+@pytest.mark.asyncio
+async def test_chip_incidents(test_interaction, category_str):
+    await mainnb.chip(test_interaction, category_str)
+    
+    expected = test_objs / 'chip_incident.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+    assert result == expected
+
+@pytest.mark.parametrize("category_str", ['accurate']) # I personally don't want to do every tag but if someone wants to its here
+@pytest.mark.asyncio
+async def test_chip_tags(test_interaction, category_str):
+    await mainnb.chip(test_interaction, category_str)
+    
+    expected = test_objs / f'chip_{category_str}.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+    assert result == expected
+
+@pytest.mark.parametrize("category_str", ['thrown']) # I personally don't want to do every category but if someone wants to its here
+@pytest.mark.asyncio
+async def test_chip_category(test_interaction, category_str):
+    await mainnb.chip(test_interaction, category_str)
+    
+    expected = test_objs / f'chip_{category_str}.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+    assert result == expected
+    
+# rule, folder, ??, blank, category, tag, navi, lookup multiple, query by license, query by crossover content, query by Genso Network
 # - power: help, rule, query by virus passive powers, query by cost powers, query by speed powers, query by sense roll powers, lookup multiple powers
 # - ncp: help, rule, query by 1EB, query by crossover content, query by Genso Minus Cust, lookup multiple NCPs
 # - virus: help, rule, query category, query virus tags, lookup multiple viruses (simple), lookup multiple viruses (detailed), lookup omega virus, lookup mega virus

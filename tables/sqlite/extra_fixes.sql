@@ -19,7 +19,17 @@ ALTER TABLE chip RENAME COLUMN 'From?' TO 'Source';
 
 CREATE TABLE virus_drops AS SELECT virus, drop1, drop2 FROM virus, chip;
 
-chip_drops = chip_df.merge(virus_df[["Name", "Drops1"]], left_on="Chip", right_on="Drops1", how="left")
+/* Add Chip Tag Count */
+ALTER TABLE chip_tags ADD COLUMN Count INT;
+update chip_tags set count = (select count(1) as Count from chip where tags like '%' || tag || '%');
+
+/* Add Chip Categories */
+CREATE TABLE chip_category AS SELECT DISTINCT Category FROM Chip WHERE Category != '';
+ALTER TABLE chip_category ADD COLUMN Count INT;
+update chip_category set count = (select count(1) as Count from chip where chip.category=chip_category.category);
+
+
+/* chip_drops = chip_df.merge(virus_df[["Name", "Drops1"]], left_on="Chip", right_on="Drops1", how="left")
 chip_drops = chip_drops.merge(virus_df[["Name", "Drops2"]], left_on="Chip", right_on="Drops2", how="left")
 chip_drops["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y'])
-chip_df["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y']).fillna('')
+chip_df["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y']).fillna('') */

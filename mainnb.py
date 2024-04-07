@@ -173,6 +173,7 @@ def query_chip(args):
         }).fetchall()
     search_len = len(search_results)
 
+    # TODO Can probably make a more generic Alias searching solution
     if search_len == 0:
         search_list = " OR ".join([
             f"Alias LIKE '%{arg}%'" for arg in args
@@ -185,6 +186,7 @@ def query_chip(args):
         if alias_count > 0:
             arg_lower = alias_row["Source"].lower()
 
+    # TODO Can probably move a lot of this into a simpler function
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all `DarkChips`..."
         chip_rows = data_tables.execute(r"select Chip from chip where Tags like '%dark%'").fetchall()
@@ -192,25 +194,37 @@ def query_chip(args):
         return_msg = ", ".join(chip_list)
     elif arg_lower in ['mega', 'megachip', 'megachips']:
         return_title = "Pulling up all `MegaChips` (excluding DarkChips and Incident Chips)..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Mega|mega")]
-        return_msg = ", ".join(subdf["Chip"])
+        chip_rows = data_tables.execute(r"select Chip from chip where Tags like '%mega%'").fetchall()
+        chip_list = [subdf["Chip"] for subdf in chip_rows]
+        return_msg = ", ".join(chip_list)
     elif arg_lower in ['incident', 'incident chip', 'incident chips']:
         return_title = "Pulling up all `Incident` Chips..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Incident", flags=re.IGNORECASE)]
-        return_msg = ", ".join(subdf["Chip"])
+        chip_rows = data_tables.execute(r"select Chip from chip where Tags like '%incident%'").fetchall()
+        chip_list = [subdf["Chip"] for subdf in chip_rows]
+        return_msg = ", ".join(chip_list)
     elif arg_lower in arg_lower in chip_tag_list:
-        subdf = chip_df[chip_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE) &
-                        ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
         return_title = "Pulling up all BattleChips with the `%s` tag (excluding MegaChips)..." % re.escape(
             arg_lower).capitalize()
-        return_msg = ", ".join(subdf["Chip"])
+        chip_rows = data_tables.execute(r"""
+        select Chip from chip where Tags like :tag
+        and Tags not like '%dark%'
+        and Tags not like '%incident%'
+        and Tags not like '%mega%'
+        """, {'tag': f"%{arg_lower}%"}).fetchall()
+        chip_list = [subdf["Chip"] for subdf in chip_rows]
+        return_msg = ", ".join(chip_list)
     elif arg_lower in [i.lower() for i in chip_category_list]:
-        subdf = chip_df[(chip_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)) &
-                        ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
-        if subdf.shape[0] == 0:
+        chip_rows = data_tables.execute(r"""
+        select Chip, Category from chip where Category LIKE :category
+        and Tags not like '%dark%'
+        and Tags not like '%incident%'
+        and Tags not like '%mega%'
+        """, {'category': arg_lower}).fetchall()
+        if len(chip_rows) == 0:
             return False, "", ""
-        return_title = "Pulling up all chips in the `%s` category (excluding MegaChips)..." % subdf.iloc[0]["Category"]
-        return_msg = ", ".join(subdf["Chip"])
+        return_title = "Pulling up all chips in the `%s` category (excluding MegaChips)..." % chip_rows[0]["Category"]
+        chip_list = [subdf["Chip"] for subdf in chip_rows]
+        return_msg = ", ".join(chip_list)
     elif arg_lower in chip_license_list:
         subdf = chip_df[chip_df["License"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
         if subdf.shape[0] == 0:
@@ -249,6 +263,7 @@ def pity_cc_check(arg):
     search_len = len(search_results)
 
     if search_len == 0:
+        # TODO I don't like how this is being done now, need to look into making the parameter `arg` be a list named `args` instead
         search_list = " OR ".join([
             f"Alias LIKE '%{_arg}%'" for _arg in arg.split(' ')
         ])
