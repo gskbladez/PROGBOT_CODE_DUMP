@@ -26,7 +26,7 @@ async def test_help(test_interaction):
     # I think this is actually impossible to reach now due to how slash commands work
     await mainnb.help_cmd(test_interaction, None)
     
-    expected = test_objs / 'help_blank.txt'
+    expected = test_objs / 'help_none.txt'
     expected = expected.read_text()
 
     result = get_msg_kwarg(test_interaction, 'content')
@@ -51,7 +51,7 @@ async def test_help_with_query(test_interaction):
 async def test_chip_none(test_interaction):
     await mainnb.chip(test_interaction, 'help')
     
-    expected = test_objs / 'chip_blank.txt'
+    expected = test_objs / 'chip_none.txt'
     expected = expected.read_text()
 
     result = get_msg_kwarg(test_interaction, 'content')
@@ -80,10 +80,11 @@ async def test_chip_with_query(test_interaction, chip_name, chip_title):
 async def test_chip_darkchips(test_interaction, dark_str):
     await mainnb.chip(test_interaction, dark_str)
     
-    expected_title = '__Cannon (Starter Chip)__'
+    expected = test_objs / 'chip_dark.txt'
+    expected = expected.read_text()
 
-    result = get_msg_kwarg(test_interaction, 'embed')
-    assert result.title == expected_title
+    result = get_msg_kwarg(test_interaction, 'content')
+    assert result == expected
     
 # - power: help, rule, query by virus passive powers, query by cost powers, query by speed powers, query by sense roll powers, lookup multiple powers
 # - ncp: help, rule, query by 1EB, query by crossover content, query by Genso Minus Cust, lookup multiple NCPs

@@ -175,9 +175,9 @@ def query_chip(args):
 
     if search_len == 0:
         search_list = " OR ".join([
-            f"LIKE '%{arg}%'" for arg in args
+            f"Alias LIKE '%{arg}%'" for arg in args
         ])
-        alias_row = data_tables.execute(f"select *, count(1) as count from Chip where Alias :search",{
+        alias_row = data_tables.execute(f"select *, count(1) as count from Chip where :search",{
             'search': search_list
         }).fetchone()
 
@@ -187,8 +187,9 @@ def query_chip(args):
 
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all `DarkChips`..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Dark|dark")]
-        return_msg = ", ".join(subdf["Chip"])
+        chip_rows = data_tables.execute(r"select Chip from chip where Tags like '%dark%'").fetchall()
+        chip_list = [subdf["Chip"] for subdf in chip_rows]
+        return_msg = ", ".join(chip_list)
     elif arg_lower in ['mega', 'megachip', 'megachips']:
         return_title = "Pulling up all `MegaChips` (excluding DarkChips and Incident Chips)..."
         subdf = chip_df[chip_df["Tags"].str.contains("Mega|mega")]
