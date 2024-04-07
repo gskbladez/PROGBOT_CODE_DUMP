@@ -250,9 +250,9 @@ def pity_cc_check(arg):
 
     if search_len == 0:
         search_list = " OR ".join([
-            f"LIKE '%{arg}%'" for arg in args
+            f"Alias LIKE '%{_arg}%'" for _arg in arg.split(' ')
         ])
-        alias_row = data_tables.execute(f"select *, count(1) as count from Chip where Alias :search",{
+        alias_row = data_tables.execute(f"select *, count(1) as count from Chip where :search",{
             'search': search_list
         }).fetchone()
 
