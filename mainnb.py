@@ -168,11 +168,22 @@ async def tag(interaction: discord.Interaction, category: str):
 
 def query_chip(args):
     arg_lower = ' '.join(args)
+    search_results = data_tables.execute(f"select * from chip where lower(Chip) IN (:chip_list)", {
+        'chip_list': ', '.join(args)
+        }).fetchall()
+    search_len = len(search_results)
 
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
-    if alias_check.shape[0] > 0:
-        arg_lower = alias_check.iloc[0]["Source"].lower()
+    if search_len == 0:
+        search_list = " OR ".join([
+            f"LIKE '%{arg}%'" for arg in args
+        ])
+        alias_row = data_tables.execute(f"select *, count(1) as count from Chip where Alias :search",{
+            'search': search_list
+        }).fetchone()
+
+        alias_count = alias_row["count"]
+        if alias_count > 0:
+            arg_lower = alias_row["Source"].lower()
 
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all `DarkChips`..."
@@ -230,11 +241,24 @@ def query_chip(args):
 
 
 def pity_cc_check(arg):
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg), flags=re.IGNORECASE)]
-    if alias_check.shape[0] > 0:
-        arg = alias_check.iloc[0]["Source"]
-        return arg
+    search_results = data_tables.execute(f"select * from chip where lower(Chip) IN (:chip_list)", {
+        'chip_list': arg
+        }).fetchall()
+
+    search_len = len(search_results)
+
+    if search_len == 0:
+        search_list = " OR ".join([
+            f"LIKE '%{arg}%'" for arg in args
+        ])
+        alias_row = data_tables.execute(f"select *, count(1) as count from Chip where Alias :search",{
+            'search': search_list
+        }).fetchone()
+
+        alias_count = alias_row["count"]
+        if alias_count > 0:
+            arg = alias_row["Source"]
+            return arg
     try:
         would_be_valid = next(i for i in cc_list if re.match(r"^%s$" % re.escape(arg), i, flags=re.IGNORECASE))
         return would_be_valid
@@ -318,6 +342,9 @@ async def chip(interaction: discord.Interaction, query: str):
 
 
 async def chipfinder(interaction: discord.Interaction, arg, suppress_err_msg=False):
+    chip_df = 'chip'
+    pmc_chip_df = 'playermade_chip'
+    nyx_chip_df = 'nyx_chip'
     chip_info = await find_value_in_table(interaction, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
     if chip_info is None:
         chip_info = await find_value_in_table(interaction, pmc_chip_df, "Chip", arg, suppress_notfound=True,
@@ -339,7 +366,7 @@ async def chipfinder(interaction: discord.Interaction, arg, suppress_err_msg=Fal
     chip_description = chip_info["Effect"]
     chip_category = chip_info["Category"]
     chip_tags = chip_info["Tags"]
-    chip_crossover = chip_info["From?"]
+    chip_crossover = chip_info["Source"]
     chip_license = chip_info["License"]
 
     chip_tags_list = [i.strip() for i in chip_tags.split(",")]

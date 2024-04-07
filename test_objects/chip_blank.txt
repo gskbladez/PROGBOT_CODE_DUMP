@@ -1,0 +1,4 @@
+Give me the name of 1-5 **BattleChips** and I can pull up their info for you!
+
+I can also query chips by **Category**, **Tag**, **License**, and **Advance Content**! 
+I can also list all current chip categories with `chip category`, and all current chip tags with `chip tag`. To pull up details on a specific Category or Tag, use `tag` instead. (i.e. `tag blade`)
