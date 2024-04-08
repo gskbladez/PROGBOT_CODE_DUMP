@@ -15,6 +15,8 @@ DROP TABLE virus_tag_strings;
 /* Improve compatability with sqlite3 */
 ALTER TABLE chip RENAME COLUMN 'From?' TO 'Source';
 ALTER TABLE playermade_chip RENAME COLUMN 'From?' TO 'Source';
+ALTER TABLE powerncp RENAME COLUMN 'Power/NCP' TO 'Power';
+ALTER TABLE powerncp RENAME COLUMN 'From?' TO 'Source';
 
 /* Simplify Virus Drops */
 
@@ -43,3 +45,7 @@ UPDATE chip_alias_strings SET alias = REPLACE(alias, ',', '", "');
 UPDATE chip_alias_strings SET alias = '["' || alias || '"]';
 INSERT INTO Alias SELECT Chip, trim(json_each.value) as alias, 'Chip' FROM chip_alias_strings, json_each(alias);
 DROP TABLE chip_alias_strings;
+
+CREATE TABLE power_tags (Power, Tag);
+INSERT INTO power_tags SELECT DISTINCT Type, 'Type' from powerncp WHERE Type != '' AND Type != '-';
+INSERT INTO power_tags SELECT DISTINCT Skill, 'Skill' from powerncp WHERE Skill !='' AND Skill !='-';

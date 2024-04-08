@@ -1,0 +1,3 @@
+Give me the name of 1-5 **Powers** and I can pull up their info for you!
+
+I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! Try giving me multiple queries at once, i.e. `power sense cost` or `power virus passive`!

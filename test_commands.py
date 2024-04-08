@@ -46,18 +46,6 @@ async def test_help_with_query(test_interaction):
     
 # chip
 
-## help
-@pytest.mark.asyncio
-async def test_chip_none(test_interaction):
-    await mainnb.chip(test_interaction, 'help')
-    
-    expected = test_objs / 'chip_none.txt'
-    expected = expected.read_text()
-
-    result = get_msg_kwarg(test_interaction, 'content')
-
-    assert expected == result
-
 ## basic query
 @pytest.mark.parametrize("chip_name, chip_title", [
     ['Cannon', '__Cannon (Starter Chip)__'], #Basic Query
@@ -156,7 +144,7 @@ async def test_chip_crossover(test_interaction, category_str, category_txt):
     result = get_msg_kwarg(test_interaction, 'content')
     assert result == expected
 
-@pytest.mark.parametrize("category_str", ['rule', 'folder', 'category','tag','navi']) # I personally don't want to do every tag but if someone wants to its here
+@pytest.mark.parametrize("category_str", ['help','rule', 'folder', 'category','tag','navi'])
 @pytest.mark.asyncio
 async def test_chip_helps(test_interaction, category_str):
     # skipping blank and qq because they're hard coded embeds that worked fine in manual testing
@@ -168,8 +156,31 @@ async def test_chip_helps(test_interaction, category_str):
     result = get_msg_kwarg(test_interaction, 'content')
 
     assert result == expected
+
+@pytest.mark.parametrize("category_str", ['help','rule'])
+@pytest.mark.asyncio
+async def test_power_helps(test_interaction, category_str):
+    await mainnb.power(test_interaction, category_str)
     
-# - power: help, rule, query by virus passive powers, query by cost powers, query by speed powers, query by sense roll powers, lookup multiple powers
+    expected = test_objs / f'power_{category_str}.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+
+    assert result == expected
+
+@pytest.mark.asyncio
+async def test_power_virus_query(test_interaction):
+    await mainnb.power(test_interaction, 'virus passive')
+    
+    expected = test_objs / f'power_virus-powers.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+
+    assert result == expected
+    
+# - power: query by virus passive powers, query by cost powers, query by speed powers, query by sense roll powers, lookup multiple powers
 # - ncp: help, rule, query by 1EB, query by crossover content, query by Genso Minus Cust, lookup multiple NCPs
 # - virus: help, rule, query category, query virus tags, lookup multiple viruses (simple), lookup multiple viruses (detailed), lookup omega virus, lookup mega virus
 # - tag: lookup battlechip tag, lookup virus category, lookup virus tag, lookup chip category

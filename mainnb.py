@@ -605,32 +605,38 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
 
 
 def query_power(args):
-    sub_df = power_df
-    is_default = True
-    search_tag_list = []
+    # TODO This does not actually do what it is supposed to
+    # Needs to see if the args passed are valid Types or Sorts
+    # We do not care what the Powers are at this point, just that they are valid
+    # Look into updating power_tags to accomdate this better
 
-    for arg in args:
-        arg_capital = arg.capitalize()
-        if arg in [i.lower() for i in skill_list]:
-            sub_df = sub_df[(sub_df["Skill"] == arg_capital)]
-            search_tag_list.append(arg_capital)
-        elif arg in ['cost', 'roll', 'passive']:
-            sub_df = sub_df[(sub_df["Type"] == arg_capital)]
-            search_tag_list.append(arg_capital)
-        elif arg == 'virus':
-            is_default = False
+    type_is_like = [f"Type LIKE '%{arg}%'" for arg in args]
+    sort_is_like = [f"Sort LIKE '%{arg}%'" for arg in args]
+    type_is_like = ' OR '.join(type_is_like)
+    sort_is_like = ' OR '.join(sort_is_like)
 
+    search_tag_list = data_tables.execute(
+        f"SELECT Power FROM powerncp WHERE Type LIKE {type_is_like} OR {sort_is_like}"
+        ).fetchall()
+    search_tag_list = [tag["Power"] for tag in search_tag_list]
+
+    # Has no changed
     if not search_tag_list:
         return False, "", ""
 
-    if is_default:
-        sub_df = sub_df[sub_df["Sort"] == "Power"]
+    if 'virus' not in args:
+        rows = data_tables.execute("SELECT Power FROM powerncp WHERE Sort = 'Power'").fetchall()
         search_tag_list.append('Navi')
     else:
-        sub_df = sub_df[(sub_df["Sort"] == "Virus Power") & (sub_df["From?"] != "Mega Viruses") & (sub_df["From?"] != "The Walls Will Swallow You")]
+        rows = data_tables.execute(r'''
+        SELECT Power FROM powerncp WHERE
+        Sort = 'Virus Power' AND
+        Source != 'Mega Viruses' AND
+        Source != 'The Walls Will Swallow You'
+        ''').fetchall()
         search_tag_list.append('Virus (excluding Mega)')
     results_title = "Searching for `%s` Powers..." % "` `".join(search_tag_list)
-    results_msg = ", ".join(sub_df["Power/NCP"])
+    results_msg = ", ".join(rows["Power"])
 
     return True, results_title, results_msg
 
