@@ -1,0 +1,2 @@
+__**Navi Power Upgrades**__ (NPUs) are NCPs that can be used to upgrade Navi Powers. All NPUs require the original Navi Power, either from character creation or a NaviCust Program. **You can only have one Navi Power Upgrade installed for each Navi Power**; you cannot get around the “one NPU per power” restriction by installing duplicate Navi Powers.
+Benefits from Navi Power Upgrades are lost if either the Upgrade or the Navi Power itself are uninstalled. Anything that copies Navi Powers (e.g. NaviChips) also copies NPUs. 

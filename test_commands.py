@@ -294,8 +294,34 @@ async def test_weather_helps(test_interaction, category_str):
 # - weather: lookup 4 LiquidTime DiamondDust ChromaticFlux MementoBorealis
 
 # - mysterydata: roll common, uncommon, rare, sunny, violet, sapphire, mystery reward
+
 # - rulebook: send, lookup beta 4 advance 3, lookup beta 7 mobile
 # - element: roll a number, roll a number in a category
-# - daemon: list all, list a name
-# - npu: query a power for its NPUs, lookup npus
+
+@pytest.mark.parametrize("category_str", ['help','rule','list'])
+@pytest.mark.asyncio
+async def test_daemon_helps(test_interaction, category_str):
+    await mainadvance.daemon(test_interaction, category_str)
+    
+    expected = test_objs / f'daemon_{category_str}.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+
+    assert result == expected
+# - daemon: list a name
+
+@pytest.mark.parametrize("category_str", ['help','rule','noclip'])
+@pytest.mark.asyncio
+async def test_npu_messages(test_interaction, category_str):
+    await mainnb.upgrade(test_interaction, category_str)
+    
+    expected = test_objs / f'npu_{category_str}.txt'
+    expected = expected.read_text()
+
+    result = get_msg_kwarg(test_interaction, 'content')
+
+    assert result == expected
+
+# - npu: lookup npus
 # - crimsonnoise: roll uncommon, common, rare
