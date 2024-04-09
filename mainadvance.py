@@ -565,6 +565,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         
         arg = command.strip().lower()
         name_list = [n.strip() for n in names.split(",") if n]
+        channel_id = str(channel_id)
 
         if arg == 'help':
             ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
