@@ -9,8 +9,7 @@ import re
 import datetime
 from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table
 from maincommon import help_df, cc_color_dictionary, pmc_link
-from persistent_dict import PersistentDict
-from contextlib import contextmanager
+import shelve
 
 MAX_MOD_QUERY = 5
 ROLL_COMMENT_CHAR = '#'
@@ -52,7 +51,7 @@ pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 # I should honestly make this a configuration but meh
 
 def clean_audience():
-    with PersistentDict('../audience_data.json', format='json') as audience_data:
+    with shelve.open('../audience_data.dbm') as audience_data:
         #with open(settings.audiencefile, "r") as afp:
         #    audience_data = json.load(afp)
         del_keys = [key for key in audience_data if
@@ -63,7 +62,7 @@ def clean_audience():
         return
 
 def clean_spotlight():
-    with PersistentDict('../spotlight_db.json', format='json') as spotlight_db:
+    with shelve.open('../spotlight_db.dbm') as spotlight_db:
         del_keys = [key for key in spotlight_db if
                     (datetime.datetime.now() - datetime.datetime.strptime(spotlight_db[key]["Last Modified"], '%Y-%m-%d %H:%M:%S')) > SPOTLIGHT_TIMEOUT]
         for key in del_keys: del spotlight_db[key]
@@ -229,7 +228,7 @@ def change_audience(channel_id, cj_type, amount):
     id = str(channel_id)
     #with open(settings.audiencefile, "r") as afp:
     #audience_data = json.load(afp)
-    with PersistentDict('../audience_data.json', format='json') as audience_data:
+    with shelve.open('../audience_data.dbm') as audience_data:
         if id not in audience_data:
             return (-1, "Audience Participation hasn't been started in this channel!")
         currentval = audience_data[id][cj_type]
@@ -258,7 +257,7 @@ def change_audience(channel_id, cj_type, amount):
 
 
 def get_audience(channel_id):
-    with PersistentDict('../audience_data.json', format='json') as audience_data:
+    with shelve.open('../audience_data.dbm') as audience_data:
         id = str(channel_id)
         #with open(settings.audiencefile, "r") as afp:
             #audience_data = json.load(afp)
@@ -270,7 +269,7 @@ def get_audience(channel_id):
 
 
 def start_audience(channel_id):
-    with PersistentDict('../audience_data.json', format='json') as audience_data:
+    with shelve.open('../audience_data.dbm') as audience_data:
         id = str(channel_id)
         #with open(settings.audiencefile, "r") as afp:
             #audience_data = json.load(afp)
@@ -291,7 +290,7 @@ def start_audience(channel_id):
 
 
 def end_audience(channel_id):
-    with PersistentDict('../audience_data.json', format='json') as audience_data:
+    with shelve.open('../audience_data.dbm') as audience_data:
         id = str(channel_id)
         #with open(settings.audiencefile, "r") as afp:
         #    audience_data = json.load(afp)
@@ -553,7 +552,7 @@ async def achievement(interaction: discord.Interaction, query:str):
 
 
 async def spotlight(interaction:discord.Interaction, names:str="", command:typing.Literal['start', 'mark', 'add', 'remove', 'view', 'edit', 'reset', 'end', 'help']='mark'):
-    with PersistentDict('../spotlight_db.json', format='json') as spotlight_db:
+    with shelve.open('../spotlight_db.dbm') as spotlight_db:
         if interaction.channel.type is discord.ChannelType.private:
             channel_id = interaction.channel.id
             channel_name = interaction.user.name
