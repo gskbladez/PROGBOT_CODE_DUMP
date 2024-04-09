@@ -13,3 +13,4 @@ prefixes.json
 userlevels.txt
 musicbot.py
 token.txt
+.coverage
