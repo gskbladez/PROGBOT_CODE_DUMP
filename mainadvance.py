@@ -50,28 +50,26 @@ glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
 pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
 # I should honestly make this a configuration but meh
-audience_data = PersistentDict('../audience_data.json', format='json')
-spotlight_db = PersistentDict('../spotlight_db.json', format='json')
 
 def clean_audience():
-    #with open(settings.audiencefile, "r") as afp:
-    #    audience_data = json.load(afp)
-    del_keys = [key for key in audience_data if
-                (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key]["last_modified"], '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT]
-    for key in del_keys: del audience_data[key]
-    #with open(settings.audiencefile, 'w') as afp:
-    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
-    audience_data.sync()
-    return
+    with PersistentDict('../audience_data.json', format='json') as audience_data:
+        #with open(settings.audiencefile, "r") as afp:
+        #    audience_data = json.load(afp)
+        del_keys = [key for key in audience_data if
+                    (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key]["last_modified"], '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT]
+        for key in del_keys: del audience_data[key]
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        return
 
 def clean_spotlight():
-    del_keys = [key for key in spotlight_db if
-                (datetime.datetime.now() - datetime.datetime.strptime(spotlight_db[key]["Last Modified"], '%Y-%m-%d %H:%M:%S')) > SPOTLIGHT_TIMEOUT]
-    for key in del_keys: del spotlight_db[key]
-    #with open(settings.audiencefile, 'w') as afp:
-    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
-    spotlight_db.sync()
-    return
+    with PersistentDict('../spotlight_db.json', format='json') as spotlight_db:
+        del_keys = [key for key in spotlight_db if
+                    (datetime.datetime.now() - datetime.datetime.strptime(spotlight_db[key]["Last Modified"], '%Y-%m-%d %H:%M:%S')) > SPOTLIGHT_TIMEOUT]
+        for key in del_keys: del spotlight_db[key]
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        return
 
 async def crimsonnoise(interaction: discord.Interaction, md_type: typing.Literal["Common", "Uncommon", "Rare"]):
     arg = md_type.lower().strip()
@@ -231,78 +229,79 @@ def change_audience(channel_id, cj_type, amount):
     id = str(channel_id)
     #with open(settings.audiencefile, "r") as afp:
     #audience_data = json.load(afp)
-    if id not in audience_data:
-        return (-1, "Audience Participation hasn't been started in this channel!")
-    currentval = audience_data[id][cj_type]
-    tempval = currentval + amount
-    if tempval < 0:
-        return (-1, "There's not enough %ss for that! (Current %ss: %d)" % (*[cj_type.capitalize()]*2, currentval), "")
-    if tempval > MAX_CHEER_JEER_VALUE:
-        return (-1, "That adds too many %ss! (Current %ss: %d, Max: %d)" % (*[cj_type.capitalize()]*2, currentval, MAX_CHEER_JEER_VALUE), "")
+    with PersistentDict('../audience_data.json', format='json') as audience_data:
+        if id not in audience_data:
+            return (-1, "Audience Participation hasn't been started in this channel!")
+        currentval = audience_data[id][cj_type]
+        tempval = currentval + amount
+        if tempval < 0:
+            return (-1, "There's not enough %ss for that! (Current %ss: %d)" % (*[cj_type.capitalize()]*2, currentval), "")
+        if tempval > MAX_CHEER_JEER_VALUE:
+            return (-1, "That adds too many %ss! (Current %ss: %d, Max: %d)" % (*[cj_type.capitalize()]*2, currentval, MAX_CHEER_JEER_VALUE), "")
 
-    audience_data[id][cj_type] = tempval
-    audience_data[id]["last_modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        audience_data[id][cj_type] = tempval
+        audience_data[id]["last_modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    if amount > 0:
-        word_term = "Added %d %s!" % (amount, cj_type.capitalize())
-    elif amount < 0:
-        word_term = "Spent %d %s!" % (-1*amount, cj_type.capitalize())
-    else:
-        word_term = "Added... 0 %s! Huh?" % (cj_type.capitalize())
-    c_val = audience_data[id]["cheer"]
-    j_val = audience_data[id]["jeer"]
+        if amount > 0:
+            word_term = "Added %d %s!" % (amount, cj_type.capitalize())
+        elif amount < 0:
+            word_term = "Spent %d %s!" % (-1*amount, cj_type.capitalize())
+        else:
+            word_term = "Added... 0 %s! Huh?" % (cj_type.capitalize())
+        c_val = audience_data[id]["cheer"]
+        j_val = audience_data[id]["jeer"]
 
-    #with open(settings.audiencefile, 'w') as afp:
-    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
 
-    audience_data.sync()
-    return (0, word_term, "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
+        return (0, word_term, "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
 
 
 def get_audience(channel_id):
-    id = str(channel_id)
-    #with open(settings.audiencefile, "r") as afp:
-        #audience_data = json.load(afp)
-    if id not in audience_data:
-        return (-1, "Audience Participation hasn't been started in this channel!")
-    c_val = audience_data[id]["cheer"]
-    j_val = audience_data[id]["jeer"]
-    return (0, (c_val, j_val))
+    with PersistentDict('../audience_data.json', format='json') as audience_data:
+        id = str(channel_id)
+        #with open(settings.audiencefile, "r") as afp:
+            #audience_data = json.load(afp)
+        if id not in audience_data:
+            return (-1, "Audience Participation hasn't been started in this channel!")
+        c_val = audience_data[id]["cheer"]
+        j_val = audience_data[id]["jeer"]
+        return (0, (c_val, j_val))
 
 
 def start_audience(channel_id):
-    id = str(channel_id)
-    #with open(settings.audiencefile, "r") as afp:
-        #audience_data = json.load(afp)
-    if len(audience_data) > MAX_AUDIENCES:
-        return (-2, "ProgBot's hosting too many audiences right now! Try again later!", "")
-    if id in audience_data:
-        c_val = audience_data[id]["cheer"]
-        j_val = audience_data[id]["jeer"]
-        return (-1,
-                "Audience Participation was already started in this channel!",
-                "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
-    audience_data[id] = {"cheer": 0, "jeer": 0, "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    with PersistentDict('../audience_data.json', format='json') as audience_data:
+        id = str(channel_id)
+        #with open(settings.audiencefile, "r") as afp:
+            #audience_data = json.load(afp)
+        if len(audience_data) > MAX_AUDIENCES:
+            return (-2, "ProgBot's hosting too many audiences right now! Try again later!", "")
+        if id in audience_data:
+            c_val = audience_data[id]["cheer"]
+            j_val = audience_data[id]["jeer"]
+            return (-1,
+                    "Audience Participation was already started in this channel!",
+                    "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
+        audience_data[id] = {"cheer": 0, "jeer": 0, "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
-    #with open(settings.audiencefile, 'w') as afp:
-    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
 
-    audience_data.sync()
-    return (0, "", "")
+        return (0, "", "")
 
 
 def end_audience(channel_id):
-    id = str(channel_id)
-    #with open(settings.audiencefile, "r") as afp:
-    #    audience_data = json.load(afp)
-    try:
-        del audience_data[id]
-        audience_data.sync()
-        #with open(settings.audiencefile, 'w') as afp:
-        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
-        return 0
-    except KeyError:
-        return -1
+    with PersistentDict('../audience_data.json', format='json') as audience_data:
+        id = str(channel_id)
+        #with open(settings.audiencefile, "r") as afp:
+        #    audience_data = json.load(afp)
+        try:
+            del audience_data[id]
+            #with open(settings.audiencefile, 'w') as afp:
+            #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+            return 0
+        except KeyError:
+            return -1
 
 
 async def cheer(interaction: discord.Interaction, command:typing.Literal['spend', 'add', 'list'], num:int=1):
@@ -554,7 +553,7 @@ async def achievement(interaction: discord.Interaction, query:str):
 
 
 async def spotlight(interaction:discord.Interaction, names:str="", command:typing.Literal['start', 'mark', 'add', 'remove', 'view', 'edit', 'reset', 'end', 'help']='mark'):
-    try:
+    with PersistentDict('../spotlight_db.json', format='json') as spotlight_db:
         if interaction.channel.type is discord.ChannelType.private:
             channel_id = interaction.channel.id
             channel_name = interaction.user.name
@@ -701,8 +700,6 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         notify_str = "\n".join([i for i in (notification_msg, err_msg) if i])
         embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
         return await interaction.command.koduck.send_message(interaction, embed=embed)
-    finally:
-        spotlight_db.sync()
 
 
 async def find_spotlight_participant(interaction, arg, participant_dict, message_location):
