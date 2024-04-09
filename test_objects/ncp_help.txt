@@ -1,0 +1,3 @@
+Give me the names of 1-5 **NaviCust Parts** (NCPs) and I can pull up their info for you!
+
+I can also query NCPs by **EB** and **Advance Content!**

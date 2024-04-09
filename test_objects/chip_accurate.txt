@@ -1,0 +1,2 @@
+**Pulling up all BattleChips with the `Accurate` tag (excluding MegaChips)...**
+*LightningFoil, GravityHold, Windrack, Condor, PowerSlide, SandWorm, Cannon, MarkCannon, NeedleCannon, FireRat, Ratton, Sensor, Magnum, SeekBomb, Pulsar, TidalWave, CapsLock, DictionaryAttack, III-TheEmpress, DirectMessage, FlameWar, Ping, DoubleJump, RemotePlug, Uplink*

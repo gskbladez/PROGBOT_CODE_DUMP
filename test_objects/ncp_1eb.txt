@@ -1,0 +1,2 @@
+**Finding all `1` EB NCPs (excluding NPUs)...**
+*Brand, ContentAware, Dullahan, EvilMind, GeoTracker, HazardTimer, ManualInput, MegaFlex, Megaphone, NowRecording, ProgBody, ProgRadar, SignPost, ThemeSong, Underflow, ZennyMiner, BondCharge, BlockPrinter, Devilish, MessPaint, EncryptedChat, PocketBase, ActionReplay, Matchmaker, RideOn, Retribution, Servant, SOSMail, FamilyFilter, FriendsList, ExposedFrequency*

@@ -1,0 +1,7 @@
+__**BattleChips**__ are one-use attacks that NetOps slot into their PETs. When a NetOp slots in a BattleChip, it is used immediately unless otherwise listed. Many BattleChips have **secondary effects**, like stunning or reducing one of the target’s skills. To resist these, the target must roll more hits than the chip’s damage.
+
+When a Navi attacks with a BattleChip, the Navi doesn’t roll; the target must defend against the damage value of the chip. If the chip inflicts a negative effect without damage, targets roll to resist it like an unopposed roll (i.e. 1 hit = mixed success; 2 hits = full success). Unless otherwise noted, BattleChips cannot hit beyond their listed range. After a Navi uses a BattleChip, they need to jack out to make that BattleChip usable again, or to change their Folder. 
+
+When a NetOp slots in a BattleChip, it is used immediately unless otherwise listed. Because chips are physically slotted into the PET, a NetOp may need to make a roll to slot in a chip when under pressure — typically **Info**, **Speed**, or **Affinity**.
+
+If you have questions about edge cases regarding a chip, either a specific one or in general, try `help chip clarifications`!

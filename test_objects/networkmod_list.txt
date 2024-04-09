@@ -1,0 +1,2 @@
+**Listing all Network Modifiers from the `New Connections` crossover content...**
+*AnonyMode, ChatLog, CloudbankPolling, CommFilter, ContinueFunction, EjectTimer, HoloNet, Instanced, Labyrinth, OutdatedEngine, SkullBrand, WikiDecor*

@@ -1,0 +1,7 @@
+__**Viruses**__ are programs with simple, animal-like minds. Evildoers often deploy them in groups to wreak havoc on digital spaces, but some servers use friendly Viruses to help with everyday tasks. Viruses come in a wide variety of models, able to power up allies, replicate Navi abilities, or simply cause chaos. 
+
+Each Virus has a general **Category**, which helps describe their type (i.e. Artillery Viruses firing long-range blasts), while some may have **Tags** which indicate special common properties (i.e. Hovering). Viruses use Powers just like Navis, and many have special, custom abilities!
+
+If a Virus seems more advanced than it should be - if it has a visual **tell** - it may be equipped with a use of a **BattleChip**! (Virus Powers that modify attacks don't modify their chips.)
+
+**All Viruses have data within them that can be downloaded upon deletion.** Check out `help download` for more detail!

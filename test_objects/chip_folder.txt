@@ -1,0 +1,4 @@
+A Navi's __**Folder**__ is the list of pre-selected chips they can use. You can only modify your Folder when jacked out.
+Your PET's folder space is determined by your **Navi Info + 5**. By default, **Folders may not have duplicate BattleChips or more than 1 MegaChip**, unless explicitly stated otherwise.
+
+When you jack in, you can use chips in your Folder in any order. You can use each chip once before jacking out. When you jack out, all chips are refreshed for use next time you jack in. Chips outside of your Folder are unusable. If you acquire a BattleChip while jacked in, you can only add it to your Folder if your Folder is not full.

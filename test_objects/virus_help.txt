@@ -1,0 +1,4 @@
+Give me the name of 1-5 **Viruses** and I can pull up their info for you!
+
+I can query Viruses by **Category**, **Tag**, or **Advance Content**, and pull up the list of Virus categories with `virus category`!
+For a list of all Virus categories, use `virus category`, and all current Virus tags with `virus tag`. To pull up details on a specific Category or Tag, use `tag` instead. (i.e. `tag artillery`)

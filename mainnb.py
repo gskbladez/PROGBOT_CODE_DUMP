@@ -125,7 +125,7 @@ async def help_cmd(interaction: discord.Interaction, query: str):
     # Default message if no parameter is given
     if query is None:
         message_help = "Hi, I'm **ProgBot**, a bot made for *NetBattlers*, the Unofficial MMBN RPG! \n" + \
-                       "My prefix for commands here is ``. You can also DM me using slash commands!" + \
+                       "My prefix for commands here is ``. You can also DM me using slash commands! " + \
                        "To see a list of all commands you can use, type `commands`. " + \
                        "You can type `help` and any other command for more info on that command!\n" + \
                        "I can also pull up info on some rules and descriptions! Check `help all` for the list of details I can help with!"

@@ -1,0 +1,2 @@
+**Displaying all known BattleChip Categories...**
+*Blade, Impact, Hazard, Rush, Shot, Summon, Support, Thrown, Wave, NaviChip*

@@ -1,0 +1,1 @@
+Pulls up info for 1-6 types of **CyberWeather**! I can also list all types of CyberWeather if you tell me `list` or `all`!

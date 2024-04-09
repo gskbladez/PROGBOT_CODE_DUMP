@@ -1,0 +1,8 @@
+All Navis have __**Navi Powers**__: special abilities they can use at any time. There are two types of powers:
+- <:cost:> **Cost Powers** reduce the relevant skill by one to use them, no roll required. Cost Powers cannot be used if the skill is 0.
+ > - <:roll:> **Roll Powers** roll the relevant skill to use the power.
+
+Additionally, certain powers activate <:instant:> **Instantly** and can be used alongside other rolls, Powers, or chips, though they cannot be used to interrupt other's actions.
+Targets can defend against Navi Powers that directly impede them (e.g. Disruption; not Analyze).
+
+If you have questions about edge cases regarding a Navi Power, try `help power clarifications`!

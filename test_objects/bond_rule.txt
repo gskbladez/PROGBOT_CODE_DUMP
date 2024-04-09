@@ -1,0 +1,9 @@
+__**Bonds**__ are connections forged through shared experiences, typically between NetOps! 
+
+Bonds are measured in **Bond Levels**, starting at 0 and going up to 3. Bond Levels are shared — getting a Bond Level with a friend increases their Bond Level with you. **Bond Levels are increased** when one or more player characters play a critical role in helping another complete a **Goal**.
+
+Bond Points can be spent on **Bond Powers**. Spend time off with a NetOp to get Bond Points equal to your Bond Level with them. (You cannot have more Bond Points than all of your Bond Levels combined.) When you gain a Bond Level, you also gain a Bond Point.
+
+When using a Bond Power, make sure to describe how it looks and what memory you draw on to activate it! Nobody other than the user can dispel or mitigate the boosts Navis get from Bond Powers.
+
+Optionally, when two characters reach Bond Level 3, they can have a **capstone scene** — an important, emotional scene that crystalizes the connection between the two into a NaviChip. For more details, try `help capstone`!

@@ -1,0 +1,2 @@
+Give me a **Bond Power** and I can pull up its info for you!
+For a list of all Bond Powers, use `bond all`!

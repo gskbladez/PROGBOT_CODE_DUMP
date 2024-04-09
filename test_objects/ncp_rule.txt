@@ -1,0 +1,4 @@
+**__Navi Customizer Programs__ (NCPs)** are installable software NetOps can use to modify their Navi. They can give various perks like improving Navi skills, expanding Folders, granting special abilities, and more. Each NCP costs EB to install; the total EB of installed programs cannot exceed the NaviCust’s capacity. 
+While jacked out, NCPs can be installed, removed, and swapped. Unless stated otherwise, NCPs cannot be changed while the Navi is jacked in. 
+
+Additionally, the effects of multiple Navi Power or unique NCPs **do not stack**, unless stated otherwise. Having multiple copies of the same NCP installed does not work differently than having only one. Only Stat+1 and Skill+1 can benefit from having multiple installed at the same time.
