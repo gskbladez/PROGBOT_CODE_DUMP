@@ -732,7 +732,8 @@ def embed_spotlight_message(err_msg, location, error=False):
 
 def embed_spotlight_tracker(dict_line, location, notification=""):
     participants = dict_line.copy()
-    del participants["Last Modified"]
+    if "Last Modified" in participants:
+        del participants["Last Modified"]
     if not participants:
         embed_descript = "*No participants in this channel yet!*"
     else:
