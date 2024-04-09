@@ -9,6 +9,7 @@ import re
 import datetime
 from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table
 from maincommon import help_df, cc_color_dictionary, pmc_link
+from persistent_dict import PersistentDict
 
 MAX_MOD_QUERY = 5
 ROLL_COMMENT_CHAR = '#'
@@ -47,8 +48,9 @@ glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
 
 pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
-audience_data = {}
-spotlight_db = {}
+# I should honestly make this a configuration but meh
+audience_data = PersistentDict('../audience_data.json', format='json')
+spotlight_db = PersistentDict('../spotlight_db.json', format='json')
 
 def clean_audience():
     #with open(settings.audiencefile, "r") as afp:
