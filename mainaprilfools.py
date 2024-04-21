@@ -2,11 +2,11 @@ import discord
 import random
 import koduck
 import settings
-import pandas as pd
+from pandas import read_csv
 from maincommon import clean_args, roll_row_from_table
 from maincommon import cc_color_dictionary
 
-autoloot_df = pd.read_csv(settings.autolootfile, sep="\t").fillna('')
+autoloot_df = read_csv(settings.autolootfile, sep="\t").fillna('')
 
 # There are 7 major categories that need to be procedurally filled out.
 # Cost, Guard, Category, Damage, Range, Tags, Effect

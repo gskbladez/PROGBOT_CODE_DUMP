@@ -9,7 +9,7 @@ from koduck import Koduck
 import sys, logging
 import yadon
 import settings
-import pandas as pd
+from pandas import read_csv, DataFrame, Series
 
 import mainadvance
 import mainroll
@@ -17,7 +17,7 @@ import mainsafety
 import mainnb
 import mainaprilfools
 
-commands_df = pd.read_csv(settings.commands_table_name, sep="\t").fillna('')
+commands_df = read_csv(settings.commands_table_name, sep="\t").fillna('')
 
 #Required method to setup Koduck. Can also be run as a comamnd after startup to update any manual changes to the commands table.
 async def refresh_commands(context, *args, **kwargs):

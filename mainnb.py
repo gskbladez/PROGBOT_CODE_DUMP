@@ -2,7 +2,7 @@ import typing
 import discord
 import random
 import settings
-import pandas as pd
+from pandas import DataFrame, Series, unique, read_csv, to_numeric
 import numpy as np
 import re
 import mainadvance
@@ -52,7 +52,7 @@ cc_dict = {
     "Summer Camp": "Summber Camp, SummerCamp, Summer, Sunmer Camp",
     "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice", "Neko Virus": "Neko Virus Infection, NekoVirus"}
 cc_list = list(cc_dict.keys())
-cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
+cc_df = DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xA8E8E8,
@@ -73,7 +73,7 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                     "sunny": {"color": cc_color_dictionary["Summber Camp"],
                               "image": settings.sunny_md_image}}
 
-chip_df = pd.read_csv(settings.chipfile, sep="\t").fillna('')
+chip_df = read_csv(settings.chipfile, sep="\t").fillna('')
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
 chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
     .stack() \
@@ -81,13 +81,13 @@ chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
     .str.lower() \
     .unique()
 chip_tag_list = [i for i in chip_tag_list if i]
-chip_category_list = pd.unique(chip_df["Category"])
+chip_category_list = unique(chip_df["Category"])
 chip_category_list = [i for i in chip_category_list if i]
-chip_license_list = pd.unique(chip_df["License"].str.lower())
-chip_from_list = pd.unique(chip_df["From?"].str.lower())
+chip_license_list = unique(chip_df["License"].str.lower())
+chip_from_list = unique(chip_df["From?"].str.lower())
 
-power_df = pd.read_csv(settings.powerfile, sep="\t").fillna('')
-virus_df = pd.read_csv(settings.virusfile, sep="\t").fillna('')
+power_df = read_csv(settings.powerfile, sep="\t").fillna('')
+virus_df = read_csv(settings.virusfile, sep="\t").fillna('')
 virus_df = virus_df[virus_df["Name"] != ""]
 virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .stack() \
@@ -96,30 +96,25 @@ virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .unique()
 virus_tag_list = [i for i in virus_tag_list if i]
 [virus_tag_list.remove(i) for i in ["none", "None"] if i in virus_tag_list]
-virus_category_list = pd.unique(virus_df["Category"].str.strip())
+virus_category_list = unique(virus_df["Category"].str.strip())
 virus_category_list = [i for i in virus_category_list if i]
 
-bond_df = pd.read_csv(settings.bondfile, sep="\t").fillna('').dropna(subset=['BondPower'])
-tag_df = pd.read_csv(settings.tagfile, sep="\t").fillna('')
-mysterydata_df = pd.read_csv(settings.mysterydatafile, sep="\t").fillna('')
+bond_df = read_csv(settings.bondfile, sep="\t").fillna('').dropna(subset=['BondPower'])
+tag_df = read_csv(settings.tagfile, sep="\t").fillna('')
+mysterydata_df = read_csv(settings.mysterydatafile, sep="\t").fillna('')
 
-element_df = pd.read_csv(settings.elementfile, sep="\t").fillna('')
-element_category_list = pd.unique(element_df["category"].dropna())
+element_df = read_csv(settings.elementfile, sep="\t").fillna('')
+element_category_list = unique(element_df["category"].dropna())
 
-adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
-fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
-glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
+adventure_df = read_csv(settings.adventurefile, sep="\t").fillna('')
+fight_df = read_csv(settings.fightfile, sep="\t").fillna('')
+glossary_df = read_csv(settings.glossaryfile, sep="\t").fillna('')
 
-nyx_chip_df = pd.read_csv(settings.nyx_chipfile, sep="\t").fillna('')
-nyx_power_df = pd.read_csv(settings.nyx_ncpfile, sep="\t").fillna('')
-pmc_chip_df = pd.read_csv(settings.pmc_chipfile, sep="\t").fillna('')
-pmc_power_df = pd.read_csv(settings.pmc_powerfile, sep="\t").fillna('')
-pmc_virus_df = pd.read_csv(settings.pmc_virusfile, sep="\t").fillna('')
-
-chip_drops = chip_df.merge(virus_df[["Name", "Drops1"]], left_on="Chip", right_on="Drops1", how="left")
-chip_drops = chip_drops.merge(virus_df[["Name", "Drops2"]], left_on="Chip", right_on="Drops2", how="left")
-chip_drops["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y'])
-chip_df["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y']).fillna('')
+nyx_chip_df = read_csv(settings.nyx_chipfile, sep="\t").fillna('')
+nyx_power_df = read_csv(settings.nyx_ncpfile, sep="\t").fillna('')
+pmc_chip_df = read_csv(settings.pmc_chipfile, sep="\t").fillna('')
+pmc_power_df = read_csv(settings.pmc_powerfile, sep="\t").fillna('')
+pmc_virus_df = read_csv(settings.pmc_virusfile, sep="\t").fillna('')
 
 async def help_cmd(interaction: discord.Interaction, query: str):
     # Default message if no parameter is given
@@ -635,7 +630,7 @@ def query_ncp(arg_lower):
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
     ncp_df = power_df[power_df["Sort"] != "Virus Power"]
-    valid_cc_list = list(pd.unique(ncp_df["From?"].str.lower().str.strip()))
+    valid_cc_list = list(unique(ncp_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core", "navi power upgrades"]]
     eb_match = re.match(r"^(\d+)(?:\s*EB)?$", arg_lower, flags=re.IGNORECASE)
 
@@ -862,7 +857,7 @@ def query_virus(arg_lower):
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
-    valid_cc_list = list(pd.unique(virus_df["From?"].str.lower().str.strip()))
+    valid_cc_list = list(unique(virus_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core"]]
     if arg_lower in [i.lower() for i in virus_category_list]:
         sub_df = virus_df[virus_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
@@ -1134,7 +1129,7 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
         is_get_latest = True
 
     if is_get_latest:
-        rulebook_df["BiggNumber"] = pd.to_numeric(rulebook_df["Version"])
+        rulebook_df["BiggNumber"] = to_numeric(rulebook_df["Version"])
         ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["BiggNumber"].idxmax()]
         book_names = ["**%s %s %s**: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
                       ret_books.iterrows()]
@@ -1195,7 +1190,7 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
         if in_progress:
             book_queries.append(book_query)
 
-        ret_book = pd.Series(False, index=rulebook_df.index)
+        ret_book = Series(False, index=rulebook_df.index)
         for book_query in book_queries:
             bookname = book_query["Name"]
             booktype = book_query["Type"]
@@ -1220,7 +1215,7 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
                 subfilt = subfilt & (rulebook_df["Release"]==book_release)
 
             if book_version is None:
-                subfilt = subfilt.index == pd.to_numeric(rulebook_df[subfilt]["Version"]).idxmax()
+                subfilt = subfilt.index == to_numeric(rulebook_df[subfilt]["Version"]).idxmax()
                 book_version_str = " (Most recent)"
             elif book_version == "All":
                 book_version_str = ""

@@ -4,7 +4,7 @@ import discord
 import requests
 import random
 import settings
-import pandas as pd
+from pandas import DataFrame, Series, unique, read_csv
 import re
 import datetime
 from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table
@@ -22,7 +22,7 @@ SPOTLIGHT_TIMEOUT = datetime.timedelta(days=0, hours=3, seconds=10)
 MAX_WEATHER_QUERY = 6
 MAX_WEATHER_ROLL = 6
 
-pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
+pmc_daemon_df = read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
 cj_colors = {"cheer": 0xffe657, "jeer": 0xff605d}
 achievement_color_dictionary = {"Gold": 0xffe852}
@@ -30,22 +30,22 @@ weather_color_dictionary = {"Blue": 0x8ae2ff,
                             "Yellow": 0xffff5e,
                             "Red": 0xff524d}
 
-daemon_df = pd.read_csv(settings.daemonfile, sep="\t").fillna('').dropna(subset=['Name'])
-networkmod_df = pd.read_csv(settings.networkmodfile, sep="\t").fillna('')
-crimsonnoise_df = pd.read_csv(settings.crimsonnoisefile, sep="\t").fillna('')
-audience_df = pd.read_csv(settings.audienceparticipationfile, sep="\t").fillna('')
+daemon_df = read_csv(settings.daemonfile, sep="\t").fillna('').dropna(subset=['Name'])
+networkmod_df = read_csv(settings.networkmodfile, sep="\t").fillna('')
+crimsonnoise_df = read_csv(settings.crimsonnoisefile, sep="\t").fillna('')
+audience_df = read_csv(settings.audienceparticipationfile, sep="\t").fillna('')
 
-achievement_df = pd.read_csv(settings.achievementfile, sep="\t").fillna('')
+achievement_df = read_csv(settings.achievementfile, sep="\t").fillna('')
 achievement_df["Category"] = achievement_df["Category"].astype('category').cat.reorder_categories(["First Steps", "Admin Privileges", "Tricky Bits", "Smooth Operation", "Milestones"])
 achievement_df = achievement_df.sort_values(["Category", "Name"])
-adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
-fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
-weather_df = pd.read_csv(settings.weatherfile, sep="\t").fillna('')
-weather_category_list = pd.unique(weather_df["Category"].dropna())
+adventure_df = read_csv(settings.adventurefile, sep="\t").fillna('')
+fight_df = read_csv(settings.fightfile, sep="\t").fillna('')
+weather_df = read_csv(settings.weatherfile, sep="\t").fillna('')
+weather_category_list = unique(weather_df["Category"].dropna())
 
-glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
+glossary_df = read_csv(settings.glossaryfile, sep="\t").fillna('')
 
-pmc_daemon_df = pd.read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
+pmc_daemon_df = read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
 audience_data = {}
 spotlight_db = {}
@@ -589,7 +589,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
             return await interaction.command.koduck.send_message(interaction, 
                                             embed=embed_spotlight_message(f"Max of {MAX_CHECKLIST_SIZE} participants in a checklist!", msg_location, error=True), ephemeral=True)
         participants={}
-        nl = pd.Series("", index=range(len(name_list)))
+        nl = Series("", index=range(len(name_list)))
         i=0
         dups = []
         for n in name_list:
@@ -626,7 +626,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
                                                                               msg_location, error=True), ephemeral=True)
         dups = []
         n = len(name_list) # max number of new entries
-        nl = pd.Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
+        nl = Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
         i = len(spotlight_db[channel_id]) # end of the array
         for n in name_list:
             if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
@@ -695,7 +695,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
 
 
 async def find_spotlight_participant(interaction, arg, participant_dict, message_location):
-    participant_list = pd.Series(participant_dict.keys())
+    participant_list = Series(participant_dict.keys())
     participant_list = participant_list[participant_list != "Last Modified"]
     match_candidates = participant_list[participant_list.str.contains(re.escape(arg), flags=re.IGNORECASE)]
     if match_candidates.shape[0] == 0:
@@ -828,7 +828,7 @@ async def repo(interaction: discord.Interaction, query:str):
     for k in header_blk:
         df_column_names[k] = header_blk[k]["name"]
 
-    repo_results_df = pd.DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='columns',how='any')
+    repo_results_df = DataFrame.from_dict(repo_results_dict, orient="index").rename(columns=df_column_names).dropna(axis='columns',how='any')
     repo_results_df = repo_results_df.apply(lambda x: x.explode().explode() if x.name in ['Status', 'Name', 'Author', 'Category', 'Game', 'Contents'] else x)
     repo_results_df = repo_results_df[repo_results_df["Name"].str.contains(user_query, flags=re.IGNORECASE)]
     num_results = repo_results_df.shape[0]
