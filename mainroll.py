@@ -144,7 +144,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
 async def entropy(interaction: discord.Interaction):
     try:
         completedproc = subprocess.run(['cat','/proc/sys/kernel/random/entropy_avail'], stdout = subprocess.PIPE, timeout=1, encoding='ascii')
-        return await interaction.command.koduck.send_message(interaction, content=f"Randomization quantum: **{completedproc.stdout}**!")
+        return await interaction.command.koduck.send_message(interaction, content=f"Randomization quantum: **{completedproc.stdout.strip()}**!")
     except subprocess.TimeoutExpired:
         return await interaction.command.koduck.send_message(interaction, content="Orb did not respond... ask again later!", ephemeral=True)
     except Exception as e:
