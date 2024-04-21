@@ -742,6 +742,10 @@ def embed_spotlight_tracker(dict_line, location, notification=""):
 
 
 async def repo(interaction: discord.Interaction, query:str):
+    if query.lower().strip()=="link":
+        message_help =  f"You can access the full Player-Made Repository here! \n__<{pmc_link}>__\n\nWant to submit something? Ask russelcs in the Merry Mancer Games server!"
+        return await interaction.command.koduck.send_message(interaction, content=message_help)
+    
     user_query = query
 
     # api change @ 10/24/21:

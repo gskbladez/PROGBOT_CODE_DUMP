@@ -1064,43 +1064,32 @@ async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal[
     return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
-async def bond(interaction: discord.Interaction, query: str):
-    cleaned_args = [q.strip().lower() for q in query.split(",") if q]
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="Give me a **Bond Power** and I can pull up its info for you!\nFor a list of all Bond Powers, use `bond all`!")
-    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+async def bond(interaction: discord.Interaction, power: typing.Literal["Overload", "DestinySpark", "CrossSoul", "FullSynchro", "Bond rules"]):
+    if "rules" in power:
         ruling_msg = await find_value_in_table(interaction, help_df, "Command", "bondruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.command.koduck.send_message(interaction, 
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.command.koduck.send_message(interaction, 
                                     content=ruling_msg["Response"])
-    elif len(cleaned_args) > MAX_BOND_QUERY:
+
+    bond_info = await find_value_in_table(interaction, bond_df, "BondPower", power)
+    if bond_info is None:
         return await interaction.command.koduck.send_message(interaction, 
-                                        content="Too many Bond Powers; no more than %d!\nBesides, there's only four Bond Powers in the game!" % MAX_BOND_QUERY, ephemeral=True)
-    if cleaned_args[0] in ['all', 'list']:
-        result_title = "Pulling up all Bond Powers..."
-        result_msg = ', '.join(bond_df["BondPower"])
-        return await send_query_msg(interaction, result_title, result_msg)
+                                        content=f"Couldn't the bond power `{power}`! (You should probably let the devs know...)", ephemeral=True)
 
-    for arg in cleaned_args:
-        bond_info = await find_value_in_table(interaction, bond_df, "BondPower", arg)
-        if bond_info is None:
-            continue
+    bond_title = bond_info["BondPower"]
+    bond_cost = bond_info["Cost"]
+    bond_description = bond_info["Description"]
 
-        bond_title = bond_info["BondPower"]
-        bond_cost = bond_info["Cost"]
-        bond_description = bond_info["Description"]
+    embed = discord.Embed(
+        title="__%s__" % bond_title,
+        color=0x24ff00)
+    embed.add_field(name="**({})**".format(bond_cost),
+                    value="_{}_".format(bond_description))
 
-        embed = discord.Embed(
-            title="__%s__" % bond_title,
-            color=0x24ff00)
-        embed.add_field(name="**({})**".format(bond_cost),
-                        value="_{}_".format(bond_description))
-
-        await interaction.command.koduck.send_message(interaction,  embed=embed)
-    return
+    return await interaction.command.koduck.send_message(interaction,  embed=embed)
+    
 
 
 async def element(interaction: discord.Interaction, number: int, category: typing.Literal['All','Nature','Fantasy','Science','Actions','Art','???']='All'):
