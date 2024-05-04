@@ -54,8 +54,13 @@ def clean_audience():
     with shelve.open('../audience_data.dbm') as audience_data:
         #with open(settings.audiencefile, "r") as afp:
         #    audience_data = json.load(afp)
-        del_keys = [key for key in audience_data if
-                    (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key]["last_modified"], '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT]
+        del_keys = []
+        for key in audience_data:
+            if not audience_data[key].get("last_modified"):
+                del_keys.append(key)
+            else:
+                if (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key].get("last_modified"), '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT:
+                    del_keys.append(key)
         for key in del_keys: del audience_data[key]
         #with open(settings.audiencefile, 'w') as afp:
         #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
@@ -63,8 +68,13 @@ def clean_audience():
 
 def clean_spotlight():
     with shelve.open('../spotlight_db.dbm') as spotlight_db:
-        del_keys = [key for key in spotlight_db if
-                    (datetime.datetime.now() - datetime.datetime.strptime(spotlight_db[key]["Last Modified"], '%Y-%m-%d %H:%M:%S')) > SPOTLIGHT_TIMEOUT]
+        del_keys = []
+        for key in spotlight_db:
+            if not spotlight_db[key].get("Last Modified"):
+                del_keys.append(key)
+            else:
+                if (datetime.datetime.now() - datetime.datetime.strptime(spotlight_db[key].get("Last Modified"), '%Y-%m-%d %H:%M:%S')) > SPOTLIGHT_TIMEOUT:
+                    del_keys.append(key)
         for key in del_keys: del spotlight_db[key]
         #with open(settings.audiencefile, 'w') as afp:
         #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
