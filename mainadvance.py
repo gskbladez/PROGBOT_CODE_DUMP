@@ -9,6 +9,7 @@ import re
 import datetime
 from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table
 from maincommon import help_df, cc_color_dictionary, pmc_link
+import shelve
 
 MAX_MOD_QUERY = 5
 ROLL_COMMENT_CHAR = '#'
@@ -47,26 +48,27 @@ glossary_df = read_csv(settings.glossaryfile, sep="\t").fillna('')
 
 pmc_daemon_df = read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
-audience_data = {}
-spotlight_db = {}
+# I should honestly make this a configuration but meh
 
 def clean_audience():
-    #with open(settings.audiencefile, "r") as afp:
-    #    audience_data = json.load(afp)
-    del_keys = [key for key in audience_data if
-                (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key]["last_modified"], '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT]
-    for key in del_keys: del audience_data[key]
-    #with open(settings.audiencefile, 'w') as afp:
-    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
-    return
+    with shelve.open('../audience_data.dbm') as audience_data:
+        #with open(settings.audiencefile, "r") as afp:
+        #    audience_data = json.load(afp)
+        del_keys = [key for key in audience_data if
+                    (datetime.datetime.now() - datetime.datetime.strptime(audience_data[key]["last_modified"], '%Y-%m-%d %H:%M:%S')) > AUDIENCE_TIMEOUT]
+        for key in del_keys: del audience_data[key]
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        return
 
 def clean_spotlight():
-    del_keys = [key for key in spotlight_db if
-                (datetime.datetime.now() - datetime.datetime.strptime(spotlight_db[key]["Last Modified"], '%Y-%m-%d %H:%M:%S')) > SPOTLIGHT_TIMEOUT]
-    for key in del_keys: del spotlight_db[key]
-    #with open(settings.audiencefile, 'w') as afp:
-    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
-    return
+    with shelve.open('../spotlight_db.dbm') as spotlight_db:
+        del_keys = [key for key in spotlight_db if
+                    (datetime.datetime.now() - datetime.datetime.strptime(spotlight_db[key]["Last Modified"], '%Y-%m-%d %H:%M:%S')) > SPOTLIGHT_TIMEOUT]
+        for key in del_keys: del spotlight_db[key]
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        return
 
 async def crimsonnoise(interaction: discord.Interaction, md_type: typing.Literal["Common", "Uncommon", "Rare"]):
     arg = md_type.lower().strip()
@@ -226,75 +228,79 @@ def change_audience(channel_id, cj_type, amount):
     id = str(channel_id)
     #with open(settings.audiencefile, "r") as afp:
     #audience_data = json.load(afp)
-    if id not in audience_data:
-        return (-1, "Audience Participation hasn't been started in this channel!")
-    currentval = audience_data[id][cj_type]
-    tempval = currentval + amount
-    if tempval < 0:
-        return (-1, "There's not enough %ss for that! (Current %ss: %d)" % (*[cj_type.capitalize()]*2, currentval), "")
-    if tempval > MAX_CHEER_JEER_VALUE:
-        return (-1, "That adds too many %ss! (Current %ss: %d, Max: %d)" % (*[cj_type.capitalize()]*2, currentval, MAX_CHEER_JEER_VALUE), "")
+    with shelve.open('../audience_data.dbm') as audience_data:
+        if id not in audience_data:
+            return (-1, "Audience Participation hasn't been started in this channel!")
+        currentval = audience_data[id][cj_type]
+        tempval = currentval + amount
+        if tempval < 0:
+            return (-1, "There's not enough %ss for that! (Current %ss: %d)" % (*[cj_type.capitalize()]*2, currentval), "")
+        if tempval > MAX_CHEER_JEER_VALUE:
+            return (-1, "That adds too many %ss! (Current %ss: %d, Max: %d)" % (*[cj_type.capitalize()]*2, currentval, MAX_CHEER_JEER_VALUE), "")
 
-    audience_data[id][cj_type] = tempval
-    audience_data[id]["last_modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        audience_data[id][cj_type] = tempval
+        audience_data[id]["last_modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    if amount > 0:
-        word_term = "Added %d %s!" % (amount, cj_type.capitalize())
-    elif amount < 0:
-        word_term = "Spent %d %s!" % (-1*amount, cj_type.capitalize())
-    else:
-        word_term = "Added... 0 %s! Huh?" % (cj_type.capitalize())
-    c_val = audience_data[id]["cheer"]
-    j_val = audience_data[id]["jeer"]
+        if amount > 0:
+            word_term = "Added %d %s!" % (amount, cj_type.capitalize())
+        elif amount < 0:
+            word_term = "Spent %d %s!" % (-1*amount, cj_type.capitalize())
+        else:
+            word_term = "Added... 0 %s! Huh?" % (cj_type.capitalize())
+        c_val = audience_data[id]["cheer"]
+        j_val = audience_data[id]["jeer"]
 
-    #with open(settings.audiencefile, 'w') as afp:
-    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
 
-    return (0, word_term, "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
+        return (0, word_term, "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
 
 
 def get_audience(channel_id):
-    id = str(channel_id)
-    #with open(settings.audiencefile, "r") as afp:
-        #audience_data = json.load(afp)
-    if id not in audience_data:
-        return (-1, "Audience Participation hasn't been started in this channel!")
-    c_val = audience_data[id]["cheer"]
-    j_val = audience_data[id]["jeer"]
-    return (0, (c_val, j_val))
+    with shelve.open('../audience_data.dbm') as audience_data:
+        id = str(channel_id)
+        #with open(settings.audiencefile, "r") as afp:
+            #audience_data = json.load(afp)
+        if id not in audience_data:
+            return (-1, "Audience Participation hasn't been started in this channel!")
+        c_val = audience_data[id]["cheer"]
+        j_val = audience_data[id]["jeer"]
+        return (0, (c_val, j_val))
 
 
 def start_audience(channel_id):
-    id = str(channel_id)
-    #with open(settings.audiencefile, "r") as afp:
-        #audience_data = json.load(afp)
-    if len(audience_data) > MAX_AUDIENCES:
-        return (-2, "ProgBot's hosting too many audiences right now! Try again later!", "")
-    if id in audience_data:
-        c_val = audience_data[id]["cheer"]
-        j_val = audience_data[id]["jeer"]
-        return (-1,
-                "Audience Participation was already started in this channel!",
-                "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
-    audience_data[id] = {"cheer": 0, "jeer": 0, "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    with shelve.open('../audience_data.dbm') as audience_data:
+        id = str(channel_id)
+        #with open(settings.audiencefile, "r") as afp:
+            #audience_data = json.load(afp)
+        if len(audience_data) > MAX_AUDIENCES:
+            return (-2, "ProgBot's hosting too many audiences right now! Try again later!", "")
+        if id in audience_data:
+            c_val = audience_data[id]["cheer"]
+            j_val = audience_data[id]["jeer"]
+            return (-1,
+                    "Audience Participation was already started in this channel!",
+                    "Cheer Points: %d, Jeer Points: %d" % (c_val, j_val))
+        audience_data[id] = {"cheer": 0, "jeer": 0, "last_modified": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
-    #with open(settings.audiencefile, 'w') as afp:
-    #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+        #with open(settings.audiencefile, 'w') as afp:
+        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
 
-    return (0, "", "")
+        return (0, "", "")
 
 
 def end_audience(channel_id):
-    id = str(channel_id)
-    #with open(settings.audiencefile, "r") as afp:
-    #    audience_data = json.load(afp)
-    try:
-        del audience_data[id]
-        #with open(settings.audiencefile, 'w') as afp:
-        #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
-        return 0
-    except KeyError:
-        return -1
+    with shelve.open('../audience_data.dbm') as audience_data:
+        id = str(channel_id)
+        #with open(settings.audiencefile, "r") as afp:
+        #    audience_data = json.load(afp)
+        try:
+            del audience_data[id]
+            #with open(settings.audiencefile, 'w') as afp:
+            #    json.dump(audience_data, afp, sort_keys=True, indent=4, default=str)
+            return 0
+        except KeyError:
+            return -1
 
 
 async def cheer(interaction: discord.Interaction, command:typing.Literal['spend', 'add', 'list'], num:int=1):
@@ -546,152 +552,195 @@ async def achievement(interaction: discord.Interaction, query:str):
 
 
 async def spotlight(interaction:discord.Interaction, names:str="", command:typing.Literal['start', 'mark', 'add', 'remove', 'view', 'edit', 'reset', 'end', 'help']='mark'):
-    if interaction.channel.type is discord.ChannelType.private:
-        channel_id = interaction.channel.id
-        channel_name = interaction.user.name
-        msg_location = f"{channel_name} (Direct messages)"
-    else:
-        channel_id = interaction.channel.id
-        channel_name = interaction.channel.name
-        channel_server = interaction.channel.guild
-        msg_location = f"#{channel_name} ({channel_server})"
-    
-    arg = command.strip().lower()
-    name_list = [n.strip() for n in names.split(",") if n]
 
-    if arg == 'help':
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
-        if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction, 
-                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
-
-    notification_msg = ""
-    err_msg = ""
-
-    is_start = arg == 'start'
-    if channel_id not in spotlight_db:
-        if len(name_list) == 0:
-            return await interaction.command.koduck.send_message(interaction, 
-                                        embed=embed_spotlight_message("Spotlight Tracker not yet started in this channel!",
-                                                                            msg_location, error=True),
-                                                                            ephemeral=True)
-        is_start = True
-
-    if is_start:
-        if channel_id in spotlight_db:
-            spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            return await interaction.command.koduck.send_message(interaction, embed=embed_spotlight_message("Spotlight Tracker already started in this channel!",
-                                                                              msg_location, error=True), ephemeral=True)
-        if (len(spotlight_db)+1) > MAX_SPOTLIGHTS:
-            return await interaction.command.koduck.send_message(interaction, content="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.", ephemeral=True)
-        if len(name_list) > (MAX_CHECKLIST_SIZE + 1):
-            return await interaction.command.koduck.send_message(interaction, 
-                                            embed=embed_spotlight_message(f"Max of {MAX_CHECKLIST_SIZE} participants in a checklist!", msg_location, error=True), ephemeral=True)
-        participants={}
-        nl = Series("", index=range(len(name_list)))
-        i=0
-        dups = []
-        for n in name_list:
-            if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
-                dups.append(n)
-            else:
-                nl.iloc[i] = n
-                participants[n] = False
-                i += 1
-        if dups:
-            err_msg = "(Note: %s are duplicates!)" % ", ".join(dups)
+    with shelve.open('../spotlight_db.dbm') as spotlight_db:
+        if interaction.channel.type is discord.ChannelType.private:
+            channel_id = interaction.channel.id
+            channel_name = interaction.user.name
+            msg_location = f"{channel_name} (Direct messages)"
+        else:
+            channel_id = interaction.channel.id
+            channel_name = interaction.channel.name
+            channel_server = interaction.channel.guild
+            msg_location = f"#{channel_name} ({channel_server})"
         
-        spotlight_db[channel_id] = participants
-        spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=err_msg)
-        return await interaction.command.koduck.send_message(interaction, embed=embed)
+        arg = command.strip().lower()
+        name_list = [n.strip() for n in names.split(",") if n]
 
-    spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        if arg == 'help':
+            ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
+            if ruling_msg is None:
+                return await interaction.command.koduck.send_message(interaction, 
+                                                content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+            return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
 
-    if arg == 'end':
-        del spotlight_db[channel_id]
-        return await interaction.command.koduck.send_message(interaction, 
-                                        embed=embed_spotlight_message("Shutting down this Spotlight Tracker! Goodnight!",
-                                                                          msg_location))
-    elif arg == 'add':
-        if not name_list:
-            return await interaction.command.koduck.send_message(interaction, 
-                                            embed=embed_spotlight_message("Please list who you want to add!",
-                                                                              msg_location, error=True), ephemeral=True)
-        if (len(spotlight_db[channel_id]) + len(name_list) - 1) > MAX_CHECKLIST_SIZE:
-            return await interaction.command.koduck.send_message(interaction, 
-                                            embed=embed_spotlight_message("Max of %d participants in a checklist!" %
-                                                                              MAX_CHECKLIST_SIZE,
-                                                                              msg_location, error=True), ephemeral=True)
-        dups = []
-        n = len(name_list) # max number of new entries
-        nl = Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
-        i = len(spotlight_db[channel_id]) # end of the array
-        for n in name_list:
-            if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
-                dups.append(n)
-            else:
-                nl.iloc[i] = n
-                spotlight_db[channel_id][n] = False
-                i += 1
+        notification_msg = ""
+        err_msg = ""
+
+        is_start = arg == 'start'
+        if channel_id not in spotlight_db:
+            if len(name_list) == 0:
+                return await interaction.command.koduck.send_message(interaction, 
+                                            embed=embed_spotlight_message("Spotlight Tracker not yet started in this channel!",
+                                                                                msg_location, error=True),
+                                                                                ephemeral=True)
+            is_start = True
+
+        if is_start:
+            if channel_id in spotlight_db:
+                spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                return await interaction.command.koduck.send_message(interaction, embed=embed_spotlight_message("Spotlight Tracker already started in this channel!",
+                                                                                msg_location, error=True), ephemeral=True)
+            if (len(spotlight_db)+1) > MAX_SPOTLIGHTS:
+                return await interaction.command.koduck.send_message(interaction, content="Too many Spotlight Checklists are active in ProgBot right now! Please try again later.", ephemeral=True)
+            if len(name_list) > (MAX_CHECKLIST_SIZE + 1):
+                return await interaction.command.koduck.send_message(interaction, 
+                                                embed=embed_spotlight_message(f"Max of {MAX_CHECKLIST_SIZE} participants in a checklist!", msg_location, error=True), ephemeral=True)
+            participants={}
+            nl = Series("", index=range(len(name_list)))
+            i=0
+            dups = []
+            for n in name_list:
+                if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
+                    dups.append(n)
+                else:
+                    nl.iloc[i] = n
+                    participants[n] = False
+                    i += 1
             if dups:
-                err_msg = "(%s already in the checklist!)" % ", ".join(dups)
-    elif arg == 'reset':
-        reset_all = name_list[0] if name_list else True
-        if reset_all:
-            spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
-        for n in name_list:
-            match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
-            if match_name is None:
-                return
-            spotlight_db[channel_id][match_name] = False
-            continue
-    elif arg == 'remove':
-        reset_all = name_list[0] if name_list else True
-        if reset_all:
+                err_msg = "(Note: %s are duplicates!)" % ", ".join(dups)
+
+            
+            arg = command.strip().lower()
+            name_list = [n.strip() for n in names.split(",") if n]
+            channel_id = str(channel_id)
+
+            if arg == 'help':
+                ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
+                if ruling_msg is None:
+                    return await interaction.command.koduck.send_message(interaction, 
+                                                    content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+                return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
+
+        if arg == 'end':
+            del spotlight_db[channel_id]
             return await interaction.command.koduck.send_message(interaction, 
-                                            embed=embed_spotlight_message("Please specify who you want to remove!",
-                                                                              msg_location, error=True), ephemeral=True)
-        for n in name_list:
-            match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
-            if match_name is None:
-                continue
-            del spotlight_db[channel_id][match_name]
-            continue
-    elif arg =='edit':
-        if len(name_list) != 2:
-            return await interaction.command.koduck.send_message(interaction, 
-                                            embed=embed_spotlight_message("Need the original name and the new name to change it to!",
-                                                                              msg_location, error=True), ephemeral=True)
+                                            embed=embed_spotlight_message("Shutting down this Spotlight Tracker! Goodnight!",
+                                                                            msg_location))
+        elif arg == 'add':
+            if not name_list:
+                return await interaction.command.koduck.send_message(interaction, 
+                                                embed=embed_spotlight_message("Please list who you want to add!",
+                                                                                msg_location, error=True), ephemeral=True)
+            if (len(spotlight_db[channel_id]) + len(name_list) - 1) > MAX_CHECKLIST_SIZE:
+                return await interaction.command.koduck.send_message(interaction, 
+                                                embed=embed_spotlight_message("Max of %d participants in a checklist!" %
+                                                                                MAX_CHECKLIST_SIZE,
+                                                                                msg_location, error=True), ephemeral=True)
+            dups = []
+            n = len(name_list) # max number of new entries
+            nl = Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
+            i = len(spotlight_db[channel_id]) # end of the array
+            for n in name_list:
+                if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
+                    dups.append(n)
+                else:
+                    nl.iloc[i] = n
+                    spotlight_db[channel_id][n] = False
+                    i += 1
+                if dups:
+                    err_msg = "(Note: %s are duplicates!)" % ", ".join(dups)
+                
+                spotlight_db[channel_id] = participants
+                spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=err_msg)
+                return await interaction.command.koduck.send_message(interaction, embed=embed)
 
-        match_name = await find_spotlight_participant(interaction, name_list[0], spotlight_db[channel_id], msg_location)
-        if match_name is not None:
-            spotlight_db[channel_id][name_list[1]] = spotlight_db[channel_id].pop(match_name)
-    elif arg=='mark' and name_list:
-        already_went_list = []
-        for n in name_list:
-            match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
-            if match_name is None:
-                continue
-            if spotlight_db[channel_id][match_name]:
-                already_went_list.append(match_name)
-            else:
-                spotlight_db[channel_id][match_name] = True
+            spotlight_db[channel_id]["Last Modified"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        if len(spotlight_db[channel_id]) > 1: # not just last modified
-            if all(spotlight_db[channel_id].values()):
-                notification_msg = "Spotlight Reset!"
-                spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
+            if arg == 'end':
+                del spotlight_db[channel_id]
+                return await interaction.command.koduck.send_message(interaction, 
+                                                embed=embed_spotlight_message("Shutting down this Spotlight Tracker! Goodnight!",
+                                                                                msg_location))
+            elif arg == 'add':
+                if not name_list:
+                    return await interaction.command.koduck.send_message(interaction, 
+                                                    embed=embed_spotlight_message("Please list who you want to add!",
+                                                                                    msg_location, error=True), ephemeral=True)
+                if (len(spotlight_db[channel_id]) + len(name_list) - 1) > MAX_CHECKLIST_SIZE:
+                    return await interaction.command.koduck.send_message(interaction, 
+                                                    embed=embed_spotlight_message("Max of %d participants in a checklist!" %
+                                                                                    MAX_CHECKLIST_SIZE,
+                                                                                    msg_location, error=True), ephemeral=True)
+                dups = []
+                n = len(name_list) # max number of new entries
+                nl = pd.Series(list(spotlight_db[channel_id].keys()) + ([""]*n))
+                i = len(spotlight_db[channel_id]) # end of the array
+                for n in name_list:
+                    if any(nl.str.contains(re.escape(n), flags=re.IGNORECASE)):
+                        dups.append(n)
+                    else:
+                        nl.iloc[i] = n
+                        spotlight_db[channel_id][n] = False
+                        i += 1
+                    if dups:
+                        err_msg = "(%s already in the checklist!)" % ", ".join(dups)
+            elif arg == 'reset':
+                reset_all = name_list[0] if name_list else True
+                if reset_all:
+                    spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
+                for n in name_list:
+                    match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
+                    if match_name is None:
+                        return
+                    spotlight_db[channel_id][match_name] = False
+                    continue
+            elif arg == 'remove':
+                reset_all = name_list[0] if name_list else True
+                if reset_all:
+                    return await interaction.command.koduck.send_message(interaction, 
+                                                    embed=embed_spotlight_message("Please specify who you want to remove!",
+                                                                                    msg_location, error=True), ephemeral=True)
+                for n in name_list:
+                    match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
+                    if match_name is None:
+                        continue
+                    del spotlight_db[channel_id][match_name]
+                    continue
+            elif arg =='edit':
+                if len(name_list) != 2:
+                    return await interaction.command.koduck.send_message(interaction, 
+                                                    embed=embed_spotlight_message("Need the original name and the new name to change it to!",
+                                                                                    msg_location, error=True), ephemeral=True)
 
-            if already_went_list:
-                err_msg = "(%s already went!)" % ", ".join(already_went_list)
-    elif arg=='view':
-        pass
+                match_name = await find_spotlight_participant(interaction, name_list[0], spotlight_db[channel_id], msg_location)
+                if match_name is not None:
+                    spotlight_db[channel_id][name_list[1]] = spotlight_db[channel_id].pop(match_name)
+            elif arg=='mark' and name_list:
+                already_went_list = []
+                for n in name_list:
+                    match_name = await find_spotlight_participant(interaction, n, spotlight_db[channel_id], msg_location)
+                    if match_name is None:
+                        continue
+                    if spotlight_db[channel_id][match_name]:
+                        already_went_list.append(match_name)
+                    else:
+                        spotlight_db[channel_id][match_name] = True
 
-    notify_str = "\n".join([i for i in (notification_msg, err_msg) if i])
-    embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
-    return await interaction.command.koduck.send_message(interaction, embed=embed)
+                if len(spotlight_db[channel_id]) > 1: # not just last modified
+                    if all(spotlight_db[channel_id].values()):
+                        notification_msg = "Spotlight Reset!"
+                        spotlight_db[channel_id] = {k:(False if k != "Last Modified" else v) for k, v in spotlight_db[channel_id].items()}
+
+                    if already_went_list:
+                        err_msg = "(%s already went!)" % ", ".join(already_went_list)
+            elif arg=='view':
+                pass
+
+            notify_str = "\n".join([i for i in (notification_msg, err_msg) if i])
+            embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
+        return await interaction.command.koduck.send_message(interaction, embed=embed)
 
 
 async def find_spotlight_participant(interaction, arg, participant_dict, message_location):
@@ -724,7 +773,8 @@ def embed_spotlight_message(err_msg, location, error=False):
 
 def embed_spotlight_tracker(dict_line, location, notification=""):
     participants = dict_line.copy()
-    del participants["Last Modified"]
+    if "Last Modified" in participants:
+        del participants["Last Modified"]
     if not participants:
         embed_descript = "*No participants in this channel yet!*"
     else:
