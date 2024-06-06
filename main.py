@@ -150,7 +150,7 @@ async def goodnight(context, *args, **kwargs):
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
 
-required_files = [settings.commands_table_name, settings.user_levels_table_name]
+required_files = [settings.commands_table_name, settings.user_levels_table_name, settings.audiencesave, settings.spotlightsave]
 
 bad_files = [f for f in required_files if not os.path.isfile(f)]
 if bad_files:

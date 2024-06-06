@@ -19,7 +19,6 @@ user_cooldown_0 = 0
 user_cooldown_1 = 0
 output_history_size = 10
 background_task = None
-background_task_interval = 10
 enable_debug_logger = False
 enable_run_command = True
 run_command_name = "run"
@@ -66,6 +65,9 @@ achievementfile = "tables/achievementdata.tsv"
 glossaryfile = "tables/glossarydata.tsv"
 autolootfile = "tables/autolootdata.tsv"
 
+audiencesave = "save/audiences.json"
+spotlightsave = "save/spotlights.json"
+
 #HARDCODED LINKS
 character_sheet = "https://docs.google.com/spreadsheets/d/158iI4LCpfS4AGjV5EshHkbKUD4GxogJCiwZCV6QzJ5s/edit#gid=295914024"
 common_md_image = "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/commonmysterydata.png"
@@ -77,10 +79,7 @@ sapphire_md_image = "https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DU
 sunny_md_image = "https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/sunnymysterydata.png"
 bug_image = "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png"
 invite_link = "https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0"
-notion_collection_id = "97e4a870-4673-4fc7-a2c7-3fb876e4d837"
-notion_collection_view_id = "085a4095-0668-4722-a8ec-91ae6f56640c"
-notion_collection_space_id = "678b1442-260b-497a-9bf3-0d6ab3938e0d"
-notion_query_link = "https://www.notion.so/api/v3/queryCollection"
+notion_pmc_id = "dc469d3ae5f147cab389b6f61bce102e"
 bugreport_image = "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png"
 bugreport_channel_id = 704684798584815636
 
@@ -88,6 +87,17 @@ bugreport_channel_id = 704684798584815636
 source_guild_id = 556291542206382080
 custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
                  "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901995743752106064>",
-                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>"}
+                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>", 
+                 "devilish": "👿"} # no smiling imp emoji
+
+#TEST SUPPORT
+bugreport_channel_id = 796498229872820314
+source_guild_id = 668525535705694208
+custom_emojis = {"instant": r"<:instant:892038392110534688>", "cost": r"<:costpower:892038391959539742>",
+                 "roll": r"<:rollpower:892038392357994548>", "underflow": r"<:underflow:901981520321998849>",
+                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>", 
+                 "devilish": "👿"}
+background_task_interval = 0.5
+# /home/bladez/update-proggers
 
 #NETBATTLER CONSTANTS
