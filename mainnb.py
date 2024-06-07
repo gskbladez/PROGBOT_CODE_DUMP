@@ -8,7 +8,7 @@ import re
 import mainadvance
 from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table
 from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
-from maincommon import nyx_link, grid_link
+from maincommon import nyx_link, grid_link, random_chip_link
 import koduck
 
 MAX_POWER_QUERY = 5
@@ -1140,6 +1140,8 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
         book_names = ["**Nyx Crossover Content**(?): <%s>" % nyx_link]
     elif cleaned_args[0] in ['grid', 'gridbased', 'grid-based', 'gridbasedcombat', 'grid-basedcombat']:
         book_names = ["**Grid-Based Combat Rules**(?): <%s>" % grid_link]
+    elif cleaned_args[0] in ['random', 'randomized']:
+        book_names = ["**Randomized Chips**(?): <%s>" % random_chip_link]
     else:
         book_names = []
 
