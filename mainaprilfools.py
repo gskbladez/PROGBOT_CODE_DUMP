@@ -624,7 +624,7 @@ async def autoloot(interaction: discord.Interaction):
         duration = (f"for {random.randint(1,6)} {random.choice(duration_type)}")
     if duration_r == 3:
         duration_type = ["minutes", "hours", "sessions", "days"]
-        duration = (f"for {random.randint(1,6)} out-of-game {duration_type}")
+        duration = (f"for {random.randint(1,6)} out-of-game {random.choice(duration_type)}")
     if duration_r == 4:
         duration = "until jack-out"
     if duration_r == 5:
