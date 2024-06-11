@@ -9,9 +9,9 @@ chip	chip	Game Lookup	base	slash	Lookup BattleChips	1	FALSE
 power	power	Game Lookup	base	slash	Lookup Powers (Navi or Virus)	1	FALSE
 ncp	ncp	Game Lookup	base	slash	Lookup NCPs	1	FALSE
 virus	virus	Game Lookup	base	slash	Lookup Viruses' descriptions (opt: detailed for full statblocks)	1	FALSE
-tag	tag	Game Lookup	base	slash	Lookup a BattleChip or Power tag	1	FALSE
+tag	tag	Game Lookup	base	slash	Lookup a BattleChip or Virus tag, or a category description	1	FALSE
 query	query_func	Info	base	slash	Lookup a category of chips or NCPs! (Can also list bond powers, daemons, network mods, weather)	1	FALSE
-bondpower	bond	Game Lookup	base	slash	Lookup a Bond Power, help, or rule	1	FALSE
+bondpower	bond	Game Lookup	base	slash	Lookup a Bond Power or rule	1	FALSE
 mysterydata	mysterydata	Rollers	base	slash	Roll Mystery Data (opt: chips_ncp_only for MysteryRewards!)	1	FALSE
 rulebook	rulebook	Info	base	slash	Post rulebook links	1	FALSE
 element	element	Rollers	base	slash	Roll random elements	1	FALSE
@@ -23,7 +23,7 @@ audience	audience	Assistant	advance	slash	Start up an Audience tracker	1	FALSE
 audiencecheer	cheer	Assistant	advance	slash	Spend/add Cheers (1: random one, 2: pick one, 5: pick a MegaCheer)	1	FALSE
 audiencejeer	jeer	Assistant	advance	slash	Spend/add Jeers (1: random one, 2: pick one, 5: pick a MegaJeer)	1	FALSE
 virusrandom	virusr	Rollers	base	slash	Select random Viruses (opt: # of strikers, artillery, etc. to roll, enable Mega/Omega Viruses)	1	FALSE
-playermaderepo	repo	Info	advance	slash	Pull up the Player-Made Repository Link	1	FALSE
+playermaderepo	repo	Info	advance	slash	Search the Player-Made Repository, or use "link" to pull up the link	1	FALSE
 adventure	adventure	Rollers	base	slash	Generate a randomized adventure scenario prompt! (opt: chaos for a longer prompt)	1	FALSE
 fight	fight	Rollers	base	slash	Generate a randomized Navi boss fight prompt!	1	FALSE
 sheet	sheet	Info	base	slash	Pull up character sheet links	1	FALSE

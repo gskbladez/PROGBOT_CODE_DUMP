@@ -1,30 +1,12 @@
 #BOT FILES
 commands_table_name = "tables/commands.tsv"
-user_levels_table_name = "tables/user_levels.txt"
-log_file = "log.txt"
-debug_log_file_name = "discord.log"
+user_levels_table_name = "tables/user_levels.tsv"
+log_file = "progbot.log"
 prefixfile = "prefixes.json"
 settings_table_name = ""
 
 
 #BOT SETTINGS
-command_prefix = "/"
-param_delim = " "
-default_user_level = 1
-max_user_level = 3
-log_format = "{timestamp}\t{type}\t{server_id}\t{server_name}\t{channel_id}\t{channel_name}\t{user_id}\t{discord_tag}\t{nickname}\t{message_content}\t{data}\t{extra}"
-channel_cooldown = 0
-ignore_cd_level = 2
-user_cooldown_0 = 0
-user_cooldown_1 = 0
-output_history_size = 10
-background_task = None
-background_task_interval = 10
-enable_debug_logger = False
-enable_run_command = True
-run_command_name = "run"
-run_command_description = "Run a prefix command"
-run_command_default_response = "Command ran successfully"
 default_status = "NetBattlers RPG"
 
 #MESSAGES
@@ -88,6 +70,18 @@ bugreport_channel_id = 704684798584815636
 source_guild_id = 556291542206382080
 custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
                  "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901995743752106064>",
-                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>"}
+                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>", 
+                 "devilish": "👿"} # no smiling imp emoji
+
+#TEST SUPPORT
+admin_guild = 668525535705694208
+bugreport_channel_id = 796498229872820314
+source_guild_id = 668525535705694208
+custom_emojis = {"instant": r"<:instant:892038392110534688>", "cost": r"<:costpower:892038391959539742>",
+                 "roll": r"<:rollpower:892038392357994548>", "underflow": r"<:underflow:901981520321998849>",
+                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>", 
+                 "devilish": "👿"}
+background_task_interval = 0.5
+# /home/bladez/update-proggers
 
 #NETBATTLER CONSTANTS
