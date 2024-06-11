@@ -6,8 +6,8 @@ from pandas import DataFrame, Series, unique, read_csv, to_numeric
 import numpy as np
 import re
 import mainadvance
-from maincommon import bot, commands_dict
-from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table
+from maincommon import bot, commands_dict, filter_table
+from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table, send_multiple_embeds
 from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
 from maincommon import nyx_link, grid_link, random_chip_link
 
@@ -131,7 +131,7 @@ async def help_cmd(interaction: discord.Interaction, query: str):
 
     cleaned_args = clean_args([query])
     if cleaned_args[0] in ['list', 'all']:
-        sub_df = help_df[help_df["Hidden?"] == False]
+        sub_df = filter_table(help_df, {"Hidden", False})
         help_groups = sub_df.groupby(["Type"])
         return_msgs = ["%s\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in help_groups if name]
         return await interaction.response.send_message("\n\n".join(return_msgs))
@@ -139,13 +139,13 @@ async def help_cmd(interaction: discord.Interaction, query: str):
         cleaned_args = ["helphelp"]  # assuming direct control
 
     funkyarg = ''.join(cleaned_args)
-    help_msg = await find_value_in_table(interaction, help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)
+    help_msg, _ = await find_value_in_table(help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)
     if help_msg is None:
-        help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
+        help_response = filter_table(help_df, {"Command": "unknowncommand"}).iloc[0]["Response"]
     else:
         help_response = help_msg["Response"]
         if help_msg["Ruling?"]:
-            ruling_msg = await find_value_in_table(interaction, help_df, "Command", help_msg["Ruling?"], suppress_notfound=True)
+            ruling_msg, _ = await find_value_in_table(help_df, "Command", help_msg["Ruling?"], suppress_notfound=True)
             if ruling_msg is None:
                 return await interaction.response.send_message(
                                     content="Couldn't pull up additional ruling information for %s! You should probably let the devs know..." % help_msg["Ruling?"], ephemeral=True)
@@ -161,6 +161,7 @@ async def help_cmd(interaction: discord.Interaction, query: str):
 
     return await interaction.response.send_message(help_response)
 
+
 @bot.tree.command(name='tag', description=commands_dict["tag"])
 async def tag(interaction: discord.Interaction, category: str):
     cleaned_args = category.strip().lower()
@@ -168,9 +169,9 @@ async def tag(interaction: discord.Interaction, category: str):
         return await interaction.response.send_message(
             "Give me a BattleChip tag or Virus/Chip category, and I can pull up its info for you!")
     
-    tag_info = await find_value_in_table(interaction, tag_df, "Tag", cleaned_args)
+    tag_info, add_msg = await find_value_in_table(tag_df, "Tag", cleaned_args)
     if tag_info is None:
-        return
+        return await interaction.response.send_message(add_msg)
 
     tag_title = tag_info["Tag"]
     tag_description = tag_info["Description"]
@@ -190,38 +191,38 @@ async def tag(interaction: discord.Interaction, category: str):
 def query_chip(args):
     arg_lower = ' '.join(args)
 
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)}) 
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all `DarkChips`..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Dark|dark")]
+        subdf = filter_table(chip_df, {"Tags": "Dark"})
+        # TODO: filter out cat darkchips
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in ['mega', 'megachip', 'megachips']:
         return_title = "Pulling up all `MegaChips` (excluding DarkChips and Incident Chips)..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Mega|mega")]
+        subdf = filter_table(chip_df, {"Tags": "Mega"})
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in ['incident', 'incident chip', 'incident chips']:
         return_title = "Pulling up all `Incident` Chips..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Incident", flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"Tags": "Incident"})
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in arg_lower in chip_tag_list:
-        subdf = chip_df[chip_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE) &
-                        ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"Tags": re.escape(arg_lower)})
+        subdf = filter_table(subdf, {"Tags": "dark|incident|mega"}, not_filt = True)
         return_title = "Pulling up all BattleChips with the `%s` tag (excluding MegaChips)..." % re.escape(
             arg_lower).capitalize()
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in [i.lower() for i in chip_category_list]:
-        subdf = chip_df[(chip_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)) &
-                        ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"Category": re.escape(arg_lower)})
+        subdf = filter_table(subdf, {"Tags": "dark|incident|mega"}, not_filt = True)
         if subdf.shape[0] == 0:
             return False, "", ""
         return_title = "Pulling up all chips in the `%s` category (excluding MegaChips)..." % subdf.iloc[0]["Category"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in chip_license_list:
-        subdf = chip_df[chip_df["License"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"License": re.escape(arg_lower)})
         if subdf.shape[0] == 0:
             return False, "", ""
         return_title = "Pulling up all `%s` BattleChips..." % subdf.iloc[0]["License"]
@@ -233,13 +234,13 @@ def query_chip(args):
         return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower not in ["core"] and arg_lower in chip_from_list:
-        subdf = chip_df[chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"From?": re.escape(arg_lower)})
         if subdf.shape[0] == 0:
             return False, "", ""
         return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_chip_df[pmc_chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(pmc_chip_df, {"From?": re.escape(arg_lower)})
         if subdf.shape[0] == 0:
             return False, "", ""
         return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
@@ -251,8 +252,7 @@ def query_chip(args):
 
 
 def pity_cc_check(arg):
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg), flags=re.IGNORECASE)]
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg)})
     if alias_check.shape[0] > 0:
         arg = alias_check.iloc[0]["Source"]
         return arg
@@ -263,7 +263,6 @@ def pity_cc_check(arg):
         return None
 
 
-#TODO: move responses that weren't found to content before first embed
 @bot.tree.command(name='chip', description=commands_dict["chip"])
 async def chip(interaction: discord.Interaction, query: str):
     cleaned_args = clean_args([query])
@@ -274,13 +273,13 @@ async def chip(interaction: discord.Interaction, query: str):
             "I can also list all current chip categories with `chip category`, and all current chip tags with `chip tag`. To pull up details on a specific Category or Tag, use `tag` instead. (i.e. `tag blade`)"\
         )
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "chipruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "chipruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
     
     if cleaned_args[0] in ['folder', 'folders']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "folder", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "folder", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
@@ -326,10 +325,13 @@ async def chip(interaction: discord.Interaction, query: str):
     if len(cleaned_args) > MAX_CHIP_QUERY:
         return await interaction.response.send_message(content=f"Too many chips, no more than {MAX_CHIP_QUERY}!", ephemeral=True)
 
+    msg_warns = []
+    msg_embeds = []
     for arg in cleaned_args:
         if not arg:
             continue
-        chip_title, subtitle_trimmed, chip_description, color, _ = await chipfinder(interaction, arg)
+        chip_title, subtitle_trimmed, chip_description, color, _, content_msg = await chipfinder(interaction, arg)
+        msg_warns.append(content_msg)
         if chip_title is None:
             continue
         embed = discord.Embed(
@@ -337,21 +339,19 @@ async def chip(interaction: discord.Interaction, query: str):
             color=color)
         embed.add_field(name="[%s]" % subtitle_trimmed,
                         value="_%s_" % chip_description)
-        if interaction.response.is_done():
-            await interaction.followup.send(embed=embed)
-        else:
-            await interaction.response.send_message(embed=embed)
+        msg_embeds.append(embed)
+    
+    await send_multiple_embeds(interaction, msg_embeds, msg_warns)
+
 
 async def chipfinder(interaction: discord.Interaction, arg, suppress_err_msg=False):
-    chip_info = await find_value_in_table(interaction, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
+    chip_info, content_msg = await find_value_in_table(chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
     if chip_info is None:
-        chip_info = await find_value_in_table(interaction, pmc_chip_df, "Chip", arg, suppress_notfound=True,
-                                              alias_message=True)
+        chip_info, content_msg = await find_value_in_table(pmc_chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
         if chip_info is None:
-            chip_info = await find_value_in_table(interaction, nyx_chip_df, "Chip", arg, suppress_notfound=suppress_err_msg,
-                                                  alias_message=True)
+            chip_info, content_msg = await find_value_in_table(nyx_chip_df, "Chip", arg, suppress_notfound=suppress_err_msg, alias_message=True)
             if chip_info is None:
-                return None, None, None, None, None
+                return None, None, None, None, None, content_msg
 
     chip_name = chip_info["Chip"]
 
@@ -412,7 +412,7 @@ async def chipfinder(interaction: discord.Interaction, arg, suppress_err_msg=Fal
     subtitle = [chip_damage, chip_range, chip_category, ", ".join(chip_tags_list)]
     subtitle_trimmed = [i for i in subtitle if i and i[0] != '-']
 
-    return chip_title, "/".join(subtitle_trimmed), chip_description, color, ""
+    return chip_title, "/".join(subtitle_trimmed), chip_description, color, "", content_msg
 
 
 def find_skill_color(skill_key):
@@ -437,22 +437,22 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
         local_power_df = power_df
         local_pmc_df = pmc_power_df
 
-    power_info = await find_value_in_table(interaction, local_power_df, "Power/NCP", arg, suppress_notfound=True,
+    power_info, content_msg = await find_value_in_table(local_power_df, "Power/NCP", arg, suppress_notfound=True,
                                            alias_message=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(interaction, local_pmc_df, "Power/NCP", arg, suppress_notfound=True,
+        power_info, content_msg = await find_value_in_table(local_pmc_df, "Power/NCP", arg, suppress_notfound=True,
                                                alias_message=True)
         if power_info is None:
-            power_info = await find_value_in_table(interaction, nyx_power_df, "Power/NCP", arg, suppress_notfound=suppress_err_msg,
+            power_info, content_msg = await find_value_in_table(nyx_power_df, "Power/NCP", arg, suppress_notfound=suppress_err_msg,
                                                    alias_message=True)
             if power_info is None:
-                return None, None, None, None, None
+                return None, None, None, None, None, content_msg
 
     power_name = power_info["Power/NCP"]
 
     if ncp_only and any(power_df["Power/NCP"].str.contains(re.escape("%sncp" % power_name), flags=re.IGNORECASE)):
-        power_info = await find_value_in_table(interaction, local_power_df, "Power/NCP", power_name+"ncp",
+        power_info, content_msg = await find_value_in_table(local_power_df, "Power/NCP", power_name+"ncp",
                                                suppress_notfound=True, alias_message=False)
         power_name = power_info["Power/NCP"]
 
@@ -472,7 +472,7 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
         if power_source in cc_color_dictionary:
             power_color = cc_color_dictionary[power_source]
         elif (power_color < 0) and any(local_power_df["Power/NCP"].str.contains("^%s$" % re.escape(power_skill), flags=re.IGNORECASE)):
-            power_true_info = await find_value_in_table(interaction, local_power_df, "Power/NCP", power_skill)
+            power_true_info, content_msg = await find_value_in_table(local_power_df, "Power/NCP", power_skill)
             power_color = find_skill_color(power_true_info["Skill"])
         else:
             power_color = 0xffffff
@@ -551,7 +551,7 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
         else:
             field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
 
-    return power_name, field_title, field_description, power_color, field_footer
+    return power_name, field_title, field_description, power_color, field_footer, content_msg
 
 
 def query_power(args):
@@ -562,10 +562,10 @@ def query_power(args):
     for arg in args:
         arg_capital = arg.capitalize()
         if arg in [i.lower() for i in skill_list]:
-            sub_df = sub_df[(sub_df["Skill"] == arg_capital)]
+            sub_df = filter_table(sub_df, {"Skill": arg_capital})
             search_tag_list.append(arg_capital)
         elif arg in ['cost', 'roll', 'passive']:
-            sub_df = sub_df[(sub_df["Type"] == arg_capital)]
+            sub_df = filter_table(sub_df, {"Type": arg_capital})
             search_tag_list.append(arg_capital)
         elif arg == 'virus':
             is_default = False
@@ -574,10 +574,11 @@ def query_power(args):
         return False, "", ""
 
     if is_default:
-        sub_df = sub_df[sub_df["Sort"] == "Power"]
+        sub_df = filter_table(sub_df, {"Sort": "Power"})
         search_tag_list.append('Navi')
     else:
-        sub_df = sub_df[(sub_df["Sort"] == "Virus Power") & (sub_df["From?"] != "Mega Viruses") & (sub_df["From?"] != "The Walls Will Swallow You")]
+        sub_df = filter_table(sub_df, {"Sort": "Virus Power"})
+        sub_df = filter_table(sub_df, {"From?": "Mega Viruses", "From?": "The Walls Will Swallow You"}, not_filt=True)
         search_tag_list.append('Virus (excluding Mega)')
     results_title = "Searching for `%s` Powers..." % "` `".join(search_tag_list)
     results_msg = ", ".join(sub_df["Power/NCP"])
@@ -594,7 +595,7 @@ async def power(interaction: discord.Interaction, query: str):
             "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
             "Try giving me multiple queries at once, i.e. `power sense cost` or `power virus passive`!")
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "powerruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "powerruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
@@ -610,13 +611,16 @@ async def power(interaction: discord.Interaction, query: str):
             return await interaction.response.send_message(content="No powers found with that query!", ephemeral=True)
         return await send_query_msg(interaction, results_title, results_msg)
 
+    msg_warn = []
+    msg_embeds = []
     for arg in cleaned_args:
         if not arg:
             continue
         is_power_ncp = re.match(r"^(\S+)\s*ncp$", re.escape(arg), flags=re.IGNORECASE)
         if is_power_ncp:
             arg = is_power_ncp.group(1)
-        power_name, field_title, field_description, power_color, field_footer = await power_ncp(interaction, arg, force_power=True)
+        power_name, field_title, field_description, power_color, field_footer, add_msg = await power_ncp(interaction, arg, force_power=True)
+        msg_warn.append(add_msg)
         if power_name is None:
             continue
 
@@ -626,20 +630,17 @@ async def power(interaction: discord.Interaction, query: str):
                         value="_{}_".format(field_description))
         if field_footer:
             embed.set_footer(text=field_footer)
-        if interaction.response.is_done():
-            await interaction.followup.send(embed=embed)
-        else:
-            await interaction.response.send_message(embed=embed)
-    return
+        
+        msg_embeds.append(embed)
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
 def query_ncp(arg_lower):
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
-    ncp_df = power_df[power_df["Sort"] != "Virus Power"]
+    ncp_df = filter_table(power_df, {"Sort": "Virus Power"}, not_filt=True)
     valid_cc_list = list(unique(ncp_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core", "navi power upgrades"]]
     eb_match = re.match(r"^(\d+)(?:\s*EB)?$", arg_lower, flags=re.IGNORECASE)
@@ -647,7 +648,8 @@ def query_ncp(arg_lower):
     if eb_match:
         eb_search = eb_match.group(1)
         #Exclude npus from ncp query
-        subdf = ncp_df[(ncp_df["EB"] == eb_search) & (ncp_df["Type"] != "Upgrade")]
+        subdf = filter_table(ncp_df, {"EB": eb_search})
+        subdf = filter_table(ncp_df, {"Type": "Upgrade"}, not_filt=True)
         results_title = "Finding all `%s` EB NCPs (excluding NPUs)..." % eb_search
         results_msg = ", ".join(subdf["Power/NCP"])
         return True, results_title, results_msg
@@ -656,16 +658,16 @@ def query_ncp(arg_lower):
         results_title = "Pulling up all NCPs from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in valid_cc_list:
-        subdf = ncp_df[ncp_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(ncp_df, {"From?": re.escape(arg_lower)})
         results_title = "Pulling up all NCPs from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_power_df[(pmc_power_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)) &
-                             (pmc_power_df["Sort"] != "Virus Power")]
+        subdf = filter_table(pmc_power_df, {"From?": re.escape(arg_lower)})
+        subdf = filter_table(subdf, {"Sort": "Virus Power"}, not_filt = True)
         results_title = "Pulling up all NCPs from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
         results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in ["minus", "minus cust", "minuscust"]:
-        subdf = pmc_power_df[pmc_power_df["Type"] == "Minus"]
+        subdf = filter_table(pmc_power_df, {"Type": "Minus"})
         results_title = "Pulling up all `MinusCust` Programs from the unofficial Genso Network Player-Made Content..."
         results_msg = ", ".join(subdf["Power/NCP"])
     else:
@@ -682,7 +684,7 @@ async def ncp(interaction: discord.Interaction, query:str):
             "I can also query NCPs by **EB** and **Advance Content!**")
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "ncpruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "ncpruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
@@ -701,12 +703,15 @@ async def ncp(interaction: discord.Interaction, query:str):
         return await interaction.response.send_message(
                                         content=f"Too many NCPs, no more than {MAX_NCP_QUERY}!", ephemeral=True)
 
+    msg_warn = []
+    msg_embeds = []
     for arg in cleaned_args:
         if not arg:
             continue
 
-        power_name, field_title, field_description, power_color, _ = await power_ncp(interaction, arg, force_power=False,
+        power_name, field_title, field_description, power_color, _, add_msg = await power_ncp(interaction, arg, force_power=False,
                                                                                      ncp_only=True)
+        msg_warn.append(add_msg)
         if power_name is None:
             continue
 
@@ -714,12 +719,9 @@ async def ncp(interaction: discord.Interaction, query:str):
                               color=power_color)
         embed.add_field(name="**[{}]**".format(field_title),
                         value="_{}_".format(field_description))
-        if interaction.response.is_done():
-            await interaction.followup.send(embed=embed)
-        else:
-            await interaction.response.send_message(embed=embed)
-            
-    return
+        msg_embeds.append(embed)
+    
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
 def query_npu(arg):
@@ -729,19 +731,20 @@ def query_npu(arg):
     eb_match = re.match(r"^(\d+)(?:\s*EB)?$", re.escape(arg), flags=re.IGNORECASE)
     if eb_match:
         eb_search = eb_match.group(1)
-        result_ncps = power_df[(power_df["Type"] == "Upgrade") & (power_df["EB"] == eb_search)]
+        result_ncps = filter_table(power_df, {"Type": "Upgrade", "EB": eb_search})
         if result_ncps.shape[0] == 0:
             return False, "", ""
         result_msg = ", ".join(result_ncps["Power/NCP"])
         result_title = "Finding all `%sEB` Navi Power Upgrades..." % eb_search
         return True, result_title, result_msg
 
-    result_npu = power_df[power_df["Skill"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
+    result_npu = filter_table(power_df, {"Skill": "^%s$" % re.escape(arg)})
     if result_npu.shape[0] == 0:
         return False, "", ""
     result_title = "Finding all Navi Power Upgrades for `%s`..." % result_npu.iloc[0]["Skill"]
     result_string = ", ".join(result_npu["Power/NCP"])
     return True, result_title, result_string
+
 
 @bot.tree.command(name='npu', description=commands_dict["npu"])
 async def upgrade(interaction: discord.Interaction, query: str):
@@ -753,12 +756,13 @@ async def upgrade(interaction: discord.Interaction, query: str):
                                         content="I can't pull up more than %d Navi Power Upgrades at a time!" % MAX_NPU_QUERY, ephemeral=True)
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "npuruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "npuruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
     
+    # TODO: AGH
     for arg in cleaned_args:
         arg = arg.lower()
 
@@ -778,12 +782,12 @@ async def upgrade(interaction: discord.Interaction, query: str):
 
 
 async def virus_master(interaction: discord.Interaction, arg, simplified=True):
-    virus_info = await find_value_in_table(interaction, virus_df, "Name", arg, suppress_notfound=True, alias_message=True)
+    virus_info, content_msg = await find_value_in_table(virus_df, "Name", arg, suppress_notfound=True, alias_message=True)
 
     if virus_info is None:
-        virus_info = await find_value_in_table(interaction, pmc_virus_df, "Name", arg)
+        virus_info, content_msg = await find_value_in_table(pmc_virus_df, "Name", arg)
         if virus_info is None:
-            return None, None, None, None, None, None
+            return None, None, None, None, None, None, content_msg
 
     virus_name = virus_info["Name"]
     virus_description = virus_info["Description"]
@@ -862,31 +866,30 @@ async def virus_master(interaction: discord.Interaction, arg, simplified=True):
     if not simplified:
         virus_descript_block += "\n*%s*" % virus_description
 
-    return virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color
+    return virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color, content_msg
 
 
 def query_virus(arg_lower):
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
     valid_cc_list = list(unique(virus_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core"]]
     if arg_lower in [i.lower() for i in virus_category_list]:
-        sub_df = virus_df[virus_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        result_title = "Viruses in the `%s` category..." % sub_df.iloc[0]["Category"]
-        result_msg = ", ".join(sub_df["Name"])
+        subdf = filter_table(virus_df, {"Category": re.escape(arg_lower)})
+        result_title = "Viruses in the `%s` category..." % subdf.iloc[0]["Category"]
+        result_msg = ", ".join(subdf["Name"])
     elif arg_lower in virus_tag_list:
-        sub_df = virus_df[virus_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(virus_df, {"Tags": re.escape(arg_lower)})
         result_title = "Viruses with the `%s` tag..." % arg_lower.capitalize()
-        result_msg = ", ".join(sub_df["Name"])
+        result_msg = ", ".join(subdf["Name"])
     elif arg_lower in valid_cc_list:
-        sub_df = virus_df[virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        result_title = "Viruses from the `%s` Advance Content..." % sub_df.iloc[0]["From?"]
-        result_msg = ", ".join(sub_df["Name"])
+        subdf = filter_table(virus_df, {"From?": re.escape(arg_lower)})
+        result_title = "Viruses from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
+        result_msg = ", ".join(subdf["Name"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_virus_df[pmc_virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(pmc_virus_df, {"From?": re.escape(arg_lower)})
         if subdf.shape[0] == 0:
             return False, "", ""
         result_title = "Pulling up all Viruses from unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
@@ -912,7 +915,7 @@ async def virus(interaction: discord.Interaction, query:str, detailed:bool=False
         result_text = ", ".join([i.capitalize() for i in virus_tag_list])
         return await send_query_msg(interaction, result_title, result_text)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "virusruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "virusruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
@@ -926,12 +929,17 @@ async def virus(interaction: discord.Interaction, query:str, detailed:bool=False
     if is_query:
         return await send_query_msg(interaction, result_title, result_msg)
 
+    msg_embeds = []
+    msg_warn = []
     for arg in cleaned_args:
         if not arg:
             continue
-        virus_name, virus_hp, virus_description, virus_footer, virus_image, virus_color = await virus_master(interaction, arg, simplified=not detailed)
+        virus_name, virus_hp, virus_description, virus_footer, virus_image, virus_color, add_msg = await virus_master(arg, simplified=not detailed)
+        
+        msg_warn.append(add_msg)
         if virus_name is None:
             continue
+
         if detailed:
             embed = discord.Embed(title=virus_name, color=virus_color)
             embed.add_field(name=virus_hp,
@@ -942,13 +950,9 @@ async def virus(interaction: discord.Interaction, query:str, detailed:bool=False
                                 color=virus_color)
         embed.set_thumbnail(url=virus_image)
         embed.set_footer(text=virus_footer)
-        
-        if interaction.response.is_done():
-            await interaction.followup.send(embed=embed)
-        else:
-            await interaction.response.send_message(embed=embed)
-
-    return
+        msg_embeds.append(embed)
+    
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
 async def query_func(interaction: discord.Interaction, query: str):
@@ -1015,42 +1019,46 @@ async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal[
     arg = md_type.lower().strip()
     force_reward = chip_ncps_only
 
-    mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
+    mysterydata_type = filter_table(mysterydata_df, {"MysteryData": "^%s$" % re.escape(arg)})
 
     if mysterydata_type.shape[0] == 0:
         return await interaction.response.send_message(content=f"{md_type} isn't a valid type of Mystery Data!", ephemeral=True)
 
     bonus_count = 0
     bonus_limit = 1
+    repeat_roll = 1
 
     results_list = []
     while bonus_count < bonus_limit:
         if bonus_count >= MAX_MD_BONUS:
             break
 
-        roll_probabilities = mysterydata_type[mysterydata_type["Type"] == "Info"]
+        roll_probabilities = filter_table(mysterydata_type, {"Type": "Info"})
         if force_reward:
-            roll_probabilities = roll_probabilities[
-                roll_probabilities["Value"].str.contains("^BattleChip|NCP|NPU$", flags=re.IGNORECASE)]
+            roll_probabilities = filter_table(roll_probabilities, {"Value": "BattleChip|NCP|NPU"})
         roll_category = roll_row_from_table(roll_probabilities)["Value"]
 
         #temporary bonus roll shenanigans
         if "Bonus Roll" in roll_category:
             bonus_limit += 1
             continue
+        
+        if "x2" in roll_category:
+            repeat_roll = 2
+            roll_category = roll_category.replace("x2","").strip()
 
-        df_sub = mysterydata_type[mysterydata_type["Type"] == roll_category]
-        result_chip = roll_row_from_table(df_sub)["Value"]
+        df_sub = filter_table(mysterydata_type, {"Type": roll_category})
+        for i in range(0,repeat_roll):
+            result_chip = roll_row_from_table(df_sub)["Value"] 
+            if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
+                results_list.append(result_chip + " " + roll_category)
+            else:
+                results_list = [re.sub(r"\s*(\.|!|\?)+\s*$", '', result_chip)]  # removes last punctuation marks!
+                break
 
-        if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
-            results_list.append(result_chip + " " + roll_category)
-        else:
-            results_list = [re.sub(r"\s*(\.|!|\?)+\s*$", '', result_chip)]  # removes last punctuation marks!
-            break
-
-        if roll_category == "Zenny":
-            results_list = [f"{int(result_chip) * (random.randint(1, 6) + random.randint(1, 6))} Zenny"]
-            break
+            if roll_category == "Zenny":
+                results_list = [f"{int(result_chip) * (random.randint(1, 6) + random.randint(1, 6))} Zenny"]
+                break
 
         bonus_count += 1
 
@@ -1078,13 +1086,13 @@ async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal[
 @bot.tree.command(name='bondpower', description=commands_dict["bondpower"])
 async def bond(interaction: discord.Interaction, power: typing.Literal["Overload", "DestinySpark", "CrossSoul", "FullSynchro", "Bond rules"]):
     if "rules" in power:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "bondruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "bondruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
 
-    bond_info = await find_value_in_table(interaction, bond_df, "BondPower", power)
+    bond_info, _ = await find_value_in_table(bond_df, "BondPower", power)
     if bond_info is None:
         return await interaction.response.send_message(
             content=f"Couldn't the bond power `{power}`! (You should probably let the devs know...)", ephemeral=True)
@@ -1108,7 +1116,7 @@ async def element(interaction: discord.Interaction, number: int, category: typin
     element_category = category
     
     if element_category != 'All':
-        sub_element_df = element_df[element_df["category"].str.contains(f"^\s*{category}\s*$", flags=re.IGNORECASE)]
+        sub_element_df = filter_table(element_df, {"category": f"^\s*{category}\s*$"})
         if sub_element_df.shape[0] == 0:
           return await interaction.response.send_message(content="Invalid category provided!\n" +
                                                         "Categories: **%s**" % ", ".join(element_category_list), ephemeral=True)
@@ -1293,7 +1301,7 @@ async def virusr(interaction: discord.Interaction, number: int=1,
         if virus_num == 0:
             continue
         if virus_type != "any":
-            sub_df = sub_df[sub_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
+            sub_df = filter_table(sub_df, {"Category": r"^%s$" % re.escape(virus_type)})
             virus_cat = sub_df["Category"].iloc[0]
         else:
             virus_cat = "Random"
@@ -1322,7 +1330,7 @@ async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
         arg = adv_type.lower().strip()
 
     if arg == 'core':
-        adventure_df_use = adventure_df[adventure_df["Sort"] == "Core"]
+        adventure_df_use = filter_table(adventure_df, {"Sort": "Core"})
     else:
         adventure_df_use = adventure_df
 # -----------------------------------------------------------------------
@@ -1337,7 +1345,7 @@ async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
 # Adventure headers
 # Corresponds to the header table in the book. Extended for customization.
 
-    advheaddf_sub = adventure_df[adventure_df["Type"] == "AdvHeader"]
+    advheaddf_sub = filter_table(adventure_df, {"Type": "AdvHeader"})
     advhead_row = roll_row_from_table(adventure_df_use, df_filters={"Type": "AdvHeader"})
     define_advheader = [advhead_row["Definition"]]
     adv_header = advhead_row["Result"]
@@ -1453,10 +1461,11 @@ async def glossary(interaction: discord.Interaction, term: str):
             "Use me to pull up a **Glossary** term in ProgBot! I can also try to search for a term if you know the first few letters!")
     cleaned_arg = term.strip().lower()
 
-    glossary_info = await find_value_in_table(interaction, glossary_df, "Name", cleaned_arg, suppress_notfound=True) # exact match
+    glossary_info, _ = await find_value_in_table(glossary_df, "Name", cleaned_arg, suppress_notfound=True) # exact match
 
     if glossary_info is None: # fuzzier match
-        match_candidates = glossary_df[glossary_df["Name"].str.contains("^" + re.escape(cleaned_arg), flags=re.IGNORECASE)]
+        
+        match_candidates = filter_table(glossary_df, {"Name": "^" + re.escape(cleaned_arg)})
 
         if match_candidates.shape[0] < 1:
             return await interaction.response.send_message(content="Didn't find any matches for `%s` in the glossary!" % term, ephemeral=True)
@@ -1485,27 +1494,28 @@ async def find_chip_ncp_power(interaction: discord.Interaction, query: str):
     if len(cleaned_args) > MAX_CHIP_QUERY:
         return await interaction.response.send_message(f"Too many items, no more than {MAX_CHIP_QUERY}!", ephemeral=True)
 
+    msg_warn = []
+    msg_embeds = []
     for arg in cleaned_args:
-        item_title, item_trimmed, item_description, item_color, item_footer = await chipfinder(interaction, arg, suppress_err_msg=True)
+        item_title, item_trimmed, item_description, item_color, item_footer, add_msg = await chipfinder(interaction, arg, suppress_err_msg=True)
 
         if item_title is None:
-            item_title, item_trimmed, item_description, item_color, item_footer = await power_ncp(interaction, arg, force_power=False,
+            item_title, item_trimmed, item_description, item_color, item_footer, add_msg = await power_ncp(interaction, arg, force_power=False,
                                                                                       ncp_only=False, suppress_err_msg=True)
             if item_title is None:
-                item_title, item_trimmed, item_description, item_color, item_footer = await power_ncp(interaction, arg, force_power=False,
+                item_title, item_trimmed, item_description, item_color, item_footer, add_msg = await power_ncp(interaction, arg, force_power=False,
                                                                                          ncp_only=True, suppress_err_msg=True)
-                if item_title is None:
-                    await interaction.response.send_message(content="Unable to find `%s`!" % arg, ephemeral=True)
-                    continue
+                
+        msg_warn.append(add_msg)
+        if item_title is None:
+            continue
+
         embed = discord.Embed(
             title="__%s__" % item_title,
             color=item_color)
         embed.add_field(name=f"[{item_trimmed}]", 
                         value=f"_{item_description}_")
         
-        if interaction.response.is_done():
-            await interaction.followup.send(embed=embed)
-        else:
-            await interaction.response.send_message(embed=embed)
+        msg_embeds.append(embed)
 
-    return
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)

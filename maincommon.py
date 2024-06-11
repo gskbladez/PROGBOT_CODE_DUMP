@@ -69,6 +69,7 @@ bot = commands.Bot(command_prefix=">",
                    status=discord.Status.online,
                    intents=discord.Intents.default())
 
+
 def clean_args(args, lowercase=True):
     if len(args) == 1:
         args = re.split(r"(?:,|;|\s+)", args[0])
@@ -83,33 +84,44 @@ def clean_args(args, lowercase=True):
 async def send_query_msg(interaction, return_title, return_msg):
     return await interaction.response.send_message("**%s**\n*%s*" % (return_title, return_msg))
 
+
 # TODO: due to followup API limits, doesn't send the message if the interaction response is already gone
-async def find_value_in_table(interaction: discord.Interaction, df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
+async def find_value_in_table(df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
     if not search_arg:
-        return None
+        return None, None
+    add_msg = None
     if "Alias" in df:
-        alias_check = df[
-            df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(search_arg), flags=re.IGNORECASE)]
+        alias_check = filter_table(df, {"Alias": f"(?:^|,|;)\s*{re.escape(search_arg)}\s*(?:$|,|;)"})
         if (alias_check.shape[0] > 1) and (not allow_duplicate):
-            await interaction.response.send_message(f"Found more than one match for {search_arg}! You should probably let the devs know...", ephemeral=True)
-            return None
+            return None, f"Found more than one match for {search_arg}! You should probably let the devs know..."
         if alias_check.shape[0] != 0:
             search_arg = alias_check.iloc[0][search_col]
             if alias_message:
-                await interaction.response.send_message(f"Found as an alternative name for **{search_arg}**!")
-
-    search_results = df[df[search_col].str.contains("\s*^%s\s*$" % re.escape(search_arg), flags=re.IGNORECASE)]
+                add_msg = f"Found as an alternative name for **{search_arg}**!"
+    search_results = filter_table(df, {search_col: f"\s*^{re.escape(search_arg)}\s*$"})
     if search_results.shape[0] == 0:
         if not suppress_notfound:
-            await interaction.response.send_message(content="I can't find `%s`!" % search_arg, ephemeral=True)
-        return None
+            add_msg = "I can't find `%s`!" % search_arg
+        return None, add_msg
     elif search_results.shape[0] > 1:
         if allow_duplicate:
-            return search_results.iloc[random.randrange(0, search_results.shape[0])]
+            return search_results.iloc[random.randrange(0, search_results.shape[0])], add_msg
         else:
-            await interaction.response.send_message(content=f"Found more than one match for {search_arg}! You should probably let the devs know...", ephemeral=True)
-        return None
-    return search_results.iloc[0]
+            return None, f"Found more than one match for {search_arg}! You should probably let the devs know..."
+    return search_results.iloc[0], add_msg
+
+
+async def send_multiple_embeds(i: discord.Interaction, list_embed, list_warn, error_no_embeds=True):
+    msg_warns = [m for m in list_warn if m is not None and m]
+    if not list_embed and not list_warn:
+        return await i.response.send_message(content="No message to send! (You should probably let the dev team know...)", ephemeral=True)
+    if msg_warns:
+        await i.response.send_message(content="\n".join(msg_warns), ephemeral=error_no_embeds)
+    for e in list_embed:
+        if not i.response.is_done():
+            await i.response.send_message(embed=e)
+        else:
+            await i.channel.send(embed=e)
 
 
 def roll_row_from_table(roll_df, df_filters={}):
@@ -125,3 +137,28 @@ def roll_row_from_table(roll_df, df_filters={}):
         sub_df = roll_df
     row_num = random.randint(1, sub_df.shape[0]) - 1
     return sub_df.iloc[row_num]
+
+
+# separate function on the off chance we can use the SQL DB
+# filt_dict uses regex strings; assumes and
+def filter_table(df: DataFrame, filt_dict: dict, not_filt = False):
+    sub_df = df
+
+    for k, v in filt_dict.items():
+        if isinstance(v, bool):
+            f = sub_df[k==v]
+        else:
+            f = sub_df[k].str.contains(v, flags=re.IGNORECASE)
+        if not_filt:
+            f = ~f
+        sub_df = sub_df[f]
+
+    return sub_df
+
+# TODO: any
+# TODO: unique
+# iloc[0]
+# get by column?
+#shape
+#groupby
+# numpy contains

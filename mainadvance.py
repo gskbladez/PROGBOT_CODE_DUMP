@@ -11,7 +11,7 @@ import datetime
 from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table
 from maincommon import help_df, cc_color_dictionary, pmc_link
 import shelve
-from maincommon import bot, commands_dict
+from maincommon import bot, commands_dict, filter_table
 
 MAX_MOD_QUERY = 5
 ROLL_COMMENT_CHAR = '#'
@@ -84,7 +84,8 @@ def clean_spotlight():
 @bot.tree.command(name='crimsonnoise', description=commands_dict["crimsonnoise"])
 async def crimsonnoise(interaction: discord.Interaction, md_type: typing.Literal["Common", "Uncommon", "Rare"]):
     arg = md_type.lower().strip()
-    crimsonnoise_type = crimsonnoise_df[crimsonnoise_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
+    
+    crimsonnoise_type = filter_table(crimsonnoise_df, {"MysteryData": f"^{re.escape(arg)}$"})
 
     if crimsonnoise_type.shape[0] == 0:
         return await interaction.response.send_message(
@@ -129,19 +130,19 @@ async def daemon(interaction: discord.Interaction, name: str):
         return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "daemonruling", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(help_df, "Command", "daemonruling", suppress_notfound=True)
     elif cleaned_args[0] in ['darkchip', 'dark', 'darkchips', 'chip', 'chips']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "darkchip", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(help_df, "Command", "darkchip", suppress_notfound=True)
     elif cleaned_args[0] in ['tribute', 'tributes']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "tribute", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(help_df, "Command", "tribute", suppress_notfound=True)
     elif cleaned_args[0] in ['chaosunison', 'chaos', 'chaosunion']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "domain", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(help_df, "Command", "domain", suppress_notfound=True)
     elif cleaned_args[0] in ['daemonbond', 'bond']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "daemonbond", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(help_df, "Command", "daemonbond", suppress_notfound=True)
 
     if is_ruling:
         if ruling_msg is None:
@@ -149,9 +150,9 @@ async def daemon(interaction: discord.Interaction, name: str):
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
 
-    daemon_info = await find_value_in_table(interaction, daemon_df, "Name", arg_combined, suppress_notfound=True)
+    daemon_info = await find_value_in_table(daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
-        daemon_info = await find_value_in_table(interaction, pmc_daemon_df, "Name", arg_combined)
+        daemon_info = await find_value_in_table(pmc_daemon_df, "Name", arg_combined)
         if daemon_info is None:
             return
 
@@ -209,14 +210,14 @@ async def networkmod(interaction: discord.Interaction, query: str):
         _, result_title, result_msg = query_network()
         return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "networkmodruling", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(help_df, "Command", "networkmodruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message( 
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
 
     for arg in cleaned_args:
-        networkmod_info = await find_value_in_table(interaction, networkmod_df, "Name", arg, suppress_notfound=False)
+        networkmod_info = await find_value_in_table(networkmod_df, "Name", arg, suppress_notfound=False)
         if networkmod_info is None:
             continue
 
@@ -348,7 +349,7 @@ async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:
 
     if arg == 'list':
         embed_msg = f"**Listing {cj_type.capitalize()}s from the Audience Participation rules...**\n"
-        sub_df = audience_df[audience_df["Type"].str.contains(re.escape(cj_type), flags=re.IGNORECASE)]
+        sub_df = filter_table(audience_df, {"Type": re.escape(cj_type)})
         embed_bits = []
         for cj_type in sub_df["Type"].unique():
             subsub_df = sub_df[sub_df["Type"] == cj_type]
@@ -367,7 +368,7 @@ async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:
     elif arg == 'add':
         num = -1 * num
     elif arg=='spend' and num == 1:
-        sub_df = audience_df[audience_df["Type"].str.contains(f"^{re.escape(cj_type)}$", flags=re.IGNORECASE)]
+        sub_df = filter_table(audience_df, {"Type": re.escape(cj_type)})
         random_roll = random.randrange(sub_df.shape[0])
         cj_roll = "*%s*" % sub_df["Option"].iloc[random_roll]
 
@@ -410,7 +411,7 @@ async def audience(interaction: discord.Interaction, command:typing.Literal['sta
         msg_location = f"#{channel_name}! ({channel_server})"
     arg = command.lower().strip()
     if arg == 'help':
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "audienceruling", suppress_notfound=True)
+        ruling_msg = await find_value_in_table(help_df, "Command", "audienceruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await interaction.response.send_message(ruling_msg["Response"])
@@ -473,7 +474,7 @@ async def weather(interaction: discord.Interaction, query:str):
         _, result_title, result_msg = query_weather()
         return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "weather",
+        ruling_msg = await find_value_in_table(help_df, "Command", "weather",
                                                suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
@@ -481,7 +482,7 @@ async def weather(interaction: discord.Interaction, query:str):
         return await interaction.response.send_message(ruling_msg["Response"])
 
     for arg in cleaned_args:
-        weather_info = await find_value_in_table(interaction, weather_df, "Name", arg, suppress_notfound=False)
+        weather_info = await find_value_in_table(weather_df, "Name", arg, suppress_notfound=False)
         if weather_info is None:
             continue
 
@@ -568,7 +569,7 @@ async def achievement(interaction: discord.Interaction, query:str):
                        if name]
         return await interaction.response.send_message("\n\n".join(return_msgs))
 
-    match_candidates = achievement_df[achievement_df["Name"].str.contains(re.escape(cleaned_args), flags=re.IGNORECASE)]
+    match_candidates = filter_table(achievement_df, {"Name": re.escape(cleaned_args)})
     if match_candidates.shape[0] < 1:
         return await interaction.response.send_message("Didn't find any matches for `%s`!" % query, ephemeral=True)
     if match_candidates.shape[0] > 1:
@@ -611,7 +612,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         name_list = [n.strip() for n in names.split(",") if n]
 
         if arg == 'help':
-            ruling_msg = await find_value_in_table(interaction, help_df, "Command", "flow", suppress_notfound=True)
+            ruling_msg = await find_value_in_table(help_df, "Command", "flow", suppress_notfound=True)
             if ruling_msg is None:
                 return await interaction.response.send_message( 
                     content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)

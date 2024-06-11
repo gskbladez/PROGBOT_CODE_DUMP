@@ -38,7 +38,6 @@ async def background_task():
     pass
 
 
-# PROGBOTBOTTER
 @bot.tree.command(name='hello', description='Says Hello')
 async def say_hello(interaction: discord.Interaction):
     await interaction.response.send_message('Hello!')
@@ -90,7 +89,7 @@ async def bugreport(interaction: discord.Interaction, message: str):
 
 
 @bot.tree.command(name='run', description='admin commands', guild=discord.Object(id=settings.admin_guild))
-async def admin(interaction: discord.Interaction, command: typing.Literal["refresh slash commands", "change status", "goodnight"], param_line:str=""):
+async def admin(interaction: discord.Interaction, command: typing.Literal["refresh slash commands", "change status", "goodnight", "reset commands"], param_line:str=""):
     currentlevel = _get_user_level(interaction.user.id)
     if currentlevel < ADMIN_LEVEL:
         return await interaction.response.send_message("You don't have the permission to use this command!", ephemeral=True)
@@ -103,12 +102,19 @@ async def admin(interaction: discord.Interaction, command: typing.Literal["refre
     #Syncs the slash commands to Discord. Should not is not be done automatically and should be done by running this command if changes were made to the slash commands.
     if command=="refresh slash commands":
         await interaction.response.send_message("Refreshing app commands!")
-        return await bot.tree.sync()
+        await bot.tree.sync()
+        interaction.followup.send("Global app commands finished syncing!")
+        return
+    if command=="reset commands":
+        await interaction.response.send_message(content="Clearing old app commands!")
+        ag = discord.Object(id=settings.admin_guild)
+        bot.tree.clear_commands(guild=ag)
+        bot.tree.copy_global_to(guild=ag)
+        return
 
 @bot.event
 async def on_ready():
     ag = discord.Object(id=settings.admin_guild)
-    bot.tree.clear_commands(guild=ag)
     bot.tree.copy_global_to(guild=ag)
     await bot.tree.sync(guild=ag)
     print("Jacking In!")
