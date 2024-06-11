@@ -12,11 +12,11 @@ from discord.ext import tasks
 #from pandas import DataFrame, read_csv 
 
 from maincommon import commands_dict, commands_df, bot
-#import mainadvance
 import mainroll
-#import mainsafety
+import mainaprilfools
+import mainsafety
+#import mainadvance
 #import mainnb
-#import mainaprilfools
 
 user_df = pd.read_csv(settings.user_levels_table_name, sep="\t").fillna('')
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))

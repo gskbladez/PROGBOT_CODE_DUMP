@@ -1,9 +1,8 @@
 import discord
 import random
-import koduck
 import settings
 import pandas as pd
-from maincommon import clean_args, roll_row_from_table
+from maincommon import clean_args, roll_row_from_table, bot, commands_dict
 from maincommon import cc_color_dictionary
 
 autoloot_df = pd.read_csv(settings.autolootfile, sep="\t").fillna('')
@@ -11,6 +10,7 @@ autoloot_df = pd.read_csv(settings.autolootfile, sep="\t").fillna('')
 # There are 7 major categories that need to be procedurally filled out.
 # Cost, Guard, Category, Damage, Range, Tags, Effect
 # Each condition has several sub conditions and tables that are met based on rolling the dice.
+@bot.tree.command(name='autoloot', description=commands_dict["autoloot"])
 async def autoloot(interaction: discord.Interaction):
 
 # COST:
@@ -859,4 +859,4 @@ async def autoloot(interaction: discord.Interaction):
         color=cc_color_dictionary["Nyx"])
     embed.add_field(name="[%s]" % subtitle_trimmed,
                     value="_%s_" % chip_description)
-    return await interaction.command.koduck.send_message(interaction, embed=embed)
+    return await interaction.response.send_message(embed=embed)
