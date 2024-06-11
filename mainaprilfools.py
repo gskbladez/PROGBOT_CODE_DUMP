@@ -1,11 +1,11 @@
 import discord
 import random
 import settings
-import pandas as pd
+from pandas import read_csv
 from maincommon import clean_args, roll_row_from_table, bot, commands_dict
 from maincommon import cc_color_dictionary
 
-autoloot_df = pd.read_csv(settings.autolootfile, sep="\t").fillna('')
+autoloot_df = read_csv(settings.autolootfile, sep="\t").fillna('')
 
 # There are 7 major categories that need to be procedurally filled out.
 # Cost, Guard, Category, Damage, Range, Tags, Effect
@@ -624,7 +624,7 @@ async def autoloot(interaction: discord.Interaction):
         duration = (f"for {random.randint(1,6)} {random.choice(duration_type)}")
     if duration_r == 3:
         duration_type = ["minutes", "hours", "sessions", "days"]
-        duration = (f"for {random.randint(1,6)} out-of-game {duration_type}")
+        duration = (f"for {random.randint(1,6)} out-of-game {random.choice(duration_type)}")
     if duration_r == 4:
         duration = "until jack-out"
     if duration_r == 5:

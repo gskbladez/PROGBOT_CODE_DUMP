@@ -1,8 +1,8 @@
 import re
 
 import discord
+from pandas import DataFrame, Series, unique, read_csv
 from discord.ext import commands
-import pandas as pd
 import settings
 import random
 
@@ -39,19 +39,20 @@ help_categories = {"Lookups": ':mag: **Lookups**',
                   "Reminders (DarkChips)": ':smiling_imp: **Reminders (DarkChips)**',
                   "Safety Tools": ':shield: **Safety Tools**'}
 
-element_df = pd.read_csv(settings.elementfile, sep="\t").fillna('')
-element_category_list = pd.unique(element_df["category"].dropna())
+element_df = read_csv(settings.elementfile, sep="\t").fillna('')
+element_category_list = unique(element_df["category"].dropna())
 
-help_df = pd.read_csv(settings.helpfile, sep="\t").fillna('')
+help_df = read_csv(settings.helpfile, sep="\t").fillna('')
 help_df["Response"] = help_df["Response"].str.replace('\\\\n', '\n', regex=True)
 help_cmd_list = [i for i in help_df["Command"] if i]
 help_df["Type"] = help_df["Type"].astype("category")
 help_df["Type"] = help_df["Type"].cat.rename_categories(help_categories).cat.reorder_categories(list(help_categories.values())+[""])
 
-rulebook_df = pd.read_csv(settings.rulebookfile, sep="\t",  converters = {'Version': str}).fillna('')
+rulebook_df = read_csv(settings.rulebookfile, sep="\t",  converters = {'Version': str}).fillna('')
 pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].iloc[0]
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 grid_link = rulebook_df[rulebook_df["Name"] == "Grid-Based Combat"]["Link"].iloc[0]
+random_chip_link = rulebook_df[rulebook_df["Name"] == "Randomized Chips"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] == "NetBattlers") | (rulebook_df["Name"] == "NetBattlers Advance")]
 # these might start complaining; double check that the labels in the rulebook are exact: captilization and whitespace matter!
 rulebook_df["Type"] = rulebook_df["Type"].astype('category').cat.reorder_categories(["Mobile", "Full Res", "Bonus BattleChips"])
@@ -60,7 +61,7 @@ rulebook_df = rulebook_df.sort_values(["Name", "Release", "Version", "Type"])
 
 playermade_list = ["Genso Network"]
 
-commands_df = pd.read_csv(settings.commands_table_name, sep="\t").fillna('')
+commands_df = read_csv(settings.commands_table_name, sep="\t").fillna('')
 commands_dict = dict(zip(commands_df["Command"], commands_df["Description"]))
 
 bot = commands.Bot(command_prefix=">", 

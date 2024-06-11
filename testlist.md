@@ -23,7 +23,7 @@
   - audiencejeer: list, add 5, add 5, spend, spend 2, spend 5
   - audience: view, end, start, let timeout
 - virusrandom: send, roll 4, roll number=1, artillery=1, disruption=1, disruption=1, striker=1
-- playermaderepo: net agent, shared universe
+- playermaderepo: net agent, shared universe, link
 - adventure: send, adv_type=Chaos, Core
 - fight: send
 - sheet: send

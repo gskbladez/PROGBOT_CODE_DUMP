@@ -7,9 +7,8 @@ from dotenv import load_dotenv
 
 import sys, logging
 import settings
-import pandas as pd
+from pandas import read_csv, DataFrame, Series
 from discord.ext import tasks
-#from pandas import DataFrame, read_csv 
 
 from maincommon import commands_dict, commands_df, bot
 import mainroll
@@ -18,7 +17,7 @@ import mainsafety
 #import mainadvance
 #import mainnb
 
-user_df = pd.read_csv(settings.user_levels_table_name, sep="\t").fillna('')
+user_df = read_csv(settings.user_levels_table_name, sep="\t").fillna('')
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
 
 # bot is defined in maincommon
@@ -110,7 +109,7 @@ async def on_ready():
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
 
-required_files = [settings.commands_table_name, settings.user_levels_table_name]
+required_files = [settings.commands_table_name, settings.user_levels_table_name, settings.audiencesave, settings.spotlightsave]
 
 bad_files = [f for f in required_files if not os.path.isfile(f)]
 if bad_files:
