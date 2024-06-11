@@ -6,6 +6,7 @@ import typing
 from dotenv import load_dotenv
 
 import sys, logging
+import logging.handlers
 import settings
 from pandas import read_csv, DataFrame, Series
 from discord.ext import tasks
@@ -16,6 +17,10 @@ import mainaprilfools
 import mainsafety
 import mainnb
 import mainadvance
+
+ADMIN_LEVEL = 3
+MOD_LEVEL = 2
+USER_LEVEL = 1
 
 user_df = read_csv(settings.user_levels_table_name, sep="\t").fillna('')
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
@@ -28,8 +33,8 @@ def _get_user_level(user_id: int):
 #Background task is run every set interval while bot is running (by default every 10 seconds)
 @tasks.loop(minutes=10)
 async def background_task():
-    #mainadvance.clean_audience() # cleans up audience_data if it hasn't been used in AUDIENCE_TIMEOUT
-    #mainadvance.clean_spotlight() # cleans up spotlight_db if it hasn't been used in SPOTLIGHT_TIMEOUT
+    mainadvance.clean_audience() # cleans up audience_data if it hasn't been used in AUDIENCE_TIMEOUT
+    mainadvance.clean_spotlight() # cleans up spotlight_db if it hasn't been used in SPOTLIGHT_TIMEOUT
     pass
 
 
@@ -86,14 +91,18 @@ async def bugreport(interaction: discord.Interaction, message: str):
 
 @bot.tree.command(name='run', description='admin commands', guild=discord.Object(id=settings.admin_guild))
 async def admin(interaction: discord.Interaction, command: typing.Literal["refresh slash commands", "change status", "goodnight"], param_line:str=""):
+    currentlevel = _get_user_level(interaction.user.id)
+    if currentlevel < ADMIN_LEVEL:
+        return await interaction.response.send_message("You don't have the permission to use this command!", ephemeral=True)
+    
     if command=="goodnight":
-        await interaction.response.send_message(content="Goodnight!")
+        await interaction.response.send_message("Goodnight!")
         return await bot.close()
     if command=="change status":
         return await bot.change_presence(activity=discord.Game(name=param_line))
     #Syncs the slash commands to Discord. Should not is not be done automatically and should be done by running this command if changes were made to the slash commands.
     if command=="refresh slash commands":
-        await interaction.response.send_message(content="Refreshing app commands!")
+        await interaction.response.send_message("Refreshing app commands!")
         return await bot.tree.sync()
 
 @bot.event
@@ -106,6 +115,14 @@ async def on_ready():
     print("Name: {}".format(bot.user.name))
     print("ID: {}".format(bot.user.id))
 
+
+@bot.tree.error
+async def on_app_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
+    # TODO: add better exception logging
+    logging.exception(error)
+    await interaction.response.send_message(":warning::warning: **SOMETHING BROKE** :warning::warning:", ephemeral=True)
+
+
 load_dotenv()
 bot_token = os.getenv('DISCORD_TOKEN')
 
@@ -115,7 +132,9 @@ bad_files = [f for f in required_files if not os.path.isfile(f)]
 if bad_files:
     raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
 
-handler = logging.FileHandler(filename=settings.log_file, encoding='utf-8', mode='w')
-bot.run(bot_token, log_handler=handler, log_level=logging.DEBUG)
+# set up the logger
+discord.utils.setup_logging(level=logging.INFO, root=False)
+handler = logging.handlers.RotatingFileHandler(filename=settings.log_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
+bot.run(bot_token, log_handler=handler)
 
 sys.exit(0)

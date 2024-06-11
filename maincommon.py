@@ -65,7 +65,7 @@ commands_df = read_csv(settings.commands_table_name, sep="\t").fillna('')
 commands_dict = dict(zip(commands_df["Command"], commands_df["Description"]))
 
 bot = commands.Bot(command_prefix=">", 
-                   activity=discord.Activity(type=discord.ActivityType.playing, name="with Slash Commands"), 
+                   activity=discord.Activity(type=discord.ActivityType.playing, name="with Bug Busting!"), 
                    status=discord.Status.online,
                    intents=discord.Intents.default())
 
