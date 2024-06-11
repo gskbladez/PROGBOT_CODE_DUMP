@@ -49,8 +49,6 @@ weather_category_list = unique(weather_df["Category"].dropna())
 glossary_df = read_csv(settings.glossaryfile, sep="\t").fillna('')
 pmc_daemon_df = read_csv(settings.pmc_daemonfile, sep="\t").fillna('')
 
-notion_pmc_token = os.getenv('PMC_KEY')
-
 # I should honestly make this a configuration but meh
 
 def clean_audience():
@@ -807,7 +805,7 @@ async def repo(interaction: discord.Interaction, query:str):
     # now it uses integrations with secret tokens to manage access to pages
     # at least filters make more sense now
     headers = {
-        "Authorization": "Bearer " + notion_pmc_token,
+        "Authorization": "Bearer " + settings.notion_pmc_token,
         "Content-Type": "application/json",
         "Notion-Version": "2022-06-28",
     }

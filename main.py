@@ -3,7 +3,6 @@ import os
 
 import discord
 import typing
-from dotenv import load_dotenv
 
 import sys, logging
 import logging.handlers
@@ -26,9 +25,9 @@ user_df = read_csv(settings.user_levels_table_name, sep="\t").fillna('')
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
 
 # bot is defined in maincommon
-
 def _get_user_level(user_id: int):
     return user_dict[user_id]
+
 
 #Background task is run every set interval while bot is running (by default every 10 minutes)
 @tasks.loop(minutes=10)
@@ -117,6 +116,7 @@ async def on_ready():
     ag = discord.Object(id=settings.admin_guild)
     bot.tree.copy_global_to(guild=ag)
     await bot.tree.sync(guild=ag)
+    background_task.start()
     print("Jacking In!")
     print("Name: {}".format(bot.user.name))
     print("ID: {}".format(bot.user.id))
@@ -131,10 +131,6 @@ async def on_app_command_error(interaction: discord.Interaction, error: discord.
     else:
         await interaction.channel.send(":warning::warning: **SOMETHING BROKE** :warning::warning:")
 
-
-load_dotenv()
-bot_token = os.getenv('DISCORD_TOKEN')
-
 required_files = [settings.commands_table_name, settings.user_levels_table_name, settings.audiencesave, settings.spotlightsave]
 
 bad_files = [f for f in required_files if not os.path.isfile(f)]
@@ -144,6 +140,6 @@ if bad_files:
 # set up the logger
 discord.utils.setup_logging(level=logging.INFO, root=False)
 handler = logging.handlers.RotatingFileHandler(filename=settings.log_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
-bot.run(bot_token, log_handler=handler)
+bot.run(settings.bot_token, log_handler=handler)
 
 sys.exit(0)

@@ -156,10 +156,5 @@ def filter_table(df: DataFrame, filt_dict: dict, not_filt = False):
 
     return sub_df
 
-# TODO: any
-# TODO: unique
-# iloc[0]
-# get by column?
-#shape
-#groupby
-# numpy contains
+# TODO for dataframe removal: any, unique, iloc[0], get by column, shape, groupby
+# Also used: numpy contains

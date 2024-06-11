@@ -141,7 +141,8 @@ async def help_cmd(interaction: discord.Interaction, query: str):
     funkyarg = ''.join(cleaned_args)
     help_msg, _ = await find_value_in_table(help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)
     if help_msg is None:
-        help_response = filter_table(help_df, {"Command": "unknowncommand"}).iloc[0]["Response"]
+        err_response = filter_table(help_df, {"Command": "unknowncommand"}).iloc[0]["Response"]
+        return await interaction.response.send_message(err_response, ephemeral=True)
     else:
         help_response = help_msg["Response"]
         if help_msg["Ruling?"]:
