@@ -198,7 +198,10 @@ def query_chip(args):
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all `DarkChips`..."
         subdf = filter_table(chip_df, {"Tags": "Dark"})
-        # TODO: filter out cat darkchips
+        subdf = filter_table(subdf, {"From?": "Neko Virus"}, not_filt=True)
+        return_msg = ", ".join(subdf["Chip"])
+    elif arg_lower in ['neko', 'nekovirus']:
+        subdf = filter_table(chip_df, {"From?": "Neko Virus"})
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in ['mega', 'megachip', 'megachips']:
         return_title = "Pulling up all `MegaChips` (excluding DarkChips and Incident Chips)..."
