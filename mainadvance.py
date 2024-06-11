@@ -8,9 +8,9 @@ import settings
 from pandas import DataFrame, Series, unique, read_csv
 import re
 import datetime
-from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table
+from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table, send_multiple_embeds
 from maincommon import help_df, cc_color_dictionary, pmc_link
-import shelve
+#import shelve
 from maincommon import bot, commands_dict, filter_table
 
 MAX_MOD_QUERY = 5
@@ -130,19 +130,19 @@ async def daemon(interaction: discord.Interaction, name: str):
         return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules', 'advice']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(help_df, "Command", "daemonruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "daemonruling", suppress_notfound=True)
     elif cleaned_args[0] in ['darkchip', 'dark', 'darkchips', 'chip', 'chips']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(help_df, "Command", "darkchip", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "darkchip", suppress_notfound=True)
     elif cleaned_args[0] in ['tribute', 'tributes']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(help_df, "Command", "tribute", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "tribute", suppress_notfound=True)
     elif cleaned_args[0] in ['chaosunison', 'chaos', 'chaosunion']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(help_df, "Command", "domain", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "domain", suppress_notfound=True)
     elif cleaned_args[0] in ['daemonbond', 'bond']:
         is_ruling = True
-        ruling_msg = await find_value_in_table(help_df, "Command", "daemonbond", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "daemonbond", suppress_notfound=True)
 
     if is_ruling:
         if ruling_msg is None:
@@ -150,11 +150,11 @@ async def daemon(interaction: discord.Interaction, name: str):
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
 
-    daemon_info = await find_value_in_table(daemon_df, "Name", arg_combined, suppress_notfound=True)
+    daemon_info, _ = await find_value_in_table(daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
-        daemon_info = await find_value_in_table(pmc_daemon_df, "Name", arg_combined)
+        daemon_info, add_msg = await find_value_in_table(pmc_daemon_df, "Name", arg_combined)
         if daemon_info is None:
-            return
+            return await interaction.response.send_message(add_msg)
 
     daemon_name = daemon_info["Name"]
     daemon_quote = daemon_info["Quote"]
@@ -210,14 +210,17 @@ async def networkmod(interaction: discord.Interaction, query: str):
         _, result_title, result_msg = query_network()
         return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(help_df, "Command", "networkmodruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "networkmodruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message( 
                                             content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
 
+    msg_warn = []
+    msg_embeds = []
     for arg in cleaned_args:
-        networkmod_info = await find_value_in_table(networkmod_df, "Name", arg, suppress_notfound=False)
+        networkmod_info, add_msg = await find_value_in_table(networkmod_df, "Name", arg, suppress_notfound=False)
+        msg_warn.append(add_msg)
         if networkmod_info is None:
             continue
 
@@ -231,13 +234,10 @@ async def networkmod(interaction: discord.Interaction, query: str):
                               color=networkmod_color)
         embed.add_field(name="**[{}]**".format(networkmod_field),
                         value="_{}_".format(networkmod_description))
-        if interaction.response.is_done():
-            await interaction.followup.send(embed=embed)
-        else:
-            await interaction.response.send_message(embed=embed)
+        msg_embeds.append(embed)
 
-
-    return
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
+    
 
 
 def change_audience(channel_id, cj_type, amount):
@@ -411,7 +411,7 @@ async def audience(interaction: discord.Interaction, command:typing.Literal['sta
         msg_location = f"#{channel_name}! ({channel_server})"
     arg = command.lower().strip()
     if arg == 'help':
-        ruling_msg = await find_value_in_table(help_df, "Command", "audienceruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "audienceruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await interaction.response.send_message(ruling_msg["Response"])
@@ -474,15 +474,18 @@ async def weather(interaction: discord.Interaction, query:str):
         _, result_title, result_msg = query_weather()
         return await send_query_msg(interaction, result_title, result_msg)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(help_df, "Command", "weather",
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "weather",
                                                suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
                 content="Couldn't find the rules for this command! (You should probably let the devs know...)")
         return await interaction.response.send_message(ruling_msg["Response"])
 
+    msg_warn = []
+    msg_embeds = []
     for arg in cleaned_args:
-        weather_info = await find_value_in_table(weather_df, "Name", arg, suppress_notfound=False)
+        weather_info, add_msg = await find_value_in_table(weather_df, "Name", arg, suppress_notfound=False)
+        msg_warn.append(add_msg)
         if weather_info is None:
             continue
 
@@ -500,12 +503,9 @@ async def weather(interaction: discord.Interaction, query:str):
                               color=weather_color)
         embed.add_field(name="**[{} CyberWeather]**".format(weather_type),
                         value="_{}_".format(weather_description))
-        if interaction.response.is_done():
-            await interaction.followup.send(embed=embed)
-        else:
-            await interaction.response.send_message(embed=embed)
-
-    return
+        msg_embeds.append(embed)
+            
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
 @bot.tree.command(name='weatherforecast', description=commands_dict["weatherforecast"])
@@ -612,7 +612,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         name_list = [n.strip() for n in names.split(",") if n]
 
         if arg == 'help':
-            ruling_msg = await find_value_in_table(help_df, "Command", "flow", suppress_notfound=True)
+            ruling_msg, _ = await find_value_in_table(help_df, "Command", "flow", suppress_notfound=True)
             if ruling_msg is None:
                 return await interaction.response.send_message( 
                     content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
