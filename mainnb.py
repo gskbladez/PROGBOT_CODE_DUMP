@@ -762,22 +762,18 @@ async def upgrade(interaction: discord.Interaction, query: str):
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
     
-    # TODO: AGH
     for arg in cleaned_args:
         arg = arg.lower()
-
         is_upgrade, result_title, result_msg = query_npu(arg)
         if is_upgrade:
             await send_query_msg(interaction, result_title, result_msg)
             continue
         if any((power_df["Type"] == "Upgrade") & power_df["Power/NCP"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)):
-            await ncp(interaction, arg)
+            await ncp.callback(interaction, arg)
             continue
-        msg = "Couldn't find any Navi Power Upgrades for `%s`!" % arg
-        if interaction.response.is_done():
-            await interaction.followup.send(msg, ephemeral=True)
-        else:
-            await interaction.response.send_message(msg, ephemeral=True)
+        # cheating out preserving the interaction for ncp
+        await interaction.channel.send(f"Couldn't find any Navi Power Upgrades for `{arg}`!", ephemeral=True)
+    
     return
 
 

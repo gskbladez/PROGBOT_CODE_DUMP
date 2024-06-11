@@ -126,7 +126,10 @@ async def on_ready():
 async def on_app_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
     # TODO: add better exception logging
     logging.exception(error)
-    await interaction.response.send_message(":warning::warning: **SOMETHING BROKE** :warning::warning:", ephemeral=True)
+    if not interaction.response.is_done():
+        await interaction.response.send_message(":warning::warning: **SOMETHING BROKE** :warning::warning:", ephemeral=True)
+    else:
+        await interaction.channel.send(":warning::warning: **SOMETHING BROKE** :warning::warning:")
 
 
 load_dotenv()
