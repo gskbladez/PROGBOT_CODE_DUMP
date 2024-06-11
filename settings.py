@@ -9,6 +9,7 @@ notion_pmc_token = os.getenv('PMC_KEY')
 commands_table_name = "tables/commands.tsv"
 user_levels_table_name = "tables/user_levels.tsv"
 log_file = "progbot.log"
+error_file = "somethingbroke.log"
 #prefixfile = "prefixes.json"
 
 #BOT SETTINGS
@@ -58,6 +59,7 @@ invite_link = "https://discordapp.com/oauth2/authorize?client_id=572878200397627
 notion_pmc_id = "dc469d3ae5f147cab389b6f61bce102e"
 bugreport_image = "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png"
 bugreport_channel_id = 704684798584815636
+admin_guild = 556291542206382080
 
 #CUSTOM EMOJI SUPPORT
 source_guild_id = 556291542206382080

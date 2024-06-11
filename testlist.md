@@ -15,7 +15,7 @@
 - rulebook: send, lookup beta 4 advance 3, lookup beta 7 mobile
 - element: roll a number, roll a number in a category
 - daemon: list all, list a name
-- npu: query a power for its NPUs, lookup npus
+- npu: query a power for its NPUs, lookup npu description, do both in one query
 - crimsonnoise: roll uncommon, common, rare
 - networkmod: help, list, lookup multiple
 - audience: start, view
@@ -35,3 +35,7 @@
 - safety: pause
 - find: lookup chip and power at same time
 - DM: commands, chip sword, ??
+
+#### Error Tests
+- chip tower, sword, sord
+- power gutshooter, jampjoots, jumpjets

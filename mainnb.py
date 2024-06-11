@@ -1322,6 +1322,7 @@ async def virusr(interaction: discord.Interaction, number: int=1,
     return await interaction.response.send_message(embed=embed)
 
 # TODO: merge with the fight generator?
+# TODO: don't forget to test all the commands after
 @bot.tree.command(name='adventure', description=commands_dict["adventure"])
 async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
     if not adv_type:

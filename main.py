@@ -1,5 +1,6 @@
 import asyncio
 import os
+import traceback
 
 import discord
 import typing
@@ -21,6 +22,13 @@ import mainadvance
 ADMIN_LEVEL = 3
 MOD_LEVEL = 2
 USER_LEVEL = 1
+
+# set up the loggers
+errlog = logging.getLogger('err')
+err_handler = logging.handlers.RotatingFileHandler(filename=settings.error_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
+errlog.addHandler(err_handler)
+#will secretly use discord log?
+handler = logging.handlers.RotatingFileHandler(filename=settings.log_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
 
 user_df = read_csv(settings.user_levels_table_name, sep="\t", dtype={'ID':'string'}).dropna(subset=['ID'])
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
@@ -92,11 +100,11 @@ async def admin(interaction: discord.Interaction, command: typing.Literal["refre
         await interaction.response.send_message("Goodnight!")
         return await bot.close()
     if command=="change status":
-        await bot.change_presence(activity=discord.Game(name=param_line))
-        return await interaction.response.send_message("Changed status!")
+        await interaction.response.send_message("Changing status!")
+        return await bot.change_presence(activity=discord.Game(name=param_line))
     #Syncs the slash commands to Discord. Should not is not be done automatically and should be done by running this command if changes were made to the slash commands.
     if command=="refresh slash commands":
-        await interaction.response.send_message("Refreshing slash commands!")
+        await interaction.response.send_message("Refreshing slash commands...")
         await bot.tree.sync()
         interaction.followup.send("Global slash commands finished syncing!")
         return
@@ -124,7 +132,8 @@ async def on_app_command_error(interaction: discord.Interaction, error: discord.
     # TODO: add better exception logging
     if isinstance(error, discord.app_commands.MissingPermissions) or isinstance(error, discord.app_commands.CheckFailure):
         return await interaction.response.send_message("You don't have the permission for this command...", ephemeral=True)
-    logging.exception(error)
+    traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+    errlog.exception(error)
     if not interaction.response.is_done():
         await interaction.response.send_message(":warning::warning: **SOMETHING BROKE** :warning::warning:", ephemeral=True)
     else:
@@ -136,9 +145,6 @@ bad_files = [f for f in required_files if not os.path.isfile(f)]
 if bad_files:
     raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
 
-# set up the logger
-discord.utils.setup_logging(level=logging.INFO, root=False)
-handler = logging.handlers.RotatingFileHandler(filename=settings.log_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
-bot.run(settings.bot_token, log_handler=handler)
+bot.run(settings.bot_token, log_handler=handler, log_level=logging.DEBUG)
 
 sys.exit(0)
