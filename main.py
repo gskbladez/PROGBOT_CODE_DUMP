@@ -30,7 +30,7 @@ user_dict = dict(zip(user_df["ID"], user_df["Level"]))
 def _get_user_level(user_id: int):
     return user_dict[user_id]
 
-#Background task is run every set interval while bot is running (by default every 10 seconds)
+#Background task is run every set interval while bot is running (by default every 10 minutes)
 @tasks.loop(minutes=10)
 async def background_task():
     mainadvance.clean_audience() # cleans up audience_data if it hasn't been used in AUDIENCE_TIMEOUT
