@@ -1,5 +1,4 @@
 Command	Function	Category	Module	Type	Description	Permission	Hidden
-changestatus	change_status	Admin	main	prefix	Changes Progbot's status message	3	TRUE
 bugreport	bugreport	ProgBot	main	slash	Sends a message to Progbot's bug report channel	1	FALSE
 commands	commands	ProgBot	main	slash	Lists Progbot's commands	1	FALSE
 help	help_cmd	Game Lookup	base	slash	Ask for help and rulings	1	FALSE
@@ -35,6 +34,4 @@ glossary	glossary	Game Lookup	base	slash	Pull up a glossary definition	1	FALSE
 safety	safety	Safety Tools	safety	slash	Set down a Safety Tool during play	1	FALSE
 find	find_chip_ncp_power	Game Lookup	base	slash	Find a BattleChip, NCP, or Power	1	FALSE
 autoloot	autoloot	Rollers	fools	slash	Generate a random autoloot chip	1	FALSE
-refreshappcommands	refresh_app_commands	ProgBot	main	prefix	Refresh slash commands	3	TRUE
 entropy	entropy	ProgBot	roll	slash	Test ProgBot's randomness! (256 is normal, 200+ is good!)	1	TRUE
-goodnight	goodnight	Admin	main	prefix	Shuts down Progbot	3	TRUE

@@ -34,3 +34,4 @@
 - glossary: target, accurate, bond, virus, spotlight, ncp, navipower, blank chip
 - safety: pause
 - find: lookup chip and power at same time
+- DM: commands, chip sword, ??

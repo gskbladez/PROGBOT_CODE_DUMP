@@ -9,24 +9,10 @@ notion_pmc_token = os.getenv('PMC_KEY')
 commands_table_name = "tables/commands.tsv"
 user_levels_table_name = "tables/user_levels.tsv"
 log_file = "progbot.log"
-prefixfile = "prefixes.json"
-settings_table_name = ""
-
+#prefixfile = "prefixes.json"
 
 #BOT SETTINGS
 default_status = "NetBattlers RPG"
-
-#MESSAGES
-message_something_broke = ":warning::warning: **SOMETHING BROKE** :warning::warning:"
-message_unknown_command = "Command not recognized"
-log_unhandled_error = "Unhandled error ({})"
-message_result_too_long = "Sorry, the result was too long to output ({}/{} characters)"  # unused?
-message_embed_too_long = "Sorry, the embed was too long to output ({} {}/{} characters)"   # unused?
-message_embed_empty_field = "The output embed was invalid ({} can't be empty)"   # unused?
-log_cooldown_active = "Cooldown active"
-message_restricted_access = "You do not have permission to use this command"
-message_missing_params = "Missing required parameters: {}"
-message_refresh_app_commands_progress = "Slash commands refreshing..."
 
 #NETBATTLER DATA FILES
 chipfile = "tables/chipdata.tsv"

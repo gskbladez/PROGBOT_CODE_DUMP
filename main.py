@@ -9,6 +9,7 @@ import logging.handlers
 import settings
 from pandas import read_csv, DataFrame, Series
 from discord.ext import tasks
+from discord import app_commands
 
 from maincommon import commands_dict, commands_df, bot
 import mainroll
@@ -21,13 +22,15 @@ ADMIN_LEVEL = 3
 MOD_LEVEL = 2
 USER_LEVEL = 1
 
-user_df = read_csv(settings.user_levels_table_name, sep="\t").fillna('')
+user_df = read_csv(settings.user_levels_table_name, sep="\t", dtype={'ID':'string'}).dropna(subset=['ID'])
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
 
 # bot is defined in maincommon
 def _get_user_level(user_id: int):
-    return user_dict[user_id]
+    return user_dict[str(user_id)]
 
+def is_admin(interaction: discord.Interaction) -> bool:
+    return _get_user_level(interaction.user.id) >= ADMIN_LEVEL
 
 #Background task is run every set interval while bot is running (by default every 10 minutes)
 @tasks.loop(minutes=10)
@@ -35,11 +38,6 @@ async def background_task():
     mainadvance.clean_audience() # cleans up audience_data if it hasn't been used in AUDIENCE_TIMEOUT
     mainadvance.clean_spotlight() # cleans up spotlight_db if it hasn't been used in SPOTLIGHT_TIMEOUT
     pass
-
-
-@bot.tree.command(name='hello', description='Says Hello')
-async def say_hello(interaction: discord.Interaction):
-    await interaction.response.send_message('Hello!')
 
 
 @bot.tree.command(name='invite', description=commands_dict["invite"])
@@ -87,29 +85,28 @@ async def bugreport(interaction: discord.Interaction, message: str):
     await interaction.response.send_message(content="**_Bug Report Submitted!_**\nThanks for the help!")
 
 
-@bot.tree.command(name='run', description='admin commands', guild=discord.Object(id=settings.admin_guild))
+@bot.tree.command(name='run', description='Admin-only commands', guild=discord.Object(id=settings.admin_guild))
+@app_commands.check(is_admin)
 async def admin(interaction: discord.Interaction, command: typing.Literal["refresh slash commands", "change status", "goodnight", "reset commands"], param_line:str=""):
-    currentlevel = _get_user_level(interaction.user.id)
-    if currentlevel < ADMIN_LEVEL:
-        return await interaction.response.send_message("You don't have the permission to use this command!", ephemeral=True)
-    
     if command=="goodnight":
         await interaction.response.send_message("Goodnight!")
         return await bot.close()
     if command=="change status":
-        return await bot.change_presence(activity=discord.Game(name=param_line))
+        await bot.change_presence(activity=discord.Game(name=param_line))
+        return await interaction.response.send_message("Changed status!")
     #Syncs the slash commands to Discord. Should not is not be done automatically and should be done by running this command if changes were made to the slash commands.
     if command=="refresh slash commands":
-        await interaction.response.send_message("Refreshing app commands!")
+        await interaction.response.send_message("Refreshing slash commands!")
         await bot.tree.sync()
-        interaction.followup.send("Global app commands finished syncing!")
+        interaction.followup.send("Global slash commands finished syncing!")
         return
     if command=="reset commands":
-        await interaction.response.send_message(content="Clearing old app commands!")
+        await interaction.response.send_message(content="Clearing admin guild commands!")
         ag = discord.Object(id=settings.admin_guild)
         bot.tree.clear_commands(guild=ag)
         bot.tree.copy_global_to(guild=ag)
         return
+
 
 @bot.event
 async def on_ready():
@@ -125,6 +122,8 @@ async def on_ready():
 @bot.tree.error
 async def on_app_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
     # TODO: add better exception logging
+    if isinstance(error, discord.app_commands.MissingPermissions) or isinstance(error, discord.app_commands.CheckFailure):
+        return await interaction.response.send_message("You don't have the permission for this command...", ephemeral=True)
     logging.exception(error)
     if not interaction.response.is_done():
         await interaction.response.send_message(":warning::warning: **SOMETHING BROKE** :warning::warning:", ephemeral=True)
