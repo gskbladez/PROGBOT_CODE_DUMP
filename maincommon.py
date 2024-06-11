@@ -1,7 +1,7 @@
 import re
 
 import discord
-import koduck
+from discord.ext import commands
 import pandas as pd
 import settings
 import random
@@ -60,6 +60,13 @@ rulebook_df = rulebook_df.sort_values(["Name", "Release", "Version", "Type"])
 
 playermade_list = ["Genso Network"]
 
+commands_df = pd.read_csv(settings.commands_table_name, sep="\t").fillna('')
+commands_dict = dict(zip(commands_df["Command"], commands_df["Description"]))
+
+bot = commands.Bot(command_prefix=">", 
+                   activity=discord.Activity(type=discord.ActivityType.playing, name="with Slash Commands"), 
+                   status=discord.Status.online,
+                   intents=discord.Intents.default())
 
 def clean_args(args, lowercase=True):
     if len(args) == 1:

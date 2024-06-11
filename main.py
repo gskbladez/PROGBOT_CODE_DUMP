@@ -8,28 +8,20 @@ from dotenv import load_dotenv
 import sys, logging
 import settings
 import pandas as pd
-from discord.ext import tasks, commands
+from discord.ext import tasks
 #from pandas import DataFrame, read_csv 
 
+from maincommon import commands_dict, commands_df, bot
 #import mainadvance
-# import mainroll
+import mainroll
 #import mainsafety
 #import mainnb
 #import mainaprilfools
 
-handler = logging.FileHandler(filename=settings.log_file, encoding='utf-8', mode='w')
-
-intents = discord.Intents.default()
-
-bot = commands.Bot(command_prefix=">", 
-                   activity=discord.Activity(type=discord.ActivityType.playing, name="with Slash Commands"), 
-                   status=discord.Status.online,
-                   intents=discord.Intents.default())
-
-commands_df = pd.read_csv(settings.commands_table_name, sep="\t").fillna('')
-commands_dict = dict(zip(commands_df["Command"], commands_df["Description"]))
 user_df = pd.read_csv(settings.user_levels_table_name, sep="\t").fillna('')
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
+
+# bot is defined in maincommon
 
 def _get_user_level(user_id: int):
     return user_dict[user_id]
@@ -47,6 +39,7 @@ async def background_task():
 async def say_hello(interaction: discord.Interaction):
     await interaction.response.send_message('Hello!')
 
+
 @bot.tree.command(name='invite', description=commands_dict["invite"])
 async def invite(interaction: discord.Interaction):
     invite_link = settings.invite_link
@@ -55,7 +48,7 @@ async def invite(interaction: discord.Interaction):
                           color=color,
                           url=invite_link)
 
-    return await interaction.command.koduck.send_message(interaction, embed=embed)
+    return await interaction.response.send_message(embed=embed)
 
 
 @bot.tree.command(name='commands', description=commands_dict["commands"])
@@ -71,7 +64,7 @@ async def list_commands(interaction: discord.Interaction):
     availablecommands = availablecommands[~availablecommands["Hidden"]]
     cmd_groups = availablecommands.groupby(["Category"])
     return_msgs = ["**%s**\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in cmd_groups if name]
-    return await interaction.command.koduck.send_message(interaction, content="\n\n".join(return_msgs))
+    return await interaction.response.send_message(content="\n\n".join(return_msgs))
 
 
 @bot.tree.command(name='bugreport', description=commands_dict['bugreport'])
@@ -123,6 +116,7 @@ bad_files = [f for f in required_files if not os.path.isfile(f)]
 if bad_files:
     raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
 
+handler = logging.FileHandler(filename=settings.log_file, encoding='utf-8', mode='w')
 bot.run(bot_token, log_handler=handler, log_level=logging.DEBUG)
 
 sys.exit(0)
