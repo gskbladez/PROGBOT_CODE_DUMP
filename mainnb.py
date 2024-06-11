@@ -117,12 +117,13 @@ pmc_power_df = read_csv(settings.pmc_powerfile, sep="\t").fillna('')
 pmc_virus_df = read_csv(settings.pmc_virusfile, sep="\t").fillna('')
 
 
+# TODO: rework into cogs??
 @bot.tree.command(name='help', description=commands_dict["help"])
 async def help_cmd(interaction: discord.Interaction, query: str):
     # Default message if no parameter is given
     if query is None:
         message_help = "Hi, I'm **ProgBot**, a bot made for *NetBattlers*, the Unofficial MMBN RPG! \n" + \
-                       "My prefix for commands here is ``. You can also DM me using slash commands!" + \
+                       "I use slash commands, which you can also DM me with!" + \
                        "To see a list of all commands you can use, type `commands`. " + \
                        "You can type `help` and any other command for more info on that command!\n" + \
                        "I can also pull up info on some rules and descriptions! Check `help all` for the list of details I can help with!"
@@ -1469,9 +1470,8 @@ async def glossary(interaction: discord.Interaction, term: str):
     if glossary_info["ProgBot Function"] not in globals():
         return await interaction.response.send_message(content="Don't recognize the function `%s`! (You should probably let the devs know...)" % glossary_info["ProgBot Function"], ephemeral=True)
 
-    #spotlight needs to be moved to interaction...
     progbot_func = globals()[glossary_info["ProgBot Function"]]
-    return await progbot_func(interaction, glossary_info["ProgBot Argument"])
+    return await progbot_func.callback(interaction, glossary_info["ProgBot Argument"])
 
 
 @bot.tree.command(name='find', description=commands_dict["find"])
