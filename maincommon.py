@@ -83,7 +83,7 @@ def clean_args(args, lowercase=True):
 async def send_query_msg(interaction, return_title, return_msg):
     return await interaction.response.send_message("**%s**\n*%s*" % (return_title, return_msg))
 
-
+# TODO: due to followup API limits, doesn't send the message if the interaction response is already gone
 async def find_value_in_table(interaction: discord.Interaction, df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
     if not search_arg:
         return None
