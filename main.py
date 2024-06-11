@@ -15,7 +15,7 @@ import mainroll
 import mainaprilfools
 import mainsafety
 import mainnb
-#import mainadvance
+import mainadvance
 
 user_df = read_csv(settings.user_levels_table_name, sep="\t").fillna('')
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
