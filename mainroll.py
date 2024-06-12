@@ -1,11 +1,11 @@
 import datetime
 import subprocess
 import discord
-import koduck
 import settings
 import re
 import dice_algebra
 import rply
+from maincommon import bot, commands_dict, errlog
 
 REROLL_DICE_SIZE_THRESHOLD = 1000000000
 MAX_REROLL_QUERY = 20
@@ -67,10 +67,10 @@ def format_hits_roll(roll_result):
         result_str = "{} = **__{}__**".format(str_result, roll_result.eval())
     return result_str
 
-
+@bot.tree.command(name='roll', description=commands_dict["roll"])
 async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
     if repeat <= 0:
-        await interaction.command.koduck.send_message(interaction, content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
+        await interaction.response.send_message(interaction, content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
 
     roll_line = cmd
 
@@ -81,7 +81,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
     orig_roll_line = roll_line
     roll_line = re.sub("\s+", "", roll_line).lower()
     if not roll_line:
-        await interaction.command.koduck.send_message(interaction, content="No roll command given!", ephemeral=True)
+        await interaction.response.send_message(interaction, content="No roll command given!", ephemeral=True)
 
     dice_size = re.search('d(\d+)', roll_line)
     if not dice_size:
@@ -91,12 +91,12 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         reroll_size = int(dice_size.group(1))
 
         if repeat > MAX_REROLL_QUERY:
-            return await interaction.command.koduck.send_message(interaction,
+            return await interaction.response.send_message(interaction,
                                                                  content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
                                                                  ephemeral=True)
 
         if repeat > MAX_REROLL_QUERY_LARGE and reroll_size > REROLL_DICE_SIZE_THRESHOLD:
-            return await interaction.command.koduck.send_message(interaction,
+            return await interaction.response.send_message(interaction,
                                                                  content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY_LARGE} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
                                                                  ephemeral=True)
     try:
@@ -115,7 +115,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         err_msg = "Bad argument! " + str(e)
 
     if err_msg:
-        return await interaction.command.koduck.send_message(interaction, content=err_msg, ephemeral=True)
+        return await interaction.response.send_message(content=err_msg, ephemeral=True)
 
     roll_outputs = [format_hits_roll(result) for result in roll_results]
 
@@ -129,24 +129,25 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
             progroll_output += f" #{roll_comment.rstrip()}"
         progroll_output = "{}\n>>> {}".format(progroll_output, "\n".join(roll_outputs))
 
-    progmsg = await interaction.command.koduck.send_message(interaction, content=progroll_output)
+    await interaction.response.send_message(content=progroll_output)
+    response_msg = await interaction.original_response()
     
     try:
         if IS_UNDERFLOW in retcodes:
-            await progmsg.add_reaction(settings.custom_emojis["underflow"])
+            await response_msg.add_reaction(settings.custom_emojis["underflow"])
         if IS_DEVILISH in retcodes:
-            await progmsg.add_reaction(settings.custom_emojis["devilish"])
+            await response_msg.add_reaction(settings.custom_emojis["devilish"])
     except discord.errors.HTTPException as e:
-        print(e)
+        errlog.exception(e)
         return
 
-
+@bot.tree.command(name='entropy', description=commands_dict["entropy"])
 async def entropy(interaction: discord.Interaction):
     try:
         completedproc = subprocess.run(['cat','/proc/sys/kernel/random/entropy_avail'], stdout = subprocess.PIPE, timeout=1, encoding='ascii')
-        return await interaction.command.koduck.send_message(interaction, content=f"Randomization quantum: **{completedproc.stdout}**!")
+        return await interaction.response.send_message(f"Randomization quantum: **{completedproc.stdout.strip()}**!")
     except subprocess.TimeoutExpired:
-        return await interaction.command.koduck.send_message(interaction, content="Orb did not respond... ask again later!", ephemeral=True)
+        return await interaction.response.send_message(content="Orb did not respond... ask again later!", ephemeral=True)
     except Exception as e:
-        return await interaction.command.koduck.send_message(interaction, content="Orb was cracked... You should let the devs know!", ephemeral=True)
+        return await interaction.response.send_message(content="Orb was cracked... You should let the devs know!", ephemeral=True)
     

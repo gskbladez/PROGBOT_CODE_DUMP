@@ -2,14 +2,15 @@ import typing
 import discord
 import random
 import settings
-import pandas as pd
+from pandas import DataFrame, Series, unique, read_csv, to_numeric
 import numpy as np
 import re
 import mainadvance
-from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table
+from maincommon import bot, commands_dict, filter_table
+from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table, send_multiple_embeds
 from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
-from maincommon import nyx_link, grid_link
-import koduck
+from maincommon import nyx_link, grid_link, random_chip_link
+from mainadvance import spotlight   # for glossary
 
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
@@ -52,7 +53,7 @@ cc_dict = {
     "Summer Camp": "Summber Camp, SummerCamp, Summer, Sunmer Camp",
     "Nyx": "", "Cast the Dice": "CasttheDice, CastDice, Cast Dice", "Neko Virus": "Neko Virus Infection, NekoVirus"}
 cc_list = list(cc_dict.keys())
-cc_df = pd.DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
+cc_df = DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())})
 
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xA8E8E8,
@@ -73,7 +74,7 @@ mysterydata_dict = {"common": {"color": 0x48C800,
                     "sunny": {"color": cc_color_dictionary["Summber Camp"],
                               "image": settings.sunny_md_image}}
 
-chip_df = pd.read_csv(settings.chipfile, sep="\t").fillna('')
+chip_df = read_csv(settings.chipfile, sep="\t").fillna('')
 chip_known_aliases = chip_df[chip_df["Alias"] != ""].copy()
 chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
     .stack() \
@@ -81,13 +82,13 @@ chip_tag_list = chip_df["Tags"].str.split(",", expand=True) \
     .str.lower() \
     .unique()
 chip_tag_list = [i for i in chip_tag_list if i]
-chip_category_list = pd.unique(chip_df["Category"])
+chip_category_list = unique(chip_df["Category"])
 chip_category_list = [i for i in chip_category_list if i]
-chip_license_list = pd.unique(chip_df["License"].str.lower())
-chip_from_list = pd.unique(chip_df["From?"].str.lower())
+chip_license_list = unique(chip_df["License"].str.lower())
+chip_from_list = unique(chip_df["From?"].str.lower())
 
-power_df = pd.read_csv(settings.powerfile, sep="\t").fillna('')
-virus_df = pd.read_csv(settings.virusfile, sep="\t").fillna('')
+power_df = read_csv(settings.powerfile, sep="\t").fillna('')
+virus_df = read_csv(settings.virusfile, sep="\t").fillna('')
 virus_df = virus_df[virus_df["Name"] != ""]
 virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .stack() \
@@ -96,83 +97,83 @@ virus_tag_list = virus_df["Tags"].str.split(";|,", expand=True) \
     .unique()
 virus_tag_list = [i for i in virus_tag_list if i]
 [virus_tag_list.remove(i) for i in ["none", "None"] if i in virus_tag_list]
-virus_category_list = pd.unique(virus_df["Category"].str.strip())
+virus_category_list = unique(virus_df["Category"].str.strip())
 virus_category_list = [i for i in virus_category_list if i]
 
-bond_df = pd.read_csv(settings.bondfile, sep="\t").fillna('').dropna(subset=['BondPower'])
-tag_df = pd.read_csv(settings.tagfile, sep="\t").fillna('')
-mysterydata_df = pd.read_csv(settings.mysterydatafile, sep="\t").fillna('')
+bond_df = read_csv(settings.bondfile, sep="\t").fillna('').dropna(subset=['BondPower'])
+tag_df = read_csv(settings.tagfile, sep="\t").fillna('')
+mysterydata_df = read_csv(settings.mysterydatafile, sep="\t").fillna('')
 
-element_df = pd.read_csv(settings.elementfile, sep="\t").fillna('')
-element_category_list = pd.unique(element_df["category"].dropna())
+element_df = read_csv(settings.elementfile, sep="\t").fillna('')
+element_category_list = unique(element_df["category"].dropna())
 
-adventure_df = pd.read_csv(settings.adventurefile, sep="\t").fillna('')
-fight_df = pd.read_csv(settings.fightfile, sep="\t").fillna('')
-glossary_df = pd.read_csv(settings.glossaryfile, sep="\t").fillna('')
+adventure_df = read_csv(settings.adventurefile, sep="\t").fillna('')
+fight_df = read_csv(settings.fightfile, sep="\t").fillna('')
+glossary_df = read_csv(settings.glossaryfile, sep="\t").fillna('')
 
-nyx_chip_df = pd.read_csv(settings.nyx_chipfile, sep="\t").fillna('')
-nyx_power_df = pd.read_csv(settings.nyx_ncpfile, sep="\t").fillna('')
-pmc_chip_df = pd.read_csv(settings.pmc_chipfile, sep="\t").fillna('')
-pmc_power_df = pd.read_csv(settings.pmc_powerfile, sep="\t").fillna('')
-pmc_virus_df = pd.read_csv(settings.pmc_virusfile, sep="\t").fillna('')
+nyx_chip_df = read_csv(settings.nyx_chipfile, sep="\t").fillna('')
+nyx_power_df = read_csv(settings.nyx_ncpfile, sep="\t").fillna('')
+pmc_chip_df = read_csv(settings.pmc_chipfile, sep="\t").fillna('')
+pmc_power_df = read_csv(settings.pmc_powerfile, sep="\t").fillna('')
+pmc_virus_df = read_csv(settings.pmc_virusfile, sep="\t").fillna('')
 
-chip_drops = chip_df.merge(virus_df[["Name", "Drops1"]], left_on="Chip", right_on="Drops1", how="left")
-chip_drops = chip_drops.merge(virus_df[["Name", "Drops2"]], left_on="Chip", right_on="Drops2", how="left")
-chip_drops["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y'])
-chip_df["Dropped By"] = chip_drops["Name_x"].combine_first(chip_drops['Name_y']).fillna('')
 
+# TODO: rework into cogs??
+@bot.tree.command(name='help', description=commands_dict["help"])
 async def help_cmd(interaction: discord.Interaction, query: str):
     # Default message if no parameter is given
     if query is None:
         message_help = "Hi, I'm **ProgBot**, a bot made for *NetBattlers*, the Unofficial MMBN RPG! \n" + \
-                       "My prefix for commands here is ``. You can also DM me using slash commands!" + \
+                       "I use slash commands, which you can also DM me with!" + \
                        "To see a list of all commands you can use, type `commands`. " + \
                        "You can type `help` and any other command for more info on that command!\n" + \
                        "I can also pull up info on some rules and descriptions! Check `help all` for the list of details I can help with!"
-        return await interaction.command.koduck.send_message(interaction, content=message_help)
+        return await interaction.response.send_message(message_help)
 
     cleaned_args = clean_args([query])
     if cleaned_args[0] in ['list', 'all']:
-        sub_df = help_df[help_df["Hidden?"] == False]
+        sub_df = filter_table(help_df, {"Hidden", False})
         help_groups = sub_df.groupby(["Type"])
         return_msgs = ["%s\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in help_groups if name]
-        return await interaction.command.koduck.send_message(interaction, content="\n\n".join(return_msgs))
+        return await interaction.response.send_message("\n\n".join(return_msgs))
     elif re.match("help(help)+", cleaned_args[0]):
         cleaned_args = ["helphelp"]  # assuming direct control
 
     funkyarg = ''.join(cleaned_args)
-    help_msg = await find_value_in_table(interaction, help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)
+    help_msg, _ = await find_value_in_table(help_df, "Command", funkyarg, suppress_notfound=True, allow_duplicate=True)
     if help_msg is None:
-        help_response = help_df[help_df["Command"] == "unknowncommand"].iloc[0]["Response"]
+        err_response = filter_table(help_df, {"Command": "unknowncommand"}).iloc[0]["Response"]
+        return await interaction.response.send_message(err_response, ephemeral=True)
     else:
         help_response = help_msg["Response"]
         if help_msg["Ruling?"]:
-            ruling_msg = await find_value_in_table(interaction, help_df, "Command", help_msg["Ruling?"], suppress_notfound=True)
+            ruling_msg, _ = await find_value_in_table(help_df, "Command", help_msg["Ruling?"], suppress_notfound=True)
             if ruling_msg is None:
-                return await interaction.command.koduck.send_message(interaction,
+                return await interaction.response.send_message(
                                     content="Couldn't pull up additional ruling information for %s! You should probably let the devs know..." % help_msg["Ruling?"], ephemeral=True)
             help_response = help_response + "\n\n" + ruling_msg["Response"]
 
         # determines custom emojis
         unique_emojis = np.unique(np.array(re.findall(r"<:(\S+):>", help_response)))
         for cust_emoji in unique_emojis:
-            if (koduck.client.get_guild(settings.source_guild_id)) and (cust_emoji in settings.custom_emojis):
+            if (bot.get_guild(settings.source_guild_id)) and (cust_emoji in settings.custom_emojis):
                 help_response = re.sub(r"<:%s:>" % cust_emoji, settings.custom_emojis[cust_emoji], help_response)
             else:
                 help_response = re.sub(r"(^\s*)?<:%s:>(\s*$|\s)?" % cust_emoji, "", help_response)
 
-    return await interaction.command.koduck.send_message(interaction, content=help_response)
+    return await interaction.response.send_message(help_response)
 
 
+@bot.tree.command(name='tag', description=commands_dict["tag"])
 async def tag(interaction: discord.Interaction, category: str):
     cleaned_args = category.strip().lower()
     if cleaned_args == 'help':
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="Give me a BattleChip tag or Virus/Chip category, and I can pull up its info for you!")
+        return await interaction.response.send_message(
+            "Give me a BattleChip tag or Virus/Chip category, and I can pull up its info for you!")
     
-    tag_info = await find_value_in_table(interaction, tag_df, "Tag", cleaned_args)
+    tag_info, add_msg = await find_value_in_table(tag_df, "Tag", cleaned_args)
     if tag_info is None:
-        return
+        return await interaction.response.send_message(add_msg)
 
     tag_title = tag_info["Tag"]
     tag_description = tag_info["Description"]
@@ -186,44 +187,47 @@ async def tag(interaction: discord.Interaction, category: str):
         title="__%s__" % tag_title,
         description=tag_description,
         color=0x24ff00)
-    return await interaction.command.koduck.send_message(interaction, embed=embed)
+    return await interaction.response.send_message(embed=embed)
 
 
 def query_chip(args):
     arg_lower = ' '.join(args)
 
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)}) 
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
     if arg_lower in ['dark', 'darkchip', 'darkchips']:
         return_title = "Pulling up all `DarkChips`..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Dark|dark")]
+        subdf = filter_table(chip_df, {"Tags": "Dark"})
+        subdf = filter_table(subdf, {"From?": "Neko Virus"}, not_filt=True)
+        return_msg = ", ".join(subdf["Chip"])
+    elif arg_lower in ['neko', 'nekovirus']:
+        subdf = filter_table(chip_df, {"From?": "Neko Virus"})
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in ['mega', 'megachip', 'megachips']:
         return_title = "Pulling up all `MegaChips` (excluding DarkChips and Incident Chips)..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Mega|mega")]
+        subdf = filter_table(chip_df, {"Tags": "Mega"})
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in ['incident', 'incident chip', 'incident chips']:
         return_title = "Pulling up all `Incident` Chips..."
-        subdf = chip_df[chip_df["Tags"].str.contains("Incident", flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"Tags": "Incident"})
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in arg_lower in chip_tag_list:
-        subdf = chip_df[chip_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE) &
-                        ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"Tags": re.escape(arg_lower)})
+        subdf = filter_table(subdf, {"Tags": "dark|incident|mega"}, not_filt = True)
         return_title = "Pulling up all BattleChips with the `%s` tag (excluding MegaChips)..." % re.escape(
             arg_lower).capitalize()
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in [i.lower() for i in chip_category_list]:
-        subdf = chip_df[(chip_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)) &
-                        ~chip_df["Tags"].str.contains("dark|incident|mega", flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"Category": re.escape(arg_lower)})
+        subdf = filter_table(subdf, {"Tags": "dark|incident|mega"}, not_filt = True)
         if subdf.shape[0] == 0:
             return False, "", ""
         return_title = "Pulling up all chips in the `%s` category (excluding MegaChips)..." % subdf.iloc[0]["Category"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in chip_license_list:
-        subdf = chip_df[chip_df["License"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"License": re.escape(arg_lower)})
         if subdf.shape[0] == 0:
             return False, "", ""
         return_title = "Pulling up all `%s` BattleChips..." % subdf.iloc[0]["License"]
@@ -235,13 +239,13 @@ def query_chip(args):
         return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower not in ["core"] and arg_lower in chip_from_list:
-        subdf = chip_df[chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(chip_df, {"From?": re.escape(arg_lower)})
         if subdf.shape[0] == 0:
             return False, "", ""
         return_title = "Pulling up all BattleChips from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
         return_msg = ", ".join(subdf["Chip"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_chip_df[pmc_chip_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(pmc_chip_df, {"From?": re.escape(arg_lower)})
         if subdf.shape[0] == 0:
             return False, "", ""
         return_title = "Pulling up all BattleChips from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
@@ -253,8 +257,7 @@ def query_chip(args):
 
 
 def pity_cc_check(arg):
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg), flags=re.IGNORECASE)]
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg)})
     if alias_check.shape[0] > 0:
         arg = alias_check.iloc[0]["Source"]
         return arg
@@ -265,25 +268,26 @@ def pity_cc_check(arg):
         return None
 
 
+@bot.tree.command(name='chip', description=commands_dict["chip"])
 async def chip(interaction: discord.Interaction, query: str):
     cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.command.koduck.send_message(interaction, content=
-                                                             f"Give me the name of 1-{MAX_CHIP_QUERY} **BattleChips** and I can pull up their info for you!\n\n" +
-                                                        "I can also query chips by **Category**, **Tag**, **License**, and **Advance Content**! \n" +
-                                                        "I can also list all current chip categories with `chip category`, and all current chip tags with `chip tag`. To pull up details on a specific Category or Tag, use `tag` instead. (i.e. `tag blade`)"\
-                                        )
+        return await interaction.response.send_message(
+            f"Give me the name of 1-{MAX_CHIP_QUERY} **BattleChips** and I can pull up their info for you!\n\n" +
+            "I can also query chips by **Category**, **Tag**, **License**, and **Advance Content**! \n" +
+            "I can also list all current chip categories with `chip category`, and all current chip tags with `chip tag`. To pull up details on a specific Category or Tag, use `tag` instead. (i.e. `tag blade`)"\
+        )
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "chipruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "chipruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction, content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
+            return await interaction.response.send_message(content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await interaction.response.send_message(ruling_msg["Response"])
     
     if cleaned_args[0] in ['folder', 'folders']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "folder", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "folder", suppress_notfound=True)
         if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction, content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction, content=ruling_msg["Response"])
+            return await interaction.response.send_message(content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await interaction.response.send_message(ruling_msg["Response"])
     if 'blank' in cleaned_args[0]:
         embed = discord.Embed(
             title="__Blank BattleChip__",
@@ -291,7 +295,7 @@ async def chip(interaction: discord.Interaction, query: str):
                         "\nBlank chips do not need to be in a Folder to use." +
                         "\nUnless the GM says otherwise, NetOps always have plenty of blank chips available.*",
             color=cc_color_dictionary["Item"])
-        return await interaction.command.koduck.send_message(interaction, embed=embed)
+        return await interaction.response.send_message(embed=embed)
 
     if '??' in cleaned_args[0]:
         embed = discord.Embed(
@@ -300,7 +304,7 @@ async def chip(interaction: discord.Interaction, query: str):
 
         embed.add_field(name="[???/???/???]",
             value="*An unknown chip was slotted in!*")
-        return await interaction.command.koduck.send_message(interaction, embed=embed)
+        return await interaction.response.send_message(embed=embed)
 
     if cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known BattleChip Categories..."
@@ -311,8 +315,8 @@ async def chip(interaction: discord.Interaction, query: str):
         result_text = ", ".join([i.capitalize() for i in chip_tag_list])
         return await send_query_msg(interaction, result_title, result_text)
     elif cleaned_args[0] in ['navi', 'navichip']:
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="NaviChips are **MegaChips** that store attack data from defeated Navis! Each NaviChip is unique, based off the Navi it was downloaded from. NaviChips are determined by the GM.")
+        return await interaction.response.send_message(
+            "NaviChips are **MegaChips** that store attack data from defeated Navis! Each NaviChip is unique, based off the Navi it was downloaded from. NaviChips are determined by the GM.")
     arg_combined = ' '.join(cleaned_args)
     is_query, return_title, return_msg = query_chip(cleaned_args)
     if is_query:
@@ -320,16 +324,19 @@ async def chip(interaction: discord.Interaction, query: str):
 
     would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
-        return await interaction.command.koduck.send_message(interaction, 
+        return await interaction.response.send_message(
                                         content="`%s` has no Advance Content BattleChips!" % would_be_valid, ephemeral=True)
 
     if len(cleaned_args) > MAX_CHIP_QUERY:
-        return await interaction.command.koduck.send_message(interaction, content=f"Too many chips, no more than {MAX_CHIP_QUERY}!", ephemeral=True)
+        return await interaction.response.send_message(content=f"Too many chips, no more than {MAX_CHIP_QUERY}!", ephemeral=True)
 
+    msg_warns = []
+    msg_embeds = []
     for arg in cleaned_args:
         if not arg:
             continue
-        chip_title, subtitle_trimmed, chip_description, color, _ = await chipfinder(interaction, arg)
+        chip_title, subtitle_trimmed, chip_description, color, _, content_msg = await chipfinder(interaction, arg)
+        msg_warns.append(content_msg)
         if chip_title is None:
             continue
         embed = discord.Embed(
@@ -337,19 +344,19 @@ async def chip(interaction: discord.Interaction, query: str):
             color=color)
         embed.add_field(name="[%s]" % subtitle_trimmed,
                         value="_%s_" % chip_description)
-        await interaction.command.koduck.send_message(interaction, embed=embed)
+        msg_embeds.append(embed)
+    
+    await send_multiple_embeds(interaction, msg_embeds, msg_warns)
 
 
 async def chipfinder(interaction: discord.Interaction, arg, suppress_err_msg=False):
-    chip_info = await find_value_in_table(interaction, chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
+    chip_info, content_msg = await find_value_in_table(chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
     if chip_info is None:
-        chip_info = await find_value_in_table(interaction, pmc_chip_df, "Chip", arg, suppress_notfound=True,
-                                              alias_message=True)
+        chip_info, content_msg = await find_value_in_table(pmc_chip_df, "Chip", arg, suppress_notfound=True, alias_message=True)
         if chip_info is None:
-            chip_info = await find_value_in_table(interaction, nyx_chip_df, "Chip", arg, suppress_notfound=suppress_err_msg,
-                                                  alias_message=True)
+            chip_info, content_msg = await find_value_in_table(nyx_chip_df, "Chip", arg, suppress_notfound=suppress_err_msg, alias_message=True)
             if chip_info is None:
-                return None, None, None, None, None
+                return None, None, None, None, None, content_msg
 
     chip_name = chip_info["Chip"]
 
@@ -410,7 +417,7 @@ async def chipfinder(interaction: discord.Interaction, arg, suppress_err_msg=Fal
     subtitle = [chip_damage, chip_range, chip_category, ", ".join(chip_tags_list)]
     subtitle_trimmed = [i for i in subtitle if i and i[0] != '-']
 
-    return chip_title, "/".join(subtitle_trimmed), chip_description, color, ""
+    return chip_title, "/".join(subtitle_trimmed), chip_description, color, "", content_msg
 
 
 def find_skill_color(skill_key):
@@ -435,22 +442,22 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
         local_power_df = power_df
         local_pmc_df = pmc_power_df
 
-    power_info = await find_value_in_table(interaction, local_power_df, "Power/NCP", arg, suppress_notfound=True,
+    power_info, content_msg = await find_value_in_table(local_power_df, "Power/NCP", arg, suppress_notfound=True,
                                            alias_message=True)
 
     if power_info is None:
-        power_info = await find_value_in_table(interaction, local_pmc_df, "Power/NCP", arg, suppress_notfound=True,
+        power_info, content_msg = await find_value_in_table(local_pmc_df, "Power/NCP", arg, suppress_notfound=True,
                                                alias_message=True)
         if power_info is None:
-            power_info = await find_value_in_table(interaction, nyx_power_df, "Power/NCP", arg, suppress_notfound=suppress_err_msg,
+            power_info, content_msg = await find_value_in_table(nyx_power_df, "Power/NCP", arg, suppress_notfound=suppress_err_msg,
                                                    alias_message=True)
             if power_info is None:
-                return None, None, None, None, None
+                return None, None, None, None, None, content_msg
 
     power_name = power_info["Power/NCP"]
 
     if ncp_only and any(power_df["Power/NCP"].str.contains(re.escape("%sncp" % power_name), flags=re.IGNORECASE)):
-        power_info = await find_value_in_table(interaction, local_power_df, "Power/NCP", power_name+"ncp",
+        power_info, content_msg = await find_value_in_table(local_power_df, "Power/NCP", power_name+"ncp",
                                                suppress_notfound=True, alias_message=False)
         power_name = power_info["Power/NCP"]
 
@@ -470,14 +477,14 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
         if power_source in cc_color_dictionary:
             power_color = cc_color_dictionary[power_source]
         elif (power_color < 0) and any(local_power_df["Power/NCP"].str.contains("^%s$" % re.escape(power_skill), flags=re.IGNORECASE)):
-            power_true_info = await find_value_in_table(interaction, local_power_df, "Power/NCP", power_skill)
+            power_true_info, content_msg = await find_value_in_table(local_power_df, "Power/NCP", power_skill)
             power_color = find_skill_color(power_true_info["Skill"])
         else:
             power_color = 0xffffff
     field_footer = ""
 
     # determines custom emojis
-    if koduck.client.get_guild(settings.source_guild_id):
+    if bot.get_guild(settings.source_guild_id):
         emojis_available = True
         if power_tag in ['Instant']:
             emoji_tag = settings.custom_emojis["instant"]
@@ -549,7 +556,7 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
         else:
             field_description = "(%s/%s) %s" % (power_skill, power_type, power_description)
 
-    return power_name, field_title, field_description, power_color, field_footer
+    return power_name, field_title, field_description, power_color, field_footer, content_msg
 
 
 def query_power(args):
@@ -560,10 +567,10 @@ def query_power(args):
     for arg in args:
         arg_capital = arg.capitalize()
         if arg in [i.lower() for i in skill_list]:
-            sub_df = sub_df[(sub_df["Skill"] == arg_capital)]
+            sub_df = filter_table(sub_df, {"Skill": arg_capital})
             search_tag_list.append(arg_capital)
         elif arg in ['cost', 'roll', 'passive']:
-            sub_df = sub_df[(sub_df["Type"] == arg_capital)]
+            sub_df = filter_table(sub_df, {"Type": arg_capital})
             search_tag_list.append(arg_capital)
         elif arg == 'virus':
             is_default = False
@@ -572,10 +579,11 @@ def query_power(args):
         return False, "", ""
 
     if is_default:
-        sub_df = sub_df[sub_df["Sort"] == "Power"]
+        sub_df = filter_table(sub_df, {"Sort": "Power"})
         search_tag_list.append('Navi')
     else:
-        sub_df = sub_df[(sub_df["Sort"] == "Virus Power") & (sub_df["From?"] != "Mega Viruses") & (sub_df["From?"] != "The Walls Will Swallow You")]
+        sub_df = filter_table(sub_df, {"Sort": "Virus Power"})
+        sub_df = filter_table(sub_df, {"From?": "Mega Viruses", "From?": "The Walls Will Swallow You", "From?": "Neko Virus"}, not_filt=True)
         search_tag_list.append('Virus (excluding Mega)')
     results_title = "Searching for `%s` Powers..." % "` `".join(search_tag_list)
     results_msg = ", ".join(sub_df["Power/NCP"])
@@ -583,38 +591,41 @@ def query_power(args):
     return True, results_title, results_msg
 
 
+@bot.tree.command(name='power', description=commands_dict["power"])
 async def power(interaction: discord.Interaction, query: str):
     cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content=f"Give me the name of 1-{MAX_POWER_QUERY} **Powers** and I can pull up their info for you!\n\n" +
-                                                    "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
-                                                    "Try giving me multiple queries at once, i.e. `power sense cost` or `power virus passive`!")
+        return await interaction.response.send_message(
+            f"Give me the name of 1-{MAX_POWER_QUERY} **Powers** and I can pull up their info for you!\n\n" +
+            "I can also query Powers by **Skill**, **Type**, and whether or not it is **Virus**-exclusive! " +
+            "Try giving me multiple queries at once, i.e. `power sense cost` or `power virus passive`!")
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "powerruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "powerruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction, 
+            return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction, 
-                                    content=ruling_msg["Response"])
+        return await interaction.response.send_message(ruling_msg["Response"])
 
     if len(cleaned_args) > MAX_POWER_QUERY:
-        return await interaction.command.koduck.send_message(interaction, 
+        return await interaction.response.send_message(
                                         content=f"Too many powers, no more than {MAX_POWER_QUERY}!", ephemeral=True)
 
     is_query, results_title, results_msg = query_power(cleaned_args)
     if is_query:
         if not results_msg:
-            return await interaction.command.koduck.send_message(interaction,content="No powers found with that query!", ephemeral=True)
+            return await interaction.response.send_message(content="No powers found with that query!", ephemeral=True)
         return await send_query_msg(interaction, results_title, results_msg)
 
+    msg_warn = []
+    msg_embeds = []
     for arg in cleaned_args:
         if not arg:
             continue
         is_power_ncp = re.match(r"^(\S+)\s*ncp$", re.escape(arg), flags=re.IGNORECASE)
         if is_power_ncp:
             arg = is_power_ncp.group(1)
-        power_name, field_title, field_description, power_color, field_footer = await power_ncp(interaction, arg, force_power=True)
+        power_name, field_title, field_description, power_color, field_footer, add_msg = await power_ncp(interaction, arg, force_power=True)
+        msg_warn.append(add_msg)
         if power_name is None:
             continue
 
@@ -624,65 +635,72 @@ async def power(interaction: discord.Interaction, query: str):
                         value="_{}_".format(field_description))
         if field_footer:
             embed.set_footer(text=field_footer)
-        await interaction.command.koduck.send_message(interaction, embed=embed)
-    return
+        
+        msg_embeds.append(embed)
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
 def query_ncp(arg_lower):
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
-    ncp_df = power_df[power_df["Sort"] != "Virus Power"]
-    valid_cc_list = list(pd.unique(ncp_df["From?"].str.lower().str.strip()))
+    ncp_df = filter_table(power_df, {"Sort": "Virus Power", "From?": "Neko Virus"}, not_filt=True)
+    valid_cc_list = list(unique(ncp_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core", "navi power upgrades"]]
     eb_match = re.match(r"^(\d+)(?:\s*EB)?$", arg_lower, flags=re.IGNORECASE)
 
     if eb_match:
         eb_search = eb_match.group(1)
         #Exclude npus from ncp query
-        subdf = ncp_df[(ncp_df["EB"] == eb_search) & (ncp_df["Type"] != "Upgrade")]
+        subdf = filter_table(ncp_df, {"EB": eb_search})
+        subdf = filter_table(subdf, {"Type": "Upgrade"}, not_filt=True)
         results_title = "Finding all `%s` EB NCPs (excluding NPUs)..." % eb_search
-        results_msg = ", ".join(subdf["Power/NCP"])
-        return True, results_title, results_msg
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join([i for i in subdf["Power/NCP"] if i])
+        #return True, results_title, results_msg
+   
     elif arg_lower in ["nyx"]:
         subdf = nyx_power_df
         results_title = "Pulling up all NCPs from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
-        results_msg = ", ".join(subdf["Power/NCP"])
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in valid_cc_list:
-        subdf = ncp_df[ncp_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(ncp_df, {"From?": re.escape(arg_lower)})
         results_title = "Pulling up all NCPs from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
-        results_msg = ", ".join(subdf["Power/NCP"])
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_power_df[(pmc_power_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)) &
-                             (pmc_power_df["Sort"] != "Virus Power")]
+        subdf = filter_table(pmc_power_df, {"From?": re.escape(arg_lower)})
+        subdf = filter_table(subdf, {"Sort": "Virus Power"}, not_filt = True)
         results_title = "Pulling up all NCPs from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
-        results_msg = ", ".join(subdf["Power/NCP"])
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in ["minus", "minus cust", "minuscust"]:
-        subdf = pmc_power_df[pmc_power_df["Type"] == "Minus"]
+        subdf = filter_table(pmc_power_df, {"Type": "Minus"})
         results_title = "Pulling up all `MinusCust` Programs from the unofficial Genso Network Player-Made Content..."
-        results_msg = ", ".join(subdf["Power/NCP"])
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join(subdf["Power/NCP"])
     else:
         return False, "", ""
-
+    
+    results_msg = ", ".join([i for i in results if i])
     return True, results_title, results_msg
 
-
+@bot.tree.command(name='ncp', description=commands_dict["ncp"])
 async def ncp(interaction: discord.Interaction, query:str):
     cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="Give me the names of 1-%d **NaviCust Parts** (NCPs) and I can pull up their info for you!\n\n" % MAX_POWER_QUERY +
-                                                    "I can also query NCPs by **EB** and **Advance Content!**")
+        return await interaction.response.send_message(
+            "Give me the names of 1-%d **NaviCust Parts** (NCPs) and I can pull up their info for you!\n\n" % MAX_POWER_QUERY +
+            "I can also query NCPs by **EB** and **Advance Content!**")
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "ncpruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "ncpruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction, 
+            return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction, 
-                                    content=ruling_msg["Response"])
+        return await interaction.response.send_message(ruling_msg["Response"])
 
     arg_combined = " ".join(cleaned_args)
     is_query, results_title, results_msg = query_ncp(arg_combined)
@@ -690,19 +708,22 @@ async def ncp(interaction: discord.Interaction, query:str):
         return await send_query_msg(interaction, results_title, results_msg)
     would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
-        return await interaction.command.koduck.send_message(interaction, 
+        return await interaction.response.send_message(
                                         content="`%s` has no Advance Content NCPs!" % would_be_valid, ephemeral=True)
 
     if len(cleaned_args) > MAX_NCP_QUERY:
-        return await interaction.command.koduck.send_message(interaction, 
+        return await interaction.response.send_message(
                                         content=f"Too many NCPs, no more than {MAX_NCP_QUERY}!", ephemeral=True)
 
+    msg_warn = []
+    msg_embeds = []
     for arg in cleaned_args:
         if not arg:
             continue
 
-        power_name, field_title, field_description, power_color, _ = await power_ncp(interaction, arg, force_power=False,
+        power_name, field_title, field_description, power_color, _, add_msg = await power_ncp(interaction, arg, force_power=False,
                                                                                      ncp_only=True)
+        msg_warn.append(add_msg)
         if power_name is None:
             continue
 
@@ -710,8 +731,9 @@ async def ncp(interaction: discord.Interaction, query:str):
                               color=power_color)
         embed.add_field(name="**[{}]**".format(field_title),
                         value="_{}_".format(field_description))
-        await interaction.command.koduck.send_message(interaction,  embed=embed)
-    return
+        msg_embeds.append(embed)
+    
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
 def query_npu(arg):
@@ -721,14 +743,14 @@ def query_npu(arg):
     eb_match = re.match(r"^(\d+)(?:\s*EB)?$", re.escape(arg), flags=re.IGNORECASE)
     if eb_match:
         eb_search = eb_match.group(1)
-        result_ncps = power_df[(power_df["Type"] == "Upgrade") & (power_df["EB"] == eb_search)]
+        result_ncps = filter_table(power_df, {"Type": "Upgrade", "EB": eb_search})
         if result_ncps.shape[0] == 0:
             return False, "", ""
         result_msg = ", ".join(result_ncps["Power/NCP"])
         result_title = "Finding all `%sEB` Navi Power Upgrades..." % eb_search
         return True, result_title, result_msg
 
-    result_npu = power_df[power_df["Skill"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
+    result_npu = filter_table(power_df, {"Skill": "^%s$" % re.escape(arg)})
     if result_npu.shape[0] == 0:
         return False, "", ""
     result_title = "Finding all Navi Power Upgrades for `%s`..." % result_npu.iloc[0]["Skill"]
@@ -736,45 +758,44 @@ def query_npu(arg):
     return True, result_title, result_string
 
 
+@bot.tree.command(name='npu', description=commands_dict["npu"])
 async def upgrade(interaction: discord.Interaction, query: str):
     cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="Give me the name of 1-%d default Navi Powers and I can find its **upgrades** for you!" % MAX_NPU_QUERY)
+        return await interaction.response.send_message("Give me the name of 1-%d default Navi Powers and I can find its **upgrades** for you!" % MAX_NPU_QUERY)
     if len(cleaned_args) > MAX_NPU_QUERY:
-        return await interaction.command.koduck.send_message(interaction, 
+        return await interaction.response.send_message(
                                         content="I can't pull up more than %d Navi Power Upgrades at a time!" % MAX_NPU_QUERY, ephemeral=True)
 
     if cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "npuruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "npuruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction, 
+            return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction, 
-                                    content=ruling_msg["Response"])
-
+        return await interaction.response.send_message(ruling_msg["Response"])
+    
     for arg in cleaned_args:
         arg = arg.lower()
-
         is_upgrade, result_title, result_msg = query_npu(arg)
         if is_upgrade:
             await send_query_msg(interaction, result_title, result_msg)
             continue
         if any((power_df["Type"] == "Upgrade") & power_df["Power/NCP"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)):
-            await ncp(interaction, arg)
+            await ncp.callback(interaction, arg)
             continue
-        await interaction.command.koduck.send_message(interaction, 
-                                 content="Couldn't find any Navi Power Upgrades for `%s`!" % arg, ephemeral=True)
+        # cheating out preserving the interaction for ncp
+        await interaction.channel.send(f"Couldn't find any Navi Power Upgrades for `{arg}`!", ephemeral=True)
+    
     return
 
 
-async def virus_master(interaction: discord.Interaction, arg, simplified=True):
-    virus_info = await find_value_in_table(interaction, virus_df, "Name", arg, suppress_notfound=True, alias_message=True)
+async def virus_master(arg, simplified=True):
+    virus_info, content_msg = await find_value_in_table(virus_df, "Name", arg, suppress_notfound=True, alias_message=True)
 
     if virus_info is None:
-        virus_info = await find_value_in_table(interaction, pmc_virus_df, "Name", arg)
+        virus_info, content_msg = await find_value_in_table(pmc_virus_df, "Name", arg)
         if virus_info is None:
-            return None, None, None, None, None, None
+            return None, None, None, None, None, None, content_msg
 
     virus_name = virus_info["Name"]
     virus_description = virus_info["Description"]
@@ -853,31 +874,30 @@ async def virus_master(interaction: discord.Interaction, arg, simplified=True):
     if not simplified:
         virus_descript_block += "\n*%s*" % virus_description
 
-    return virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color
+    return virus_name, virus_title, virus_descript_block, virus_footer, virus_image, virus_color, content_msg
 
 
 def query_virus(arg_lower):
-    alias_check = cc_df[
-        cc_df["Alias"].str.contains("(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower), flags=re.IGNORECASE)]
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
-    valid_cc_list = list(pd.unique(virus_df["From?"].str.lower().str.strip()))
+    valid_cc_list = list(unique(virus_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core"]]
     if arg_lower in [i.lower() for i in virus_category_list]:
-        sub_df = virus_df[virus_df["Category"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        result_title = "Viruses in the `%s` category..." % sub_df.iloc[0]["Category"]
-        result_msg = ", ".join(sub_df["Name"])
+        subdf = filter_table(virus_df, {"Category": re.escape(arg_lower)})
+        result_title = "Viruses in the `%s` category..." % subdf.iloc[0]["Category"]
+        result_msg = ", ".join(subdf["Name"])
     elif arg_lower in virus_tag_list:
-        sub_df = virus_df[virus_df["Tags"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(virus_df, {"Tags": re.escape(arg_lower)})
         result_title = "Viruses with the `%s` tag..." % arg_lower.capitalize()
-        result_msg = ", ".join(sub_df["Name"])
+        result_msg = ", ".join(subdf["Name"])
     elif arg_lower in valid_cc_list:
-        sub_df = virus_df[virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
-        result_title = "Viruses from the `%s` Advance Content..." % sub_df.iloc[0]["From?"]
-        result_msg = ", ".join(sub_df["Name"])
+        subdf = filter_table(virus_df, {"From?": re.escape(arg_lower)})
+        result_title = "Viruses from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
+        result_msg = ", ".join(subdf["Name"])
     elif arg_lower in [i.lower() for i in playermade_list]:
-        subdf = pmc_virus_df[pmc_virus_df["From?"].str.contains(re.escape(arg_lower), flags=re.IGNORECASE)]
+        subdf = filter_table(pmc_virus_df, {"From?": re.escape(arg_lower)})
         if subdf.shape[0] == 0:
             return False, "", ""
         result_title = "Pulling up all Viruses from unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
@@ -886,14 +906,14 @@ def query_virus(arg_lower):
         return False, "", ""
     return True, result_title, result_msg
 
-
+@bot.tree.command(name='virus', description=commands_dict["virus"])
 async def virus(interaction: discord.Interaction, query:str, detailed:bool=False):
     cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.command.koduck.send_message(interaction,
-                                        content=f"Give me the name of 1-{MAX_VIRUS_QUERY} **Viruses** and I can pull up their info for you!\n\n" +
-                                                    "I can query Viruses by **Category**, **Tag**, or **Advance Content**, and pull up the list of Virus categories with `virus category`!\n" +
-                                                    "For a list of all Virus categories, use `virus category`, and all current Virus tags with `virus tag`. To pull up details on a specific Category or Tag, use `tag` instead. (i.e. `tag artillery`)")
+        return await interaction.response.send_message(
+            f"Give me the name of 1-{MAX_VIRUS_QUERY} **Viruses** and I can pull up their info for you!\n\n" +
+            "I can query Viruses by **Category**, **Tag**, or **Advance Content**, and pull up the list of Virus categories with `virus category`!\n" +
+            "For a list of all Virus categories, use `virus category`, and all current Virus tags with `virus tag`. To pull up details on a specific Category or Tag, use `tag` instead. (i.e. `tag artillery`)")
     elif cleaned_args[0] in ['category', 'categories']:
         result_title = "Displaying all known Virus Categories..."
         result_text = ", ".join(virus_category_list)
@@ -903,14 +923,13 @@ async def virus(interaction: discord.Interaction, query:str, detailed:bool=False
         result_text = ", ".join([i.capitalize() for i in virus_tag_list])
         return await send_query_msg(interaction, result_title, result_text)
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "virusruling", suppress_notfound=True)
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "virusruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction,
+            return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction,
-                                    content=ruling_msg["Response"])
+        return await interaction.response.send_message(ruling_msg["Response"])
     elif len(cleaned_args) > MAX_VIRUS_QUERY:
-        return await interaction.command.koduck.send_message(interaction,
+        return await interaction.response.send_message(
                                         content=f"Too many viruses, no more than {MAX_VIRUS_QUERY}!", ephemeral=True)
 
     arg_combined = " ".join(cleaned_args)
@@ -918,12 +937,17 @@ async def virus(interaction: discord.Interaction, query:str, detailed:bool=False
     if is_query:
         return await send_query_msg(interaction, result_title, result_msg)
 
+    msg_embeds = []
+    msg_warn = []
     for arg in cleaned_args:
         if not arg:
             continue
-        virus_name, virus_hp, virus_description, virus_footer, virus_image, virus_color = await virus_master(interaction, arg, simplified=not detailed)
+        virus_name, virus_hp, virus_description, virus_footer, virus_image, virus_color, add_msg = await virus_master(arg, simplified=not detailed)
+        
+        msg_warn.append(add_msg)
         if virus_name is None:
             continue
+
         if detailed:
             embed = discord.Embed(title=virus_name, color=virus_color)
             embed.add_field(name=virus_hp,
@@ -934,17 +958,18 @@ async def virus(interaction: discord.Interaction, query:str, detailed:bool=False
                                 color=virus_color)
         embed.set_thumbnail(url=virus_image)
         embed.set_footer(text=virus_footer)
-        await interaction.command.koduck.send_message(interaction, embed=embed)
+        msg_embeds.append(embed)
+    
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
-    return
 
-
+@bot.tree.command(name='query', description=commands_dict["query"])
 async def query_func(interaction: discord.Interaction, query: str):
     cleaned_args = clean_args([query])
     if len(cleaned_args) < 1:
-        return await interaction.command.koduck.send_message(interaction, 
-                                                 content="This command can sort battlechips, NCPs, and powers by Category, and single out Advance Content chips! " +
-                                                 "Please type `help query` for more information.")
+        return await interaction.response.send_message(
+            "This command can sort battlechips, NCPs, and powers by Category, and single out Advance Content chips! " +
+            "Please type `help query` for more information.")
     arg = cleaned_args[0]
     arg_combined = " ".join(cleaned_args)
 
@@ -991,55 +1016,58 @@ async def query_func(interaction: discord.Interaction, query: str):
 
     would_be_valid = pity_cc_check(arg_combined)
     if would_be_valid:
-        return await interaction.command.koduck.send_message(interaction, 
+        return await interaction.response.send_message(
                                         content="`%s` has no queryable Advance Content!" % would_be_valid, ephemeral=True)
 
-    return await interaction.command.koduck.send_message(interaction, 
+    return await interaction.response.send_message(
                                     content="`%s` is not a valid query!" % query, ephemeral=True)
 
 
+@bot.tree.command(name='mysterydata', description=commands_dict["mysterydata"])
 async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal["Common", "Uncommon", "Rare", "Gold", "Violet", "Sapphire", "Sunny"], chip_ncps_only: bool = False):
     arg = md_type.lower().strip()
     force_reward = chip_ncps_only
 
-    mysterydata_type = mysterydata_df[mysterydata_df["MysteryData"].str.contains("^%s$" % re.escape(arg), flags=re.IGNORECASE)]
+    mysterydata_type = filter_table(mysterydata_df, {"MysteryData": "^%s$" % re.escape(arg)})
 
     if mysterydata_type.shape[0] == 0:
-        return await interaction.command.koduck.send_message(interaction, 
-                                                             content=f"{md_type} isn't a valid type of Mystery Data!", 
-                                                             ephemeral=True)
+        return await interaction.response.send_message(content=f"{md_type} isn't a valid type of Mystery Data!", ephemeral=True)
 
     bonus_count = 0
     bonus_limit = 1
+    repeat_roll = 1
 
     results_list = []
     while bonus_count < bonus_limit:
         if bonus_count >= MAX_MD_BONUS:
             break
 
-        roll_probabilities = mysterydata_type[mysterydata_type["Type"] == "Info"]
+        roll_probabilities = filter_table(mysterydata_type, {"Type": "Info"})
         if force_reward:
-            roll_probabilities = roll_probabilities[
-                roll_probabilities["Value"].str.contains("^BattleChip|NCP|NPU$", flags=re.IGNORECASE)]
+            roll_probabilities = filter_table(roll_probabilities, {"Value": "BattleChip|NCP|NPU"})
         roll_category = roll_row_from_table(roll_probabilities)["Value"]
 
         #temporary bonus roll shenanigans
         if "Bonus Roll" in roll_category:
             bonus_limit += 1
             continue
+        
+        if "x2" in roll_category:
+            repeat_roll = 2
+            roll_category = roll_category.replace("x2","").strip()
 
-        df_sub = mysterydata_type[mysterydata_type["Type"] == roll_category]
-        result_chip = roll_row_from_table(df_sub)["Value"]
+        df_sub = filter_table(mysterydata_type, {"Type": roll_category})
+        for i in range(0,repeat_roll):
+            result_chip = roll_row_from_table(df_sub)["Value"] 
+            if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
+                results_list.append(result_chip + " " + roll_category)
+            else:
+                results_list = [re.sub(r"\s*(\.|!|\?)+\s*$", '', result_chip)]  # removes last punctuation marks!
+                break
 
-        if not re.match(r"\w+\s\w+", result_chip): # is not a sentence
-            results_list.append(result_chip + " " + roll_category)
-        else:
-            results_list = [re.sub(r"\s*(\.|!|\?)+\s*$", '', result_chip)]  # removes last punctuation marks!
-            break
-
-        if roll_category == "Zenny":
-            results_list = [f"{int(result_chip) * (random.randint(1, 6) + random.randint(1, 6))} Zenny"]
-            break
+            if roll_category == "Zenny":
+                results_list = [f"{int(result_chip) * (random.randint(1, 6) + random.randint(1, 6))} Zenny"]
+                break
 
         bonus_count += 1
 
@@ -1061,56 +1089,45 @@ async def mysterydata(interaction: discord.Interaction, md_type: typing.Literal[
                           description=f"_{interaction.user.mention} accessed the {arg} MysteryData..._\n\nGot: **{result_text}**",
                           color=md_color)
     embed.set_thumbnail(url=md_image_url)
-    return await interaction.command.koduck.send_message(interaction, embed=embed)
+    return await interaction.response.send_message(embed=embed)
 
 
-async def bond(interaction: discord.Interaction, query: str):
-    cleaned_args = [q.strip().lower() for q in query.split(",") if q]
-    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="Give me a **Bond Power** and I can pull up its info for you!\nFor a list of all Bond Powers, use `bond all`!")
-    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
-        ruling_msg = await find_value_in_table(interaction, help_df, "Command", "bondruling", suppress_notfound=True)
+@bot.tree.command(name='bondpower', description=commands_dict["bondpower"])
+async def bond(interaction: discord.Interaction, power: typing.Literal["Overload", "DestinySpark", "CrossSoul", "FullSynchro", "Bond rules"]):
+    if "rules" in power:
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "bondruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await interaction.command.koduck.send_message(interaction, 
+            return await interaction.response.send_message(
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.command.koduck.send_message(interaction, 
-                                    content=ruling_msg["Response"])
-    elif len(cleaned_args) > MAX_BOND_QUERY:
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="Too many Bond Powers; no more than %d!\nBesides, there's only four Bond Powers in the game!" % MAX_BOND_QUERY, ephemeral=True)
-    if cleaned_args[0] in ['all', 'list']:
-        result_title = "Pulling up all Bond Powers..."
-        result_msg = ', '.join(bond_df["BondPower"])
-        return await send_query_msg(interaction, result_title, result_msg)
+        return await interaction.response.send_message(ruling_msg["Response"])
 
-    for arg in cleaned_args:
-        bond_info = await find_value_in_table(interaction, bond_df, "BondPower", arg)
-        if bond_info is None:
-            continue
+    bond_info, _ = await find_value_in_table(bond_df, "BondPower", power)
+    if bond_info is None:
+        return await interaction.response.send_message(
+            content=f"Couldn't find the bond power `{power}`! (You should probably let the devs know...)", ephemeral=True)
 
-        bond_title = bond_info["BondPower"]
-        bond_cost = bond_info["Cost"]
-        bond_description = bond_info["Description"]
+    bond_title = bond_info["BondPower"]
+    bond_cost = bond_info["Cost"]
+    bond_description = bond_info["Description"]
 
-        embed = discord.Embed(
-            title="__%s__" % bond_title,
-            color=0x24ff00)
-        embed.add_field(name="**({})**".format(bond_cost),
-                        value="_{}_".format(bond_description))
+    embed = discord.Embed(
+        title="__%s__" % bond_title,
+        color=0x24ff00)
+    embed.add_field(name="**({})**".format(bond_cost),
+                    value="_{}_".format(bond_description))
 
-        await interaction.command.koduck.send_message(interaction,  embed=embed)
-    return
+    return await interaction.response.send_message(embed=embed)
+    
 
-
+@bot.tree.command(name='element', description=commands_dict["element"])
 async def element(interaction: discord.Interaction, number: int, category: typing.Literal['All','Nature','Fantasy','Science','Actions','Art','???']='All'):
     element_return_number = number
     element_category = category
     
     if element_category != 'All':
-        sub_element_df = element_df[element_df["category"].str.contains(f"^\s*{category}\s*$", flags=re.IGNORECASE)]
+        sub_element_df = filter_table(element_df, {"category": f"^\s*{category}\s*$"})
         if sub_element_df.shape[0] == 0:
-          return await interaction.command.koduck.send_message(interaction, content="Invalid category provided!\n" +
+          return await interaction.response.send_message(content="Invalid category provided!\n" +
                                                         "Categories: **%s**" % ", ".join(element_category_list), ephemeral=True)
         
         element_flavor_title = f"Picked {element_return_number} random element(s) from the {element_category} category..."
@@ -1118,9 +1135,9 @@ async def element(interaction: discord.Interaction, number: int, category: typin
         sub_element_df = element_df
         element_flavor_title = f"Picked {element_return_number} random element(s)..."
     if element_return_number < 1:
-        return await interaction.command.koduck.send_message(interaction, content="The number of elements can't be 0 or negative!", ephemeral=True)
+        return await interaction.response.send_message(content="The number of elements can't be 0 or negative!", ephemeral=True)
     if element_return_number > MAX_ELEMENT_QUERY:
-        return await interaction.command.koduck.send_message(interaction, content=f"That's too many elements! Are you sure you need more than {MAX_ELEMENT_ROLL}?", ephemeral=True)
+        return await interaction.response.send_message(content=f"That's too many elements! Are you sure you need more than {MAX_ELEMENT_ROLL}?", ephemeral=True)
 
     elements_selected = random.sample(range(sub_element_df.shape[0]), element_return_number)
     elements_name = [sub_element_df.iloc[i]["element"] for i in elements_selected]
@@ -1131,9 +1148,10 @@ async def element(interaction: discord.Interaction, number: int, category: typin
     embed = discord.Embed(title=element_flavor_title,
                           color=element_color,
                           description=elements_list)
-    return await interaction.command.koduck.send_message(interaction, embed=embed)
+    return await interaction.response.send_message(embed=embed)
 
 
+@bot.tree.command(name='rulebook', description=commands_dict["rulebook"])
 async def rulebook(interaction: discord.Interaction, query:str=""):
     split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", query, flags=re.IGNORECASE)]
     cleaned_args = clean_args([" ".join(split_args)])
@@ -1145,20 +1163,21 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
         is_get_latest = True
 
     if is_get_latest:
-        rulebook_df["BiggNumber"] = pd.to_numeric(rulebook_df["Version"])
+        rulebook_df["BiggNumber"] = to_numeric(rulebook_df["Version"])
         ret_books = rulebook_df.loc[rulebook_df.groupby(["Name"])["BiggNumber"].idxmax()]
         book_names = ["**%s %s %s**: <%s>" % (book["Name"], book["Release"], book["Version"], book["Link"]) for _, book in
                       ret_books.iterrows()]
     elif cleaned_args[0] == "help":
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="Links the **rulebooks** for NetBattlers! You can also look for a specific rulebook version! (i.e. `rulebook beta 7 adv 6`)")
+        return await interaction.response.send_message("Links the **rulebooks** for NetBattlers! You can also look for a specific rulebook version! (i.e. `rulebook beta 7 adv 6`)")
     elif cleaned_args[0] in ['nyx', 'cc', 'crossover']:
         book_names = ["**Nyx Crossover Content**(?): <%s>" % nyx_link]
     elif cleaned_args[0] in ['grid', 'gridbased', 'grid-based', 'gridbasedcombat', 'grid-basedcombat']:
         book_names = ["**Grid-Based Combat Rules**(?): <%s>" % grid_link]
+    elif cleaned_args[0] in ['random', 'randomized']:
+        book_names = ["**Randomized Chips**(?): <%s>" % random_chip_link]
     else:
         book_names = []
-
+    # TODO: switch to filter_table
     if not book_names:
         errmsg = []
         book_query = {"Name": "", "Type": "All", "Version": None, "Release": ""}
@@ -1170,7 +1189,7 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
                 float(arg)
                 version_str = arg
                 if book_query["Version"] is not None:
-                    await interaction.command.koduck.send_message(interaction, content="Going with Version `%s`!" % version_str)
+                    await interaction.response.send_message("Going with Version `%s`!" % version_str)
                 book_query["Version"] = version_str
                 continue
             except ValueError:
@@ -1206,7 +1225,7 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
         if in_progress:
             book_queries.append(book_query)
 
-        ret_book = pd.Series(False, index=rulebook_df.index)
+        ret_book = Series(False, index=rulebook_df.index)
         for book_query in book_queries:
             bookname = book_query["Name"]
             booktype = book_query["Type"]
@@ -1214,7 +1233,7 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
             book_release = book_query["Release"]
 
             if not bookname:
-                await interaction.command.koduck.send_message(interaction, 
+                await interaction.response.send_message(
                                          content="Don't know which book you want! Please specify either 'Beta', 'Advance', or 'Alpha'!'", ephemeral=True)
                 continue
             elif bookname == 'Unknown':
@@ -1231,7 +1250,7 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
                 subfilt = subfilt & (rulebook_df["Release"]==book_release)
 
             if book_version is None:
-                subfilt = subfilt.index == pd.to_numeric(rulebook_df[subfilt]["Version"]).idxmax()
+                subfilt = subfilt.index == to_numeric(rulebook_df[subfilt]["Version"]).idxmax()
                 book_version_str = " (Most recent)"
             elif book_version == "All":
                 book_version_str = ""
@@ -1252,23 +1271,25 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
 
     book_names += errmsg
     if not book_names:
-        return await interaction.command.koduck.send_message(interaction, content=f"Couldn't find any rulebooks for `{query}`!")
-    return await interaction.command.koduck.send_message(interaction, content="\n".join(book_names))
+        return await interaction.response.send_message(content=f"Couldn't find any rulebooks for `{query}`!", ephemeral=True)
+    return await interaction.response.send_message("\n".join(book_names))
 
 
-async def virusr(interaction: discord.Interaction, number: int=1, 
+@bot.tree.command(name='virusrandom', description=commands_dict["virusrandom"])
+async def virusr(interaction: discord.Interaction, number: int=0, 
                  artillery:int=0, disruption:int=0, striker: int=0, support:int=0, wrecker:int=0, 
                  mega:bool=False, omega:bool=False):
-
+    if number == artillery == disruption == striker == support == wrecker == 0:
+        number = 1
     virus_nums = [number, artillery, disruption, striker, support, wrecker]
     virus_pairs = zip(["any", "artillery", "disruption", "striker", "support", "wrecker"], virus_nums)
 
     total_v = sum(virus_nums)
    
     if total_v > MAX_RANDOM_VIRUSES:
-        return await interaction.command.koduck.send_message(interaction, content=f"Rolling too many Viruses! (Only up to {MAX_RANDOM_VIRUSES}!)", ephemeral=True)
+        return await interaction.response.send_message(content=f"Rolling too many Viruses! (Only up to {MAX_RANDOM_VIRUSES}!)", ephemeral=True)
     elif total_v == 0:
-        return await interaction.command.koduck.send_message(interaction, content="Rolling... no Viruses? Huh?", ephemeral=True)
+        return await interaction.response.send_message(content="Rolling... no Viruses? Huh?", ephemeral=True)
     elif total_v == 1:
         virus_keyword = "Virus"
     else:
@@ -1290,14 +1311,13 @@ async def virusr(interaction: discord.Interaction, number: int=1,
         if virus_num == 0:
             continue
         if virus_type != "any":
-            sub_df = sub_df[sub_df["Category"].str.contains(r"^%s$" % re.escape(virus_type), flags=re.IGNORECASE)]
+            sub_df = filter_table(sub_df, {"Category": r"^%s$" % re.escape(virus_type)})
             virus_cat = sub_df["Category"].iloc[0]
         else:
             virus_cat = "Random"
         if sub_df.shape[0] < virus_num:
             search_query = virus_type
-            await interaction.command.koduck.send_message(interaction, 
-                                                          content=f"There's only {sub_df} `{search_query}` Viruses! Limiting it to {sub_df.shape[0]}...", ephemeral=True)
+            await interaction.response.send_message(content=f"There's only {sub_df} `{search_query}` Viruses! Limiting it to {sub_df.shape[0]}...", ephemeral=True)
             virus_num = sub_df.shape[0]
 
         virus_roll_titles.append(f"{virus_num} {virus_cat}")
@@ -1309,17 +1329,18 @@ async def virusr(interaction: discord.Interaction, number: int=1,
     embed = discord.Embed(title="Rolling %s %s..." % (virus_title, virus_keyword),
                           color=virus_colors["Virus"],
                           description=virus_list)
-    return await interaction.command.koduck.send_message(interaction, embed=embed)
+    return await interaction.response.send_message(embed=embed)
 
 # TODO: merge with the fight generator?
-async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
+@bot.tree.command(name='adventure', description=commands_dict["adventure"])
+async def adventure(interaction: discord.Interaction, adv_type: typing.Literal["Core", "Chaos"]):
     if not adv_type:
         arg = "core"
     else:
         arg = adv_type.lower().strip()
 
     if arg == 'core':
-        adventure_df_use = adventure_df[adventure_df["Sort"] == "Core"]
+        adventure_df_use = filter_table(adventure_df, {"Sort": "Core"})
     else:
         adventure_df_use = adventure_df
 # -----------------------------------------------------------------------
@@ -1334,7 +1355,7 @@ async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
 # Adventure headers
 # Corresponds to the header table in the book. Extended for customization.
 
-    advheaddf_sub = adventure_df[adventure_df["Type"] == "AdvHeader"]
+    advheaddf_sub = filter_table(adventure_df, {"Type": "AdvHeader"})
     advhead_row = roll_row_from_table(adventure_df_use, df_filters={"Type": "AdvHeader"})
     define_advheader = [advhead_row["Definition"]]
     adv_header = advhead_row["Result"]
@@ -1375,7 +1396,7 @@ async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
                         f"But an evildoer is there to {conflict_result} " + \
                         f"Their name is **{npc_firstname}**, and they are {npc_personality} {npc_occupation}, notable for {npc_feature}. " + \
                         f"Their vulnerability is {vuln_result}\n"
-        return await interaction.command.koduck.send_message(interaction, content=generated_msg)
+        return await interaction.response.send_message(generated_msg)
 
     # Classification headers (for the type of adventure the generator sorts from)
     # These three work together (Except core rulebook doesn't really care about ClassHeader, for now.)
@@ -1400,11 +1421,12 @@ async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
                         f"**{npc_firstname}** is {npc_personality} {npc_occupation}, notable for {npc_feature}.\n" + \
                         f"Next, {class_header} meet {navi_personality} navi with the element of {navi_element} that greets them with {navi_hostility}.\n" + \
                         f"The primary conflict is {conflict_type}"
-        return await interaction.command.koduck.send_message(interaction, content=generated_msg)
+        return await interaction.response.send_message(generated_msg)
     else:
-        return await interaction.command.koduck.send_message(interaction, content="Please specify either Core or Chaos.")
+        return await interaction.response.send_message("Please specify either Core or Chaos.")
 
 
+@bot.tree.command(name='fight', description=commands_dict["fight"])
 async def fight(interaction: discord.Interaction):
     # element
     navi_element = roll_row_from_table(element_df)["element"]
@@ -1433,70 +1455,79 @@ async def fight(interaction: discord.Interaction):
                     f"**{secret_weapon}**, but their weakness is **{weakness}**.\n" + \
                     f"The arena is **{arena}**, and the Navi's element manifests as **{element_manifest}**. The Navi is **{navi_start}**!\n" + \
                     f"{trouble_type}, and the NetOps need to **{fight_objective}**! However, in the real world, **{real_world_assist}** is there to help!"
-    return await interaction.command.koduck.send_message(interaction, content=generated_msg)
+    return await interaction.response.send_message(generated_msg)
 
 
+@bot.tree.command(name='sheet', description=commands_dict["sheet"])
 async def sheet(interaction: discord.Interaction):
     msg_txt = f"**Official NetBattlers Character Sheet:** <{settings.character_sheet}>\nFor player-made character sheets, search for sheets in the Player-Made Repository using `playermaderepo character sheet`!"
-    return await interaction.command.koduck.send_message(interaction, content=msg_txt)
+    return await interaction.response.send_message(msg_txt)
 
 
+@bot.tree.command(name='glossary', description=commands_dict["glossary"])
 async def glossary(interaction: discord.Interaction, term: str):
     if not term:
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content="Use me to pull up a **Glossary** term in ProgBot! I can also try to search for a term if you know the first few letters!")
+        return await interaction.response.send_message(
+            "Use me to pull up a **Glossary** term in ProgBot! I can also try to search for a term if you know the first few letters!")
     cleaned_arg = term.strip().lower()
 
-    glossary_info = await find_value_in_table(interaction, glossary_df, "Name", cleaned_arg, suppress_notfound=True) # exact match
+    glossary_info, _ = await find_value_in_table(glossary_df, "Name", cleaned_arg, suppress_notfound=True) # exact match
 
     if glossary_info is None: # fuzzier match
-        match_candidates = glossary_df[glossary_df["Name"].str.contains("^" + re.escape(cleaned_arg), flags=re.IGNORECASE)]
+        
+        match_candidates = filter_table(glossary_df, {"Name": "^" + re.escape(cleaned_arg)})
 
         if match_candidates.shape[0] < 1:
-            return await interaction.command.koduck.send_message(interaction,  content="Didn't find any matches for `%s` in the glossary!" % term, ephemeral=True)
+            return await interaction.response.send_message(content="Didn't find any matches for `%s` in the glossary!" % term, ephemeral=True)
         if match_candidates.shape[0] > 1:
             progbot_list = ["> **%s**: `%s`" % (nam, cmd)
                             for nam, cmd in zip(match_candidates['Name'], match_candidates['ProgBot Command'])]
-            return await interaction.command.koduck.send_message(interaction, content="Found multiple matches under `%s` in the glossary!\n%s" %
+            return await interaction.response.send_message(content="Found multiple matches under `%s` in the glossary!\n%s" %
                                                                             (term, "\n".join(progbot_list)), ephemeral=True)
         glossary_info = match_candidates.iloc[0]
-        
+    
+    # oh, it's because spotlight is in mainadvance, so it's not in global...
     if glossary_info["ProgBot Function"] not in globals():
-        return await  interaction.command.koduck.send_message(interaction,
-                                        content="Don't recognize the function `%s`! (You should probably let the devs know...)" % glossary_info["ProgBot Function"], ephemeral=True)
+        return await interaction.response.send_message(content="Don't recognize the function `%s`! (You should probably let the devs know...)" % glossary_info["ProgBot Function"], ephemeral=True)
 
-    #spotlight needs to be moved to interaction...
     progbot_func = globals()[glossary_info["ProgBot Function"]]
-    return await progbot_func(interaction, glossary_info["ProgBot Argument"])
+    glossary_args = [i.strip() for i in glossary_info["ProgBot Argument"].split(',')]
+    return await progbot_func.callback(interaction, *glossary_args)
 
 
+@bot.tree.command(name='find', description=commands_dict["find"])
 async def find_chip_ncp_power(interaction: discord.Interaction, query: str):
     cleaned_args = clean_args([query])
 
     if not query or (cleaned_args[0] in ["help"]):
-        return await interaction.command.koduck.send_message(interaction, 
-                                        content=f"I can search through **Chips**, **Powers**, and **NCPs**! Give me 1-{MAX_CHIP_QUERY} terms and I'll try to find them!")
+        return await interaction.response.send_message(
+            f"I can search through **Chips**, **Powers**, and **NCPs**! Give me 1-{MAX_CHIP_QUERY} terms and I'll try to find them!")
 
     if len(cleaned_args) > MAX_CHIP_QUERY:
-        return await interaction.command.koduck.send_message(interaction,  content=f"Too many items, no more than {MAX_CHIP_QUERY}!", ephemeral=True)
+        return await interaction.response.send_message(f"Too many items, no more than {MAX_CHIP_QUERY}!", ephemeral=True)
 
+    msg_warn = []
+    msg_embeds = []
     for arg in cleaned_args:
-        item_title, item_trimmed, item_description, item_color, item_footer = await chipfinder(interaction, arg, suppress_err_msg=True)
+        item_title, item_trimmed, item_description, item_color, item_footer, add_msg = await chipfinder(interaction, arg, suppress_err_msg=True)
 
         if item_title is None:
-            item_title, item_trimmed, item_description, item_color, item_footer = await power_ncp(interaction, arg, force_power=False,
+            item_title, item_trimmed, item_description, item_color, item_footer, add_msg = await power_ncp(interaction, arg, force_power=False,
                                                                                       ncp_only=False, suppress_err_msg=True)
             if item_title is None:
-                item_title, item_trimmed, item_description, item_color, item_footer = await power_ncp(interaction, arg, force_power=False,
+                item_title, item_trimmed, item_description, item_color, item_footer, add_msg = await power_ncp(interaction, arg, force_power=False,
                                                                                          ncp_only=True, suppress_err_msg=True)
-                if item_title is None:
-                    await interaction.command.koduck.send_message(interaction,  content="Unable to find `%s`!" % arg, ephemeral=True)
-                    continue
+                
+        msg_warn.append(add_msg)
+        if item_title is None:
+            continue
+
         embed = discord.Embed(
             title="__%s__" % item_title,
             color=item_color)
         embed.add_field(name=f"[{item_trimmed}]", 
                         value=f"_{item_description}_")
-        await interaction.command.koduck.send_message(interaction, embed=embed)
+        
+        msg_embeds.append(embed)
 
-    return
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)

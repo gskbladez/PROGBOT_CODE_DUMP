@@ -1,5 +1,4 @@
 Command	Function	Category	Module	Type	Description	Permission	Hidden
-changestatus	change_status	Admin	main	prefix	Changes Progbot's status message	3	TRUE
 bugreport	bugreport	ProgBot	main	slash	Sends a message to Progbot's bug report channel	1	FALSE
 commands	commands	ProgBot	main	slash	Lists Progbot's commands	1	FALSE
 help	help_cmd	Game Lookup	base	slash	Ask for help and rulings	1	FALSE
@@ -9,9 +8,9 @@ chip	chip	Game Lookup	base	slash	Lookup BattleChips	1	FALSE
 power	power	Game Lookup	base	slash	Lookup Powers (Navi or Virus)	1	FALSE
 ncp	ncp	Game Lookup	base	slash	Lookup NCPs	1	FALSE
 virus	virus	Game Lookup	base	slash	Lookup Viruses' descriptions (opt: detailed for full statblocks)	1	FALSE
-tag	tag	Game Lookup	base	slash	Lookup a BattleChip or Power tag	1	FALSE
+tag	tag	Game Lookup	base	slash	Lookup a BattleChip or Virus tag, or a category description	1	FALSE
 query	query_func	Info	base	slash	Lookup a category of chips or NCPs! (Can also list bond powers, daemons, network mods, weather)	1	FALSE
-bondpower	bond	Game Lookup	base	slash	Lookup a Bond Power, help, or rule	1	FALSE
+bondpower	bond	Game Lookup	base	slash	Lookup a Bond Power or rule	1	FALSE
 mysterydata	mysterydata	Rollers	base	slash	Roll Mystery Data (opt: chips_ncp_only for MysteryRewards!)	1	FALSE
 rulebook	rulebook	Info	base	slash	Post rulebook links	1	FALSE
 element	element	Rollers	base	slash	Roll random elements	1	FALSE
@@ -23,7 +22,7 @@ audience	audience	Assistant	advance	slash	Start up an Audience tracker	1	FALSE
 audiencecheer	cheer	Assistant	advance	slash	Spend/add Cheers (1: random one, 2: pick one, 5: pick a MegaCheer)	1	FALSE
 audiencejeer	jeer	Assistant	advance	slash	Spend/add Jeers (1: random one, 2: pick one, 5: pick a MegaJeer)	1	FALSE
 virusrandom	virusr	Rollers	base	slash	Select random Viruses (opt: # of strikers, artillery, etc. to roll, enable Mega/Omega Viruses)	1	FALSE
-playermaderepo	repo	Info	advance	slash	Pull up the Player-Made Repository Link	1	FALSE
+playermaderepo	repo	Info	advance	slash	Search the Player-Made Repository, or use "link" to pull up the link	1	FALSE
 adventure	adventure	Rollers	base	slash	Generate a randomized adventure scenario prompt! (opt: chaos for a longer prompt)	1	FALSE
 fight	fight	Rollers	base	slash	Generate a randomized Navi boss fight prompt!	1	FALSE
 sheet	sheet	Info	base	slash	Pull up character sheet links	1	FALSE
@@ -35,6 +34,4 @@ glossary	glossary	Game Lookup	base	slash	Pull up a glossary definition	1	FALSE
 safety	safety	Safety Tools	safety	slash	Set down a Safety Tool during play	1	FALSE
 find	find_chip_ncp_power	Game Lookup	base	slash	Find a BattleChip, NCP, or Power	1	FALSE
 autoloot	autoloot	Rollers	fools	slash	Generate a random autoloot chip	1	FALSE
-refreshappcommands	refresh_app_commands	ProgBot	main	prefix	Refresh slash commands	3	TRUE
 entropy	entropy	ProgBot	roll	slash	Test ProgBot's randomness! (256 is normal, 200+ is good!)	1	TRUE
-goodnight	goodnight	Admin	main	prefix	Shuts down Progbot	3	TRUE

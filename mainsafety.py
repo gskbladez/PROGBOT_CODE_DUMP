@@ -1,7 +1,8 @@
 import typing
 import discord
-import koduck
+from maincommon import bot, commands_dict
 
+@bot.tree.command(name='safety', description=commands_dict["safety"])
 async def safety(interaction: discord.Interaction, 
                  tool:typing.Literal['X-Card', 'N-Card', 'O-Card', 'Luxton', 'Line', 'Veil', 'Open Door', 'Fast Foward', 'Rewind', 'Pause', 'Play', 'Resume', 'Frame-by-Frame']):
     arg = tool.lower().strip()
@@ -30,5 +31,5 @@ async def safety(interaction: discord.Interaction,
     elif arg == 'frame-by-frame':
         msg = ":warning: A participant would like to take it slow during the oncoming scene. Continue as planned with caution."
     else:
-        return await interaction.command.koduck.send_message(interaction, content="Sorry, didn't recognize that safety tool! Try communicating the topic to your group directly, or notify a trusted friend; you can do it!", ephemeral=True)
-    return await interaction.command.koduck.send_message(interaction, content=msg)
+        return await interaction.response.send_message(content="Sorry, didn't recognize that safety tool! Try communicating the topic to your group directly, or notify a trusted friend; you can do it!", ephemeral=True)
+    return await interaction.response.send_message(msg)

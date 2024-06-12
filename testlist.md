@@ -15,7 +15,7 @@
 - rulebook: send, lookup beta 4 advance 3, lookup beta 7 mobile
 - element: roll a number, roll a number in a category
 - daemon: list all, list a name
-- npu: query a power for its NPUs, lookup npus
+- npu: query a power for its NPUs, lookup npu description, do both in one query
 - crimsonnoise: roll uncommon, common, rare
 - networkmod: help, list, lookup multiple
 - audience: start, view
@@ -23,14 +23,21 @@
   - audiencejeer: list, add 5, add 5, spend, spend 2, spend 5
   - audience: view, end, start, let timeout
 - virusrandom: send, roll 4, roll number=1, artillery=1, disruption=1, disruption=1, striker=1
-- playermaderepo: net agent, shared universe
+- playermaderepo: net agent, shared universe, link
 - adventure: send, adv_type=Chaos, Core
 - fight: send
 - sheet: send
 - spotlight: start w/ 4 names, edit one name to another, submit just one name, submit the name again, submit two other names, reset, view, help, remove a name, add another name, end, view
-- weather: rule, help, list, lookup 4 LiquidTime DiamondDust ChromaticFlux MementoBorealis
+- weather: rule, help, list, LiquidTime DiamondDust ChromaticFlux MementoBorealis
 - weatherforecast: send, roll 6, roll 6 glitch weathers 
 - achievement: list, hello, perfectionist
 - glossary: target, accurate, bond, virus, spotlight, ncp, navipower, blank chip
-- safety: pause
+- safety: any
 - find: lookup chip and power at same time
+- DM: commands, chip sword
+
+#### Error Tests
+- chip alias, real name, wrong name
+- power alias, wrong name, real name
+- not found: achievement, weather
+- weatherforecast: roll more
