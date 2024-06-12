@@ -4,7 +4,7 @@ Ally		TRUE	help target	help_cmd	target
 Awkward	Awk., Awk	TRUE	tag awkward	tag	awkward
 BattleChip	Chip	TRUE	chip rule	chip	rule
 BattleChip, Blank	Blank Chip, Blank	TRUE	chip blank	chip	blank
-Bond	Bonds	TRUE	bond rule	bond	rule
+Bond	Bonds	TRUE	bond rules	bond	rules
 Counter	Counters	TRUE	help counter	help_cmd	counter
 Critical Success	Crit	TRUE	help difficulty	help_cmd	difficulty
 Dangerous	Dngr., Dngr	TRUE	tag dangerous	tag	dangerous
@@ -44,7 +44,7 @@ Skill	Skills	TRUE	help stats	help_cmd	stats
 Slow		TRUE	tag slow	tag	slow
 Stack		TRUE	help secondaryeffects	help_cmd	secondaryeffects
 Someone		TRUE	help target	help_cmd	target
-Spotlight Checklist	Spotlight, SpotlightChecklist	TRUE	spotlight help	spotlight	help
+Spotlight Checklist	Spotlight, SpotlightChecklist	TRUE	spotlight dummy, help	spotlight	dummy, help
 Stat	Stats	TRUE	help stats	help_cmd	stats
 Talent	Talents	TRUE	help talents	help_cmd	talents
 Target	Targets	TRUE	help target	help_cmd	target

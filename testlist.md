@@ -28,14 +28,16 @@
 - fight: send
 - sheet: send
 - spotlight: start w/ 4 names, edit one name to another, submit just one name, submit the name again, submit two other names, reset, view, help, remove a name, add another name, end, view
-- weather: rule, help, list, lookup 4 LiquidTime DiamondDust ChromaticFlux MementoBorealis
+- weather: rule, help, list, LiquidTime DiamondDust ChromaticFlux MementoBorealis
 - weatherforecast: send, roll 6, roll 6 glitch weathers 
 - achievement: list, hello, perfectionist
 - glossary: target, accurate, bond, virus, spotlight, ncp, navipower, blank chip
-- safety: pause
+- safety: any
 - find: lookup chip and power at same time
-- DM: commands, chip sword, ??
+- DM: commands, chip sword
 
 #### Error Tests
-- chip tower, sword, sord
-- power gutshooter, jampjoots, jumpjets
+- chip alias, real name, wrong name
+- power alias, wrong name, real name
+- not found: achievement, weather
+- weatherforecast: roll more

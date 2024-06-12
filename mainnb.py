@@ -10,6 +10,7 @@ from maincommon import bot, commands_dict, filter_table
 from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table, send_multiple_embeds
 from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
 from maincommon import nyx_link, grid_link, random_chip_link
+from mainadvance import spotlight   # for glossary
 
 MAX_POWER_QUERY = 5
 MAX_NCP_QUERY = 5
@@ -1103,7 +1104,7 @@ async def bond(interaction: discord.Interaction, power: typing.Literal["Overload
     bond_info, _ = await find_value_in_table(bond_df, "BondPower", power)
     if bond_info is None:
         return await interaction.response.send_message(
-            content=f"Couldn't the bond power `{power}`! (You should probably let the devs know...)", ephemeral=True)
+            content=f"Couldn't find the bond power `{power}`! (You should probably let the devs know...)", ephemeral=True)
 
     bond_title = bond_info["BondPower"]
     bond_cost = bond_info["Cost"]
@@ -1484,12 +1485,14 @@ async def glossary(interaction: discord.Interaction, term: str):
             return await interaction.response.send_message(content="Found multiple matches under `%s` in the glossary!\n%s" %
                                                                             (term, "\n".join(progbot_list)), ephemeral=True)
         glossary_info = match_candidates.iloc[0]
-        
+    
+    # oh, it's because spotlight is in mainadvance, so it's not in global...
     if glossary_info["ProgBot Function"] not in globals():
         return await interaction.response.send_message(content="Don't recognize the function `%s`! (You should probably let the devs know...)" % glossary_info["ProgBot Function"], ephemeral=True)
 
     progbot_func = globals()[glossary_info["ProgBot Function"]]
-    return await progbot_func.callback(interaction, glossary_info["ProgBot Argument"])
+    glossary_args = [i.strip() for i in glossary_info["ProgBot Argument"].split(',')]
+    return await progbot_func.callback(interaction, *glossary_args)
 
 
 @bot.tree.command(name='find', description=commands_dict["find"])

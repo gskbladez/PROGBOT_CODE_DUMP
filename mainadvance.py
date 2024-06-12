@@ -711,9 +711,9 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
                 continue
         elif arg =='edit':
             if len(name_list) != 2:
-                return await interaction.response.send_message( 
-                                                embed=embed_spotlight_message("Need the original name and the new name to change it to!",
-                                                                                msg_location, error=True), ephemeral=True)
+                return await interaction.response.send_message(
+                    embed=embed_spotlight_message("Need the original name and the new name to change it to!",
+                    msg_location, error=True), ephemeral=True)
 
             match_name = await find_spotlight_participant(interaction, name_list[0], spotlight_db[channel_id], msg_location)
             if match_name is not None:
@@ -742,12 +742,17 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         json.dump(spotlight_db, afp, indent=4, default=str)
         notify_str = "\n".join([i for i in (notification_msg, err_msg) if i])
         embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
-        return await interaction.response.send_message( embed=embed)
+        if not interaction.response.is_done():
+            return await interaction.response.send_message(embed=embed)
+        return await interaction.channel.send(embed=embed)
 
 
 async def find_spotlight_participant(interaction, arg, participant_dict, message_location):
     participant_list = Series(participant_dict.keys())
     participant_list = participant_list[participant_list != "Last Modified"]
+    exact_match = participant_list[participant_list.str.contains(f"^{re.escape(arg)}$", flags=re.IGNORECASE)]
+    if exact_match.shape[0] == 1:
+        return exact_match.iloc[0]
     match_candidates = participant_list[participant_list.str.contains(re.escape(arg), flags=re.IGNORECASE)]
     if match_candidates.shape[0] == 0:
         await interaction.response.send_message(

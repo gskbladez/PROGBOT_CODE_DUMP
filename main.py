@@ -125,7 +125,6 @@ async def on_ready():
 
 @bot.tree.error
 async def on_app_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
-    # TODO: add better exception logging
     if isinstance(error, discord.app_commands.MissingPermissions) or isinstance(error, discord.app_commands.CheckFailure):
         return await interaction.response.send_message("You don't have the permission for this command...", ephemeral=True)
     traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
