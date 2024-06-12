@@ -141,6 +141,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         errlog.exception(e)
         return
 
+#TODO: do the cooler entropy from Zone
 @bot.tree.command(name='entropy', description=commands_dict["entropy"])
 async def entropy(interaction: discord.Interaction):
     try:
