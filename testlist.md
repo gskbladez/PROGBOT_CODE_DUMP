@@ -3,7 +3,7 @@
 - commands: send
 - help: send a query
 - invite: send
-- roll: roll 5d6>4 # comment, H5, E5, 2d6k1, 2d6l1, 3d6!6>4, repeat a roll # comment, underflow, devil roll
+- roll: roll 5d6>4 # comment, H5, E5, 2d6k1, 2d6l1, 3d6!6>4, repeat a roll # comment,  6d1>5 for underflow, devil roll
 - chip: help, rule, folder, ??, blank, category, tag, navi, lookup multiple, query a tag, query a category, query darkchips, query megachips, query incident chips, query by license, query by crossover content, query by Genso Network
 - power: help, rule, query by virus passive powers, query by cost powers, query by speed powers, query by sense roll powers, lookup multiple powers
 - ncp: help, rule, query by 1EB, query by crossover content, query by Genso Minus Cust, lookup multiple NCPs

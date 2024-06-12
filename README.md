@@ -4,7 +4,7 @@ A Python bot made to help with NetBattlers, a tabletop roleplaying game inspired
 To add ProgBot to your server, click [this link](https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0)! 
 
 ### Dependencies
-- `discord.py` (2.0+)
+- `discord.py` (2.3+)
 - `numpy` (1.24+)
 - `pandas` (1.5+)
 - `rply` (0.7+)
@@ -32,6 +32,7 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
     ``` bash
     # env
     DISCORD_TOKEN=[PASTE TOKEN HERE, REPLACING BRACKETS AS WELL]
+    PMC_KEY=[Different token needed by playermaderepo command; ask a dev if needed]
     ```
 - Go back to the [Discord Developer Portal](https://discordapp.com/developers/applications/), then go to the **Oauth2** tab and generate an invite link by: 
     - Check `bot`, then under Bot Permissions, check:
@@ -40,6 +41,11 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
         - `Use External Emojis`
         - `Add Reactions`
 - Paste the invite link into your browser and invite bot to a server (probably a test one)
+- Update the following fields in `settings.py`:
+    - `admin_guild`: the server you want to dev-test this on
+    - `bugreport_channel_id`: channel that you want to send test bug report messages to
+    - `source_guild_id`: the server with special emojis (probably your dev-test server) (see [Custom Emoji Support](#custom-emoji-support))
+    - `custom_emojis`: Special Emoji IDs (see [Custom Emoji Support](#custom-emoji-support))
 - Start the bot using: `python main.py`
     - If successful, it will output the following after a few seconds, in the command line:
      ```
@@ -48,7 +54,7 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
      ID: [Bot ID]
      ```
     - If there's other errors... Godspeed. All errors will be printed out in the Command Line.
-- Run `/run command:refreshappcommands` in the server to get your bot to register the new slash commands
+- Run `/run command:refresh slash commands` in the server to get your bot to register the new slash commands
 - Wait a few minutes (or an hour) for the slash commands to sync across Discord, and...
 - You should be able to see slash commands in the server and start using them!
 
@@ -59,8 +65,8 @@ Note: if GitHub seems to be flagging all lines in the .tsv as changed, this is l
 
 ### Slash Commands
 
-`changeprefix`
-Changes the prefix of the bot (server owner only)
+`run`
+Runs admin/dev-level commands: update slash commands across all servers, change status, shut down (goodnight). (Note: need to be in `admin_guild` to do this)
 
 `commands`
 Displays all known commands.
@@ -72,7 +78,7 @@ Outputs help messages for commands or various rule tidbits. Can pull up a list o
 Generates an invite link for ProgBot.
 
 `roll`
-Rolls dice. Supports comments and basic NetBattlers macros.
+Rolls dice. Supports comments and basic NetBattlers macros (i.e. $N6, $H6).
 
 `chip`
 Pulls up chip information. Can also be used to query chips by Category, Tag, or Source (i.e. ChitChat).
