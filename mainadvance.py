@@ -109,7 +109,8 @@ async def crimsonnoise(interaction: discord.Interaction, md_type: typing.Literal
 
 def query_daemon():
     result_title = "Listing all Daemons (excluding Player Made Content)..."
-    result_msg = ", ".join(daemon_df["Name"])
+    off_df = filter_table(daemon_df, {"Name": "Neko Virus"}, not_filt=True)
+    result_msg = ", ".join(off_df["Name"])
     return True, result_title, result_msg
 
 
