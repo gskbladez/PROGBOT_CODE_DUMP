@@ -1333,7 +1333,7 @@ async def virusr(interaction: discord.Interaction, number: int=0,
 
 # TODO: merge with the fight generator?
 @bot.tree.command(name='adventure', description=commands_dict["adventure"])
-async def adventure(interaction: discord.Interaction, adv_type: typing.Literal["Core", "Chaos"]):
+async def adventure(interaction: discord.Interaction, adv_type: typing.Literal["Core", "Chaos"]="Core"):
     if not adv_type:
         arg = "core"
     else:

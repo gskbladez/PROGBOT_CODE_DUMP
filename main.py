@@ -91,7 +91,7 @@ async def bugreport(interaction: discord.Interaction, message: str):
 
 @bot.tree.command(name='run', description='Admin-only commands', guild=discord.Object(id=settings.admin_guild))
 @app_commands.check(is_admin)
-async def admin(interaction: discord.Interaction, command: typing.Literal["refresh slash commands", "change status", "goodnight", "reset commands"], param_line:str=""):
+async def admin(interaction: discord.Interaction, command: typing.Literal["refresh slash commands", "change status", "goodnight", "reset admin commands"], param_line:str=""):
     if command=="goodnight":
         await interaction.response.send_message("Goodnight!")
         return await bot.close()
@@ -102,20 +102,20 @@ async def admin(interaction: discord.Interaction, command: typing.Literal["refre
     if command=="refresh slash commands":
         await interaction.response.send_message("Refreshing slash commands...")
         await bot.tree.sync()
-        interaction.followup.send("Global slash commands finished syncing!")
+        await interaction.followup.send("Global slash commands finished syncing!")
         return
-    if command=="reset commands":
+    if command=="reset admin commands":
         await interaction.response.send_message(content="Clearing admin guild commands!")
         ag = discord.Object(id=settings.admin_guild)
         bot.tree.clear_commands(guild=ag)
-        bot.tree.copy_global_to(guild=ag)
+        # bot.tree.copy_global_to(guild=ag)  # discord.py says this should be needed, but doesn't seem like it does...?
+        await bot.tree.sync(guild=ag)
         return
 
 
 @bot.event
 async def on_ready():
     ag = discord.Object(id=settings.admin_guild)
-    bot.tree.copy_global_to(guild=ag)
     await bot.tree.sync(guild=ag)
     background_task.start()
     print("Jacking In!")
@@ -128,11 +128,13 @@ async def on_app_command_error(interaction: discord.Interaction, error: discord.
     if isinstance(error, discord.app_commands.MissingPermissions) or isinstance(error, discord.app_commands.CheckFailure):
         return await interaction.response.send_message("You don't have the permission for this command...", ephemeral=True)
     traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+    exc_type, exc_value, _ = sys.exc_info()
+    broke_msg = f":warning::warning: **SOMETHING BROKE** :warning::warning:\n``{exc_type.__name__}: {exc_value}``"
     errlog.exception(error)
     if not interaction.response.is_done():
-        await interaction.response.send_message(":warning::warning: **SOMETHING BROKE** :warning::warning:", ephemeral=True)
+        await interaction.response.send_message(broke_msg, ephemeral=True)
     else:
-        await interaction.channel.send(":warning::warning: **SOMETHING BROKE** :warning::warning:")
+        await interaction.channel.send(broke_msg)
 
 required_files = [settings.commands_table_name, settings.user_levels_table_name, settings.audiencesave, settings.spotlightsave]
 
