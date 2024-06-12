@@ -75,7 +75,7 @@ err_handler = logging.handlers.RotatingFileHandler(filename=settings.error_file,
 errlog.addHandler(err_handler)
 
 bot = commands.Bot(command_prefix=">", 
-                   activity=discord.Activity(type=discord.ActivityType.playing, name="with Bug Busting!"), 
+                   activity=discord.Activity(type=discord.ActivityType.playing, name=settings.default_status), 
                    status=discord.Status.online,
                    intents=discord.Intents.default())
 
