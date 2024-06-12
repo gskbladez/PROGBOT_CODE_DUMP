@@ -789,7 +789,7 @@ async def upgrade(interaction: discord.Interaction, query: str):
     return
 
 
-async def virus_master(interaction: discord.Interaction, arg, simplified=True):
+async def virus_master(arg, simplified=True):
     virus_info, content_msg = await find_value_in_table(virus_df, "Name", arg, suppress_notfound=True, alias_message=True)
 
     if virus_info is None:
@@ -1177,7 +1177,7 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
         book_names = ["**Randomized Chips**(?): <%s>" % random_chip_link]
     else:
         book_names = []
-
+    # TODO: switch to filter_table
     if not book_names:
         errmsg = []
         book_query = {"Name": "", "Type": "All", "Version": None, "Release": ""}
@@ -1276,10 +1276,11 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
 
 
 @bot.tree.command(name='virusrandom', description=commands_dict["virusrandom"])
-async def virusr(interaction: discord.Interaction, number: int=1, 
+async def virusr(interaction: discord.Interaction, number: int=0, 
                  artillery:int=0, disruption:int=0, striker: int=0, support:int=0, wrecker:int=0, 
                  mega:bool=False, omega:bool=False):
-
+    if number == artillery == disruption == striker == support == wrecker == 0:
+        number = 1
     virus_nums = [number, artillery, disruption, striker, support, wrecker]
     virus_pairs = zip(["any", "artillery", "disruption", "striker", "support", "wrecker"], virus_nums)
 
@@ -1331,9 +1332,8 @@ async def virusr(interaction: discord.Interaction, number: int=1,
     return await interaction.response.send_message(embed=embed)
 
 # TODO: merge with the fight generator?
-# TODO: don't forget to test all the commands after
 @bot.tree.command(name='adventure', description=commands_dict["adventure"])
-async def adventure(interaction: discord.Interaction, adv_type: str="Core"):
+async def adventure(interaction: discord.Interaction, adv_type: typing.Literal["Core", "Chaos"]):
     if not adv_type:
         arg = "core"
     else:

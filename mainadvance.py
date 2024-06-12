@@ -41,8 +41,6 @@ audience_df = read_csv(settings.audienceparticipationfile, sep="\t").fillna('')
 achievement_df = read_csv(settings.achievementfile, sep="\t").fillna('')
 achievement_df["Category"] = achievement_df["Category"].astype('category').cat.reorder_categories(["First Steps", "Admin Privileges", "Tricky Bits", "Smooth Operation", "Milestones"])
 achievement_df = achievement_df.sort_values(["Category", "Name"])
-adventure_df = read_csv(settings.adventurefile, sep="\t").fillna('')
-fight_df = read_csv(settings.fightfile, sep="\t").fillna('')
 weather_df = read_csv(settings.weatherfile, sep="\t").fillna('')
 weather_category_list = unique(weather_df["Category"].dropna())
 
@@ -356,7 +354,7 @@ async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:
             embed_submsg = "**%s:**\n" % cj_type.capitalize() + "\n".join([l.strip() for l in line_items])
             embed_bits.append(embed_submsg)
         embed_msg += "\n\n".join(embed_bits)
-        return await interaction.response.send_message(embed=embed_msg)
+        return await interaction.response.send_message(content=embed_msg)
     
     embed_descript = ""
     if num > MAX_CHEER_JEER_ROLL:
@@ -393,7 +391,7 @@ async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:
     if embed_footer:
         embed.set_footer(text=embed_footer)
 
-    return await  interaction.response.send_message( embed=embed)
+    return await  interaction.response.send_message(embed=embed)
 
 
 @bot.tree.command(name='audience', description=commands_dict["audience"])
