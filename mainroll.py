@@ -5,7 +5,7 @@ import settings
 import re
 import dice_algebra
 import rply
-from maincommon import bot, commands_dict
+from maincommon import bot, commands_dict, errlog
 
 REROLL_DICE_SIZE_THRESHOLD = 1000000000
 MAX_REROLL_QUERY = 20
@@ -129,15 +129,16 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
             progroll_output += f" #{roll_comment.rstrip()}"
         progroll_output = "{}\n>>> {}".format(progroll_output, "\n".join(roll_outputs))
 
-    progmsg = await interaction.response.send_message(content=progroll_output)
+    await interaction.response.send_message(content=progroll_output)
+    response_msg = await interaction.original_response()
     
     try:
         if IS_UNDERFLOW in retcodes:
-            await progmsg.add_reaction(settings.custom_emojis["underflow"])
+            await response_msg.add_reaction(settings.custom_emojis["underflow"])
         if IS_DEVILISH in retcodes:
-            await progmsg.add_reaction(settings.custom_emojis["devilish"])
+            await response_msg.add_reaction(settings.custom_emojis["devilish"])
     except discord.errors.HTTPException as e:
-        print(e)
+        errlog.exception(e)
         return
 
 @bot.tree.command(name='entropy', description=commands_dict["entropy"])

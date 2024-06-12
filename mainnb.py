@@ -582,7 +582,7 @@ def query_power(args):
         search_tag_list.append('Navi')
     else:
         sub_df = filter_table(sub_df, {"Sort": "Virus Power"})
-        sub_df = filter_table(sub_df, {"From?": "Mega Viruses", "From?": "The Walls Will Swallow You"}, not_filt=True)
+        sub_df = filter_table(sub_df, {"From?": "Mega Viruses", "From?": "The Walls Will Swallow You", "From?": "Neko Virus"}, not_filt=True)
         search_tag_list.append('Virus (excluding Mega)')
     results_title = "Searching for `%s` Powers..." % "` `".join(search_tag_list)
     results_msg = ", ".join(sub_df["Power/NCP"])
@@ -644,7 +644,7 @@ def query_ncp(arg_lower):
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
-    ncp_df = filter_table(power_df, {"Sort": "Virus Power"}, not_filt=True)
+    ncp_df = filter_table(power_df, {"Sort": "Virus Power", "From?": "Neko Virus"}, not_filt=True)
     valid_cc_list = list(unique(ncp_df["From?"].str.lower().str.strip()))
     [valid_cc_list.remove(i) for i in ["core", "navi power upgrades"]]
     eb_match = re.match(r"^(\d+)(?:\s*EB)?$", arg_lower, flags=re.IGNORECASE)
@@ -653,30 +653,37 @@ def query_ncp(arg_lower):
         eb_search = eb_match.group(1)
         #Exclude npus from ncp query
         subdf = filter_table(ncp_df, {"EB": eb_search})
-        subdf = filter_table(ncp_df, {"Type": "Upgrade"}, not_filt=True)
+        subdf = filter_table(subdf, {"Type": "Upgrade"}, not_filt=True)
         results_title = "Finding all `%s` EB NCPs (excluding NPUs)..." % eb_search
-        results_msg = ", ".join(subdf["Power/NCP"])
-        return True, results_title, results_msg
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join([i for i in subdf["Power/NCP"] if i])
+        #return True, results_title, results_msg
+   
     elif arg_lower in ["nyx"]:
         subdf = nyx_power_df
         results_title = "Pulling up all NCPs from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
-        results_msg = ", ".join(subdf["Power/NCP"])
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in valid_cc_list:
         subdf = filter_table(ncp_df, {"From?": re.escape(arg_lower)})
         results_title = "Pulling up all NCPs from the `%s` Advance Content..." % subdf.iloc[0]["From?"]
-        results_msg = ", ".join(subdf["Power/NCP"])
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in [i.lower() for i in playermade_list]:
         subdf = filter_table(pmc_power_df, {"From?": re.escape(arg_lower)})
         subdf = filter_table(subdf, {"Sort": "Virus Power"}, not_filt = True)
         results_title = "Pulling up all NCPs from the unofficial `%s` Player-Made Content..." % subdf.iloc[0]["From?"]
-        results_msg = ", ".join(subdf["Power/NCP"])
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join(subdf["Power/NCP"])
     elif arg_lower in ["minus", "minus cust", "minuscust"]:
         subdf = filter_table(pmc_power_df, {"Type": "Minus"})
         results_title = "Pulling up all `MinusCust` Programs from the unofficial Genso Network Player-Made Content..."
-        results_msg = ", ".join(subdf["Power/NCP"])
+        results = subdf["Power/NCP"]
+        #results_msg = ", ".join(subdf["Power/NCP"])
     else:
         return False, "", ""
-
+    
+    results_msg = ", ".join([i for i in results if i])
     return True, results_title, results_msg
 
 @bot.tree.command(name='ncp', description=commands_dict["ncp"])
@@ -955,6 +962,7 @@ async def virus(interaction: discord.Interaction, query:str, detailed:bool=False
     return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
+@bot.tree.command(name='query', description=commands_dict["query"])
 async def query_func(interaction: discord.Interaction, query: str):
     cleaned_args = clean_args([query])
     if len(cleaned_args) < 1:

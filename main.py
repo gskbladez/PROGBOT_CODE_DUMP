@@ -12,7 +12,7 @@ from pandas import read_csv, DataFrame, Series
 from discord.ext import tasks
 from discord import app_commands
 
-from maincommon import commands_dict, commands_df, bot
+from maincommon import commands_dict, commands_df, bot, errlog
 import mainroll
 import mainaprilfools
 import mainsafety
@@ -23,10 +23,6 @@ ADMIN_LEVEL = 3
 MOD_LEVEL = 2
 USER_LEVEL = 1
 
-# set up the loggers
-errlog = logging.getLogger('err')
-err_handler = logging.handlers.RotatingFileHandler(filename=settings.error_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
-errlog.addHandler(err_handler)
 #will secretly use discord log?
 handler = logging.handlers.RotatingFileHandler(filename=settings.log_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
 

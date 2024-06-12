@@ -5,6 +5,11 @@ from pandas import DataFrame, Series, unique, read_csv
 from discord.ext import commands
 import settings
 import random
+import logging
+import logging.handlers
+
+CONTENT_CHAR_LIMIT = 2000
+EMBED_CHAR_LIMIT = 200
 
 cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "ChitChat": 0xff8000,
@@ -64,6 +69,11 @@ playermade_list = ["Genso Network"]
 commands_df = read_csv(settings.commands_table_name, sep="\t").fillna('')
 commands_dict = dict(zip(commands_df["Command"], commands_df["Description"]))
 
+# set up the loggers
+errlog = logging.getLogger('err')
+err_handler = logging.handlers.RotatingFileHandler(filename=settings.error_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
+errlog.addHandler(err_handler)
+
 bot = commands.Bot(command_prefix=">", 
                    activity=discord.Activity(type=discord.ActivityType.playing, name="with Bug Busting!"), 
                    status=discord.Status.online,
@@ -82,6 +92,11 @@ def clean_args(args, lowercase=True):
 
 
 async def send_query_msg(interaction, return_title, return_msg):
+    if len(return_msg) > CONTENT_CHAR_LIMIT:
+        if not interaction.response.is_done():
+            return await interaction.response.send_message("Too many results! (You should probably let the devs know...)", ephemeral=True)
+        return await interaction.channel.send("**%s**\n*%s*" % (return_title, return_msg))
+    
     if not interaction.response.is_done():
         return await interaction.response.send_message("**%s**\n*%s*" % (return_title, return_msg)) 
     return await interaction.channel.send("**%s**\n*%s*" % (return_title, return_msg))
