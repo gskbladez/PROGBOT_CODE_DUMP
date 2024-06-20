@@ -14,8 +14,8 @@ To add ProgBot to your server, click [this link](https://discordapp.com/oauth2/a
 Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to automatically install!
 
 ### Bot Permissions
-- Bot
-- application.commands
+- applications.commands
+- bot
 
 ### How to Setup a Local Instance
 - Clone or fork ProgBot, downloading the files.
@@ -35,7 +35,8 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
     PMC_KEY=[Different token needed by playermaderepo command; ask a dev if needed]
     ```
 - Go back to the [Discord Developer Portal](https://discordapp.com/developers/applications/), then go to the **Oauth2** tab and generate an invite link by: 
-    - Check `bot`, then under Bot Permissions, check:
+    - Under Scopes, checking both `applications.commands` and `bot`
+    - Then under Bot Permissions, check under Text Permissions:
         - `Send Messages`
         - `Send Messages in Threads`
         - `Use External Emojis`
@@ -46,6 +47,10 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
     - `bugreport_channel_id`: channel that you want to send test bug report messages to
     - `source_guild_id`: the server with special emojis (probably your dev-test server) (see [Custom Emoji Support](#custom-emoji-support))
     - `custom_emojis`: Special Emoji IDs (see [Custom Emoji Support](#custom-emoji-support))
+- To allow usage of admin commands, add a new line to the end of `tables/user_levels.tsv`:
+    ```
+    [Your Discord user ID]	3	[your discord username]
+    ```
 - Start the bot using: `python main.py`
     - If successful, it will output the following after a few seconds, in the command line:
      ```
