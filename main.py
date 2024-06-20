@@ -31,6 +31,8 @@ user_dict = dict(zip(user_df["ID"], user_df["Level"]))
 
 # bot is defined in maincommon
 def _get_user_level(user_id: int):
+    if user_id not in user_dict:
+        return USER_LEVEL
     return user_dict[str(user_id)]
 
 def is_admin(interaction: discord.Interaction) -> bool:
