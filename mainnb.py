@@ -132,7 +132,7 @@ async def help_cmd(interaction: discord.Interaction, query: str):
 
     cleaned_args = clean_args([query])
     if cleaned_args[0] in ['list', 'all']:
-        sub_df = filter_table(help_df, {"Hidden", False})
+        sub_df = filter_table(help_df, {"Hidden?": False})
         help_groups = sub_df.groupby(["Type"])
         return_msgs = ["%s\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in help_groups if name]
         return await interaction.response.send_message("\n\n".join(return_msgs))

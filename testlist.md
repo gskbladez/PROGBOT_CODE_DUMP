@@ -1,7 +1,7 @@
 ### Test List
 - bugreport: send a message
 - commands: send
-- help: send a query
+- help: send a query, all
 - invite: send
 - roll: roll 5d6>4 # comment, H5, E5, 2d6k1, 2d6l1, 3d6!6>4, repeat a roll # comment,  6d1>5 for underflow, devil roll
 - chip: help, rule, folder, ??, blank, category, tag, navi, lookup multiple, query a tag, query a category, query darkchips, query megachips, query incident chips, query by license, query by crossover content, query by Genso Network
