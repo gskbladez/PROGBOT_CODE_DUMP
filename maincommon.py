@@ -162,7 +162,7 @@ def filter_table(df: DataFrame, filt_dict: dict, not_filt = False):
 
     for k, v in filt_dict.items():
         if isinstance(v, bool):
-            f = sub_df[k==v]
+            f = sub_df[k]==v
         else:
             f = sub_df[k].str.contains(v, flags=re.IGNORECASE)
         if not_filt:

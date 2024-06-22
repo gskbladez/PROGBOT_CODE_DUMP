@@ -132,7 +132,7 @@ async def help_cmd(interaction: discord.Interaction, query: str):
 
     cleaned_args = clean_args([query])
     if cleaned_args[0] in ['list', 'all']:
-        sub_df = filter_table(help_df, {"Hidden", False})
+        sub_df = filter_table(help_df, {"Hidden?": False})
         help_groups = sub_df.groupby(["Type"])
         return_msgs = ["%s\n*%s*" % (name, ", ".join(help_group["Command"].values)) for name, help_group in help_groups if name]
         return await interaction.response.send_message("\n\n".join(return_msgs))
@@ -486,6 +486,7 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
     # determines custom emojis
     if bot.get_guild(settings.source_guild_id):
         emojis_available = True
+        emoji_tag = ""
         if power_tag in ['Instant']:
             emoji_tag = settings.custom_emojis["instant"]
         if power_type in ['Cost']:
@@ -494,7 +495,6 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
             emoji_type = settings.custom_emojis["roll"]
         else:
             emoji_type = ""
-        emoji_tag = ""
     else:
         emojis_available = False
         emoji_type = ""
@@ -506,18 +506,18 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
         elif power_type in ['Minus']:
             field_title = 'MinusCust Passive Power'
         elif emojis_available:
-            field_title = "%s Power/%s%s" % (power_skill, emoji_type, power_type)
+            field_title = f"{power_skill} Power / {emoji_type} {power_type}"
             if power_tag:
-                field_title += "/%s%s" % (emoji_tag, power_tag)
+                field_title += f" / {emoji_tag} {power_tag}" 
         else:
-            field_title = "%s Power/%s" % (power_skill, power_type)
+            field_title = f"{power_skill} Power/{power_type}" 
             if power_tag:
-                field_title += "/%s" % power_tag
+                field_title += f"/{power_tag}"
 
         field_description = power_description
 
         if 'Upgrade' in power_type:
-            field_description = "(%s Upgrade) %s" % (power_skill, field_description)
+            field_description = f"({power_skill} Upgrade) {field_description}"
 
         # Unused Source description line
         if False:
