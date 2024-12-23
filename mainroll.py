@@ -116,15 +116,15 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
             roll_results, retcodes = list(zip(*roll_heck))
             super_ret_codes += retcodes
         except rply.errors.LexingError:
-            err_msg = "Unexpected characters found! Did you type out the roll correctly?"
+            err_msg = f"Unexpected characters found in `{orig_roll_line}`! Did you type out the roll correctly?"
         except AttributeError:
-            err_msg = "Sorry, I can't understand the roll. Try writing it out differently!"
+            err_msg = f"Sorry, I can't understand the roll `{orig_roll_line}`. Try writing it out differently!"
         except dice_algebra.DiceError:
-            err_msg = "The dice algebra is incorrect! Did you type out the roll correctly?"
+            err_msg = f"The dice algebra in `{orig_roll_line}` is incorrect! Did you type out the roll correctly?"
         except dice_algebra.OutOfDiceBounds as e:
             err_msg = str(e)
         except dice_algebra.BadArgument as e:
-            err_msg = "Bad argument! " + str(e)
+            err_msg = f"Bad argument in `{orig_roll_line}`! {str(e)}"
 
         if err_msg:
             return await interaction.response.send_message(content=err_msg, ephemeral=True)
@@ -135,7 +135,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         continue
 
     if not [i for i in super_roll_results if any(i)]:
-        await interaction.response.send_message(interaction, content="No roll done!", ephemeral=True)
+        return await interaction.response.send_message(content=f"No roll submitted in `{cmd}`!", ephemeral=True)
 
     if repeat == 1:
         sub_roll_string = ", ".join(super_roll_results[0])
