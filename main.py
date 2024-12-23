@@ -12,7 +12,7 @@ from pandas import read_csv, DataFrame, Series
 from discord.ext import tasks
 from discord import app_commands
 
-from maincommon import commands_dict, commands_df, bot, errlog
+from maincommon import commands_dict, commands_df, bot, errlog, send_msg
 import mainroll
 import mainaprilfools
 import mainsafety
@@ -88,7 +88,7 @@ async def bugreport(interaction: discord.Interaction, message: str):
         text="Submitted by: {}#{} ({})".format(message_author.name, message_author.discriminator, message_guild))
     embed.set_thumbnail(url="https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png")
     await progbot_bugreport_channel.send(embed=embed)
-    await interaction.response.send_message(content="**_Bug Report Submitted!_**\nThanks for the help!")
+    await send_msg(interaction,"**_Bug Report Submitted!_**\nThanks for the help!")
 
 
 @bot.tree.command(name='run', description='Admin-only commands', guild=discord.Object(id=settings.admin_guild))
@@ -133,10 +133,7 @@ async def on_app_command_error(interaction: discord.Interaction, error: discord.
     exc_type, exc_value, _ = sys.exc_info()
     broke_msg = f":warning::warning: **SOMETHING BROKE** :warning::warning:\n``{exc_type.__name__}: {exc_value}``"
     errlog.exception(error)
-    if not interaction.response.is_done():
-        await interaction.response.send_message(broke_msg, ephemeral=True)
-    else:
-        await interaction.channel.send(broke_msg)
+    await send_msg(interaction, broke_msg, ephemeral=True)
 
 required_files = [settings.commands_table_name, settings.user_levels_table_name, settings.audiencesave, settings.spotlightsave]
 

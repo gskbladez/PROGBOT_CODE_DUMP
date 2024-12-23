@@ -7,9 +7,11 @@ import settings
 import random
 import logging
 import logging.handlers
+import asyncio
 
 CONTENT_CHAR_LIMIT = 2000
 EMBED_CHAR_LIMIT = 200
+MESSAGE_DELAY = 0.25 # seconds; will hopefully never have to be used
 
 cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "ChitChat": 0xff8000,
@@ -95,11 +97,19 @@ async def send_query_msg(interaction, return_title, return_msg):
     if len(return_msg) > CONTENT_CHAR_LIMIT:
         if not interaction.response.is_done():
             return await interaction.response.send_message("Too many results! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.channel.send("**%s**\n*%s*" % (return_title, return_msg))
+        return await interaction.followup.send("**%s**\n*%s*" % (return_title, return_msg))
     
     if not interaction.response.is_done():
         return await interaction.response.send_message("**%s**\n*%s*" % (return_title, return_msg)) 
-    return await interaction.channel.send("**%s**\n*%s*" % (return_title, return_msg))
+    #await asyncio.sleep(MESSAGE_DELAY)
+    return await interaction.followup.send("**%s**\n*%s*" % (return_title, return_msg))
+
+
+async def send_msg(interaction, return_msg, ephemeral=False):
+    if not interaction.response.is_done():
+        return await interaction.response.send_message(return_msg, ephemeral=ephemeral)
+    #await asyncio.sleep(MESSAGE_DELAY)
+    return await interaction.followup.send(return_msg, ephemeral=ephemeral)
 
 
 async def find_value_in_table(df, search_col, search_arg, suppress_notfound=False, alias_message=False, allow_duplicate=False):
@@ -131,13 +141,16 @@ async def send_multiple_embeds(i: discord.Interaction, list_embed, list_warn, er
     msg_warns = [m for m in list_warn if m is not None and m]
     if not list_embed and not list_warn:
         return await i.response.send_message(content="No message to send! (You should probably let the dev team know...)", ephemeral=True)
-    if msg_warns:
-        await i.response.send_message(content="\n".join(msg_warns), ephemeral=error_no_embeds)
+    
     for e in list_embed:
         if not i.response.is_done():
             await i.response.send_message(embed=e)
         else:
-            await i.channel.send(embed=e)
+            await i.followup.send(embed=e)
+        #await asyncio.sleep(MESSAGE_DELAY)
+
+    if msg_warns:
+        await send_msg(i, "\n".join(msg_warns), ephemeral=error_no_embeds)
 
 
 def roll_row_from_table(roll_df, df_filters={}):
