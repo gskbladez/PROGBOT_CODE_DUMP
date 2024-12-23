@@ -40,6 +40,7 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
         - `Send Messages in Threads`
         - `Use External Emojis`
         - `Add Reactions`
+        - `Embedded Link` (maybe?)
 - Paste the invite link into your browser and invite bot to a server (probably a test one)
 - Update the following fields in `settings.py`:
     - `admin_guild`: the server you want to dev-test this on
