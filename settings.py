@@ -55,7 +55,7 @@ violet_md_image = "https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP
 sapphire_md_image = "https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/sapphiremysterydata.png"
 sunny_md_image = "https://raw.githubusercontent.com/gskbladez/PROGBOT_CODE_DUMP/master/virusart/sunnymysterydata.png"
 bug_image = "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png"
-invite_link = "https://discordapp.com/oauth2/authorize?client_id=572878200397627412&scope=bot&permissions=0"
+invite_link = "https://discord.com/oauth2/authorize?client_id=572878200397627412&permissions=277025671232&integration_type=0&scope=bot"
 notion_pmc_id = "dc469d3ae5f147cab389b6f61bce102e"
 bugreport_image = "https://raw.githubusercontent.com/gskbladez/meddyexe/master/virusart/bug.png"
 bugreport_channel_id = 704684798584815636
@@ -66,6 +66,7 @@ source_guild_id = 556291542206382080
 custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
                  "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901995743752106064>",
                  "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>", "devilish": r"👿"}
+
 
 # /home/bladez/update-proggers
 
