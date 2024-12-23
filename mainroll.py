@@ -33,6 +33,9 @@ def roll_master(roll_line, format_limit=FORMAT_LIMIT):
     macro_regex = r"\$?(E|N|H)(\d+)"
     roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
                        flags=re.IGNORECASE)
+    # adds dice size to explosions if none provided; matches end of line or non-digit character
+    roll_line = re.sub(r"d(?P<dicesize>\d+)!(?P<extra>[^\d]|$)", r"d\g<dicesize>!\g<dicesize>\g<extra>", roll_line)
+
     # adds 1 in front of bare d6, d20 references
     roll_line = re.sub(r"(?P<baredice>^|\b)d(?P<dicesize>\d+)", r"\g<baredice>1d\g<dicesize>", roll_line)
     zero_formatted_roll = re.sub(r'{(.*)}', '0', roll_line)
@@ -78,56 +81,75 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         roll_line, roll_comment = roll_line.split(ROLL_COMMENT_CHAR, 1)
     else:
         roll_comment = ""
+
     orig_roll_line = roll_line
-    roll_line = re.sub("\s+", "", roll_line).lower()
-    if not roll_line:
-        await interaction.response.send_message(interaction, content="No roll command given!", ephemeral=True)
 
-    dice_size = re.search('d(\d+)', roll_line)
-    if not dice_size:
-        dice_size = re.search('(?:E|N|H)(\d+)', roll_line, re.IGNORECASE)
+    sub_rolls = roll_line.split(",")
+    sub_num = len(sub_rolls)
+    super_roll_results = [[None] * sub_num for _ in range(repeat)]
+    super_ret_codes = []
 
-    if dice_size:
-        reroll_size = int(dice_size.group(1))
+    for j in range(sub_num):
+        sub_roll = re.sub("\s+", "", sub_rolls[j]).lower()
+        if not sub_roll:
+            continue
 
-        if repeat > MAX_REROLL_QUERY:
-            return await interaction.response.send_message(interaction,
-                                                                 content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
-                                                                 ephemeral=True)
+        # reroll protection
+        dice_size = re.search('d(\d+)', sub_roll)
+        if not dice_size:
+            dice_size = re.search('(?:E|N|H)(\d+)', sub_roll, re.IGNORECASE)
+        if dice_size:
+            reroll_size = int(dice_size.group(1))
 
-        if repeat > MAX_REROLL_QUERY_LARGE and reroll_size > REROLL_DICE_SIZE_THRESHOLD:
-            return await interaction.response.send_message(interaction,
-                                                                 content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY_LARGE} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
-                                                                 ephemeral=True)
-    try:
-        roll_heck = [roll_master(roll_line, format_limit=int(FORMAT_LIMIT/repeat)) for i in range(0, repeat)]
-        err_msg = ""
-        roll_results, retcodes = list(zip(*roll_heck))
-    except rply.errors.LexingError:
-        err_msg = "Unexpected characters found! Did you type out the roll correctly?"
-    except AttributeError:
-        err_msg = "Sorry, I can't understand the roll. Try writing it out differently!"
-    except dice_algebra.DiceError:
-        err_msg = "The dice algebra is incorrect! Did you type out the roll correctly?"
-    except dice_algebra.OutOfDiceBounds as e:
-        err_msg = str(e)
-    except dice_algebra.BadArgument as e:
-        err_msg = "Bad argument! " + str(e)
+            if repeat > MAX_REROLL_QUERY:
+                return await interaction.response.send_message(interaction,
+                                                                     content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
+                                                                     ephemeral=True)
 
-    if err_msg:
-        return await interaction.response.send_message(content=err_msg, ephemeral=True)
+            if repeat > MAX_REROLL_QUERY_LARGE and reroll_size > REROLL_DICE_SIZE_THRESHOLD:
+                return await interaction.response.send_message(interaction,
+                                                                     content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY_LARGE} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
+                                                                     ephemeral=True)
+        try:
+            roll_heck = [roll_master(sub_roll, format_limit=int(FORMAT_LIMIT/repeat)) for i in range(0, repeat)]
+            err_msg = ""
+            roll_results, retcodes = list(zip(*roll_heck))
+            super_ret_codes += retcodes
+        except rply.errors.LexingError:
+            err_msg = "Unexpected characters found! Did you type out the roll correctly?"
+        except AttributeError:
+            err_msg = "Sorry, I can't understand the roll. Try writing it out differently!"
+        except dice_algebra.DiceError:
+            err_msg = "The dice algebra is incorrect! Did you type out the roll correctly?"
+        except dice_algebra.OutOfDiceBounds as e:
+            err_msg = str(e)
+        except dice_algebra.BadArgument as e:
+            err_msg = "Bad argument! " + str(e)
 
-    roll_outputs = [format_hits_roll(result) for result in roll_results]
+        if err_msg:
+            return await interaction.response.send_message(content=err_msg, ephemeral=True)
+
+        for i in range(repeat):
+            super_roll_results[i][j] = format_hits_roll(roll_results[i])
+            continue
+        continue
+
+    if not [i for i in super_roll_results if any(i)]:
+        await interaction.response.send_message(interaction, content="No roll done!", ephemeral=True)
 
     if repeat == 1:
-        progroll_output = f"{interaction.user.mention} *rolls `{orig_roll_line}` for...* {roll_outputs[0]}"
+        sub_roll_string = ", ".join(super_roll_results[0])
+        progroll_output = f"{interaction.user.mention} *rolls `{orig_roll_line}` for...* {sub_roll_string}"
         if roll_comment:
             progroll_output += f" #{roll_comment.rstrip()}"
     else:
         progroll_output = f"{interaction.user.mention} *rolls `{orig_roll_line}` {repeat} times...*"
         if roll_comment:
             progroll_output += f" #{roll_comment.rstrip()}"
-        progroll_output = "{}\n>>> {}".format(progroll_output, "\n".join(roll_outputs))
+        
+        sub_roll_strings = []
+        sub_roll_strings = [", ".join(roll_result) for roll_result in super_roll_results]
+        progroll_output = "{}\n>>> {}".format(progroll_output, "\n".join(sub_roll_strings))
 
     await interaction.response.send_message(content=progroll_output)
     response_msg = await interaction.original_response()
