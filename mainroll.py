@@ -111,7 +111,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
                                                                      content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY_LARGE} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
                                                                      ephemeral=True)
         try:
-            roll_heck = [roll_master(sub_roll, format_limit=int(FORMAT_LIMIT/repeat)) for i in range(0, repeat)]
+            roll_heck = [roll_master(sub_roll, format_limit=int(FORMAT_LIMIT/repeat)) for _ in range(repeat)]
             err_msg = ""
             roll_results, retcodes = list(zip(*roll_heck))
             super_ret_codes += retcodes
@@ -131,8 +131,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
 
         for i in range(repeat):
             super_roll_results[i][j] = format_hits_roll(roll_results[i])
-            continue
-        continue
+        continue # to next part of the roll, if there's commas
 
     if not [i for i in super_roll_results if any(i)]:
         return await interaction.response.send_message(content=f"No roll submitted in `{cmd}`!", ephemeral=True)
@@ -147,7 +146,6 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         if roll_comment:
             progroll_output += f" #{roll_comment.rstrip()}"
         
-        sub_roll_strings = []
         sub_roll_strings = [", ".join(roll_result) for roll_result in super_roll_results]
         progroll_output = "{}\n>>> {}".format(progroll_output, "\n".join(sub_roll_strings))
 
