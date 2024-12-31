@@ -561,7 +561,7 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
 
 def query_power(args):
     sub_df = power_df
-    is_default = True
+    is_default = True  # Exclude Virus Powers and NCPs
     search_tag_list = []
 
     for arg in args:
@@ -579,7 +579,7 @@ def query_power(args):
         return False, "", ""
 
     if is_default:
-        sub_df = filter_table(sub_df, {"Sort": "Power"})
+        sub_df = filter_table(sub_df, {"Sort": "^\s*Power\s*$"})
         search_tag_list.append('Navi')
     else:
         sub_df = filter_table(sub_df, {"Sort": "Virus Power"})
