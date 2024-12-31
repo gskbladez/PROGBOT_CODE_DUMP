@@ -7,7 +7,7 @@ import numpy as np
 import re
 import mainadvance
 from maincommon import bot, commands_dict, filter_table
-from maincommon import clean_args, send_query_msg, find_value_in_table, roll_row_from_table, send_multiple_embeds
+from maincommon import clean_args, send_query_msg, send_msg, find_value_in_table, roll_row_from_table, send_multiple_embeds
 from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
 from maincommon import nyx_link, grid_link, random_chip_link
 from mainadvance import spotlight   # for glossary
@@ -561,7 +561,7 @@ async def power_ncp(interaction: discord.Interaction, arg, force_power=False, nc
 
 def query_power(args):
     sub_df = power_df
-    is_default = True
+    is_default = True  # Exclude Virus Powers and NCPs
     search_tag_list = []
 
     for arg in args:
@@ -579,7 +579,7 @@ def query_power(args):
         return False, "", ""
 
     if is_default:
-        sub_df = filter_table(sub_df, {"Sort": "Power"})
+        sub_df = filter_table(sub_df, {"Sort": "^\s*Power\s*$"})
         search_tag_list.append('Navi')
     else:
         sub_df = filter_table(sub_df, {"Sort": "Virus Power"})
@@ -774,6 +774,7 @@ async def upgrade(interaction: discord.Interaction, query: str):
                                         content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
         return await interaction.response.send_message(ruling_msg["Response"])
     
+    err_msgs = []
     for arg in cleaned_args:
         arg = arg.lower()
         is_upgrade, result_title, result_msg = query_npu(arg)
@@ -784,8 +785,10 @@ async def upgrade(interaction: discord.Interaction, query: str):
             await ncp.callback(interaction, arg)
             continue
         # cheating out preserving the interaction for ncp
-        await interaction.channel.send(f"Couldn't find any Navi Power Upgrades for `{arg}`!", ephemeral=True)
-    
+        err_msgs.append(f"Couldn't find any Navi Power Upgrades for `{arg}`!")
+
+    for err in err_msgs:
+        await send_msg(interaction, err, ephemeral=True)
     return
 
 

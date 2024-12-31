@@ -8,7 +8,7 @@ import settings
 from pandas import DataFrame, Series, unique, read_csv
 import re
 import datetime
-from maincommon import clean_args, roll_row_from_table, send_query_msg, find_value_in_table, send_multiple_embeds
+from maincommon import clean_args, roll_row_from_table, send_query_msg, send_msg, find_value_in_table, send_multiple_embeds
 from maincommon import help_df, cc_color_dictionary, pmc_link
 #import shelve
 from maincommon import bot, commands_dict, filter_table
@@ -84,7 +84,7 @@ async def crimsonnoise(interaction: discord.Interaction, md_type: typing.Literal
     crimsonnoise_type = filter_table(crimsonnoise_df, {"MysteryData": f"^{re.escape(arg)}$"})
 
     if crimsonnoise_type.shape[0] == 0:
-        return await interaction.response.send_message(
+        return send_msg(interaction,
             content=f"You typed {md_type}! Please specify either Common, Uncommon, or Rare CrimsonNoise.", 
             ephemeral=True)
     firstroll = random.randint(1, 6)
@@ -119,7 +119,7 @@ async def daemon(interaction: discord.Interaction, name: str):
     cleaned_args = clean_args([name])
     arg_combined = " ".join(cleaned_args)
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.response.send_message("Lists the complete information of a **Daemon** for DarkChip rules. Use `daemon all` to pull up the names of all Official Daemons!")
+        return await send_msg(interaction, "Lists the complete information of a **Daemon** for DarkChip rules. Use `daemon all` to pull up the names of all Official Daemons!")
     is_ruling = False
     ruling_msg = None
     if arg_combined in ["all", "list"]:
@@ -143,15 +143,15 @@ async def daemon(interaction: discord.Interaction, name: str):
 
     if is_ruling:
         if ruling_msg is None:
-            return await interaction.response.send_message( 
-                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.response.send_message(ruling_msg["Response"])
+            return await send_msg(interaction,
+                                  "Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await send_msg(interaction,ruling_msg["Response"])
 
     daemon_info, _ = await find_value_in_table(daemon_df, "Name", arg_combined, suppress_notfound=True)
     if daemon_info is None:
         daemon_info, add_msg = await find_value_in_table(pmc_daemon_df, "Name", arg_combined)
         if daemon_info is None:
-            return await interaction.response.send_message(add_msg)
+            return await send_msg(interaction, add_msg)
 
     daemon_name = daemon_info["Name"]
     daemon_quote = daemon_info["Quote"]
@@ -178,7 +178,7 @@ async def daemon(interaction: discord.Interaction, name: str):
     embed.set_thumbnail(url=daemon_image)
     embed.add_field(name="***''{}''***".format(daemon_quote),
                     value=daemon_description)
-    return await interaction.response.send_message(  embed=embed)
+    return await interaction.response.send_message(embed=embed)
 
 
 def query_network():
@@ -197,11 +197,10 @@ def query_weather():
 async def networkmod(interaction: discord.Interaction, query: str):
     cleaned_args = clean_args([query])
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
-        return await interaction.response.send_message("Pulls up info for 1-%d **Network Modifiers**! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY)
+        return await send_msg(interaction,"Pulls up info for 1-%d **Network Modifiers**! I can also list all Network Modifiers if you tell me `list` or `all`!" % MAX_MOD_QUERY)
 
     if len(cleaned_args) > MAX_MOD_QUERY:
-        return await interaction.response.send_message( 
-                                        content="Can't pull up more than %d Network Mods!" % MAX_MOD_QUERY, ephemeral=True)
+        return await send_msg(interaction,"Can't pull up more than %d Network Mods!" % MAX_MOD_QUERY, ephemeral=True)
 
     if cleaned_args[0] in ["list", "all"]:
         _, result_title, result_msg = query_network()
@@ -209,9 +208,9 @@ async def networkmod(interaction: discord.Interaction, query: str):
     elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg, _ = await find_value_in_table(help_df, "Command", "networkmodruling", suppress_notfound=True)
         if ruling_msg is None:
-            return await interaction.response.send_message( 
-                                            content="Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
-        return await interaction.response.send_message(ruling_msg["Response"])
+            return await send_msg(interaction,
+                                  "Couldn't find the rules for this command! (You should probably let the devs know...)", ephemeral=True)
+        return await send_msg(interaction, ruling_msg["Response"])
 
     msg_warn = []
     msg_embeds = []
@@ -743,7 +742,7 @@ async def spotlight(interaction:discord.Interaction, names:str="", command:typin
         embed = embed_spotlight_tracker(spotlight_db[channel_id], msg_location, notification=notify_str)
         if not interaction.response.is_done():
             return await interaction.response.send_message(embed=embed)
-        return await interaction.channel.send(embed=embed)
+        return await interaction.followup.send(embed=embed)
 
 
 async def find_spotlight_participant(interaction, arg, participant_dict, message_location):
