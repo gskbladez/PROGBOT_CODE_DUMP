@@ -12,6 +12,7 @@ autoloot_df = read_csv(settings.autolootfile, sep="\t").fillna('')
 
 fish_df = read_csv(settings.nf_fish, sep="\t").fillna('')
 fish_df = fish_df[fish_df["Name"] != ""]
+
 fish_tag_list = fish_df["Tags"].str.split(";|,", expand=True) \
     .stack() \
     .str.strip() \
@@ -889,6 +890,19 @@ async def autoloot(interaction: discord.Interaction):
                     value="_%s_" % chip_description)
     return await interaction.response.send_message(embed=embed)
 
+# the vatican is not going to approve what i'm about to do
+def clean_args_multi(args, lowercase=True):
+    if len(args) == 1:
+        args = re.split(r"(?:,|;)\s+", args[0])
+
+    if lowercase:
+        args = [i.lower().strip() for i in args if i and not i.isspace()]
+    else:
+        args = [i.strip() for i in args if i and not i.isspace()]
+    return args
+
+
+
 async def fish_master(arg, simplified=True):
     fish_info, content_msg = await find_value_in_table(fish_df, "Name", arg, suppress_notfound=True, alias_message=True)
 
@@ -930,7 +944,6 @@ async def fish_master(arg, simplified=True):
 
     return fish_name, fish_title, fish_descript_block, fish_footer, None, fish_color, content_msg
 
-# TODO - alias the fish, those spaces are screwing things up
 def query_fish(arg_lower):
     alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
 
@@ -938,24 +951,34 @@ def query_fish(arg_lower):
         subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
         result_title = "Fish in the `%s` habitat..." % subdf.iloc[0]["Habitats"]
         result_msg = ", ".join(subdf["Name"])
-    elif arg_lower in fish_tag_list:
-        subdf = filter_table(fish_df, {"Tags": re.escape(arg_lower)})
-        result_title = "Fish with the `%s` tag..." % arg_lower.capitalize()
+    elif arg_lower in fish_df:
+        subdf = filter_table(fish_df, {"Name": re.escape(arg_lower)})
+        result_title = "So many..." % arg_lower.capitalize()
         result_msg = ", ".join(subdf["Name"])
     else:
         return False, "", ""
     return True, result_title, result_msg
 
+def query_fish_names():
+    result_title = "funkin'... fissssssshhhhh............"
+    off_df = filter_table(fish_df, {"Name": ""})
+    result_text = ", ".join(off_df["Name"])
+    return True, result_title, result_text
 
 @bot.tree.command(name='fish', description=commands_dict["fish"])
 async def fish(interaction: discord.Interaction, query: str, detailed: bool = False):
-    cleaned_args = clean_args([query])
+
+    cleaned_args = clean_args_multi([query])
+
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await interaction.response.send_message(
-            f"Give me the name of 1-{MAX_FISH_QUERY} **Fish** and I can pull up their info for you!\n\n" +
-            "I can query Fish by **Habitat**, **Tag**, or **Advanced Content**, and pull up the list of Fish categories with `fish category`!\n" +
-            "For a list of all Fish categories, use `fish habitat`, and all current Fish tags with `fish tag`. To pull up details on a specific Category or Tag, use `tag` instead.")
-    elif cleaned_args[0] in ['habitat', 'habitats']:
+            f"Give me the name of 1-{MAX_FISH_QUERY} **Fish** and I can pull up their info for you! Please separate them with commas! (,)\n\n" +
+            "I can query Fish by **Tag**! I can also list all of them with **all**!\n" +
+            "To pull up details on a specific Habitat or Tag, use `tag` instead.")
+    elif cleaned_args[0] in ['all', 'list']:
+        _, result_title, result_text = query_fish_names()
+        return await send_query_msg(interaction, result_title, result_text)
+    elif cleaned_args[0] in ['habitat', 'habitats']: # even though users _can_ search by habitat, it's a mess due to how the tables are set up and i don't feel like unscrewing it
         result_title = "Displaying all known Fish Habitats..."
         result_text = ", ".join(fish_habitats_list)
         return await send_query_msg(interaction, result_title, result_text)
@@ -963,7 +986,7 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
         result_title = "Displaying all known Fish Tags..."
         result_text = ", ".join([i.capitalize() for i in fish_tag_list])
         return await send_query_msg(interaction, result_title, result_text)
-    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']: # TODO
         ruling_msg, _ = await find_value_in_table(help_df, "Command", "fishruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
@@ -975,12 +998,14 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
             content=f"Too many fish, no more than {MAX_FISH_QUERY}!", ephemeral=True)
 
     arg_combined = " ".join(cleaned_args)
+
     is_query, result_title, result_msg = query_fish(arg_combined)
     if is_query:
         return await send_query_msg(interaction, result_title, result_msg)
 
     msg_embeds = []
     msg_warn = []
+
     for arg in cleaned_args:
         if not arg:
             continue
@@ -1002,7 +1027,7 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
 
 
 @bot.tree.command(name='fishroll', description=commands_dict["fishroll"])
-async def fishroll(interaction: discord.Interaction, environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], x: int, y: int, population: typing.Literal["Low", "Normal", "High"]):
+async def fishroll(interaction: discord.Interaction, environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], x: int, y: int, population: typing.Literal["Low", "Normal", "High"], size: typing.Literal["size variance", "no size variance"]):
     x = max(-2, min(x, 2))
     y = max(-2, min(y, 2))
 
@@ -1020,13 +1045,13 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         if x > 0:
             attenuation_1 = "Serious"
         if x == 0:
-            attenuation_1 = "Silly and Serious"
+            attenuation_1 = "Silly / Serious Neutral"
         if y < 0:
             attenuation_2 = "Blocky"
         if y > 0:
             attenuation_2 = "Round"
         if y == 0:
-            attenuation_2 = "Blocky and Round"
+            attenuation_2 = "Blocky / Round Neutral"
     if environment == "Corporate-Approved":
         fish_env = nf_corporate_df
         if x < 0:
@@ -1034,13 +1059,13 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         if x > 0:
             attenuation_1 = "Sterile"
         if x == 0:
-            attenuation_1 = "Friendly and Sterile"
+            attenuation_1 = "Friendly / Sterile Neutral"
         if y < 0:
             attenuation_2 = "New"
         if y > 0:
             attenuation_2 = "Old"
         if y == 0:
-            attenuation_2 = "New and Old"
+            attenuation_2 = "New / Old Neutral"
     if environment == "G4MERZ 0NLY":
         fish_env = nf_gamers_df
         if x < 0:
@@ -1048,13 +1073,13 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         if x > 0:
             attenuation_1 = "Hardcore"
         if x == 0:
-            attenuation_1 = "Casual and Hardcore"
+            attenuation_1 = "Casual / Hardcore Neutral"
         if y < 0:
             attenuation_2 = "Sci-fi"
         if y > 0:
             attenuation_2 = "Fantasy"
         if y == 0:
-            attenuation_2 = "Sci-fi and Fantasy"
+            attenuation_2 = "Sci-fi / Fantasy Neutral"
     if environment == "RealSim":
         fish_env = nf_realsim_df
         if x < 0:
@@ -1062,13 +1087,13 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         if x > 0:
             attenuation_1 = "Hi-fi"
         if x == 0:
-            attenuation_1 = "Lo-fi and Hi-fi" # Will, what does that mean? -a
+            attenuation_1 = "Lo-fi / Hi-fi Neutral"
         if y < 0:
             attenuation_2 = "Rainy"
         if y > 0:
             attenuation_2 = "Sunny"
         if y == 0:
-            attenuation_2 = "Rainy and Sunny"
+            attenuation_2 = "Rainy / Sunny Neutral"
     if environment == "The Undernet":
         fish_env = nf_undernet_df
         if x < 0:
@@ -1076,17 +1101,17 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         if x > 0:
             attenuation_1 = "Gravelike"
         if x == 0:
-            attenuation_1 = "Ravelike and Gravelike" # we crypt of the necrodancer now
+            attenuation_1 = "Ravelike / Gravelike Neutral" # we crypt of the necrodancer now
         if y < 0:
             attenuation_2 = "Vast"
         if y > 0:
             attenuation_2 = "Narrow"
         if y == 0:
-            attenuation_2 = "Vast and Narrow"
+            attenuation_2 = "Vast / Narrow Neutral"
 
 
     fish_chart = {
-        "empty": "something fucked up and went out of bounds",
+        "empty": "if this is showing up please bug amon",
     }
 
     results_list = []
@@ -1096,7 +1121,7 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         die_1 = random.randint(1, 6) + x
         die_2 = random.randint(1, 6) + y
 
-        fish_result = get_fish_from_environment(fish_env, die_1, die_2)
+        fish_result = get_fish_from_environment(fish_env, die_1, die_2, size)
 
         if fish_result:
             results_list.append(fish_result)
@@ -1106,13 +1131,20 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
     result_text = "\n ".join(results_list)
 
     embed = discord.Embed(title="__Rolling Up Your Fish__",
-                          description=f"_{interaction.user.mention} rolled to find the fish in **{environment}**..._\n\nGot:\n {result_text} \nEnvironment Attenuation: {attenuation_1}, {attenuation_2}",
+                          description=f"_{interaction.user.mention} rolled to find fish in **{environment}**..._\n\nGot:\n {result_text} \nEnvironment Attenuation: {attenuation_1}, {attenuation_2}",
                           color=cc_color_dictionary["NetFishing"])
     return await interaction.response.send_message(embed=embed)
 
 
-def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int) -> str:
-    if 0 <= die_1 <= 8 and 0 <= die_2 <= 8:
+def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size: str) -> str:
+    max_row_index, max_col_index = fish_env.shape
+
+    if die_1 < 0:
+        die_1 = max_row_index + die_1
+    if die_2 < 0:
+        die_2 = max_col_index + die_2
+
+    if 0 <= die_1 <= max_row_index and 0 <= die_2 <= max_col_index:
         fish = fish_env.iloc[die_1, die_2]
 
         if fish == "":
@@ -1125,6 +1157,19 @@ def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int) -> st
         elif "" in str(fish):
             return f"> _Mystery Data:_ {fish}"
         else:
-            return f"> _Fish:_ {fish}"
+            if size == "size variance":
+                size_score = roll_size_variance()
+            if size_score <= 4:
+                fish = f"{fish} **(Extra Small!!!)**"
+            elif size_score >= 10:
+                fish = f"{fish} **(Extra Large!!!)**"
+        return f"> _Fish:_ {fish}"
     else:
         return None
+
+def roll_size_variance():
+        rolls = [random.randint(1, 6) for _ in range(3)]
+        rolls.sort()
+        size_score = rolls[0] + rolls[2]
+
+        return size_score
