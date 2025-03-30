@@ -945,22 +945,22 @@ async def fish_master(arg, simplified=True):
     return fish_name, fish_title, fish_descript_block, fish_footer, None, fish_color, content_msg
 
 def query_fish(arg_lower):
-    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
+    # alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
 
     if arg_lower in [i.lower() for i in fish_habitats_list]:
         subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
         result_title = "Fish in the `%s` habitat..." % subdf.iloc[0]["Habitats"]
         result_msg = ", ".join(subdf["Name"])
-    elif arg_lower in fish_df:
-        subdf = filter_table(fish_df, {"Name": re.escape(arg_lower)})
-        result_title = "So many..." % arg_lower.capitalize()
+    elif arg_lower in fish_tag_list:
+        subdf = filter_table(fish_df, {"Tags": re.escape(arg_lower)})
+        result_title = "Fish with the `%s` tag..." % arg_lower.capitalize()
         result_msg = ", ".join(subdf["Name"])
     else:
         return False, "", ""
     return True, result_title, result_msg
 
 def query_fish_names():
-    result_title = "funkin'... fissssssshhhhh............"
+    result_title = "Displaying all known Fish..."
     off_df = filter_table(fish_df, {"Name": ""})
     result_text = ", ".join(off_df["Name"])
     return True, result_title, result_text
@@ -973,7 +973,7 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await interaction.response.send_message(
             f"Give me the name of 1-{MAX_FISH_QUERY} **Fish** and I can pull up their info for you! Please separate them with commas! (,)\n\n" +
-            "I can query Fish by **Tag**! I can also list all of them with **all**!\n" +
+            "I can list all of the Fish with **all**! I can also query Fish by **Tag**!\n" +
             "To pull up details on a specific Habitat or Tag, use `tag` instead.")
     elif cleaned_args[0] in ['all', 'list']:
         _, result_title, result_text = query_fish_names()
@@ -1138,6 +1138,7 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
 
 def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size: str) -> str:
     max_row_index, max_col_index = fish_env.shape
+    size_score = 0
 
     if die_1 < 0:
         die_1 = max_row_index + die_1
@@ -1150,19 +1151,27 @@ def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size:
         if fish == "":
             return "> _Nothing showed up_"
 
+        # if "!!" in str(fish):
+        #     return f"> _Virus:_ {fish}"
+        # elif "%" in str(fish):
+        #     return f"> _Battlechip or NCP:_ {fish}"
+        # elif "" in str(fish):
+        #     return f"> _Mystery Data:_ {fish}"
         if "!!" in str(fish):
-            return f"> _Virus:_ {fish}"
+            return f"> _Virus:_ {str(fish).replace('!!', ':bangbang: ')}"
         elif "%" in str(fish):
-            return f"> _Battlechip or NCP:_ {fish}"
+            return f"> _Battlechip or NCP:_ {str(fish).replace('%', ':star: ')}"
         elif "" in str(fish):
-            return f"> _Mystery Data:_ {fish}"
+            return f"> _Mystery Data:_ {str(fish).replace('', ':large_blue_diamond: ')}"
         else:
+            if size == "no size variance":
+                return f"> _Fish:_ {fish}"
             if size == "size variance":
                 size_score = roll_size_variance()
-            if size_score <= 4:
-                fish = f"{fish} **(Extra Small!!!)**"
-            elif size_score >= 10:
-                fish = f"{fish} **(Extra Large!!!)**"
+                if size_score <= 4:
+                    fish = f"{fish} **(Extra Small!!!)**"
+                elif size_score >= 10:
+                    fish = f"{fish} **(Extra Large!!!)**"
         return f"> _Fish:_ {fish}"
     else:
         return None
@@ -1173,3 +1182,59 @@ def roll_size_variance():
         size_score = rolls[0] + rolls[2]
 
         return size_score
+
+
+@bot.tree.command(name='fishpoll', description="The true fishing experience.")
+async def fishpoll(interaction: discord.Interaction):
+
+    messages = [
+        "You cast your line into the water... something tugs!",
+        "The water ripples as your bait simmers in the cool abyss..",
+        "A mysterious splash nearby... could it be? A fish?",
+        "The fish are quiet today... but you catch a glimpse of something moving below.",
+        "You feel your fishing pole tremble on the coasts of the water.",
+        "You wait patiently... but the fish seem to be in hiding today.",
+        "The water is calm..",
+        "Man.. you love fishing.",
+        "A big splash!!",
+        "The line is tugging...",
+        "A fish leaps from the water in a dazzling display before slipping back in!",
+        "Your bait sinks deep..",
+        "A shadow swims past, but your bait doesn’t seem to attract it.",
+        "The water is eerily still... but you feel a subtle tug on the line.",
+        "Something's lurking beneath... the line pulls tight, but it's gone before you can react.",
+        "Your bait disappears under the water... a good sign, but no fish in sight yet.",
+        "Your pole shakes.. something's out there. Just out of reach.",
+        "You reel in slowly, feeling the tension in your arms... nothing yet.",
+        "A shadow glides through the depths... but your bait isn't tempting enough.",
+        "The stillness of the water holds... waiting for something to bite.",
+        "The surface breaks with a splash... something huge is moving beneath!",
+        "A flash of silver under the water, but it’s gone before you can react.",
+        "Something's there, but it's playing coy. You know it.",
+    ]
+
+    rare_messages = [
+        "Fish fear you.. viruses fear you.. navis turn their eyes away from you as you walk... you are alone on this barren network. Nevermind those Navis nearby."
+        "The line tugs, but there’s no fight, just the weight of forgotten things weighing you down.",
+        "The hum of empty data echoes through the void, your presence a ripple in a sea that no longer remembers its own waves.",
+        "Code bends around you like a mirror cracked from too many reflections, and the silence settles deeper than any error ever could.",
+        "You wonder if this is what the afterlife is like for a Navi.",
+        "Time moves in slow motion here, each second stretching into eternity, but all that remains is a fading trace of what once mattered.",
+        "The line trembles in your hands, but the water remains still, as if even the fish are hiding from the truth beneath the surface.",
+        "The hook sinks slowly, but the waiting feels eternal, like the patience of the water itself has become a quiet kind of ambivalence.",
+        "The fish swim below, just out of reach, and you begin to wonder if they can feel the same emptiness in the depths that you do when you reel in nothing but the weight of your own waiting.",
+        "Bass Pro Shop.",
+        "You feel the tug, faint at first, but it's enough - proof that even in the quietest moments, there is still life beneath the surface, waiting to connect.",
+        "You're thinking about starting a business, and if so, what would you sell."
+    ]
+
+    if random.random() < 0.97:
+        result_message = random.choice(messages)
+    else:
+        result_message = random.choice(rare_messages)
+
+    embed = discord.Embed(title="__Fishin'__...",
+                          description=f"_{interaction.user.mention} has gone fishin'..._\n\n{result_message}",
+                          color=cc_color_dictionary["NetFishing"])
+
+    return await interaction.response.send_message(embed=embed)

@@ -183,11 +183,19 @@ async def tag(interaction: discord.Interaction, category: str):
     if tag_alt:
         tag_title += " (%s)" % tag_alt
 
-    embed = discord.Embed(
-        title="__%s__" % tag_title,
-        description=tag_description,
-        color=0x24ff00)
-    return await interaction.response.send_message(embed=embed)
+    # NetFishing conditional
+    if tag_title in ["Aggressive", "Skittish", "Deep", "Shallow"]:
+        embed = discord.Embed(
+            title="__%s__" % tag_title,
+            description=tag_description,
+            color=0x00ffff)
+        return await interaction.response.send_message(embed=embed)
+    else:
+        embed = discord.Embed(
+            title="__%s__" % tag_title,
+            description=tag_description,
+            color=0x24ff00)
+        return await interaction.response.send_message(embed=embed)
 
 
 def query_chip(args):
