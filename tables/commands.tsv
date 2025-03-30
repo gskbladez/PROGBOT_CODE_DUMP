@@ -34,4 +34,6 @@ glossary	glossary	Game Lookup	base	slash	Pull up a glossary definition	1	FALSE
 safety	safety	Safety Tools	safety	slash	Set down a Safety Tool during play	1	FALSE
 find	find_chip_ncp_power	Game Lookup	base	slash	Find a BattleChip, NCP, or Power	1	FALSE
 autoloot	autoloot	Rollers	fools	slash	Generate a random autoloot chip	1	FALSE
+fish	fish	Game Lookup	fools	slash	Lookup Fish descriptions (opt: detailed for full information)	1	FALSE
+fishroll	fishroll	Rollers	fools	slash	Rolls to determine the fish around the area	1	FALSE
 entropy	entropy	ProgBot	roll	slash	Test ProgBot's randomness! (256 is normal, 200+ is good!)	1	TRUE

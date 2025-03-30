@@ -1,11 +1,39 @@
 import discord
 import random
 import settings
-from pandas import read_csv
-from maincommon import clean_args, roll_row_from_table, bot, commands_dict
-from maincommon import cc_color_dictionary
+import re
+import typing
+from pandas import read_csv, unique
+from maincommon import clean_args, find_value_in_table, roll_row_from_table, bot, commands_dict
+from maincommon import cc_color_dictionary, filter_table, send_query_msg, send_multiple_embeds
+from mainnb import cc_df, help_df
 
 autoloot_df = read_csv(settings.autolootfile, sep="\t").fillna('')
+
+fish_df = read_csv(settings.nf_fish, sep="\t").fillna('')
+fish_df = fish_df[fish_df["Name"] != ""]
+fish_tag_list = fish_df["Tags"].str.split(";|,", expand=True) \
+    .stack() \
+    .str.strip() \
+    .str.lower() \
+    .unique()
+fish_tag_list = [i for i in fish_tag_list if i]
+[fish_tag_list.remove(i) for i in ["none", "None"] if i in fish_tag_list]
+fish_habitats_list = unique(fish_df["Habitats"].str.strip())
+fish_habitats_list = [i for i in fish_habitats_list if i]
+
+
+nf_abstract_df = read_csv(settings.nf_abstract, sep="\t").fillna('')
+nf_corporate_df = read_csv(settings.nf_corporate, sep="\t").fillna('')
+nf_gamers_df = read_csv(settings.nf_gamers, sep="\t").fillna('')
+nf_realsim_df = read_csv(settings.nf_realsim, sep="\t").fillna('')
+nf_undernet_df = read_csv(settings.nf_undernet, sep="\t").fillna('')
+
+MAX_FISH_QUERY = 5
+
+
+
+
 
 # There are 7 major categories that need to be procedurally filled out.
 # Cost, Guard, Category, Damage, Range, Tags, Effect
@@ -859,4 +887,161 @@ async def autoloot(interaction: discord.Interaction):
         color=cc_color_dictionary["Nyx"])
     embed.add_field(name="[%s]" % subtitle_trimmed,
                     value="_%s_" % chip_description)
+    return await interaction.response.send_message(embed=embed)
+
+async def fish_master(arg, simplified=True):
+    fish_info, content_msg = await find_value_in_table(fish_df, "Name", arg, suppress_notfound=True, alias_message=True)
+
+    if fish_info is None:
+        fish_info, content_msg = await find_value_in_table(fish_df, "Name", arg)
+        if fish_info is None:
+            return None, None, None, None, None, None, content_msg
+
+    fish_name = fish_info["Name"] # simple
+    fish_description = fish_info["Description"] # simple
+    fish_habitats = fish_info["Habitats"]
+    fish_diet = fish_info["Diet"]
+    fish_hp = fish_info["HP"]
+    fish_weight = fish_info["Weight"]
+    fish_tags = fish_info["Tags"]
+    fish_footer = "Weight: %s" % fish_weight # simple
+
+    fish_color = cc_color_dictionary["NetFishing"]
+
+    fish_descript_block = ""
+    fish_title = ""
+
+    if simplified:
+        fish_descript_block += "*%s*\n" % fish_description
+    else:
+        try:
+            hp_int = int(fish_hp)
+            fish_hp = "%d" % hp_int
+        except ValueError:
+            pass
+        fish_title = "HP %s" % fish_hp
+        fish_descript_block = "**Habitats:** %s" % fish_habitats
+        fish_descript_block += "\n"
+        fish_descript_block += "**Diet:** %s" % fish_diet
+        fish_descript_block += "\n"
+        fish_descript_block += "**Tags:** %s" % (fish_tags if fish_tags else "None")
+        fish_descript_block += "\n"
+        fish_descript_block += "*%s*" % fish_description
+
+    return fish_name, fish_title, fish_descript_block, fish_footer, None, fish_color, content_msg
+
+# TODO - alias the fish, those spaces are screwing things up
+def query_fish(arg_lower):
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
+
+    if arg_lower in [i.lower() for i in fish_habitats_list]:
+        subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
+        result_title = "Fish in the `%s` habitat..." % subdf.iloc[0]["Habitats"]
+        result_msg = ", ".join(subdf["Name"])
+    elif arg_lower in fish_tag_list:
+        subdf = filter_table(fish_df, {"Tags": re.escape(arg_lower)})
+        result_title = "Fish with the `%s` tag..." % arg_lower.capitalize()
+        result_msg = ", ".join(subdf["Name"])
+    else:
+        return False, "", ""
+    return True, result_title, result_msg
+
+
+@bot.tree.command(name='fish', description=commands_dict["fish"])
+async def fish(interaction: discord.Interaction, query: str, detailed: bool = False):
+    cleaned_args = clean_args([query])
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        return await interaction.response.send_message(
+            f"Give me the name of 1-{MAX_FISH_QUERY} **Fish** and I can pull up their info for you!\n\n" +
+            "I can query Fish by **Habitat**, **Tag**, or **Advanced Content**, and pull up the list of Fish categories with `fish category`!\n" +
+            "For a list of all Fish categories, use `fish habitat`, and all current Fish tags with `fish tag`. To pull up details on a specific Category or Tag, use `tag` instead.")
+    elif cleaned_args[0] in ['habitat', 'habitats']:
+        result_title = "Displaying all known Fish Habitats..."
+        result_text = ", ".join(fish_habitats_list)
+        return await send_query_msg(interaction, result_title, result_text)
+    elif cleaned_args[0] in ['tag', 'tags']:
+        result_title = "Displaying all known Fish Tags..."
+        result_text = ", ".join([i.capitalize() for i in fish_tag_list])
+        return await send_query_msg(interaction, result_title, result_text)
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "fishruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await interaction.response.send_message(
+                content="Couldn't find the rules for this command! (You should probably let the devs know...)",
+                ephemeral=True)
+        return await interaction.response.send_message(ruling_msg["Response"])
+    elif len(cleaned_args) > MAX_FISH_QUERY:
+        return await interaction.response.send_message(
+            content=f"Too many fish, no more than {MAX_FISH_QUERY}!", ephemeral=True)
+
+    arg_combined = " ".join(cleaned_args)
+    is_query, result_title, result_msg = query_fish(arg_combined)
+    if is_query:
+        return await send_query_msg(interaction, result_title, result_msg)
+
+    msg_embeds = []
+    msg_warn = []
+    for arg in cleaned_args:
+        if not arg:
+            continue
+        fish_name, fish_hp, fish_description, fish_footer, fish_image, fish_color, add_msg = await fish_master(arg, simplified=not detailed)
+
+        msg_warn.append(add_msg)
+        if fish_name is None:
+            continue
+
+        embed = discord.Embed(title=fish_name, color=fish_color)
+        if detailed:
+            embed.add_field(name=fish_hp, value=fish_description, inline=True)
+        else:
+            embed.description = fish_description
+        embed.set_footer(text=fish_footer)
+        msg_embeds.append(embed)
+
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
+
+
+@bot.tree.command(name='fishroll', description=commands_dict["fishroll"])
+async def fishroll(interaction: discord.Interaction, environment: typing.Literal["Abstract", "Corporate", "Gamers", "RealSim", "Undernet"], x: int, y: int, population: typing.Literal["Low", "Normal", "High"]):
+
+    if population == "Low":
+        rolls = 2
+    elif population == "High":
+        rolls = 4
+    else:
+        rolls = 3
+
+    fish_chart = {
+        "empty": "Nothing showed up",
+        "fish": "A fish! Check the fish info.",
+        "battlechip": "A battlechip or NCP! Use bait with at least 2 hits to snag it.",
+        "mysterydata": "Mystery data! Use bait with 2+ hits to snag it.",
+        "virus": "A Virus appeared!"
+    }
+
+    results_list = []
+
+    for _ in range(rolls):
+        # Roll two dice and apply modifiers
+        die_1 = random.randint(1, 6) + x
+        die_2 = random.randint(1, 6) + y
+
+        roll_result = f"{die_1}-{die_2}"
+
+        if roll_result == "empty":
+            results_list.append(fish_chart["empty"])
+        elif "fish" in roll_result:
+            results_list.append(fish_chart["fish"])
+        elif "battlechip" in roll_result:
+            results_list.append(fish_chart["battlechip"])
+        elif "mysterydata" in roll_result:
+            results_list.append(fish_chart["mysterydata"])
+        elif "virus" in roll_result:
+            results_list.append(fish_chart["virus"])
+
+    result_text = ", ".join(results_list)
+
+    embed = discord.Embed(title="__Rolling Up Your Fish__",
+                          description=f"_{interaction.user.mention} rolled to find the fish..._\n\nGot: **{result_text}**",
+                          color=cc_color_dictionary["NetFishing"])
     return await interaction.response.send_message(embed=embed)

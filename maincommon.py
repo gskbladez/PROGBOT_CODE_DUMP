@@ -35,7 +35,8 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Neko Virus": 0xa29e14,
                        "Item": 0xffffff,
                        "Chip": 0xbfbfbf,
-                       "Mystery": 0x000000}
+                       "Mystery": 0x000000,
+                       "NetFishing": 0x00ffff}
 
 help_categories = {"Lookups": ':mag: **Lookups**',
                   "Rollers": ':game_die: **Rollers**',
