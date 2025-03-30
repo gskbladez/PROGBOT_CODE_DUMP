@@ -3,7 +3,7 @@ import random
 import settings
 import re
 import typing
-from pandas import read_csv, unique
+from pandas import DataFrame, read_csv, unique, isna
 from maincommon import clean_args, find_value_in_table, roll_row_from_table, bot, commands_dict
 from maincommon import cc_color_dictionary, filter_table, send_query_msg, send_multiple_embeds
 from mainnb import cc_df, help_df
@@ -1002,7 +1002,9 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
 
 
 @bot.tree.command(name='fishroll', description=commands_dict["fishroll"])
-async def fishroll(interaction: discord.Interaction, environment: typing.Literal["Abstract", "Corporate", "Gamers", "RealSim", "Undernet"], x: int, y: int, population: typing.Literal["Low", "Normal", "High"]):
+async def fishroll(interaction: discord.Interaction, environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], x: int, y: int, population: typing.Literal["Low", "Normal", "High"]):
+    x = max(-2, min(x, 2))
+    y = max(-2, min(y, 2))
 
     if population == "Low":
         rolls = 2
@@ -1011,12 +1013,80 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
     else:
         rolls = 3
 
+    if environment == "Abstract Space":
+        fish_env = nf_abstract_df
+        if x < 0:
+            attenuation_1 = "Silly"
+        if x > 0:
+            attenuation_1 = "Serious"
+        if x == 0:
+            attenuation_1 = "Silly and Serious"
+        if y < 0:
+            attenuation_2 = "Blocky"
+        if y > 0:
+            attenuation_2 = "Round"
+        if y == 0:
+            attenuation_2 = "Blocky and Round"
+    if environment == "Corporate-Approved":
+        fish_env = nf_corporate_df
+        if x < 0:
+            attenuation_1 = "Friendly"
+        if x > 0:
+            attenuation_1 = "Sterile"
+        if x == 0:
+            attenuation_1 = "Friendly and Sterile"
+        if y < 0:
+            attenuation_2 = "New"
+        if y > 0:
+            attenuation_2 = "Old"
+        if y == 0:
+            attenuation_2 = "New and Old"
+    if environment == "G4MERZ 0NLY":
+        fish_env = nf_gamers_df
+        if x < 0:
+            attenuation_1 = "Casual"
+        if x > 0:
+            attenuation_1 = "Hardcore"
+        if x == 0:
+            attenuation_1 = "Casual and Hardcore"
+        if y < 0:
+            attenuation_2 = "Sci-fi"
+        if y > 0:
+            attenuation_2 = "Fantasy"
+        if y == 0:
+            attenuation_2 = "Sci-fi and Fantasy"
+    if environment == "RealSim":
+        fish_env = nf_realsim_df
+        if x < 0:
+            attenuation_1 = "Lo-fi"
+        if x > 0:
+            attenuation_1 = "Hi-fi"
+        if x == 0:
+            attenuation_1 = "Lo-fi and Hi-fi" # Will, what does that mean? -a
+        if y < 0:
+            attenuation_2 = "Rainy"
+        if y > 0:
+            attenuation_2 = "Sunny"
+        if y == 0:
+            attenuation_2 = "Rainy and Sunny"
+    if environment == "The Undernet":
+        fish_env = nf_undernet_df
+        if x < 0:
+            attenuation_1 = "Ravelike"
+        if x > 0:
+            attenuation_1 = "Gravelike"
+        if x == 0:
+            attenuation_1 = "Ravelike and Gravelike" # we crypt of the necrodancer now
+        if y < 0:
+            attenuation_2 = "Vast"
+        if y > 0:
+            attenuation_2 = "Narrow"
+        if y == 0:
+            attenuation_2 = "Vast and Narrow"
+
+
     fish_chart = {
-        "empty": "Nothing showed up",
-        "fish": "A fish! Check the fish info.",
-        "battlechip": "A battlechip or NCP! Use bait with at least 2 hits to snag it.",
-        "mysterydata": "Mystery data! Use bait with 2+ hits to snag it.",
-        "virus": "A Virus appeared!"
+        "empty": "something fucked up and went out of bounds",
     }
 
     results_list = []
@@ -1026,22 +1096,35 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         die_1 = random.randint(1, 6) + x
         die_2 = random.randint(1, 6) + y
 
-        roll_result = f"{die_1}-{die_2}"
+        fish_result = get_fish_from_environment(fish_env, die_1, die_2)
 
-        if roll_result == "empty":
+        if fish_result:
+            results_list.append(fish_result)
+        else:
             results_list.append(fish_chart["empty"])
-        elif "fish" in roll_result:
-            results_list.append(fish_chart["fish"])
-        elif "battlechip" in roll_result:
-            results_list.append(fish_chart["battlechip"])
-        elif "mysterydata" in roll_result:
-            results_list.append(fish_chart["mysterydata"])
-        elif "virus" in roll_result:
-            results_list.append(fish_chart["virus"])
 
-    result_text = ", ".join(results_list)
+    result_text = "\n ".join(results_list)
 
     embed = discord.Embed(title="__Rolling Up Your Fish__",
-                          description=f"_{interaction.user.mention} rolled to find the fish..._\n\nGot: **{result_text}**",
+                          description=f"_{interaction.user.mention} rolled to find the fish in **{environment}**..._\n\nGot:\n {result_text} \nEnvironment Attenuation: {attenuation_1}, {attenuation_2}",
                           color=cc_color_dictionary["NetFishing"])
     return await interaction.response.send_message(embed=embed)
+
+
+def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int) -> str:
+    if 0 <= die_1 <= 8 and 0 <= die_2 <= 8:
+        fish = fish_env.iloc[die_1, die_2]
+
+        if fish == "":
+            return "> _Nothing showed up_"
+
+        if "!!" in str(fish):
+            return f"> _Virus:_ {fish}"
+        elif "%" in str(fish):
+            return f"> _Battlechip or NCP:_ {fish}"
+        elif "" in str(fish):
+            return f"> _Mystery Data:_ {fish}"
+        else:
+            return f"> _Fish:_ {fish}"
+    else:
+        return None
