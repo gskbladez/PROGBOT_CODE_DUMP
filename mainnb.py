@@ -186,7 +186,7 @@ async def tag(interaction: discord.Interaction, category: str):
     # NetFishing conditional
     if tag_title in ["Aggressive", "Skittish", "Deep", "Shallow"]:
         embed = discord.Embed(
-            title="__%s__" % tag_title,
+            title="__%s__ (Fish Tag)" % tag_title,
             description=tag_description,
             color=0x00ffff)
         return await interaction.response.send_message(embed=embed)
@@ -1161,7 +1161,7 @@ async def element(interaction: discord.Interaction, number: int, category: typin
                           description=elements_list)
     return await interaction.response.send_message(embed=embed)
 
-
+# TODO - nekovirus content
 @bot.tree.command(name='rulebook', description=commands_dict["rulebook"])
 async def rulebook(interaction: discord.Interaction, query:str=""):
     split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", query, flags=re.IGNORECASE)]

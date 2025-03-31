@@ -1,4 +1,5 @@
 import discord
+import asyncio
 import random
 import settings
 import re
@@ -899,9 +900,8 @@ def clean_args_multi(args, lowercase=True):
         args = [i.lower().strip() for i in args if i and not i.isspace()]
     else:
         args = [i.strip() for i in args if i and not i.isspace()]
+
     return args
-
-
 
 async def fish_master(arg, simplified=True):
     fish_info, content_msg = await find_value_in_table(fish_df, "Name", arg, suppress_notfound=True, alias_message=True)
@@ -934,9 +934,9 @@ async def fish_master(arg, simplified=True):
         except ValueError:
             pass
         fish_title = "HP %s" % fish_hp
-        fish_descript_block = "**Habitats:** %s" % fish_habitats
+        fish_descript_block = "**Diet:** %s" % fish_diet
         fish_descript_block += "\n"
-        fish_descript_block += "**Diet:** %s" % fish_diet
+        fish_descript_block += "**Habitats:** ||%s||" % fish_habitats
         fish_descript_block += "\n"
         fish_descript_block += "**Tags:** %s" % (fish_tags if fish_tags else "None")
         fish_descript_block += "\n"
@@ -946,10 +946,22 @@ async def fish_master(arg, simplified=True):
 
 def query_fish(arg_lower):
     # alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
-
+    # TODO - figure out how to uniquely pull from the data set
     if arg_lower in [i.lower() for i in fish_habitats_list]:
         subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
-        result_title = "Fish in the `%s` habitat..." % subdf.iloc[0]["Habitats"]
+
+        if "corporate-approved" in arg_lower:
+            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Friendly/+Sterile, -New/+Old" % subdf.iloc[0]["Habitats"]
+        elif "abstract space" in arg_lower:
+            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Silly/+Serious, -Blocky/+Round" % subdf.iloc[0]["Habitats"]
+        elif "g4merz 0nly" in arg_lower:
+            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Casual/Hardcore, -Sci-fi/+Fantasy" % subdf.iloc[0]["Habitats"]
+        elif "realsim" in arg_lower:
+            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Lo-fi/+Hi-fi, -Rainy/+Sunny" % subdf.iloc[0]["Habitats"]
+        elif "the undernet" in arg_lower:
+            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Ravelike/+Gravelike, -Vast/+Narrow" % subdf.iloc[0]["Habitats"]
+        else:
+            result_title = "Fish in the `%s` habitat..." % subdf.iloc[0]["Habitats"]
         result_msg = ", ".join(subdf["Name"])
     elif arg_lower in fish_tag_list:
         subdf = filter_table(fish_df, {"Tags": re.escape(arg_lower)})
@@ -978,10 +990,13 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
     elif cleaned_args[0] in ['all', 'list']:
         _, result_title, result_text = query_fish_names()
         return await send_query_msg(interaction, result_title, result_text)
-    elif cleaned_args[0] in ['habitat', 'habitats']: # even though users _can_ search by habitat, it's a mess due to how the tables are set up and i don't feel like unscrewing it
+    # TODO
+    elif cleaned_args[0] in ['habitat', 'habitats']:
         result_title = "Displaying all known Fish Habitats..."
         result_text = ", ".join(fish_habitats_list)
         return await send_query_msg(interaction, result_title, result_text)
+
+
     elif cleaned_args[0] in ['tag', 'tags']:
         result_title = "Displaying all known Fish Tags..."
         result_text = ", ".join([i.capitalize() for i in fish_tag_list])
@@ -1027,7 +1042,7 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
 
 
 @bot.tree.command(name='fishroll', description=commands_dict["fishroll"])
-async def fishroll(interaction: discord.Interaction, environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], x: int, y: int, population: typing.Literal["Low", "Normal", "High"], size: typing.Literal["size variance", "no size variance"]):
+async def fishroll(interaction: discord.Interaction, environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], x: typing.Literal[-2, -1, 0, 1, 2], y: typing.Literal[-2, -1, 0, 1, 2], population: typing.Literal["Low", "Normal", "High"], size: typing.Literal["size variance", "no size variance"]):
     x = max(-2, min(x, 2))
     y = max(-2, min(y, 2))
 
@@ -1151,12 +1166,6 @@ def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size:
         if fish == "":
             return "> _Nothing showed up_"
 
-        # if "!!" in str(fish):
-        #     return f"> _Virus:_ {fish}"
-        # elif "%" in str(fish):
-        #     return f"> _Battlechip or NCP:_ {fish}"
-        # elif "" in str(fish):
-        #     return f"> _Mystery Data:_ {fish}"
         if "!!" in str(fish):
             return f"> _Virus:_ {str(fish).replace('!!', ':bangbang: ')}"
         elif "%" in str(fish):
@@ -1184,8 +1193,15 @@ def roll_size_variance():
         return size_score
 
 
-@bot.tree.command(name='fishpoll', description="The true fishing experience.")
+users_fishing = set()
+
+@bot.tree.command(name='fishpoll', description=commands_dict["fishpoll"])
+
 async def fishpoll(interaction: discord.Interaction):
+    if interaction.user.id in users_fishing:
+        return await interaction.response.send_message("You're already fishing!", ephemeral=True)
+
+    users_fishing.add(interaction.user.id)
 
     messages = [
         "You cast your line into the water... something tugs!",
@@ -1237,4 +1253,37 @@ async def fishpoll(interaction: discord.Interaction):
                           description=f"_{interaction.user.mention} has gone fishin'..._\n\n{result_message}",
                           color=cc_color_dictionary["NetFishing"])
 
-    return await interaction.response.send_message(embed=embed)
+    initial_message = await interaction.response.send_message(embed=embed)
+
+    await send_fish_activity(interaction, initial_message, interaction.user)
+
+
+async def send_fish_activity(interaction, initial_message, initial_user):
+    delay = random.randint(3, 600)
+    await asyncio.sleep(delay)
+
+    caught_messages = [
+        "And something's tugging on the fishing pole!",
+        "Something big's coming!",
+        "The line's starting to pull hard!",
+        "You feel that? You've got a bite!",
+        "The tension’s building... something's on the hook!",
+        "Get ready, something's on the line!",
+        "The rod's bending, it’s a big one!",
+        "You've got a strong one fighting back!",
+        "It’s a big catch, keep reeling!",
+        "Something massive is pulling at the line!"
+    ]
+
+    users_fishing.discard(initial_user.id)
+
+    user_name = initial_user.mention
+
+    if delay < 60:
+        follow_up_message = f"> {delay} seconds have passed for {user_name}...\n> {random.choice(caught_messages)}"
+    else:
+        minutes = delay // 60
+        seconds = delay % 60
+        follow_up_message = f"> {minutes} minute(s) and {seconds} second(s) have passed for {user_name}...\n> {random.choice(caught_messages)}"
+
+    await interaction.followup.send(follow_up_message)

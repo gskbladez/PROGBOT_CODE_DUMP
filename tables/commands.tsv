@@ -36,5 +36,5 @@ find	find_chip_ncp_power	Game Lookup	base	slash	Find a BattleChip, NCP, or Power
 autoloot	autoloot	Rollers	fools	slash	Generate a random autoloot chip	1	FALSE
 fish	fish	Game Lookup	fools	slash	Lookup Fish descriptions (opt: detailed for full information)	1	FALSE
 fishroll	fishroll	Rollers	fools	slash	Rolls to determine the fish around the area	1	FALSE
-fishpoll	fishpoll	Rollers	fools	slash	The true fishing experience.	1	FALSE
+fishpoll	fishpoll	Rollers	fools	slash	Sets a random timer for GMs to cycle out fish. The maximum random time is 10 minutes.	1	FALSE
 entropy	entropy	ProgBot	roll	slash	Test ProgBot's randomness! (256 is normal, 200+ is good!)	1	TRUE
