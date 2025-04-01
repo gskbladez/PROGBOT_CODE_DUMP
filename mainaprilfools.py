@@ -1086,7 +1086,7 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
     return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
-@bot.tree.command(name='fishcast', description=commands_dict["fishcast"])
+@bot.tree.command(name='fishroll', description=commands_dict["fishroll"])
 async def fishroll(interaction: discord.Interaction, 
                    environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], 
                    x: typing.Literal[-2, -1, 0, 1, 2], y: typing.Literal[-2, -1, 0, 1, 2], 
@@ -1136,7 +1136,7 @@ async def fishroll(interaction: discord.Interaction,
     if not result_text:
         result_text = "> _Nothing. (Dang blang!)_ "
 
-    embed = discord.Embed(description=f"_{interaction.user.mention} rolled to fish in `{environment}` and got..._\n{result_text}",
+    embed = discord.Embed(description=f"_Rolling to see what bites in `{environment}`..._\n{result_text}",
                           color=cc_color_dictionary["NetFishing"])
     embed.set_footer(text=f"Environment Attenuation: {attenuation_1}, {attenuation_2}")
     return await interaction.response.send_message(embed=embed)
