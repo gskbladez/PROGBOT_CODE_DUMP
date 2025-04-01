@@ -69,6 +69,13 @@ Fork a branch from master and submit pull requests!
 
 Note: if GitHub seems to be flagging all lines in the .tsv as changed, this is likely due to cross-OS line ending discrepencies. If so, refer to [this guide](https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings) to address.
 
+### Syncing Other Forks
+
+1. git remote add amon https://github.com/FellOffFuji/PROGBOT_CODE_DUMP.git
+2. git remote -v
+3. git fetch amon
+4. git checkout -b amon-master amon/master
+
 ### Slash Commands
 
 `run`

@@ -7,7 +7,7 @@ import typing
 from pandas import DataFrame, read_csv, unique, isna
 from maincommon import clean_args, find_value_in_table, roll_row_from_table, bot, commands_dict
 from maincommon import cc_color_dictionary, filter_table, send_query_msg, send_multiple_embeds
-from mainnb import cc_df, help_df
+from mainnb import cc_df, help_df, chip_df
 
 autoloot_df = read_csv(settings.autolootfile, sep="\t").fillna('')
 
@@ -23,7 +23,13 @@ fish_tag_list = [i for i in fish_tag_list if i]
 [fish_tag_list.remove(i) for i in ["none", "None"] if i in fish_tag_list]
 fish_habitats_list = unique(fish_df["Habitats"].str.strip())
 fish_habitats_list = [i for i in fish_habitats_list if i]
-
+fish_habitat_aliases = { # must be lower case, I do not care
+    "the undernet": ["uranet", "the uranet"],
+    "realSim": ["realsim", "sims"],
+    "g4merz 0nly": ["gamers", "g4merz", "g4amerz", "gamers only"],
+    "corporate-approved": ["corporate", "corporate approved"],
+    "abstract space": ["abstract"],
+}
 
 nf_abstract_df = read_csv(settings.nf_abstract, sep="\t").fillna('')
 nf_corporate_df = read_csv(settings.nf_corporate, sep="\t").fillna('')
@@ -892,6 +898,7 @@ async def autoloot(interaction: discord.Interaction):
     return await interaction.response.send_message(embed=embed)
 
 # the vatican is not going to approve what i'm about to do
+# amon what the fuck
 def clean_args_multi(args, lowercase=True):
     if len(args) == 1:
         args = re.split(r"(?:,|;)\s+", args[0])
@@ -945,7 +952,11 @@ async def fish_master(arg, simplified=True):
     return fish_name, fish_title, fish_descript_block, fish_footer, None, fish_color, content_msg
 
 def query_fish(arg_lower):
-    # alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
+    for a, v in fish_habitat_aliases.items():
+        if arg_lower in v:
+            arg_lower = a
+            break
+
     # TODO - figure out how to uniquely pull from the data set
     if arg_lower in [i.lower() for i in fish_habitats_list]:
         subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
@@ -979,9 +990,7 @@ def query_fish_names():
 
 @bot.tree.command(name='fish', description=commands_dict["fish"])
 async def fish(interaction: discord.Interaction, query: str, detailed: bool = False):
-
     cleaned_args = clean_args_multi([query])
-
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await interaction.response.send_message(
             f"Give me the name of 1-{MAX_FISH_QUERY} **Fish** and I can pull up their info for you! Please separate them with commas! (,)\n\n" +
@@ -1041,18 +1050,19 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
     return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
 
 
-@bot.tree.command(name='fishroll', description=commands_dict["fishroll"])
-async def fishroll(interaction: discord.Interaction, environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], x: typing.Literal[-2, -1, 0, 1, 2], y: typing.Literal[-2, -1, 0, 1, 2], population: typing.Literal["Low", "Normal", "High"], size: typing.Literal["size variance", "no size variance"]):
-    x = max(-2, min(x, 2))
-    y = max(-2, min(y, 2))
-
+@bot.tree.command(name='fishcast', description=commands_dict["fishcast"])
+async def fishroll(interaction: discord.Interaction, 
+                   environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], 
+                   x: typing.Literal[-2, -1, 0, 1, 2], y: typing.Literal[-2, -1, 0, 1, 2], 
+                   population: typing.Literal["Low", "Normal", "High"], 
+                   size_variance: typing.Literal["Yes", "No"]):
     if population == "Low":
         rolls = 2
     elif population == "High":
         rolls = 4
     else:
         rolls = 3
-
+    # OH GOD THE Y AXIS IS REVERSED
     if environment == "Abstract Space":
         fish_env = nf_abstract_df
         if x < 0:
@@ -1124,11 +1134,6 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         if y == 0:
             attenuation_2 = "Vast / Narrow Neutral"
 
-
-    fish_chart = {
-        "empty": "if this is showing up please bug amon",
-    }
-
     results_list = []
 
     for _ in range(rolls):
@@ -1136,26 +1141,28 @@ async def fishroll(interaction: discord.Interaction, environment: typing.Literal
         die_1 = random.randint(1, 6) + x
         die_2 = random.randint(1, 6) + y
 
-        fish_result = get_fish_from_environment(fish_env, die_1, die_2, size)
+        fish_result = get_fish_from_environment(fish_env, die_1, die_2, size_variance=="Yes")
 
         if fish_result:
-            results_list.append(fish_result)
-        else:
-            results_list.append(fish_chart["empty"])
+            results_list.append("> " + fish_result)
+        elif fish_result is None:
+            results_list.append("> _(if this is showing up please bug the devs)_")
 
     result_text = "\n ".join(results_list)
+    if not result_text:
+        result_text = "> _Nothing. (Dang blang!)_ "
 
-    embed = discord.Embed(title="__Rolling Up Your Fish__",
-                          description=f"_{interaction.user.mention} rolled to find fish in **{environment}**..._\n\nGot:\n {result_text} \nEnvironment Attenuation: {attenuation_1}, {attenuation_2}",
+    embed = discord.Embed(description=f"_{interaction.user.mention} rolled to find fish in `{environment}` and got..._\n{result_text}",
                           color=cc_color_dictionary["NetFishing"])
+    embed.set_footer(f"Environment Attenuation: {attenuation_1}, {attenuation_2}")
     return await interaction.response.send_message(embed=embed)
 
 
-def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size: str) -> str:
+def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size: bool) -> str:
     max_row_index, max_col_index = fish_env.shape
     size_score = 0
 
-    if die_1 < 0:
+    if die_1 < 0: # im a little confused by this ngl
         die_1 = max_row_index + die_1
     if die_2 < 0:
         die_2 = max_col_index + die_2
@@ -1164,24 +1171,29 @@ def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size:
         fish = fish_env.iloc[die_1, die_2]
 
         if fish == "":
-            return "> _Nothing showed up_"
+            return ""
 
         if "!!" in str(fish):
-            return f"> _Virus:_ {str(fish).replace('!!', ':bangbang: ')}"
+            k = fish.strip("!!").strip()
+            return f":bangbang: _A {k} Virus!_"
         elif "%" in str(fish):
-            return f"> _Battlechip or NCP:_ {str(fish).replace('%', ':star: ')}"
-        elif "" in str(fish):
-            return f"> _Mystery Data:_ {str(fish).replace('', ':large_blue_diamond: ')}"
+            k = fish.strip("%").strip()
+            if k in chip_df["Name"].values:
+                return f":star: _{k} BattleChip_"
+            else:
+                return f":star: _{k} NCP_"
+        elif "◇" in str(fish):
+            k = fish.strip("◇").strip()
+            return f":large_blue_diamond: _A {k} Mystery Data_"
         else:
-            if size == "no size variance":
-                return f"> _Fish:_ {fish}"
-            if size == "size variance":
+            fishstr = f":fish: _A {fish} !_"
+            if size:
                 size_score = roll_size_variance()
                 if size_score <= 4:
-                    fish = f"{fish} **(Extra Small!!!)**"
+                    fishstr +=" **(Extra Small!)**"
                 elif size_score >= 10:
-                    fish = f"{fish} **(Extra Large!!!)**"
-        return f"> _Fish:_ {fish}"
+                    fishstr += " **(Extra Large!)**"
+        return fishstr
     else:
         return None
 
@@ -1195,8 +1207,7 @@ def roll_size_variance():
 
 users_fishing = set()
 
-@bot.tree.command(name='fishpoll', description=commands_dict["fishpoll"])
-
+@bot.tree.command(name='fishtimer', description=commands_dict["fishtimer"])
 async def fishpoll(interaction: discord.Interaction):
     if interaction.user.id in users_fishing:
         return await interaction.response.send_message("You're already fishing!", ephemeral=True)
@@ -1216,7 +1227,7 @@ async def fishpoll(interaction: discord.Interaction):
         "The line is tugging...",
         "A fish leaps from the water in a dazzling display before slipping back in!",
         "Your bait sinks deep..",
-        "A shadow swims past, but your bait doesn’t seem to attract it.",
+        "A shadow swims past, but your bait doesn't seem to attract it.",
         "The water is eerily still... but you feel a subtle tug on the line.",
         "Something's lurking beneath... the line pulls tight, but it's gone before you can react.",
         "Your bait disappears under the water... a good sign, but no fish in sight yet.",
@@ -1225,13 +1236,13 @@ async def fishpoll(interaction: discord.Interaction):
         "A shadow glides through the depths... but your bait isn't tempting enough.",
         "The stillness of the water holds... waiting for something to bite.",
         "The surface breaks with a splash... something huge is moving beneath!",
-        "A flash of silver under the water, but it’s gone before you can react.",
+        "A flash of silver under the water, but it's gone before you can react.",
         "Something's there, but it's playing coy. You know it.",
     ]
 
     rare_messages = [
         "Fish fear you.. viruses fear you.. navis turn their eyes away from you as you walk... you are alone on this barren network. Nevermind those Navis nearby."
-        "The line tugs, but there’s no fight, just the weight of forgotten things weighing you down.",
+        "The line tugs, but there's no fight, just the weight of forgotten things weighing you down.",
         "The hum of empty data echoes through the void, your presence a ripple in a sea that no longer remembers its own waves.",
         "Code bends around you like a mirror cracked from too many reflections, and the silence settles deeper than any error ever could.",
         "You wonder if this is what the afterlife is like for a Navi.",
@@ -1249,8 +1260,7 @@ async def fishpoll(interaction: discord.Interaction):
     else:
         result_message = random.choice(rare_messages)
 
-    embed = discord.Embed(title="__Fishin'__...",
-                          description=f"_{interaction.user.mention} has gone fishin'..._\n\n{result_message}",
+    embed = discord.Embed(description=f"_{interaction.user.mention} has gone fishin'..._\n\n{result_message}",
                           color=cc_color_dictionary["NetFishing"])
 
     initial_message = await interaction.response.send_message(embed=embed)
