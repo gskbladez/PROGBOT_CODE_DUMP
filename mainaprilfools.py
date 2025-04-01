@@ -1,11 +1,84 @@
 import discord
+import asyncio
 import random
 import settings
-from pandas import read_csv
-from maincommon import clean_args, roll_row_from_table, bot, commands_dict
-from maincommon import cc_color_dictionary
+import re
+import typing
+from pandas import DataFrame, read_csv, unique, isna
+from maincommon import clean_args, find_value_in_table, roll_row_from_table, bot, commands_dict
+from maincommon import cc_color_dictionary, filter_table, send_query_msg, send_multiple_embeds
+from mainnb import cc_df, help_df, chip_df
 
 autoloot_df = read_csv(settings.autolootfile, sep="\t").fillna('')
+
+fish_df = read_csv(settings.nf_fish, sep="\t").fillna('')
+fish_df = fish_df[fish_df["Name"] != ""]
+
+nf_abstract_df = read_csv(settings.nf_abstract, sep="\t").fillna('')
+nf_corporate_df = read_csv(settings.nf_corporate, sep="\t").fillna('')
+nf_gamers_df = read_csv(settings.nf_gamers, sep="\t").fillna('')
+nf_realsim_df = read_csv(settings.nf_realsim, sep="\t").fillna('')
+nf_undernet_df = read_csv(settings.nf_undernet, sep="\t").fillna('')
+
+fish_tag_list = fish_df["Tags"].str.split(";|,", expand=True) \
+    .stack() \
+    .str.strip() \
+    .str.lower() \
+    .unique()
+fish_tag_list = [i for i in fish_tag_list if i]
+[fish_tag_list.remove(i) for i in ["none", "None"] if i in fish_tag_list]
+fish_habitats_list = fish_df["Habitats"].str.split(",").explode().str.strip().unique()
+
+fish_habitat_aliases = { # must be lower case, I do not care
+    "the undernet": {
+        "display": "The Undernet",
+        "df": nf_undernet_df,
+        "alias": ["undernet", "uranet", "the uranet"]
+    },
+    "corporate-approved": {
+        "display": "Corporate-Approved",
+        "df": nf_corporate_df,
+        "alias": ["corporate", "corporate approved"],
+    },
+    "g4merz 0nly": {
+        "display": "G4MERZ 0NLY",
+        "df": nf_gamers_df,
+        "alias": ["gamers", "g4merz", "g4amerz", "gamers only"],
+    },
+    "realsim": {
+        "display": "RealSim",
+        "df": nf_realsim_df,
+        "alias": ["realsim", "sims"],
+    },
+    "abstract space": {
+        "display": "Abstract Space",
+        "df": nf_abstract_df,
+        "alias": ["abstract"],
+    },
+}
+
+habitat_modifiers = { # TODO: merge with the above
+    "corporate-approved": "-Friendly/+Sterile, -New/+Old",
+    "abstract space": "-Silly/+Serious, -Blocky/+Round",
+    "g4merz 0nly": "-Casual/Hardcore, -Sci-fi/+Fantasy",
+    "realsim": "-Lo-fi/+Hi-fi, -Rainy/+Sunny",
+    "the undernet": "-Ravelike/+Gravelike, -Vast/+Narrow"
+}
+
+fish_size_key = {
+    "Light": 3,
+    "Medium": 2,
+    "Heavy": 1
+}
+
+# indexing crimes
+for a in fish_habitat_aliases.keys():
+    tdf = fish_habitat_aliases[a]["df"]
+    tdf.set_index(tdf.columns[0], inplace=True)
+    fish_habitat_aliases[a]["df"] = tdf
+
+MAX_FISH_QUERY = 5
+
 
 # There are 7 major categories that need to be procedurally filled out.
 # Cost, Guard, Category, Damage, Range, Tags, Effect
@@ -860,3 +933,374 @@ async def autoloot(interaction: discord.Interaction):
     embed.add_field(name="[%s]" % subtitle_trimmed,
                     value="_%s_" % chip_description)
     return await interaction.response.send_message(embed=embed)
+
+# the vatican is not going to approve what i'm about to do
+# amon what the fuck
+def clean_args_with_spaces(args, lowercase=True):
+    if len(args) == 1:
+        args = re.split(r"(?:,|;)\s+", args[0])
+    # hell'srolling flashbacks
+    if lowercase:
+        args = [i.lower().strip().replace("’", "'") for i in args if i and not i.isspace()]
+    else:
+        args = [i.strip().replace("’", "'") for i in args if i and not i.isspace()]
+
+    return args
+
+async def fish_master(arg, simplified=True):
+    fish_info, content_msg = await find_value_in_table(fish_df, "Name", arg, suppress_notfound=True, alias_message=True)
+
+    if fish_info is None:
+        fish_info, content_msg = await find_value_in_table(fish_df, "Name", arg)
+        if fish_info is None:
+            return None, None, None, None, None, None, content_msg
+
+    fish_name = fish_info["Name"] # simple
+    fish_description = fish_info["Description"] # simple
+    fish_habitats = fish_info["Habitats"]
+    fish_diet = fish_info["Diet"]
+    fish_hp = fish_info["HP"]
+    fish_weight = fish_info["Weight"]
+    fish_tags = fish_info["Tags"]
+    fish_footer = "Weight: %s" % fish_weight # simple
+
+    fish_color = cc_color_dictionary["NetFishing"]
+
+    fish_descript_block = ""
+    fish_title = ""
+
+    if simplified:
+        fish_descript_block += "*%s*\n" % fish_description
+    else:
+        try:
+            hp_int = int(fish_hp)
+            fish_hp = "%d" % hp_int
+        except ValueError:
+            pass
+        fish_title = "HP %s" % fish_hp
+        fish_descript_block = "**Diet:** ||%s||" % fish_diet
+        fish_descript_block += "\n"
+        fish_descript_block += "**Habitats:** %s" % fish_habitats
+        fish_descript_block += "\n"
+        fish_descript_block += "**Tags:** %s" % (fish_tags if fish_tags else "None")
+        fish_descript_block += "\n\n"
+        fish_descript_block += "*%s*" % fish_description
+
+    return fish_name, fish_title, fish_descript_block, fish_footer, None, fish_color, content_msg
+
+def query_fish(arg_lower):
+    if arg_lower in [i.lower() for i in fish_habitats_list]:
+        subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
+        
+        if arg_lower in fish_habitat_aliases:
+            styled_habitat = fish_habitat_aliases[arg_lower]["display"]
+        else:
+            styled_habitat = arg_lower.title()
+
+        for habitat, modifiers in habitat_modifiers.items():
+            if arg_lower in habitat:
+                result_title = f"Fish in the `{styled_habitat}` habitat...\n-# Modifiers: {modifiers}"
+                break
+        else:
+            result_title = f"Fish in the `{subdf.iloc[0]['Habitats']}` habitat..."
+
+        result_msg = ", ".join(subdf["Name"])
+    elif arg_lower in fish_tag_list:
+        subdf = filter_table(fish_df, {"Tags": re.escape(arg_lower)})
+        result_title = "Fish with the `%s` tag..." % arg_lower.capitalize()
+        result_msg = ", ".join(subdf["Name"])
+    else:
+        return False, "", ""
+    return True, result_title, result_msg
+
+def query_fish_names():
+    result_title = "Displaying all known Fish..."
+    off_df = filter_table(fish_df, {"Name": ""})
+    result_text = ", ".join(off_df["Name"])
+    return True, result_title, result_text
+
+@bot.tree.command(name='fish', description=commands_dict["fish"])
+async def fish(interaction: discord.Interaction, query: str, detailed: bool = False):
+    cleaned_args = clean_args_with_spaces([query])
+    if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
+        return await interaction.response.send_message(
+            f"Give me the name of 1-{MAX_FISH_QUERY} **Fish** and I can pull up their info for you! Please separate them with commas! (,)\n\n" +
+            "I can list all of the Fish with **all**! I can also query Fish by **Tag** or **Habitat**!\n" +
+            "To pull up details on a specific Fish's Tag, use `tag` or look up `help fish tag`.")
+    elif cleaned_args[0] in ['all', 'list']:
+        _, result_title, result_text = query_fish_names()
+        return await send_query_msg(interaction, result_title, result_text)
+    elif cleaned_args[0] in ['habitat', 'habitats']:
+        result_title = "Displaying all known Fish Habitats..."
+        result_text = ", ".join(fish_habitats_list)
+        return await send_query_msg(interaction, result_title, result_text)
+
+
+    elif cleaned_args[0] in ['tag', 'tags']:
+        result_title = "Displaying all known Fish Tags..."
+        result_text = ", ".join([i.capitalize() for i in fish_tag_list])
+        return await send_query_msg(interaction, result_title, result_text)
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
+        ruling_msg, _ = await find_value_in_table(help_df, "Command", "fishruling", suppress_notfound=True)
+        if ruling_msg is None:
+            return await interaction.response.send_message(
+                content="Couldn't find the rules for this command! (You should probably let the devs know...)",
+                ephemeral=True)
+        return await interaction.response.send_message(ruling_msg["Response"])
+    elif len(cleaned_args) > MAX_FISH_QUERY:
+        return await interaction.response.send_message(
+            content=f"Too many Fish, no more than {MAX_FISH_QUERY}!", ephemeral=True)
+
+    arg_combined = " ".join(cleaned_args)
+    
+    for a in fish_habitat_aliases.keys():
+        alist = fish_habitat_aliases[a]['alias']
+        if arg_combined in alist:
+            arg_combined = a
+            break
+
+    is_query, result_title, result_msg = query_fish(arg_combined)
+    if is_query:
+        return await send_query_msg(interaction, result_title, result_msg)
+
+    msg_embeds = []
+    msg_warn = []
+
+    for arg in cleaned_args:
+        if not arg:
+            continue
+        fish_name, fish_hp, fish_description, fish_footer, fish_image, fish_color, add_msg = await fish_master(arg, simplified=not detailed)
+
+        msg_warn.append(add_msg)
+        if fish_name is None:
+            continue
+
+        embed = discord.Embed(title=fish_name, color=fish_color)
+        if detailed:
+            embed.add_field(name=fish_hp, value=fish_description, inline=True)
+        else:
+            embed.description = fish_description
+        embed.set_footer(text=fish_footer)
+        msg_embeds.append(embed)
+
+    return await send_multiple_embeds(interaction, msg_embeds, msg_warn)
+
+
+@bot.tree.command(name='fishroll', description=commands_dict["fishroll"])
+async def fishroll(interaction: discord.Interaction, 
+                   environment: typing.Literal["Abstract Space", "Corporate-Approved", "G4MERZ 0NLY", "RealSim", "The Undernet"], 
+                   x: typing.Literal[-2, -1, 0, 1, 2], y: typing.Literal[-2, -1, 0, 1, 2], 
+                   population: typing.Literal["Low", "Normal", "High"], 
+                   size_variance: typing.Literal["Yes", "No"]):
+    if population == "Low":
+        rolls = 2
+    elif population == "High":
+        rolls = 4
+    else:
+        rolls = 3
+    fish_env = fish_habitat_aliases[environment.lower()]["df"]
+    x_low = fish_env.columns[0]
+    x_hi = fish_env.columns[-1].split(".")[0]
+    y_low = fish_env.index[0]
+    y_hi = fish_env.index[-1].split(".")[0]
+
+    # OH GOD THE Y AXIS IS REVERSED
+    if x < 0:
+        attenuation_1 = x_low
+    elif x > 0:
+        attenuation_1 = x_hi
+    else:
+        attenuation_1 = f"{x_low} / {x_hi} Neutral"
+    if y < 0:
+        attenuation_2 = y_low
+    elif y > 0:
+        attenuation_2 = y_hi
+    else:
+        attenuation_2 = f"{y_low} / {y_hi} Neutral"
+
+    results_list = []
+
+    for _ in range(rolls):
+        # Roll two dice and apply modifiers
+        die_1 = random.randint(1, 6) + x
+        die_2 = random.randint(1, 6) + y
+
+        fish_result = await get_fish_from_environment(fish_env, die_1, die_2, size_variance=="Yes")
+
+        if fish_result:
+            results_list.append("> " + fish_result)
+        elif fish_result is None:
+            results_list.append("> _(if this is showing up please bug the devs)_")
+        else:
+            results_list.append("> _..._")
+
+    if all(r=="> _..._" for r in results_list):
+        results_list[-1] = "> _...Nothing. (Dang blang!)_ "
+    result_text = "\n ".join(results_list)
+
+    embed = discord.Embed(description=f"_Rolling to see what's swimming in `{environment}`..._\n{result_text}",
+                          color=cc_color_dictionary["NetFishing"])
+    embed.set_footer(text=f"Attenuation: {attenuation_1}, {attenuation_2}")
+    return await interaction.response.send_message(embed=embed)
+
+
+async def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size: bool) -> str:
+    num_row, num_col = fish_env.shape
+    size_score = 0
+
+    index_x = 1 + die_1
+    index_y = num_col - 2 - die_2 # why does the y-axis go high to low
+    # print(f"Rolled {die_1},{die_2} > {index_x}, {index_y}")
+    if index_x < 0 or index_x >= num_row or index_y < 0 or index_y >= num_col:
+        return None
+
+    fish = fish_env.iloc[index_x, index_y]
+
+    if fish == "":
+        return ""
+    if "!!" in str(fish):
+        k = fish.strip("!!").strip()
+        return f":bangbang:  _A {k} Virus!_"
+    elif "%" in str(fish):
+        k = fish.strip("%").strip()
+        if k in chip_df["Chip"].values:
+            return f":star:  _{k} BattleChip_"
+        else:
+            return f":star:  _{k} NCP_"
+    elif "◇" in str(fish):
+        k = fish.strip("◇").strip()
+        return f":large_blue_diamond:  _A {k} MysteryData_"
+    else:
+        fish_info, _ = await find_value_in_table(fish_df, "Name", fish, suppress_notfound=True, alias_message=True)
+        if fish_info is None:
+            fishbait = ""
+            fishhp = -5
+            reel_key = None
+        else:
+            reel_key = fish_info["Weight"]
+            fishhp = fish_info["HP"]
+            fishbait = fish_info["Diet"]
+        if reel_key is None:
+            fishreel = -6
+        else:
+            fishreel = fish_size_key[reel_key]
+
+        fishsize = ""
+        if size:
+            size_score = roll_size_variance()
+            if size_score <= 4:
+                fishsize = "n (extra small)"
+                fishreel += 1
+            elif size_score >= 10:
+                fishsize = "n (extra large)"
+                if fishreel == 1:
+                    fishreel = fishreel
+                    fishhp += 2
+                else:
+                    fishreel -= 1
+        if fishreel < 0:
+            fishstr = f":fish:  _A{fishsize} {fish}!_"
+        else:
+            fishstr = f":fish:  _A{fishsize} {fish}!_ ||Reeling Rolls {fishreel} ; HP {fishhp} ; {fishbait}||"
+    return fishstr
+
+def roll_size_variance():
+        rolls = [random.randint(1, 6) for _ in range(3)]
+        rolls.sort()
+        size_score = rolls[0] + rolls[2]
+
+        return size_score
+
+
+users_fishing = set()
+
+@bot.tree.command(name='fishtimer', description=commands_dict["fishtimer"])
+async def fishtimer(interaction: discord.Interaction):
+    if interaction.user.id in users_fishing:
+        return await interaction.response.send_message("You're already fishing!", ephemeral=True)
+
+    users_fishing.add(interaction.user.id)
+
+    messages = [
+        "You cast your line into the water... something tugs!",
+        "The water ripples as your bait simmers in the cool abyss..",
+        "A mysterious splash nearby... could it be? A fish?",
+        "The fish are quiet today... but you catch a glimpse of something moving below.",
+        "You feel your fishing pole tremble on the coasts of the water.",
+        "You wait patiently... but the fish seem to be in hiding today.",
+        "The water is calm..",
+        "Man.. you love fishing.",
+        "A big splash!!",
+        "The line is tugging...",
+        "A fish leaps from the water in a dazzling display before slipping back in!",
+        "Your bait sinks deep..",
+        "A shadow swims past, but your bait doesn't seem to attract it.",
+        "The water is eerily still... but you feel a subtle tug on the line.",
+        "Something's lurking beneath... the line pulls tight, but it's gone before you can react.",
+        "Your bait disappears under the water... a good sign, but no fish in sight yet.",
+        "Your pole shakes.. something's out there. Just out of reach.",
+        "You reel in slowly, feeling the tension in your arms... nothing yet.",
+        "A shadow glides through the depths... but your bait isn't tempting enough.",
+        "The stillness of the water holds... waiting for something to bite.",
+        "The surface breaks with a splash... something huge is moving beneath!",
+        "A flash of silver under the water, but it's gone before you can react.",
+        "Something's there, but it's playing coy. You know it.",
+    ]
+
+    rare_messages = [
+        "Fish fear you.. viruses fear you.. navis turn their eyes away from you as you walk... you are alone on this barren network. Nevermind those Navis nearby."
+        "The line tugs, but there's no fight, just the weight of forgotten things weighing you down.",
+        "The hum of empty data echoes through the void, your presence a ripple in a sea that no longer remembers its own waves.",
+        "Code bends around you like a mirror cracked from too many reflections, and the silence settles deeper than any error ever could.",
+        "You wonder if this is what the afterlife is like for a Navi.",
+        "Time moves in slow motion here, each second stretching into eternity, but all that remains is a fading trace of what once mattered.",
+        "The line trembles in your hands, but the water remains still, as if even the fish are hiding from the truth beneath the surface.",
+        "The hook sinks slowly, but the waiting feels eternal, like the patience of the water itself has become a quiet kind of ambivalence.",
+        "The fish swim below, just out of reach, and you begin to wonder if they can feel the same emptiness in the depths that you do when you reel in nothing but the weight of your own waiting.",
+        "Bass Pro Shop.",
+        "You feel the tug, faint at first, but it's enough - proof that even in the quietest moments, there is still life beneath the surface, waiting to connect.",
+        "You're thinking about starting a business, and if so, what would you sell."
+    ]
+
+    if random.random() < 0.97:
+        result_message = random.choice(messages)
+    else:
+        result_message = random.choice(rare_messages)
+
+    embed = discord.Embed(description=f"_{interaction.user.mention} has gone fishin'..._\n\n{result_message}",
+                          color=cc_color_dictionary["NetFishing"])
+
+    initial_message = await interaction.response.send_message(embed=embed)
+
+    await send_fish_activity(interaction, initial_message, interaction.user)
+
+
+async def send_fish_activity(interaction, initial_message, initial_user):
+    delay = random.randint(3, 600)
+    await asyncio.sleep(delay)
+
+    caught_messages = [
+        "And something's tugging on the fishing pole!",
+        "Something big's coming!",
+        "The line's starting to pull hard!",
+        "You feel that? You've got a bite!",
+        "The tension’s building... something's on the hook!",
+        "Get ready, something's on the line!",
+        "The rod's bending, it’s a big one!",
+        "You've got a strong one fighting back!",
+        "It’s a big catch, keep reeling!",
+        "Something massive is pulling at the line!"
+    ]
+
+    users_fishing.discard(initial_user.id)
+
+    user_name = initial_user.mention
+
+    if delay < 60:
+        follow_up_message = f"> {delay} seconds have passed for {user_name}...\n> {random.choice(caught_messages)}"
+    else:
+        minutes = delay // 60
+        seconds = delay % 60
+        follow_up_message = f"> {minutes} minute(s) and {seconds} second(s) have passed for {user_name}...\n> {random.choice(caught_messages)}"
+
+    await interaction.followup.send(follow_up_message)

@@ -41,6 +41,12 @@ weatherfile = "tables/weatherdata.tsv"
 achievementfile = "tables/achievementdata.tsv"
 glossaryfile = "tables/glossarydata.tsv"
 autolootfile = "tables/autolootdata.tsv"
+nf_fish = "tables/nf_fishdata.tsv"
+nf_abstract = "tables/nf_abstract.tsv"
+nf_corporate = "tables/nf_corporate.tsv"
+nf_gamers = "tables/nf_gamers.tsv"
+nf_realsim = "tables/nf_realsim.tsv"
+nf_undernet = "tables/nf_undernet.tsv"
 
 audiencesave = "save/audiences.json"
 spotlightsave = "save/spotlights.json"
@@ -66,16 +72,6 @@ source_guild_id = 556291542206382080
 custom_emojis = {"instant": r"<:instant:892170110465363969>", "cost": r"<:cost:892170110364680202>",
                  "roll": r"<:roll:892170110377295934>", "underflow": r"<:underflow:901995743752106064>",
                  "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>", "devilish": r"👿"}
-
-
-#TEST SUPPORT
-admin_guild = 668525535705694208
-bugreport_channel_id = 796498229872820314
-source_guild_id = 668525535705694208 
-custom_emojis = {"instant": r"<:instant:892038392110534688>", "cost": r"<:costpower:892038391959539742>",
-                 "roll": r"<:rollpower:892038392357994548>", "underflow": r"<:underflow:901981520321998849>",
-                 "KissRaffi": r"<:KissRaffi:911806713496223775>", "HappyRaffi": r"<a:HappyRaffi:911806713890476032>", 
-                 "devilish": r"👿"}
 
 # /home/bladez/update-proggers
 

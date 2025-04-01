@@ -35,7 +35,8 @@ cc_color_dictionary = {"MegaChip": 0xA8E8E8,
                        "Neko Virus": 0xa29e14,
                        "Item": 0xffffff,
                        "Chip": 0xbfbfbf,
-                       "Mystery": 0x000000}
+                       "Mystery": 0x000000,
+                       "NetFishing": 0x00ffff}
 
 help_categories = {"Lookups": ':mag: **Lookups**',
                   "Rollers": ':game_die: **Rollers**',
@@ -60,6 +61,9 @@ pmc_link = rulebook_df[rulebook_df["Name"] == "Player-Made Repository"]["Link"].
 nyx_link = rulebook_df[rulebook_df["Name"] == "Nyx"]["Link"].iloc[0]
 grid_link = rulebook_df[rulebook_df["Name"] == "Grid-Based Combat"]["Link"].iloc[0]
 random_chip_link = rulebook_df[rulebook_df["Name"] == "Randomized Chips"]["Link"].iloc[0]
+nekovirus_link = rulebook_df[rulebook_df["Name"] == "NekoVirus Daemon"]["Link"].iloc[0]
+netfishing_link = rulebook_df[rulebook_df["Name"] == "NetFishing"]["Link"].iloc[1]
+netfishing_adobe_link = rulebook_df[rulebook_df["Name"] == "NetFishing"]["Link"].iloc[0]
 rulebook_df = rulebook_df[(rulebook_df["Name"] == "NetBattlers") | (rulebook_df["Name"] == "NetBattlers Advance")]
 # these might start complaining; double check that the labels in the rulebook are exact: captilization and whitespace matter!
 rulebook_df["Type"] = rulebook_df["Type"].astype('category').cat.reorder_categories(["Mobile", "Full Res", "Bonus BattleChips"])

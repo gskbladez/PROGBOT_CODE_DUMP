@@ -18,13 +18,14 @@ Thrown	ThrownChip, ThrownC, ThrownBattleChip, ThrownChips, ThrownBattleChips,  T
 Wave	WaveChip, WaveC, WaveBattleChip, WaveChips, WaveBattleChips,  Wave(C), (C)Wave, Wave(BattleChip), Wave(Chip)		Broad attacks that **hit everything Close to the main target**, potentially including the user.
 NaviChip	Navi, NaviChips		**NaviChips** are **MegaChips** that store attack data from Navis, containing a small fragment of their core data. Each NaviChip is unique, based off the Navi it was downloaded from.
 MegaChip	Mega, MegaChips		**MegaChips** are impossibly rare, exceptionally powerful, one-of-a-kind BattleChips. Folders can only hold one MegaChip at a time.\nMegaChips **do not count as BattleChips** for the purposes of Navi Powers, NCPs, or other BattleChips, and any ongoing effects from them can’t be dispelled by such abilities.
-Incident Chip	Incident, IncidentChips, IncidentChip		**Incident Chips** are MegaChips tainted with sinister power, capable of immense, showstopping repercussions. They have all of the same restrictions of normal **MegaChips.** In addition, there is only one sure-fire way to stop their effects: delete the Navi that used it. (If using DarkChips, feel free to treat Incident Chips as DarkChips.)
+Incident Chip	Incident, IncidentChips, IncidentChip		**Incident Chips** are MegaChips tainted with sinister power, capable of immense, showstopping repercussions. They have all of the same restrictions of normal **MegaChips.** In addition, there is only one sure-fire way to stop their effects: delete the Navi that used it. (If using DarkChips, feel free to treat Incident Chips as DarkChips.)
+
 DarkChip	Dark, DarkChips		**DarkChips** are destructive BattleChips linked to a Daemon. Stronger than MegaChips, they cause devastating damage, manipulate servers, and control minds and bodies. DarkChips have the same restrictions as **MegaChips**. Each DarkChip disappears after a single use. 
 			
 Artillery	ArtilleryVirus, ArtilleryV,  ArtilleryViruses, Artillery(V), Artillery(Viruses), (V)Artillery		Viruses that are ranged damage-dealers, typically using Sense or Affinity.
 Disruption	DisruptionVirus, DisruptionV,  DisruptionViruses, Disruption(V), Disruption(Viruses), (V)Disruption		Viruses that hinder Navis, making them vulnerable.
 Strike	StrikerVirus, StrikerV,  StrikerViruses, Striker(V), Striker(Viruses), (V)Striker		Viruses that are hardy brawlers, and deal heavy damage up close.
-Support	SupportVirus, SupportV,  SupportViruses, Support(V), Support(Viruses), (V)Support		Viruses focused on protecting and boosting other enemies.
+Support (Virus)	SupportVirus, SupportV,  SupportViruses, Support(V), Support(Viruses), (V)Support		Viruses focused on protecting and boosting other enemies.
 Wrecker	WreckerVirus, WreckerV,  WreckerViruses, Wrecker(V), Wrecker(Viruses), (V)Wrecker		Viruses that create environmental obstacles and threats.
 			
 Hovering			Floats a bit off the ground, avoiding grounded attacks and some terrain.
@@ -33,3 +34,10 @@ Inanimate			Follows simplistic programming, and can be hacked with Coding. (They
 Immobile			Can’t move on its own. (Others may be able to move it.)
 			
 Support			There are both Support Chips and Support Viruses! Please specify the one you mean!
+			
+Instant	InstantPower		Activating this power happens instantly, though it cannot be used to interrupt others’ actions.
+			
+Aggressive (Fish)	Aggressive		Fail to reel it in it and it’ll attack once (with damage equal to its remaining HP) before it gets away.
+Deep (Fish)	Deep		It’s hard for Navis to see this fish at all. They count as Far.
+Shallow (Fish)	Shallow		Navis can get a good look at this fish as it swims.
+Skittish (Fish)	Skittish		The fish is first to flee if things get noisy or violent.
