@@ -14,6 +14,12 @@ autoloot_df = read_csv(settings.autolootfile, sep="\t").fillna('')
 fish_df = read_csv(settings.nf_fish, sep="\t").fillna('')
 fish_df = fish_df[fish_df["Name"] != ""]
 
+nf_abstract_df = read_csv(settings.nf_abstract, sep="\t").fillna('')
+nf_corporate_df = read_csv(settings.nf_corporate, sep="\t").fillna('')
+nf_gamers_df = read_csv(settings.nf_gamers, sep="\t").fillna('')
+nf_realsim_df = read_csv(settings.nf_realsim, sep="\t").fillna('')
+nf_undernet_df = read_csv(settings.nf_undernet, sep="\t").fillna('')
+
 fish_tag_list = fish_df["Tags"].str.split(";|,", expand=True) \
     .stack() \
     .str.strip() \
@@ -22,19 +28,40 @@ fish_tag_list = fish_df["Tags"].str.split(";|,", expand=True) \
 fish_tag_list = [i for i in fish_tag_list if i]
 [fish_tag_list.remove(i) for i in ["none", "None"] if i in fish_tag_list]
 fish_habitats_list = fish_df["Habitats"].str.split(",").explode().str.strip().unique()
+
 fish_habitat_aliases = { # must be lower case, I do not care
-    "the undernet": ["undernet", "uranet", "the uranet"],
-    "realsim": ["realsim", "sims"],
-    "g4merz 0nly": ["gamers", "g4merz", "g4amerz", "gamers only"],
-    "corporate-approved": ["corporate", "corporate approved"],
-    "abstract space": ["abstract"],
+    "the undernet": {
+        "display": "The Undernet",
+        "df": nf_undernet_df,
+        "alias": ["undernet", "uranet", "the uranet"]
+    },
+    "corporate-approved": {
+        "display": "Corporate-Approved",
+        "df": nf_corporate_df,
+        "alias": ["corporate", "corporate approved"],
+    },
+    "g4merz 0nly": {
+        "display": "G4MERZ 0NLY",
+        "df": nf_gamers_df,
+        "alias": ["gamers", "g4merz", "g4amerz", "gamers only"],
+    },
+    "realsim": {
+        "display": "RealSim",
+        "df": nf_realsim_df,
+        "alias": ["realsim", "sims"],
+    },
+    "abstract space": {
+        "display": "Abstract Space",
+        "df": nf_abstract_df,
+        "alias": ["abstract"],
+    },
 }
 
-nf_abstract_df = read_csv(settings.nf_abstract, sep="\t").fillna('')
-nf_corporate_df = read_csv(settings.nf_corporate, sep="\t").fillna('')
-nf_gamers_df = read_csv(settings.nf_gamers, sep="\t").fillna('')
-nf_realsim_df = read_csv(settings.nf_realsim, sep="\t").fillna('')
-nf_undernet_df = read_csv(settings.nf_undernet, sep="\t").fillna('')
+# indexing crimes
+for a in fish_habitat_aliases.keys():
+    tdf = fish_habitat_aliases[a]["df"]
+    tdf.set_index(tdf.columns[0], inplace=True)
+    fish_habitat_aliases[a]["df"] = tdf
 
 MAX_FISH_QUERY = 5
 
@@ -937,22 +964,18 @@ async def fish_master(arg, simplified=True):
         except ValueError:
             pass
         fish_title = "HP %s" % fish_hp
-        fish_descript_block = "**Diet:** %s" % fish_diet
+        fish_descript_block = "**Diet:** ||%s||" % fish_diet
         fish_descript_block += "\n"
-        fish_descript_block += "**Habitats:** ||%s||" % fish_habitats
+        fish_descript_block += "**Habitats:** %s" % fish_habitats
         fish_descript_block += "\n"
         fish_descript_block += "**Tags:** %s" % (fish_tags if fish_tags else "None")
-        fish_descript_block += "\n"
+        fish_descript_block += "\n\n"
         fish_descript_block += "*%s*" % fish_description
 
     return fish_name, fish_title, fish_descript_block, fish_footer, None, fish_color, content_msg
 
 def query_fish(arg_lower):
-    # alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
-
-#    fish_habitats_list = fish_df["Habitats"].str.split(",").explode().str.strip().unique()
-
-    habitat_modifiers = {
+    habitat_modifiers = { # TODO: merge with the above
         "corporate-approved": "-Friendly/+Sterile, -New/+Old",
         "abstract space": "-Silly/+Serious, -Blocky/+Round",
         "g4merz 0nly": "-Casual/Hardcore, -Sci-fi/+Fantasy",
@@ -960,25 +983,17 @@ def query_fish(arg_lower):
         "the undernet": "-Ravelike/+Gravelike, -Vast/+Narrow"
     }
 
-
     if arg_lower in [i.lower() for i in fish_habitats_list]:
         subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
-
-        # forgive me. i know this is stupid
-        # but i tried a multitude of different things to get the data set to play nice.
-        habitat_styled = {
-            "the undernet": "The Undernet",
-            "corporate-approved": "Corporate-Approved",
-            "g4merz 0nly": "G4MERZ 0NLY",
-            "realsim": "RealSim",
-            "abstract space": "Abstract Space"
-        }
-
-        styled_habitat = habitat_styled.get(arg_lower, arg_lower.title())
+        
+        if arg_lower in fish_habitat_aliases:
+            styled_habitat = fish_habitat_aliases[arg_lower]["display"]
+        else:
+            styled_habitat = arg_lower.title()
 
         for habitat, modifiers in habitat_modifiers.items():
             if arg_lower in habitat:
-                result_title = f"Fish in the `{styled_habitat}` habitat...\n**Modifiers:** {modifiers}"
+                result_title = f"Fish in the `{styled_habitat}` habitat...\n**Modifiers:** {modifiers}\n"
                 break
         else:
             result_title = f"Fish in the `{subdf.iloc[0]['Habitats']}` habitat..."
@@ -1032,9 +1047,9 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
 
     arg_combined = " ".join(cleaned_args)
     
-    for a, v in fish_habitat_aliases.items():
-        # fuck it we alias
-        if arg_combined in v:
+    for a in fish_habitat_aliases.keys():
+        alist = fish_habitat_aliases[a]['alias']
+        if arg_combined in alist:
             arg_combined = a
             break
 
@@ -1077,77 +1092,25 @@ async def fishroll(interaction: discord.Interaction,
         rolls = 4
     else:
         rolls = 3
+    fish_env = fish_habitat_aliases[environment.lower()]["df"]
+    x_low = fish_env.columns[0]
+    x_hi = fish_env.columns[-1].split(".")[0]
+    y_low = fish_env.index[0]
+    y_hi = fish_env.index[-1].split(".")[0]
+
     # OH GOD THE Y AXIS IS REVERSED
-    if environment == "Abstract Space":
-        fish_env = nf_abstract_df
-        if x < 0:
-            attenuation_1 = "Silly"
-        if x > 0:
-            attenuation_1 = "Serious"
-        if x == 0:
-            attenuation_1 = "Silly / Serious Neutral"
-        if y < 0:
-            attenuation_2 = "Blocky"
-        if y > 0:
-            attenuation_2 = "Round"
-        if y == 0:
-            attenuation_2 = "Blocky / Round Neutral"
-    if environment == "Corporate-Approved":
-        fish_env = nf_corporate_df
-        if x < 0:
-            attenuation_1 = "Friendly"
-        if x > 0:
-            attenuation_1 = "Sterile"
-        if x == 0:
-            attenuation_1 = "Friendly / Sterile Neutral"
-        if y < 0:
-            attenuation_2 = "New"
-        if y > 0:
-            attenuation_2 = "Old"
-        if y == 0:
-            attenuation_2 = "New / Old Neutral"
-    if environment == "G4MERZ 0NLY":
-        fish_env = nf_gamers_df
-        if x < 0:
-            attenuation_1 = "Casual"
-        if x > 0:
-            attenuation_1 = "Hardcore"
-        if x == 0:
-            attenuation_1 = "Casual / Hardcore Neutral"
-        if y < 0:
-            attenuation_2 = "Sci-fi"
-        if y > 0:
-            attenuation_2 = "Fantasy"
-        if y == 0:
-            attenuation_2 = "Sci-fi / Fantasy Neutral"
-    if environment == "RealSim":
-        fish_env = nf_realsim_df
-        if x < 0:
-            attenuation_1 = "Lo-fi"
-        if x > 0:
-            attenuation_1 = "Hi-fi"
-        if x == 0:
-            attenuation_1 = "Lo-fi / Hi-fi Neutral"
-        if y < 0:
-            attenuation_2 = "Rainy"
-        if y > 0:
-            attenuation_2 = "Sunny"
-        if y == 0:
-            attenuation_2 = "Rainy / Sunny Neutral"
-    if environment == "The Undernet":
-        fish_env = nf_undernet_df
-        if x < 0:
-            attenuation_1 = "Ravelike"
-        if x > 0:
-            attenuation_1 = "Gravelike"
-        if x == 0:
-            attenuation_1 = "Ravelike / Gravelike Neutral" # we crypt of the necrodancer now
-        if y < 0:
-            attenuation_2 = "Vast"
-        if y > 0:
-            attenuation_2 = "Narrow"
-        if y == 0:
-            attenuation_2 = "Vast / Narrow Neutral"
+    if x < 0:
+        attenuation_1 = x_low
+    elif x > 0:
+        attenuation_1 = x_hi
+    else:
+        attenuation_1 = f"{x_low} / {x_hi} Neutral"
+    if y < 0:
+        attenuation_2 = y_low
+    elif y > 0:
+        attenuation_2 = y_hi
+    else:
+        attenuation_2 = f"{y_low} / {y_hi} Neutral"
 
     results_list = []
 
@@ -1174,44 +1137,41 @@ async def fishroll(interaction: discord.Interaction,
 
 
 def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size: bool) -> str:
-    max_row_index, max_col_index = fish_env.shape
+    num_row, num_col = fish_env.shape
     size_score = 0
 
-    if die_1 < 0: # im a little confused by this ngl
-        die_1 = max_row_index + die_1
-    if die_2 < 0:
-        die_2 = max_col_index + die_2
-
-    if 0 <= die_1 <= max_row_index and 0 <= die_2 <= max_col_index:
-        fish = fish_env.iloc[die_1, die_2]
-
-        if fish == "":
-            return ""
-        fish = "◇Sapphire"
-        if "!!" in str(fish):
-            k = fish.strip("!!").strip()
-            return f":bangbang:  _A {k} Virus!_"
-        elif "%" in str(fish):
-            k = fish.strip("%").strip()
-            if k in chip_df["Chip"].values:
-                return f":star:  _{k} BattleChip_"
-            else:
-                return f":star:  _{k} NCP_"
-        elif "◇" in str(fish):
-            k = fish.strip("◇").strip()
-            return f":large_blue_diamond:  _A {k} MysteryData_"
-        else:
-            fishsize = ""
-            if size:
-                size_score = roll_size_variance()
-                if size_score <= 4:
-                    fishsize = "n (extra small)"
-                elif size_score >= 10:
-                    fishsize = "n (extra large)"
-            fishstr = f":fish:  _A{fishsize} {fish}!_"
-        return fishstr
-    else:
+    index_x = 1 + die_1
+    index_y = num_col - 2 - die_2 # why does the y-axis go high to low
+    
+    if index_x < 0 or index_x >= num_row or index_y < 0 or index_y >= num_col:
         return None
+
+    fish = fish_env.iloc[index_x, index_y]
+
+    if fish == "":
+        return ""
+    if "!!" in str(fish):
+        k = fish.strip("!!").strip()
+        return f":bangbang:  _A {k} Virus!_"
+    elif "%" in str(fish):
+        k = fish.strip("%").strip()
+        if k in chip_df["Chip"].values:
+            return f":star:  _{k} BattleChip_"
+        else:
+            return f":star:  _{k} NCP_"
+    elif "◇" in str(fish):
+        k = fish.strip("◇").strip()
+        return f":large_blue_diamond:  _A {k} MysteryData_"
+    else:
+        fishsize = ""
+        if size:
+            size_score = roll_size_variance()
+            if size_score <= 4:
+                fishsize = "n (extra small)"
+            elif size_score >= 10:
+                fishsize = "n (extra large)"
+        fishstr = f":fish:  _A{fishsize} {fish}!_"
+    return fishstr
 
 def roll_size_variance():
         rolls = [random.randint(1, 6) for _ in range(3)]
