@@ -1150,7 +1150,7 @@ async def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int,
 
     index_x = 1 + die_1
     index_y = num_col - 2 - die_2 # why does the y-axis go high to low
-    print(f"Rolled {die_1},{die_2} > {index_x}, {index_y}")
+    # print(f"Rolled {die_1},{die_2} > {index_x}, {index_y}")
     if index_x < 0 or index_x >= num_row or index_y < 0 or index_y >= num_col:
         return None
 
