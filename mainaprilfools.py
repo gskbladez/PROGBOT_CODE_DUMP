@@ -1134,13 +1134,13 @@ async def fishroll(interaction: discord.Interaction,
         else:
             results_list.append("> _..._")
 
+    if all(r=="> _..._" for r in results_list):
+        results_list[-1] = "> _...Nothing. (Dang blang!)_ "
     result_text = "\n ".join(results_list)
-    if not result_text:
-        result_text = "> _Nothing. (Dang blang!)_ "
 
     embed = discord.Embed(description=f"_Rolling to see what's swimming in `{environment}`..._\n{result_text}",
                           color=cc_color_dictionary["NetFishing"])
-    embed.set_footer(text=f"Environment Attenuation: {attenuation_1}, {attenuation_2}")
+    embed.set_footer(text=f"Attenuation: {attenuation_1}, {attenuation_2}")
     return await interaction.response.send_message(embed=embed)
 
 
@@ -1150,7 +1150,7 @@ async def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int,
 
     index_x = 1 + die_1
     index_y = num_col - 2 - die_2 # why does the y-axis go high to low
-    
+    print(f"Rolled {die_1},{die_2} > {index_x}, {index_y}")
     if index_x < 0 or index_x >= num_row or index_y < 0 or index_y >= num_col:
         return None
 
@@ -1194,14 +1194,14 @@ async def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int,
             elif size_score >= 10:
                 fishsize = "n (extra large)"
                 if fishreel == 1:
-                    fishreel = f"{fishreel}, +2HP!"
+                    fishreel = fishreel
                     fishhp += 2
                 else:
                     fishreel -= 1
         if fishreel < 0:
             fishstr = f":fish:  _A{fishsize} {fish}!_"
         else:
-            fishstr = f":fish:  _A{fishsize} {fish}!_ ||Reeling Rolls: {fishreel} ; HP {fishhp} ; {fishbait}||"
+            fishstr = f":fish:  _A{fishsize} {fish}!_ ||Reeling Rolls {fishreel} ; HP {fishhp} ; {fishbait}||"
     return fishstr
 
 def roll_size_variance():
