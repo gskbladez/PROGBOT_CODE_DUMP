@@ -1154,7 +1154,7 @@ async def fishroll(interaction: discord.Interaction,
 
     embed = discord.Embed(description=f"_{interaction.user.mention} rolled to find fish in `{environment}` and got..._\n{result_text}",
                           color=cc_color_dictionary["NetFishing"])
-    embed.set_footer(f"Environment Attenuation: {attenuation_1}, {attenuation_2}")
+    embed.set_footer(text=f"Environment Attenuation: {attenuation_1}, {attenuation_2}")
     return await interaction.response.send_message(embed=embed)
 
 
@@ -1172,27 +1172,28 @@ def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size:
 
         if fish == "":
             return ""
-
+        fish = "◇Sapphire"
         if "!!" in str(fish):
             k = fish.strip("!!").strip()
-            return f":bangbang: _A {k} Virus!_"
+            return f":bangbang:  _A {k} Virus!_"
         elif "%" in str(fish):
             k = fish.strip("%").strip()
-            if k in chip_df["Name"].values:
-                return f":star: _{k} BattleChip_"
+            if k in chip_df["Chip"].values:
+                return f":star:  _{k} BattleChip_"
             else:
-                return f":star: _{k} NCP_"
+                return f":star:  _{k} NCP_"
         elif "◇" in str(fish):
             k = fish.strip("◇").strip()
-            return f":large_blue_diamond: _A {k} Mystery Data_"
+            return f":large_blue_diamond:  _A {k} MysteryData_"
         else:
-            fishstr = f":fish: _A {fish} !_"
+            fishsize = ""
             if size:
                 size_score = roll_size_variance()
                 if size_score <= 4:
-                    fishstr +=" **(Extra Small!)**"
+                    fishsize = "n (extra small)"
                 elif size_score >= 10:
-                    fishstr += " **(Extra Large!)**"
+                    fishsize = "n (extra large)"
+            fishstr = f":fish:  _A{fishsize} {fish}!_"
         return fishstr
     else:
         return None
