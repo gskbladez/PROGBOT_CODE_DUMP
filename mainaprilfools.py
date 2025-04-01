@@ -57,6 +57,20 @@ fish_habitat_aliases = { # must be lower case, I do not care
     },
 }
 
+habitat_modifiers = { # TODO: merge with the above
+    "corporate-approved": "-Friendly/+Sterile, -New/+Old",
+    "abstract space": "-Silly/+Serious, -Blocky/+Round",
+    "g4merz 0nly": "-Casual/Hardcore, -Sci-fi/+Fantasy",
+    "realsim": "-Lo-fi/+Hi-fi, -Rainy/+Sunny",
+    "the undernet": "-Ravelike/+Gravelike, -Vast/+Narrow"
+}
+
+fish_size_key = {
+    "Light": 3,
+    "Medium": 2,
+    "Heavy": 1
+}
+
 # indexing crimes
 for a in fish_habitat_aliases.keys():
     tdf = fish_habitat_aliases[a]["df"]
@@ -975,14 +989,6 @@ async def fish_master(arg, simplified=True):
     return fish_name, fish_title, fish_descript_block, fish_footer, None, fish_color, content_msg
 
 def query_fish(arg_lower):
-    habitat_modifiers = { # TODO: merge with the above
-        "corporate-approved": "-Friendly/+Sterile, -New/+Old",
-        "abstract space": "-Silly/+Serious, -Blocky/+Round",
-        "g4merz 0nly": "-Casual/Hardcore, -Sci-fi/+Fantasy",
-        "realsim": "-Lo-fi/+Hi-fi, -Rainy/+Sunny",
-        "the undernet": "-Ravelike/+Gravelike, -Vast/+Narrow"
-    }
-
     if arg_lower in [i.lower() for i in fish_habitats_list]:
         subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
         
@@ -1119,7 +1125,7 @@ async def fishroll(interaction: discord.Interaction,
         die_1 = random.randint(1, 6) + x
         die_2 = random.randint(1, 6) + y
 
-        fish_result = get_fish_from_environment(fish_env, die_1, die_2, size_variance=="Yes")
+        fish_result = await get_fish_from_environment(fish_env, die_1, die_2, size_variance=="Yes")
 
         if fish_result:
             results_list.append("> " + fish_result)
@@ -1130,13 +1136,13 @@ async def fishroll(interaction: discord.Interaction,
     if not result_text:
         result_text = "> _Nothing. (Dang blang!)_ "
 
-    embed = discord.Embed(description=f"_{interaction.user.mention} rolled to find fish in `{environment}` and got..._\n{result_text}",
+    embed = discord.Embed(description=f"_{interaction.user.mention} rolled to fish in `{environment}` and got..._\n{result_text}",
                           color=cc_color_dictionary["NetFishing"])
     embed.set_footer(text=f"Environment Attenuation: {attenuation_1}, {attenuation_2}")
     return await interaction.response.send_message(embed=embed)
 
 
-def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size: bool) -> str:
+async def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size: bool) -> str:
     num_row, num_col = fish_env.shape
     size_score = 0
 
@@ -1163,14 +1169,37 @@ def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int, size:
         k = fish.strip("◇").strip()
         return f":large_blue_diamond:  _A {k} MysteryData_"
     else:
+        fish_info, _ = await find_value_in_table(fish_df, "Name", fish, suppress_notfound=True, alias_message=True)
+        if fish_info is None:
+            fishbait = ""
+            fishhp = -5
+            reel_key = None
+        else:
+            reel_key = fish_info["Weight"]
+            fishhp = fish_info["HP"]
+            fishbait = fish_info["Diet"]
+        if reel_key is None:
+            fishreel = -6
+        else:
+            fishreel = fish_size_key[reel_key]
+
         fishsize = ""
         if size:
             size_score = roll_size_variance()
             if size_score <= 4:
                 fishsize = "n (extra small)"
+                fishreel += 1
             elif size_score >= 10:
                 fishsize = "n (extra large)"
-        fishstr = f":fish:  _A{fishsize} {fish}!_"
+                if fishreel == 1:
+                    fishreel = f"{fishreel}, +2HP!"
+                    fishhp += 2
+                else:
+                    fishreel -= 1
+        if fishreel < 0:
+            fishstr = f":fish:  _A{fishsize} {fish}!_"
+        else:
+            fishstr = f":fish:  _A{fishsize} {fish}! ({fishreel} rolls)_ ||HP {fishhp}; {fishbait}||"
     return fishstr
 
 def roll_size_variance():
