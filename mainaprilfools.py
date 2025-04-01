@@ -21,8 +21,7 @@ fish_tag_list = fish_df["Tags"].str.split(";|,", expand=True) \
     .unique()
 fish_tag_list = [i for i in fish_tag_list if i]
 [fish_tag_list.remove(i) for i in ["none", "None"] if i in fish_tag_list]
-fish_habitats_list = unique(fish_df["Habitats"].str.strip())
-fish_habitats_list = [i for i in fish_habitats_list if i]
+fish_habitats_list = fish_df["Habitats"].str.split(",").explode().str.strip().unique()
 
 
 nf_abstract_df = read_csv(settings.nf_abstract, sep="\t").fillna('')
@@ -946,22 +945,40 @@ async def fish_master(arg, simplified=True):
 
 def query_fish(arg_lower):
     # alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
-    # TODO - figure out how to uniquely pull from the data set
+
+#    fish_habitats_list = fish_df["Habitats"].str.split(",").explode().str.strip().unique()
+
+    habitat_modifiers = {
+        "corporate-approved": "-Friendly/+Sterile, -New/+Old",
+        "abstract space": "-Silly/+Serious, -Blocky/+Round",
+        "g4merz 0nly": "-Casual/Hardcore, -Sci-fi/+Fantasy",
+        "realsim": "-Lo-fi/+Hi-fi, -Rainy/+Sunny",
+        "the undernet": "-Ravelike/+Gravelike, -Vast/+Narrow"
+    }
+
+
     if arg_lower in [i.lower() for i in fish_habitats_list]:
         subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
 
-        if "corporate-approved" in arg_lower:
-            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Friendly/+Sterile, -New/+Old" % subdf.iloc[0]["Habitats"]
-        elif "abstract space" in arg_lower:
-            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Silly/+Serious, -Blocky/+Round" % subdf.iloc[0]["Habitats"]
-        elif "g4merz 0nly" in arg_lower:
-            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Casual/Hardcore, -Sci-fi/+Fantasy" % subdf.iloc[0]["Habitats"]
-        elif "realsim" in arg_lower:
-            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Lo-fi/+Hi-fi, -Rainy/+Sunny" % subdf.iloc[0]["Habitats"]
-        elif "the undernet" in arg_lower:
-            result_title = "Fish in the `%s` habitat...\n**Modifiers:** -Ravelike/+Gravelike, -Vast/+Narrow" % subdf.iloc[0]["Habitats"]
+        # forgive me. i know this is stupid
+        # but i tried a multitude of different things to get the data set to play nice.
+        habitat_styled = {
+            "the undernet": "The Undernet",
+            "corporate-approved": "Corporate-Approved",
+            "g4merz 0nly": "G4MERZ 0NLY",
+            "realsim": "RealSim",
+            "abstract space": "Abstract Space"
+        }
+
+        styled_habitat = habitat_styled.get(arg_lower, arg_lower.title())
+
+        for habitat, modifiers in habitat_modifiers.items():
+            if arg_lower in habitat:
+                result_title = f"Fish in the `{styled_habitat}` habitat...\n**Modifiers:** {modifiers}"
+                break
         else:
-            result_title = "Fish in the `%s` habitat..." % subdf.iloc[0]["Habitats"]
+            result_title = f"Fish in the `{subdf.iloc[0]['Habitats']}` habitat..."
+
         result_msg = ", ".join(subdf["Name"])
     elif arg_lower in fish_tag_list:
         subdf = filter_table(fish_df, {"Tags": re.escape(arg_lower)})
@@ -985,12 +1002,11 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
     if (len(cleaned_args) < 1) or (cleaned_args[0] == 'help'):
         return await interaction.response.send_message(
             f"Give me the name of 1-{MAX_FISH_QUERY} **Fish** and I can pull up their info for you! Please separate them with commas! (,)\n\n" +
-            "I can list all of the Fish with **all**! I can also query Fish by **Tag**!\n" +
-            "To pull up details on a specific Habitat or Tag, use `tag` instead.")
+            "I can list all of the Fish with **all**! I can also query Fish by **Tag** or **Habitat**!\n" +
+            "To pull up details on a specific Tag, use `tag` instead.")
     elif cleaned_args[0] in ['all', 'list']:
         _, result_title, result_text = query_fish_names()
         return await send_query_msg(interaction, result_title, result_text)
-    # TODO
     elif cleaned_args[0] in ['habitat', 'habitats']:
         result_title = "Displaying all known Fish Habitats..."
         result_text = ", ".join(fish_habitats_list)
@@ -1001,7 +1017,7 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
         result_title = "Displaying all known Fish Tags..."
         result_text = ", ".join([i.capitalize() for i in fish_tag_list])
         return await send_query_msg(interaction, result_title, result_text)
-    elif cleaned_args[0] in ['rule', 'ruling', 'rules']: # TODO
+    elif cleaned_args[0] in ['rule', 'ruling', 'rules']:
         ruling_msg, _ = await find_value_in_table(help_df, "Command", "fishruling", suppress_notfound=True)
         if ruling_msg is None:
             return await interaction.response.send_message(
@@ -1195,9 +1211,8 @@ def roll_size_variance():
 
 users_fishing = set()
 
-@bot.tree.command(name='fishpoll', description=commands_dict["fishpoll"])
-
-async def fishpoll(interaction: discord.Interaction):
+@bot.tree.command(name='fishtimer', description=commands_dict["fishtimer"])
+async def fishtimer(interaction: discord.Interaction):
     if interaction.user.id in users_fishing:
         return await interaction.response.send_message("You're already fishing!", ephemeral=True)
 

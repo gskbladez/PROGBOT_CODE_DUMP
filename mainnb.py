@@ -9,7 +9,7 @@ import mainadvance
 from maincommon import bot, commands_dict, filter_table
 from maincommon import clean_args, send_query_msg, send_msg, find_value_in_table, roll_row_from_table, send_multiple_embeds
 from maincommon import cc_color_dictionary, playermade_list, rulebook_df, help_df
-from maincommon import nyx_link, grid_link, random_chip_link
+from maincommon import nyx_link, grid_link, random_chip_link, nekovirus_link, netfishing_link, netfishing_adobe_link
 from mainadvance import spotlight   # for glossary
 
 MAX_POWER_QUERY = 5
@@ -1161,7 +1161,6 @@ async def element(interaction: discord.Interaction, number: int, category: typin
                           description=elements_list)
     return await interaction.response.send_message(embed=embed)
 
-# TODO - nekovirus content
 @bot.tree.command(name='rulebook', description=commands_dict["rulebook"])
 async def rulebook(interaction: discord.Interaction, query:str=""):
     split_args = [re.sub(r"([a-z])(\d)",r"\1 \2", query, flags=re.IGNORECASE)]
@@ -1186,6 +1185,11 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
         book_names = ["**Grid-Based Combat Rules**(?): <%s>" % grid_link]
     elif cleaned_args[0] in ['random', 'randomized']:
         book_names = ["**Randomized Chips**(?): <%s>" % random_chip_link]
+    elif cleaned_args[0] in ['netfishing', 'fishing']:
+        book_names = ["**NetFishing**(?) - Compatibility Version: <%s>" % netfishing_link,
+                      "**NetFishing**(?) - Adobe Acrobat Version: <%s>" % netfishing_adobe_link]
+    elif cleaned_args[0] in ['nekovirus', 'neko']:
+        book_names = ["**NekoVirus Daemon**(?): <%s>" % nekovirus_link]
     else:
         book_names = []
     # TODO: switch to filter_table
