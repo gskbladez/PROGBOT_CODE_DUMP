@@ -1186,8 +1186,8 @@ async def rulebook(interaction: discord.Interaction, query:str=""):
     elif cleaned_args[0] in ['random', 'randomized']:
         book_names = ["**Randomized Chips**(?): <%s>" % random_chip_link]
     elif cleaned_args[0] in ['netfishing', 'fishing']:
-        book_names = ["**NetFishing**(?) - Compatibility Version: <%s>" % netfishing_link,
-                      "**NetFishing**(?) - Adobe Acrobat Version: <%s>" % netfishing_adobe_link]
+        book_names = ["**NetFishing** - Compatibility Version: <%s>" % netfishing_link,
+                      "**NetFishing** - Adobe Acrobat Version: <%s>" % netfishing_adobe_link]
     elif cleaned_args[0] in ['nekovirus', 'neko']:
         book_names = ["**NekoVirus Daemon**(?): <%s>" % nekovirus_link]
     else:
