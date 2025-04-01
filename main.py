@@ -30,13 +30,13 @@ user_df = read_csv(settings.user_levels_table_name, sep="\t", dtype={'ID':'strin
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
 
 # bot is defined in maincommon
-def _get_user_level(user_id: int):
+def _get_user_level(user_id: str):
     if user_id not in user_dict:
         return USER_LEVEL
-    return user_dict[str(user_id)]
+    return user_dict[user_id]
 
 def is_admin(interaction: discord.Interaction) -> bool:
-    return _get_user_level(interaction.user.id) >= ADMIN_LEVEL
+    return _get_user_level(str(interaction.user.id)) >= ADMIN_LEVEL
 
 #Background task is run every set interval while bot is running (by default every 10 minutes)
 @tasks.loop(minutes=10)
