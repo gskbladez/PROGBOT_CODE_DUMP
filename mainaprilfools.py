@@ -1131,12 +1131,14 @@ async def fishroll(interaction: discord.Interaction,
             results_list.append("> " + fish_result)
         elif fish_result is None:
             results_list.append("> _(if this is showing up please bug the devs)_")
+        else:
+            results_list.append("> _..._")
 
     result_text = "\n ".join(results_list)
     if not result_text:
         result_text = "> _Nothing. (Dang blang!)_ "
 
-    embed = discord.Embed(description=f"_Rolling to see what bites in `{environment}`..._\n{result_text}",
+    embed = discord.Embed(description=f"_Rolling to see what's swimming in `{environment}`..._\n{result_text}",
                           color=cc_color_dictionary["NetFishing"])
     embed.set_footer(text=f"Environment Attenuation: {attenuation_1}, {attenuation_2}")
     return await interaction.response.send_message(embed=embed)
@@ -1199,7 +1201,7 @@ async def get_fish_from_environment(fish_env: DataFrame, die_1: int, die_2: int,
         if fishreel < 0:
             fishstr = f":fish:  _A{fishsize} {fish}!_"
         else:
-            fishstr = f":fish:  _A{fishsize} {fish}! ({fishreel} rolls)_ ||HP {fishhp}; {fishbait}||"
+            fishstr = f":fish:  _A{fishsize} {fish}!_ ||Reeling Rolls: {fishreel} ; HP {fishhp} ; {fishbait}||"
     return fishstr
 
 def roll_size_variance():
