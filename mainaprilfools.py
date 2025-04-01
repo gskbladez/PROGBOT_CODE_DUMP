@@ -999,7 +999,7 @@ def query_fish(arg_lower):
 
         for habitat, modifiers in habitat_modifiers.items():
             if arg_lower in habitat:
-                result_title = f"Fish in the `{styled_habitat}` habitat...\n**Modifiers:** {modifiers}\n"
+                result_title = f"Fish in the `{styled_habitat}` habitat...\n-# Modifiers: {modifiers}"
                 break
         else:
             result_title = f"Fish in the `{subdf.iloc[0]['Habitats']}` habitat..."
