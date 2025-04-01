@@ -71,10 +71,15 @@ Note: if GitHub seems to be flagging all lines in the .tsv as changed, this is l
 
 ### Syncing Other Forks
 
-1. git remote add amon https://github.com/FellOffFuji/PROGBOT_CODE_DUMP.git
-2. git remote -v
-3. git fetch amon
-4. git checkout -b amon-master amon/master
+1. `git remote add [nickname for remote] https://github.com/FellOffFuji/PROGBOT_CODE_DUMP.git`
+2. `git remote -v`
+3. `git fetch [nickname for remote]`
+4. `git checkout -b [nickname for your branch] [nickname for remote]/master`
+
+### Updating Slash Commands
+
+1. `/run command:refresh slash commands`
+1. `/run command:reset admin commands` (very important!!!)
 
 ### Slash Commands
 
