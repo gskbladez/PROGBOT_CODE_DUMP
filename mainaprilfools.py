@@ -1026,7 +1026,7 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
         return await interaction.response.send_message(
             f"Give me the name of 1-{MAX_FISH_QUERY} **Fish** and I can pull up their info for you! Please separate them with commas! (,)\n\n" +
             "I can list all of the Fish with **all**! I can also query Fish by **Tag** or **Habitat**!\n" +
-            "To pull up details on a specific Tag, use `tag` instead.")
+            "To pull up details on a specific Fish's Tag, use `tag` or look up `help fish tag`.")
     elif cleaned_args[0] in ['all', 'list']:
         _, result_title, result_text = query_fish_names()
         return await send_query_msg(interaction, result_title, result_text)
@@ -1049,7 +1049,7 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
         return await interaction.response.send_message(ruling_msg["Response"])
     elif len(cleaned_args) > MAX_FISH_QUERY:
         return await interaction.response.send_message(
-            content=f"Too many fish, no more than {MAX_FISH_QUERY}!", ephemeral=True)
+            content=f"Too many Fish, no more than {MAX_FISH_QUERY}!", ephemeral=True)
 
     arg_combined = " ".join(cleaned_args)
     
