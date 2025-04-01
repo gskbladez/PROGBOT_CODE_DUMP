@@ -24,8 +24,8 @@ fish_tag_list = [i for i in fish_tag_list if i]
 fish_habitats_list = unique(fish_df["Habitats"].str.strip())
 fish_habitats_list = [i for i in fish_habitats_list if i]
 fish_habitat_aliases = { # must be lower case, I do not care
-    "the undernet": ["uranet", "the uranet"],
-    "realSim": ["realsim", "sims"],
+    "the undernet": ["undernet", "uranet", "the uranet"],
+    "realsim": ["realsim", "sims"],
     "g4merz 0nly": ["gamers", "g4merz", "g4amerz", "gamers only"],
     "corporate-approved": ["corporate", "corporate approved"],
     "abstract space": ["abstract"],
@@ -952,11 +952,6 @@ async def fish_master(arg, simplified=True):
     return fish_name, fish_title, fish_descript_block, fish_footer, None, fish_color, content_msg
 
 def query_fish(arg_lower):
-    for a, v in fish_habitat_aliases.items():
-        if arg_lower in v:
-            arg_lower = a
-            break
-
     # TODO - figure out how to uniquely pull from the data set
     if arg_lower in [i.lower() for i in fish_habitats_list]:
         subdf = filter_table(fish_df, {"Habitats": re.escape(arg_lower)})
@@ -999,7 +994,6 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
     elif cleaned_args[0] in ['all', 'list']:
         _, result_title, result_text = query_fish_names()
         return await send_query_msg(interaction, result_title, result_text)
-    # TODO
     elif cleaned_args[0] in ['habitat', 'habitats']:
         result_title = "Displaying all known Fish Habitats..."
         result_text = ", ".join(fish_habitats_list)
@@ -1022,6 +1016,12 @@ async def fish(interaction: discord.Interaction, query: str, detailed: bool = Fa
             content=f"Too many fish, no more than {MAX_FISH_QUERY}!", ephemeral=True)
 
     arg_combined = " ".join(cleaned_args)
+    
+    for a, v in fish_habitat_aliases.items():
+        # fuck it we alias
+        if arg_combined in v:
+            arg_combined = a
+            break
 
     is_query, result_title, result_msg = query_fish(arg_combined)
     if is_query:
