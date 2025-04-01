@@ -18,23 +18,23 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
 - bot
 
 ### How to Setup a Local Instance
-- Clone or fork ProgBot, downloading the files.
-- Download [Python](https://www.python.org/downloads/) 3.6+ onto your system and set it up.
-- Add the Python directory with the executable to PATH environment variable
+1. Clone or fork ProgBot, downloading the files.
+2. Download [Python](https://www.python.org/downloads/) 3.6+ onto your system and set it up.
+3. Add the Python directory with the executable to PATH environment variable
    - [Windows Guide](https://www.educative.io/edpresso/how-to-add-python-to-path-variable-in-windows), [Mac Guide](https://www.educative.io/edpresso/how-to-add-python-to-the-path-variable-in-mac)
    - Otherwise, you will have to substitute the executable filepath in place of `python` calls.
-- In Command Line, change directory to location of ProgBot Code Dump with: `cd [filepath_to_progbot]`
-- In Command Line, install all dependencies using pip: `python -m pip install -r dependencies.txt`. 
+4. In Command Line, change directory to location of ProgBot Code Dump with: `cd [filepath_to_progbot]`
+5. In Command Line, install all dependencies using pip: `python -m pip install -r dependencies.txt`. 
     - You may need additional flags. If so, try `python -3 -m pip install -Iv [package]==[version]`
-- Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) and generate a bot token
+6. Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) and generate a bot token
      - [Link to Guide](https://www.writebots.com/discord-bot-token/)
-- Create a new file called `.env` in the ProgBot code repository, and add the text below:
+7. Create a new file called `.env` in the ProgBot code repository, and add the text below:
     ``` bash
     # env
     DISCORD_TOKEN=[PASTE TOKEN HERE, REPLACING BRACKETS AS WELL]
     PMC_KEY=[Different token needed by playermaderepo command; ask a dev if needed]
     ```
-- Go back to the [Discord Developer Portal](https://discordapp.com/developers/applications/), then go to the **Oauth2** tab and generate an invite link by: 
+8. Go back to the [Discord Developer Portal](https://discordapp.com/developers/applications/), then go to the **Oauth2** tab and generate an invite link by: 
     - Under Scopes, checking both `applications.commands` and `bot`
     - Then under Bot Permissions, check under Text Permissions:
         - `Send Messages`
@@ -42,27 +42,27 @@ Run `pip install -r ./dependencies.txt` in the PROGBOT_CODE_DUMP folder to autom
         - `Use External Emojis`
         - `Add Reactions`
         - `Embedded Link` (maybe?)
-- Paste the invite link into your browser and invite bot to a server (probably a test one)
-- Update the following fields in `settings.py`:
+9. Paste the invite link into your browser and invite bot to a server (probably a test one)
+10. Update the following fields in `settings.py`:
     - `admin_guild`: the server you want to dev-test this on
     - `bugreport_channel_id`: channel that you want to send test bug report messages to
     - `source_guild_id`: the server with special emojis (probably your dev-test server) (see [Custom Emoji Support](#custom-emoji-support))
     - `custom_emojis`: Special Emoji IDs (see [Custom Emoji Support](#custom-emoji-support))
-- To allow usage of admin commands, add a new line to the end of `tables/user_levels.tsv`:
+11. To allow usage of admin commands, add a new line to the end of `tables/user_levels.tsv`:
     ```
     [Your Discord user ID]	3	[your discord username]
     ```
-- Start the bot using: `python main.py`
-    - If successful, it will output the following after a few seconds, in the command line:
+12. Start the bot using: `python main.py`
+    - If successful, it will eventually output the following after a few seconds, in the command line:
      ```
      Jacking In! 
      Name: [Bot Name] 
      ID: [Bot ID]
      ```
     - If there's other errors... Godspeed. All errors will be printed out in the Command Line.
-- Run `/run command:refresh slash commands` in the server to get your bot to register the new slash commands
-- Wait a few minutes (or an hour) for the slash commands to sync across Discord, and...
-- You should be able to see slash commands in the server and start using them!
+13. Run `/run command:refresh slash commands` in the server to get your bot to register the new slash commands
+14. Run `/run command:reset admin commands` in the server to get the new commands to show up.
+15. You should be able to see slash commands in the server and start using them!
 
 ### Contributing
 Fork a branch from master and submit pull requests!
@@ -79,7 +79,7 @@ Note: if GitHub seems to be flagging all lines in the .tsv as changed, this is l
 ### Updating Slash Commands
 
 1. `/run command:refresh slash commands`
-1. `/run command:reset admin commands` (very important!!!)
+2. `/run command:reset admin commands` (very important!!!)
 
 ### Slash Commands
 
@@ -181,6 +181,15 @@ Pull up information on a recognized safety tool. (TTRPG Safety Tools)
 
 `bugreport`
 Submit a bugreport to ProgBot's bugreport channel.
+
+`fish`
+(NetFishing) Look up a Fish's description or query Fish in a habitat.
+
+`fishroll`
+(NetFishing) Roll on the environment tables to see what Fish are in the area.
+
+`fishtimer`
+(NetFishing) Set a random timer betwee 3-600 seconds to simulate the experience of getting a bite from a disinterested Fish.
 
 `entropy`
 Test Progbot's randomness. (Only works on prod machine)
