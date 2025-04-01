@@ -939,11 +939,11 @@ async def autoloot(interaction: discord.Interaction):
 def clean_args_with_spaces(args, lowercase=True):
     if len(args) == 1:
         args = re.split(r"(?:,|;)\s+", args[0])
-
+    # hell'srolling flashbacks
     if lowercase:
-        args = [i.lower().strip() for i in args if i and not i.isspace()]
+        args = [i.lower().strip().replace("’", "'") for i in args if i and not i.isspace()]
     else:
-        args = [i.strip() for i in args if i and not i.isspace()]
+        args = [i.strip().replace("’", "'") for i in args if i and not i.isspace()]
 
     return args
 
