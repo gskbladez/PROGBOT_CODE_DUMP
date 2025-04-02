@@ -1308,9 +1308,30 @@ async def send_fish_activity(interaction, initial_message, initial_user):
 # very important
 @bot.tree.command(name='fishslap', description=commands_dict["fishslap"])
 async def fishslap(interaction: discord.Interaction, target_user: discord.User):
-    off_df = filter_table(fish_df, {"Name": ""})
-    fish = random.choice(off_df["Name"])
-    message = f"{interaction.user.mention} slaps {target_user.mention} with a large {fish}!"
+    fish_info = filter_table(fish_df, {"Name": ""})
+    fish = random.choice(fish_info["Name"])
+
+    fish_index = fish_info[fish_info["Name"] == fish].index[0]
+    weight = fish_info["Weight"].iloc[fish_index]
+
+    weight = str(weight).lower()
+
+    if weight == "heavy":
+        weight = "large"
+
+    size_score = roll_size_variance()
+    if size_score <= 4:
+        size = "n extra small"
+    elif size_score >= 10:
+        size = "n extra large"
+    else:
+        size = ""
+
+    # the likelihood of this triggering with normal use is rare, so i have the opportunity to do something really funny
+    if size_score >= 10 and weight == "large":
+        weight = "huge, absolutely monstrous, seriously the size is insane, it makes raffi weep, oh gosh"
+
+    message = f"{interaction.user.mention} slaps {target_user.mention} with a{size} {weight.lower()} {fish}!"
 
     embed = discord.Embed(description=message, color=cc_color_dictionary["NetFishing"])
 
