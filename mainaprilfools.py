@@ -1306,8 +1306,8 @@ async def send_fish_activity(interaction, initial_message, initial_user):
     await interaction.followup.send(follow_up_message)
 
 # very important
-@bot.tree.command(name='slap', description=commands_dict["slap"])
-async def slap(interaction: discord.Interaction, target_user: discord.User):
+@bot.tree.command(name='fishslap', description=commands_dict["fishslap"])
+async def fishslap(interaction: discord.Interaction, target_user: discord.User):
     off_df = filter_table(fish_df, {"Name": ""})
     fish = random.choice(off_df["Name"])
     message = f"{interaction.user.mention} slaps {target_user.mention} with a large {fish}!"
