@@ -1316,22 +1316,26 @@ async def fishslap(interaction: discord.Interaction, target_user: discord.User):
 
     weight = str(weight).lower()
 
-    if weight == "heavy":
-        weight = "large"
-
     size_score = roll_size_variance()
     if size_score <= 4:
-        size = "n extra small"
+        weight_mapping = {
+            "light": "ultra-light",
+            "heavy": "medium",
+            "medium": "light"
+        }
+        weight = weight_mapping.get(weight, weight)
     elif size_score >= 10:
-        size = "n extra large"
-    else:
-        size = ""
+        weight_mapping = {
+            "light": "medium",
+            "medium": "heavy",
+            "heavy": "ultra-heavy"
+        }
+        weight = weight_mapping.get(weight, weight)
 
-    # the likelihood of this triggering with normal use is rare, so i have the opportunity to do something really funny
-    if size_score >= 10 and weight == "large":
-        weight = "huge, absolutely monstrous, seriously the size is insane, it makes raffi weep, oh gosh"
+    if random.random() < 0.05:
+        weight = "large"
 
-    message = f"{interaction.user.mention} slaps {target_user.mention} with a{size} {weight.lower()} {fish}!"
+    message = f"{interaction.user.mention} slaps {target_user.mention} with a {weight.lower()} {fish}!\n"
 
     embed = discord.Embed(description=message, color=cc_color_dictionary["NetFishing"])
 
