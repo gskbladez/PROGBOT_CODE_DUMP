@@ -1312,6 +1312,6 @@ async def fishslap(interaction: discord.Interaction, target_user: discord.User):
     fish = random.choice(off_df["Name"])
     message = f"{interaction.user.mention} slaps {target_user.mention} with a large {fish}!"
 
-    embed = discord.Embed(description=message, color=discord.Color.random())
+    embed = discord.Embed(description=message, color=cc_color_dictionary["NetFishing"])
 
     await interaction.response.send_message(embed=embed)
