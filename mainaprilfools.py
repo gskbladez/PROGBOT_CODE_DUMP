@@ -1304,3 +1304,14 @@ async def send_fish_activity(interaction, initial_message, initial_user):
         follow_up_message = f"> {minutes} minute(s) and {seconds} second(s) have passed for {user_name}...\n> {random.choice(caught_messages)}"
 
     await interaction.followup.send(follow_up_message)
+
+# very important
+@bot.tree.command(name='slap', description=commands_dict["slap"])
+async def slap(interaction: discord.Interaction, target_user: discord.User):
+    off_df = filter_table(fish_df, {"Name": ""})
+    fish = random.choice(off_df["Name"])
+    message = f"{interaction.user.mention} slaps {target_user.mention} with a large {fish}!"
+
+    embed = discord.Embed(description=message, color=discord.Color.random())
+
+    await interaction.response.send_message(embed=embed)

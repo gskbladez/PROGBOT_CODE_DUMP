@@ -37,4 +37,5 @@ autoloot	autoloot	Rollers	fools	slash	Generate a random autoloot chip	1	FALSE
 fish	fish	Game Lookup	fools	slash	Lookup Fish descriptions (opt: detailed for full information)	1	FALSE
 fishroll	fishroll	Rollers	fools	slash	Roll fish for your environment! (Use `fish` to lookup the environment's x/y axes) 	1	FALSE
 fishtimer	fishtimer	Assistant	fools	slash	Sets a random timer for GMs to cycle out fish. The maximum random time is 10 minutes.	1	FALSE
+slap	slap	Assistant	fools	slash	Slaps a target with a random Fish!	1	FALSE
 entropy	entropy	ProgBot	roll	slash	Test ProgBot's randomness! (256 is normal, 200+ is good!)	1	TRUE
