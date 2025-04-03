@@ -78,6 +78,7 @@ for a in fish_habitat_aliases.keys():
     fish_habitat_aliases[a]["df"] = tdf
 
 MAX_FISH_QUERY = 5
+MAX_USERS_FISHING = 5
 
 
 # There are 7 major categories that need to be procedurally filled out.
@@ -1211,13 +1212,16 @@ def roll_size_variance():
 
         return size_score
 
-
+active_fishing_tasks = set()
 users_fishing = set()
 
 @bot.tree.command(name='fishtimer', description=commands_dict["fishtimer"])
 async def fishtimer(interaction: discord.Interaction):
     if interaction.user.id in users_fishing:
         return await interaction.response.send_message("You're already fishing!", ephemeral=True)
+
+    if len(users_fishing) >= MAX_USERS_FISHING:
+        return await interaction.response.send_message("Sorry, the water's quite busy today! Try again later.", ephemeral=True)
 
     users_fishing.add(interaction.user.id)
 
@@ -1271,9 +1275,8 @@ async def fishtimer(interaction: discord.Interaction):
                           color=cc_color_dictionary["NetFishing"])
 
     initial_message = await interaction.response.send_message(embed=embed)
-
-    await send_fish_activity(interaction, initial_message, interaction.user)
-
+    task = asyncio.create_task(send_fish_activity(interaction, initial_message, interaction.user))
+    active_fishing_tasks.add(task)
 
 async def send_fish_activity(interaction, initial_message, initial_user):
     delay = random.randint(3, 600)
@@ -1304,6 +1307,7 @@ async def send_fish_activity(interaction, initial_message, initial_user):
         follow_up_message = f"> {minutes} minute(s) and {seconds} second(s) have passed for {user_name}...\n> {random.choice(caught_messages)}"
 
     await interaction.followup.send(follow_up_message)
+    active_fishing_tasks.discard(asyncio.current_task())
 
 # very important
 @bot.tree.command(name='fishslap', description=commands_dict["fishslap"])
