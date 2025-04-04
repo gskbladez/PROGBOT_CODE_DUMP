@@ -93,7 +93,7 @@ async def bugreport(interaction: discord.Interaction, message: str):
 
 @bot.tree.command(name='run', description='Admin-only commands', guild=discord.Object(id=settings.admin_guild))
 @app_commands.check(is_admin)
-async def admin(interaction: discord.Interaction, command: typing.Literal["refresh slash commands", "change status", "goodnight", "reset admin commands"], param_line:str=""):
+async def admin(interaction: discord.Interaction, command: typing.Literal["refresh slash commands", "change status", "goodnight", "reset admin commands", "clear fishing"], param_line:str=""):
     if command=="goodnight":
         await interaction.response.send_message("Goodnight!")
         return await bot.close()
@@ -112,6 +112,13 @@ async def admin(interaction: discord.Interaction, command: typing.Literal["refre
         bot.tree.clear_commands(guild=ag)
         # bot.tree.copy_global_to(guild=ag)  # discord.py says this should be needed, but doesn't seem like it does...?
         await bot.tree.sync(guild=ag)
+        return
+    if command=="clear fishing":
+        await interaction.response.send_message(content="Clearing fishing users!")
+        for task in mainaprilfools.active_fishing_tasks:
+            task.cancel()
+        mainaprilfools.users_fishing.clear()
+        await interaction.followup.send("All timers have been stopped and the users fishing list has been cleared.")
         return
 
 
