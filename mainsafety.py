@@ -4,7 +4,7 @@ from maincommon import bot, commands_dict
 
 @bot.tree.command(name='safety', description=commands_dict["safety"])
 async def safety(interaction: discord.Interaction, 
-                 tool:typing.Literal['X-Card', 'N-Card', 'O-Card', 'Luxton', 'Line', 'Veil', 'Open Door', 'Fast Foward', 'Rewind', 'Pause', 'Play', 'Resume', 'Frame-by-Frame']):
+                 tool:typing.Literal['X-Card', 'N-Card', 'O-Card', 'Luxton', 'Line', 'Veil', 'Open Door', 'Fast Forward', 'Rewind', 'Pause', 'Play', 'Resume', 'Frame-by-Frame']):
     arg = tool.lower().strip()
     if arg == 'x-card':
         msg = ":x: **A participant has used an X-card.** Stop the scene and talk it out."
