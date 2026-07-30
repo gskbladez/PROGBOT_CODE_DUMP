@@ -23,9 +23,6 @@ ADMIN_LEVEL = 3
 MOD_LEVEL = 2
 USER_LEVEL = 1
 
-#will secretly use discord log?
-handler = logging.handlers.RotatingFileHandler(filename=settings.log_file, maxBytes=50 * 1024 * 1024, encoding='utf-8', mode='w')
-
 user_df = read_csv(settings.user_levels_table_name, sep="\t", dtype={'ID':'string'}).dropna(subset=['ID'])
 user_dict = dict(zip(user_df["ID"], user_df["Level"]))
 
@@ -147,6 +144,15 @@ required_files = [settings.commands_table_name, settings.user_levels_table_name,
 bad_files = [f for f in required_files if not os.path.isfile(f)]
 if bad_files:
     raise FileNotFoundError("Required files missing: %s " % ", ".join(bad_files))
+
+
+#will secretly use discord log?
+handler = logging.handlers.RotatingFileHandler(
+    filename=settings.log_file, 
+    maxBytes=50 * 1024 * 1024, 
+    backupCount=1,
+    encoding='utf-8', 
+    mode='w')
 
 bot.run(settings.bot_token, log_handler=handler, log_level=logging.DEBUG)
 

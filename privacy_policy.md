@@ -27,7 +27,7 @@ Collected information is used solely to:
 
 ## Data Sharing
 
-ProgBot does share user data with third parties. 
+ProgBot does not share user data with third parties. ProgBot does not sell any data to third parties.
 
 ## Data Retention
 
