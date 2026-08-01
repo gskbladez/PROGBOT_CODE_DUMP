@@ -21,17 +21,23 @@ parser = dice_algebra.parser
 lexer = dice_algebra.lexer
 last_entropy = None
 
-def get_roll_from_macro(diff, dicenum):
+def get_roll_from_macro(diff, dicenum, diceexp):
     roll_difficulty = roll_difficulty_dict[diff.upper()]
     roll_dicenum = int(dicenum)
-    return "%dd6>%d" % (roll_dicenum, roll_difficulty)
+    roll_exp = diceexp
+
+    # handle cases where we don't want to do explosions
+    if diceexp is None: 
+        roll_exp = ""
+
+    return "%dd6%s>%d" % (roll_dicenum, roll_exp, roll_difficulty)
 
 
 def roll_master(roll_line, format_limit=FORMAT_LIMIT):
     retcode = 0
-    # subs out the macros
-    macro_regex = r"\$?(E|N|H)(\d+)"
-    roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2)), roll_line,
+    # subs out the macros, also supporting explosions for macros
+    macro_regex = r"\$?(E|N|H)(\d+)(\!)?"
+    roll_line = re.sub(macro_regex, lambda m: get_roll_from_macro(m.group(1), m.group(2), m.group(3)), roll_line,
                        flags=re.IGNORECASE)
     # adds dice size to explosions if none provided; matches end of line or non-digit character
     roll_line = re.sub(r"d(?P<dicesize>\d+)!(?P<extra>[^\d]|$)", r"d\g<dicesize>!\g<dicesize>\g<extra>", roll_line)

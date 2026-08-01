@@ -352,7 +352,8 @@ VenomFangs	-	Passive	Your attacks disable passive Virus/NCP abilities for 2 roll
 Spoof	Coding	Roll	Change any number’s appearance (no actual effect); like Navi HP, dice pool size, etc.	-	Virus Power	Core	
 Haunt	Coding	Roll	Turn invisible and able to pass through walls for 3 rolls.	-	Virus Power	Core	
 Startle	Bravery	Roll	Upshift a Close target’s next 3 Mind rolls.	-	Virus Power	Core	
-Touché	Coding	Roll	Knocks the alphabetically first BattleChip out of the target’s Folder.	-	Virus Power	Core	
+Touché	Coding	Roll	Knocks the alphabetically first BattleChip out of the target’s Folder.	-	Virus Power	Core	touche
+Vengeance	Bravery	Roll	Use Bravery to melee attack a Close target that recently attacked an ally.	-	Virus Power	Core	
 Catch	Info	Roll	Copy & use a chip of your choice from a Near target’s Folder.	-	Virus Power	Core	
 SaddleUp	Speed	Roll	Lasso a Near target into Close range and hop on their back.	-	Virus Power	Core	
 GiddyUp	Bravery	Cost	Make a Close target move a range band.	-	Virus Power	Core	
