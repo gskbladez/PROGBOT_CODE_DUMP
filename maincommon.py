@@ -174,12 +174,15 @@ def roll_row_from_table(roll_df, df_filters={}):
 
 # separate function on the off chance we can use the SQL DB
 # filt_dict uses regex strings; assumes and
-def filter_table(df: DataFrame, filt_dict: dict, not_filt = False):
+# strict_filt is if we want to have the filter be a pure equals case, and not the contains case
+def filter_table(df: DataFrame, filt_dict: dict, not_filt = False, strict_filt = False):
     sub_df = df
 
     for k, v in filt_dict.items():
         if isinstance(v, bool):
-            f = sub_df[k]==v
+            f = sub_df[k] == v
+        elif strict_filt is True:
+            f = sub_df[k] == v
         else:
             f = sub_df[k].str.contains(v, flags=re.IGNORECASE)
         if not_filt:
