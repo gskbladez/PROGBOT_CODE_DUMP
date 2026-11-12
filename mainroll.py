@@ -82,7 +82,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
     # so we defer it to increase it to a max of 15 minutes, then send a followup when done
     await interaction.response.defer()
     if repeat <= 0:
-        await interaction.followup.send(content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
+        return await interaction.followup.send(content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
 
     roll_line = cmd
 
@@ -92,6 +92,8 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         roll_comment = ""
 
     orig_roll_line = roll_line
+    if roll_line.endswith(","):
+        return await interaction.followup.send(content="Can't end a repeat roll with a comma!", ephemeral=True)
 
     sub_rolls = roll_line.split(",")
     sub_num = len(sub_rolls)
