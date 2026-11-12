@@ -1,0 +1,12 @@
+#!/bin/bash
+_HOME="/home/bladez"
+_VENV="$_HOME/progbot.prod/venv"
+sudo systemctl stop progbot.service
+rm -rf $_HOME/progbot.prod
+git clone --depth=1 https://github.com/gskbladez/PROGBOT_CODE_DUMP.git $_HOME/progbot.prod
+#git clone --depth=1 -b feature/databasize_memory_funcs https://github.com/gskbladez/PROGBOT_CODE_DUMP.git $_HOME/progbot.prod
+#cp -r $_HOME/envs/progbot.prod.env $_HOME/progbot.prod/venv
+python3 -m venv $_VENV
+$_VENV/bin/pip install -r $_HOME/progbot.prod/dependencies.txt
+cp $_HOME/envs/default_env $_HOME/progbot.prod/.env
+sudo systemctl start progbot.service
