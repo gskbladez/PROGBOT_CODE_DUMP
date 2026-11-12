@@ -78,8 +78,11 @@ def format_hits_roll(roll_result):
 
 @bot.tree.command(name='roll', description=commands_dict["roll"])
 async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
+    # due to how variable the roll timing can be, this can exceed 3 seconds, which is the discord standard wait for response. this causes those app did not respond errors
+    # so we defer it to increase it to a max of 15 minutes, then send a followup when done
+    await interaction.response.defer()
     if repeat <= 0:
-        await interaction.response.send_message(interaction, content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
+        await interaction.followup.send(content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
 
     roll_line = cmd
 
@@ -96,24 +99,24 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
     super_ret_codes = []
 
     for j in range(sub_num):
-        sub_roll = re.sub("\s+", "", sub_rolls[j]).lower()
+        sub_roll = re.sub("\\s+", "", sub_rolls[j]).lower()
         if not sub_roll:
             continue
 
         # reroll protection
-        dice_size = re.search('d(\d+)', sub_roll)
+        dice_size = re.search('d(\\d+)', sub_roll)
         if not dice_size:
-            dice_size = re.search('(?:E|N|H)(\d+)', sub_roll, re.IGNORECASE)
+            dice_size = re.search('(?:E|N|H)(\\d+)', sub_roll, re.IGNORECASE)
         if dice_size:
             reroll_size = int(dice_size.group(1))
 
             if repeat > MAX_REROLL_QUERY:
-                return await interaction.response.send_message(interaction,
+                return await interaction.followup.send(
                                                                      content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
                                                                      ephemeral=True)
 
             if repeat > MAX_REROLL_QUERY_LARGE and reroll_size > REROLL_DICE_SIZE_THRESHOLD:
-                return await interaction.response.send_message(interaction,
+                return await interaction.followup.send(
                                                                      content=f"Too many small rerolls in one query! Maximum of {MAX_REROLL_QUERY_LARGE} for dice sizes under {REROLL_DICE_SIZE_THRESHOLD}!",
                                                                      ephemeral=True)
         try:
@@ -133,14 +136,14 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
             err_msg = f"Bad argument in `{orig_roll_line}`! {str(e)}"
 
         if err_msg:
-            return await interaction.response.send_message(content=err_msg, ephemeral=True)
+            return await interaction.followup.send(content=err_msg, ephemeral=True)
 
         for i in range(repeat):
             super_roll_results[i][j] = format_hits_roll(roll_results[i])
         continue # to next part of the roll, if there's commas
 
     if not [i for i in super_roll_results if any(i)]:
-        return await interaction.response.send_message(content=f"No roll submitted in `{cmd}`!", ephemeral=True)
+        return await interaction.followup.send(content=f"No roll submitted in `{cmd}`!", ephemeral=True)
 
     if repeat == 1:
         sub_roll_string = ", ".join(super_roll_results[0])
@@ -155,7 +158,7 @@ async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
         sub_roll_strings = [", ".join(roll_result) for roll_result in super_roll_results]
         progroll_output = "{}\n>>> {}".format(progroll_output, "\n".join(sub_roll_strings))
 
-    await interaction.response.send_message(content=progroll_output)
+    await interaction.followup.send(content=progroll_output)
     response_msg = await interaction.original_response()
     
     try:
