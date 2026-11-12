@@ -57,7 +57,7 @@ cc_df = DataFrame.from_dict({"Source": cc_list, "Alias": list(cc_dict.values())}
 
 virus_colors = {"Virus": 0x7c00ff,
                 "MegaVirus": 0xA8E8E8,
-                "OmegaVirus": 0xA8E8E8}
+                "OmegaVirus": 0x571717}
 
 mysterydata_dict = {"common": {"color": 0x48C800,
                                "image": settings.common_md_image},
