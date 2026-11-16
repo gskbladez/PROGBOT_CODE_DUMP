@@ -1,6 +1,5 @@
 import datetime
 import subprocess
-import time
 import discord
 import settings
 import re
@@ -79,7 +78,6 @@ def format_hits_roll(roll_result):
 
 @bot.tree.command(name='roll', description=commands_dict["roll"])
 async def roll(interaction: discord.Interaction, cmd: str, repeat: int = 1):
-    start_time = time.perf_counter()
     if repeat <= 0:
         return await interaction.response.send_message(content="Can't repeat a roll a negative or zero number of times!", ephemeral=True)
 
