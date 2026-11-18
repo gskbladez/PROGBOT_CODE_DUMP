@@ -363,8 +363,8 @@ async def cheer_jeer_master(interaction: discord.Interaction, cj_type: str, arg:
         embed_descript = f"{interaction.user.mention} rolled ... {num} {cj_type.capitalize()}s! Huh?!\n\n"
     elif arg == 'add':
         num = -1 * num
-    elif arg=='spend' and num == 1:
-        sub_df = filter_table(audience_df, {"Type": re.escape(cj_type)})
+    elif arg == 'spend' and num == 1:
+        sub_df = filter_table(audience_df, {"Type": re.escape(cj_type).title()}, strict_filt=True)
         random_roll = random.randrange(sub_df.shape[0])
         cj_roll = "*%s*" % sub_df["Option"].iloc[random_roll]
 
