@@ -179,7 +179,7 @@ class DiceOp(BaseBox):
 
     def success(self, limit):
         prev_cmd, prev_repr_result = self.modifications[-1]
-        repr_result = [i if int(re.search(r'\d+', i).group()) > limit else cross_out(i) for i in prev_repr_result.split(", ")]
+        repr_result = [i if int(re.search(r"\d+", i).group()) > limit else cross_out(i) for i in prev_repr_result.split(", ")]
         self.results = [1 for x in self.results if x > limit]
         repr_result = ", ".join(map(str,repr_result))
         self.modifications.append(['{}{}'.format(SUCCESS_TOKEN, limit),repr_result])

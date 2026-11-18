@@ -649,7 +649,7 @@ async def power(interaction: discord.Interaction, query: str):
 
 
 def query_ncp(arg_lower):
-    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\\s*%s\\s*(?:$|,|;)" % re.escape(arg_lower)})
+    alias_check = filter_table(cc_df, {"Alias": rf"(?:^|,|;)\s*{re.escape(arg_lower)}\s*(?:$|,|;)"})
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
