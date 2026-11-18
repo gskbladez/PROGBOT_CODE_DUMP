@@ -121,14 +121,14 @@ async def find_value_in_table(df, search_col, search_arg, suppress_notfound=Fals
         return None, None
     add_msg = None
     if "Alias" in df:
-        alias_check = filter_table(df, {"Alias": f"(?:^|,|;)\s*{re.escape(search_arg)}\s*(?:$|,|;)"})
+        alias_check = filter_table(df, {"Alias": rf"(?:^|,|;)\s*{re.escape(search_arg)}\s*(?:$|,|;)"})
         if (alias_check.shape[0] > 1) and (not allow_duplicate):
             return None, f"Found more than one match for {search_arg}! You should probably let the devs know..."
         if alias_check.shape[0] != 0:
             search_arg = alias_check.iloc[0][search_col]
             if alias_message:
                 add_msg = f"Found as an alternative name for **{search_arg}**!"
-    search_results = filter_table(df, {search_col: f"\s*^{re.escape(search_arg)}\s*$"})
+    search_results = filter_table(df, {search_col: rf"\s*^{re.escape(search_arg)}\s*$"})
     if search_results.shape[0] == 0:
         if not suppress_notfound:
             add_msg = "I can't find `%s`!" % search_arg

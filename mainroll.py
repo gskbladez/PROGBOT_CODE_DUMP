@@ -30,7 +30,7 @@ def get_roll_from_macro(diff, dicenum, diceexp):
     if diceexp is None: 
         roll_exp = ""
 
-    return f"{roll_dicenum}d6{roll_exp}>{roll_difficulty}" % (roll_dicenum, roll_exp, roll_difficulty)
+    return f"{roll_dicenum}d6{roll_exp}>{roll_difficulty}"
 
 
 def roll_master(roll_line, format_limit=FORMAT_LIMIT):

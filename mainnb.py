@@ -201,7 +201,7 @@ async def tag(interaction: discord.Interaction, category: str):
 def query_chip(args):
     arg_lower = ' '.join(args)
 
-    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)}) 
+    alias_check = filter_table(cc_df, {"Alias": r"(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)}) 
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
@@ -265,7 +265,7 @@ def query_chip(args):
 
 
 def pity_cc_check(arg):
-    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg)})
+    alias_check = filter_table(cc_df, {"Alias": r"(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg)})
     if alias_check.shape[0] > 0:
         arg = alias_check.iloc[0]["Source"]
         return arg
@@ -587,7 +587,7 @@ def query_power(args):
         return False, "", ""
 
     if is_default:
-        sub_df = filter_table(sub_df, {"Sort": "^\s*Power\s*$"})
+        sub_df = filter_table(sub_df, {"Sort": r"^\s*Power\s*$"})
         search_tag_list.append('Navi')
     else:
         sub_df = filter_table(sub_df, {"Sort": "Virus Power"})
@@ -649,7 +649,7 @@ async def power(interaction: discord.Interaction, query: str):
 
 
 def query_ncp(arg_lower):
-    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
+    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\\s*%s\\s*(?:$|,|;)" % re.escape(arg_lower)})
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
@@ -889,7 +889,7 @@ async def virus_master(arg, simplified=True):
 
 
 def query_virus(arg_lower):
-    alias_check = filter_table(cc_df, {"Alias": "(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
+    alias_check = filter_table(cc_df, {"Alias": r"(?:^|,|;)\s*%s\s*(?:$|,|;)" % re.escape(arg_lower)})
     if alias_check.shape[0] > 0:
         arg_lower = alias_check.iloc[0]["Source"].lower()
 
@@ -1136,7 +1136,7 @@ async def element(interaction: discord.Interaction, number: int, category: typin
     element_category = category
     
     if element_category != 'All':
-        sub_element_df = filter_table(element_df, {"category": f"^\s*{category}\s*$"})
+        sub_element_df = filter_table(element_df, {"category": rf"^\s*{category}\s*$"})
         if sub_element_df.shape[0] == 0:
           return await interaction.response.send_message(content="Invalid category provided!\n" +
                                                         "Categories: **%s**" % ", ".join(element_category_list), ephemeral=True)
